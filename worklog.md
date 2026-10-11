@@ -3629,3 +3629,18 @@ Work Log:
 
 Stage Summary:
 - Session 106 executed end-to-end: the third-surface seeded mobile walk (the settings-tabs guard wrong-bound-proven + the captures 162/163 VLM 4/4 x2), the F-106a1/F-106b1(both faces)/F-106c1 fixes, the count ladder 134->135 + 1921->1922 + badge 2057 + the HEAD spec-family census 4->5, the probe ordinals at the 77th/27th. Next: the full gate (gate:full — lint -> tsc -> 1922 unit -> build -> e2e fresh CI=1 135 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main
+
+---
+Task ID: 106-close
+Agent: main (Super Z)
+Task: Session 106 — the gate, the ship, the push, the close-out
+
+Work Log:
+- GATE (the full chain, stepwise in the foreground — the s102-s105 lesson): lint 0/0 - tsc 0 - 1922/1922 unit (106 suites, +1 net) - build clean - 135/135 e2e fresh CI=1 (3.2m, +1: the settings-tabs guard green inside the run) - the FOUR drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift)
+- The pin sanity run after the docs phase: 75/75 GREEN (the new history rows — the AGENTS Session-106 block + the PAD s106 inventory row — did not trip the negatives; the WIDENED-guard doctrine held)
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 active vars standing; the tree exactly as planned (11 modified + 5 new, ZERO src/)
+- The house-style commit 672f5dc (16 files, +987/-41, ZERO src/); the SSH push via docs/ssh_git_wrapper_v3.py (paramiko 5.0.0 reinstalled in the fresh sandbox [/usr/bin/python3.13 — the venv python3.12 lacks it] + the Appendix-A shim redeployed at /home/z/my-project/bin/ssh with the python3.13 shebang, the operator key 0600 in /tmp OUTSIDE the repo, fingerprint-verified SHA256:3ddaNlFhMz1JXiGEDgVEaRsUzI4Ev0IpGEEB7NnU4PU — matches the s104/s105 records, dry-run first: 333bc69..672f5dc clean fast-forward, then the real push)
+- The wrapper verified: refs/heads/main @ 672f5dc == local HEAD; the tracking ref synced; both key copies shredded (the wrapper's temp + the operator file)
+
+Stage Summary:
+- Session 106 SHIPPED AND PUSHED: main @ 672f5dc = the third-surface seeded mobile walk (the settings-tabs guard wrong-bound-proven + the captures 162/163 VLM 4/4 x2) + the F-106a1 H1/project_state lockstep pin + the F-106b1 seven-site mobile-nav suite-count fix (both faces) + the F-106c1 CLAUDE commands-table lockstep + the count ladder 134->135 + 1921->1922 + badge 2057 + the HEAD spec-family census 4->5 + the probe ordinals at the 77th/27th; counts 106/1922+135, badge 2057, SKILL v1.103.0 (the H1 actually bumped this time) + this session-log follow-up
