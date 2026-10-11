@@ -3730,3 +3730,18 @@ Work Log:
 
 Stage Summary:
 - Session 107 executed end-to-end: the reports KPI-derivations freeze (the seam extraction + the seeded rolling-quarter row pinned {18/6/4/337k/2/92k/"66.7"} + induced-drift-proven both faces), the F-107a1 Appendix B refresh + pin (the genus structurally retired at the eighth site), the F-107b1 fourth lockstep assertion, the count ladder 1922->1927 + 106->107 suites + badge 2062 (E2E unchanged 135), the probe ordinals at the 78th/28th. Next: the full gate (gate:full — lint -> tsc -> 1927 unit -> build -> e2e fresh CI=1 135 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main
+
+---
+Task ID: 107-close
+Agent: main (Super Z)
+Task: Session 107 — the gate, the ship, the push, the close-out
+
+Work Log:
+- GATE (the full chain, stepwise in the foreground — the s102-s106 lesson): lint 0/0 - tsc 0 - 1927/1927 unit (107 suites, +5 net) - build clean - 135/135 e2e fresh CI=1 (3.2m, unchanged — the seam behavior-preserving) - the FOUR drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift)
+- The pin sanity run after the docs phase: 80/80 GREEN (the new history rows — the AGENTS Session-107 block + the PAD s107 inventory row + the README Tested row s107 clause + the SKILL 16cu — did not trip the negatives; the WIDENED-guard doctrine held)
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 active vars standing; the tree exactly as planned (13 modified + 5 new; src/ = exactly the seam extraction [route.ts + reports-data.ts])
+- The house-style commit c213e6f (18 files, +1126/-54); the SSH push via docs/ssh_git_wrapper_v3.py (paramiko 5.0.0 installed on /usr/bin/python3.13 --break-system-packages [the fresh sandbox, the s105/s106 pattern] + the Appendix-A shim deployed at /home/z/my-project/bin/ssh with the python3.13 shebang, the operator key 0600 in /tmp OUTSIDE the repo, fingerprint-verified SHA256:3ddaNlFhMz1JXiGEDgVEaRsUzI4Ev0IpGEEB7NnU4PU — matches the s104/s105/s106 records, dry-run first: cef1baa..c213e6f clean fast-forward, then the real push)
+- The wrapper verified: refs/heads/main @ c213e6f == local HEAD; the tracking ref synced; the wrapper's temp key shredded (the operator file shredded below)
+
+Stage Summary:
+- Session 107 SHIPPED AND PUSHED: main @ c213e6f = the reports KPI-derivations unit freeze (the reportsKpis seam extraction — the first src/ since s90 — + the seeded rolling-quarter row pinned {18/6/4/337k/2/92k/"66.7"} + induced-drift-proven both faces) + the F-107a1 Appendix B refresh + pin + the F-107b1 fourth lockstep assertion + the count ladder 1922->1927 + 106->107 suites + badge 2062 (E2E unchanged 135) + the captures 164/165 VLM 4/4 x2 + the probe ordinals at the 78th/28th; counts 107/1927+135, badge 2062, SKILL v1.104.0 + this session-log follow-up
