@@ -89,6 +89,25 @@
 // constructions join the negatives ladders, the HEAD-line template's
 // spec-family census grows "5 spec" → "6 spec", and the Appendix B
 // e2e-total row grows "5 spec files" → "6 spec files".)
+// → s109 (unit 1932 → 1934: +1 the activities-calendar-parity row pin
+//   [the M-109c1 fix — the priority row's right cluster, an unshrinkable
+//   249px min-content (time span + the 174px "Check as completed" text
+//   button + the 20px edit icon), pushed main.scrollWidth to 488 at
+//   390; min-w-0 on both clusters + the min-w-0 truncate label span
+//   make the row fit at every width] + 1 — the NEW line-census pin
+//   [the F-109a1/a2/a3 fixes — the PAD module-table rows + the SKILL
+//   header cluster, the LIVE-CENSUS design: the it reads the source
+//   files live and asserts the docs' stated counts match — the next
+//   staleness, either face, fails `bun run test`].
+//   SUITES 108 unchanged (both pins land in EXISTING files); E2E 136 →
+//   137 (the FIFTH e2e-count change: the seeded-state mobile walk of
+//   the FIFTH surface family — the activities priority rows at 390,
+//   the LAST un-walked phone surface. The new guard lives in a NEW
+//   spec file (activities-mobile.spec) so the mobile-nav battery count
+//   stays 10; the retired 136 constructions join the negatives
+//   ladders, the HEAD-line template's spec-family census grows
+//   "6 spec" → "7 spec", and the Appendix B e2e-total row grows
+//   "6 spec files" → "7 spec files".)
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -97,8 +116,8 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1932;
-const E2E = 136;
+const UNIT = 1934;
+const E2E = 137;
 const SUITES = 108;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
@@ -106,7 +125,7 @@ const SUITES = 108;
 const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1932 + 136 = 2068)", () => {
+  it("README badge carries the unit + e2e arithmetic (1934 + 137 = 2071)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -162,7 +181,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
   it("PAD HEAD line carries the live counts (the site-form anchor)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain(
-      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 6 spec`,
+      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 7 spec`,
     );
   });
 
@@ -219,6 +238,19 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).not.toMatch(/# 107 Vitest suites/);
     expect(pad).not.toMatch(/HEAD: 107 Vitest/);
     expect(pad).not.toMatch(/— 1927\/1927/);
+    // -----------------------------------------------------------------
+    // Session-109: the unit-count realignment (1932 → 1934 + badge 2068
+    // → 2071 — the M-109c1 row pin + the line-census pin; SUITES stays
+    // 108 — both new its land in EXISTING files). The retired
+    // 1932/2068/"in 6 spec" constructions join the ladder — the same
+    // SITE-FORM anchors, the same doctrine. The "in 6 spec" negative
+    // rides the PAD HEAD-line site-form ("e2e checks in 6 spec") so
+    // the dated records' quoted forms never trip it.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2068%20checks/);
+    expect(readme).not.toMatch(/# 1932 Vitest unit checks/);
+    expect(pad).not.toMatch(/— 1932\/1932/);
+    expect(pad).not.toMatch(/e2e checks in 6 spec/);
   });
 
   // ------------------------------------------------------------------
@@ -330,6 +362,19 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(claude).not.toMatch(/\*\*E2E \(Playwright, 135 checks\)\*\*/);
     expect(pad).not.toMatch(/`bun run test:e2e` — 135\/135/);
     expect(pad).not.toMatch(/\| 135 browser checks \|/);
+    // -----------------------------------------------------------------
+    // Session-109: the FIFTH e2e-count realignment (136 → 137, the
+    // activities priority-rows guard in the new spec file). The retired
+    // 136 constructions join the ladder — the same SITE-FORM anchors,
+    // the same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/# 136 Playwright checks on/);
+    expect(readme).not.toMatch(/# Playwright \(136 checks\)/);
+    expect(agents).not.toMatch(/Browser E2E \(136 checks\)/);
+    expect(claude).not.toMatch(/Playwright E2E \(136 checks/);
+    expect(claude).not.toMatch(/\*\*E2E \(Playwright, 136 checks\)\*\*/);
+    expect(pad).not.toMatch(/`bun run test:e2e` — 136\/136/);
+    expect(pad).not.toMatch(/\| 136 browser checks \|/);
   });
 
   it("the mobile-nav spec count stays live (the README Tested-row phrase + the testing-section phrase + the PAD suite line + the F-105a1 sites + the F-106b1 sites)", () => {
@@ -423,13 +468,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-108 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-109 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s107 layer was never prepended)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s108 layer now beneath the s109 head)",
     ).toContain(
-      "+ beneath it 1927 unit checks + 135 e2e checks green; the session-107 layer (the 107-c rotation — THE REPORTS KPI-DERIVATIONS UNIT FREEZE",
+      "+ beneath it 1932 unit checks + 136 e2e checks green; the session-108 layer (the 108-c rotation — THE FOURTH-SURFACE SEEDED MOBILE WALK",
     );
   });
 
@@ -457,7 +502,11 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B e2e-total row must carry the live spec-file + check counts",
-    ).toContain(`| **e2e total** | 6 spec files + the setup project | **${E2E}** |`);
+    ).toContain(`| **e2e total** | 7 spec files + the setup project | **${E2E}** |`);
+    expect(
+      appendix,
+      "the retired six-spec form never returns (the s109 re-anchor — the spec-family census grows activities-mobile)",
+    ).not.toContain("| **e2e total** | 6 spec files + the setup project |");
     expect(
       appendix,
       "the Appendix B mobile-nav row must carry the live 10-check census",
@@ -512,5 +561,110 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // e16efb9; the line is now the one-command gate)
     expect(deployment).not.toContain("smoke-test.sh");
     expect(deployment).toContain("bun run gate");
+  });
+
+  // ------------------------------------------------------------------
+  // Session-109 (S109-P4): the F-109a1/a2/a3 fixes — the LINE-CENSUS
+  // pin, the LIVE-CENSUS design (stronger than the four-site form):
+  // the it reads each SOURCE file live and asserts the docs' stated
+  // counts match — the next staleness, EITHER face (a doc edit OR a
+  // source growth), fails `bun run test`. The 109-a audit found the
+  // genus at PAD's format.ts row (336 vs live 350 — the very file the
+  // s108 ship modified), the SKILL header cluster (7 pre-existing
+  // stale line-counts, unchanged since s65-s90), and PAD's login-reset
+  // row (N-108a5's face, unfixed); the tilde forms (~95/~1222/~277/
+  // ~110) are the F-108a3 "~213" genus — approximate forms drift —
+  // exact-ified here.
+  // ------------------------------------------------------------------
+  it("the thirteen line-census sites carry the LIVE counts (F-109a1/a2/a3 — the LIVE-CENSUS: read the sources, assert the docs)", () => {
+    // wc -l semantics: count the newline characters (all repo files are
+    // newline-terminated), so the live value equals `wc -l` exactly.
+    const lines = (p: string) => (read(p).match(/\n/g) ?? []).length;
+    const live = {
+      format: lines("src/lib/format.ts"),
+      loginReset: lines("src/lib/login-reset.ts"),
+      entityDialogs: lines("src/components/shared/entity-dialogs.tsx"),
+      globalsCss: lines("src/app/globals.css"),
+      mobileNav: lines("src/components/layout/mobile-nav.tsx"),
+      schema: lines("prisma/schema.prisma"),
+      seed: lines("prisma/seed.ts"),
+      auth: lines("src/lib/auth.ts"),
+      types: lines("src/types/index.ts"),
+      settingsMobileSpec: lines("tests/e2e/settings-mobile.spec.ts"),
+      mobileNavSpec: lines("tests/e2e/mobile-navigation.spec.ts"),
+      reportsMobileSpec: lines("tests/e2e/reports-mobile.spec.ts"),
+    };
+    const pad = read("Project_Architecture_Document.md");
+    const skill = read("neo-crm_SKILL.md");
+
+    // the PAD §11 module-table rows (F-109a1 + F-109a3 + the tilde
+    // exact-ifications — N-109a4's "~95" and the three "~" forms)
+    expect(
+      pad,
+      "the format.ts row (F-109a1 — the s108 seam edit itself)",
+    ).toContain(`| \`src/lib/format.ts\` | ${live.format} |`);
+    expect(pad).not.toContain("| `src/lib/format.ts` | 336 |");
+    expect(
+      pad,
+      "the login-reset row (F-109a3 — N-108a5's face)",
+    ).toContain(`| \`src/lib/login-reset.ts\` | ${live.loginReset} |`);
+    expect(pad).not.toContain("| `src/lib/login-reset.ts` | 275 |");
+    expect(
+      pad,
+      "the settings-mobile spec row (N-109a4's at-birth undercount)",
+    ).toContain(`| \`tests/e2e/settings-mobile.spec.ts\` | ${live.settingsMobileSpec} |`);
+    expect(pad).not.toContain("| `tests/e2e/settings-mobile.spec.ts` | ~95 |");
+    expect(
+      pad,
+      "the entity-dialogs row (the ~1222 tilde exact-ified)",
+    ).toContain(`| \`src/components/shared/entity-dialogs.tsx\` | ${live.entityDialogs} |`);
+    expect(pad).not.toContain("| `src/components/shared/entity-dialogs.tsx\` | ~1222 |");
+    expect(
+      pad,
+      "the mobile-navigation spec row (the ~277 tilde exact-ified)",
+    ).toContain(`| \`tests/e2e/mobile-navigation.spec.ts\` | ${live.mobileNavSpec} |`);
+    expect(pad).not.toContain("| `tests/e2e/mobile-navigation.spec.ts\` | ~277 |");
+    expect(
+      pad,
+      "the reports-mobile spec row (the ~110 tilde exact-ified)",
+    ).toContain(`| \`tests/e2e/reports-mobile.spec.ts\` | ${live.reportsMobileSpec} |`);
+    expect(pad).not.toContain("| `tests/e2e/reports-mobile.spec.ts\` | ~110 |");
+
+    // the SKILL header cluster (F-109a2 — the seven stale line-counts)
+    expect(
+      skill,
+      "the globals.css header (:194 — stale since s90)",
+    ).toContain(`\`src/app/globals.css\` (${live.globalsCss} lines)`);
+    expect(skill).not.toContain("`src/app/globals.css` (171 lines)");
+    expect(
+      skill,
+      "the entity-dialogs header (:325 — stale since s92)",
+    ).toContain(`\`src/components/shared/entity-dialogs.tsx\` (${live.entityDialogs} lines)`);
+    expect(skill).not.toContain("`src/components/shared/entity-dialogs.tsx` (1081 lines)");
+    expect(
+      skill,
+      "the mobile-nav header (:341 — stale since s65)",
+    ).toContain(`\`src/components/layout/mobile-nav.tsx\` (${live.mobileNav} lines)`);
+    expect(skill).not.toContain("`src/components/layout/mobile-nav.tsx` (170 lines)");
+    expect(
+      skill,
+      "the schema.prisma header (:539)",
+    ).toContain(`\`prisma/schema.prisma\` (${live.schema} lines)`);
+    expect(skill).not.toContain("`prisma/schema.prisma` (242 lines)");
+    expect(
+      skill,
+      "the seed.ts header (:553 — stale since s86)",
+    ).toContain(`\`prisma/seed.ts\` (${live.seed} lines)`);
+    expect(skill).not.toContain("`prisma/seed.ts` (468 lines)");
+    expect(
+      skill,
+      "the auth.ts header (:581 — stale since s67)",
+    ).toContain(`\`src/lib/auth.ts\` (${live.auth} lines)`);
+    expect(skill).not.toContain("`src/lib/auth.ts` (133 lines)");
+    expect(
+      skill,
+      "the types/index.ts header (:6312 — one line OFF the live value)",
+    ).toContain(`\`src/types/index.ts\` (${live.types} lines)`);
+    expect(skill).not.toContain("`src/types/index.ts` (277 lines)");
   });
 });

@@ -169,6 +169,36 @@ describe("session-76: the priority-tab row family (vx)", () => {
     expect(src).toMatch(/text-red-600/);
   });
 
+  // ------------------------------------------------------------------
+  // Session-109 (S109-P2, the M-109c1 fix): the priority row's clusters
+  // are SHRINKABLE at phone width. The 109-c ANALYZE found the right
+  // cluster un-shrinkable — the time span (40px) + the ghost "Check as
+  // completed" text button (174px at min-content) + the 20px iconSm
+  // edit button = a 249px min-content inside the 326px panel (content
+  // box 302), pushing main.scrollWidth to 488 at 390x844 — a
+  // horizontally-swipeable /activities, the M-108c1 genus on the flex
+  // axis. The fix (the mobile-nav doctrine, ours the documented
+  // superset — the reference's own construction carries the same
+  // latent defect, un-live-verifiable at its zero-data state):
+  // min-w-0 on both clusters + the label in a min-w-0 truncate span.
+  // ------------------------------------------------------------------
+  it("the priority row's clusters are min-w-0 shrinkable with a truncating label span (M-109c1)", () => {
+    const src = activitiesPage();
+    // the left cluster + its inner text block: the name/subject wrap
+    // vertically instead of forcing the flex line.
+    expect(src).toContain("flex items-center gap-3 flex-1 min-w-0");
+    expect(src).toMatch(/"flex-1 min-w-0"/);
+    // the right cluster: shrinkable below its content's min.
+    expect(src).toContain("flex items-center gap-2 min-w-0");
+    // the check button: shrinkable + its label in a truncating span
+    // (a raw text node cannot shrink — the truncate-engages doctrine).
+    expect(src).toMatch(/className="text-xs min-w-0"/);
+    expect(src).toContain('<span className="min-w-0 truncate">Check as completed</span>');
+    // the retired bare-label form never returns (the raw text after
+    // the CircleCheck icon — the pre-fix construction).
+    expect(src).not.toMatch(/"true" \/>\s*\n\s*Check as completed/);
+  });
+
   it("the retired divide-y/toggle construction is gone", () => {
     const src = activitiesPage();
     expect(src).not.toContain("divide-y");

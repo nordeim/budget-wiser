@@ -3850,3 +3850,21 @@ Work Log:
 
 Stage Summary:
 - Session 108 SHIPPED AND PUSHED: main @ 2f0798a = the fourth-surface seeded mobile walk (the calendar-mobile guard with the NEW mainScrollW inner-overflow assertion + the chip containment + the complete-weeks cell count computed in-test + the REAL month-nav round-trip, wrong-bound-proven) + the M-108c2 complete-weeks grid reversion (the s76 "always-42" misdecode retired — the reference live-probed five months) + the M-108c1 block-chip fix (the inline-span overflow retired at every width) + the F-108a1 layer-axis lockstep + the F-108a2/a3/a4 stale-docs pins + the count ladder 135->136 + 1927->1932 + 107->108 suites + badge 2068 + the HEAD "in 6 spec" + the captures 166/167 VLM 4/4 x2 + the probe ordinals at the 79th/29th; counts 108/1932+136, badge 2068, SKILL v1.105.0 + the session-log follow-up
+
+---
+Task ID: 109-close
+Agent: main (Super Z)
+Task: Session 109 — the rotation execution, captures, gate, the ship
+
+Work Log:
+- The rotation (109-c): the fifth-surface seeded mobile walk (the activities priority rows at 390, the LAST un-walked phone surface) + the live find + the audit finds
+- RED-1: the count ladder re-anchored (UNIT 1934 + E2E 137 + badge 2071 [the 2074 arithmetic slip caught at plan validation] + the HEAD "in 7 spec" + the new negatives + the NEW line-census it) + the H1/project_state lockstep (counts + layer faces) + the NEW row pin + the N-79b1 negative + the dialog-geometry lockstep -> 22 failed | 107 passed (129) at the pre-realignment docs + the still-unshrinkable clusters, enumerated by name (the 19 docs-counts [16 count-axis + the H1 lockstep + the Appendix B — the in-flight addition] + the N-79b1 carrier + the dialog-geometry lockstep + the row pin; the plan predicted 21-24); stash-proven (the seven files -> 127/127 -> pop -> 22 RED)
+- GREEN: the one src/ fix (the PriorityRows clusters min-w-0 + the inner block + the label span, +21/-6) + the full doc realignment (README/AGENTS/CLAUDE/PAD/SKILL v1.106.0 [the s109 layer prepended + the seven header-cluster sites + 16cw + Appendix B + the wall-clock]/session_221 + the plan's execution record) -> 108 files / 1934 tests ALL PASSING (+2 net)
+- RED-2: the min-w-0 removal from the right cluster -> the row pin FAILED by name (1 | 40) -> restored -> GREEN (41/41)
+- The e2e guard: 137/137 fresh CI=1 (3.1m — the guard green on its FIRST run, the s108 events-fetch-wait lesson applied at construction) + the wrong-bound perturbation proof (mainScrollW <= 389 -> FAILED live "Expected: <= 389, Received: 390" -> restored -> GREEN)
+- S109-P6: the captures 168 (the seeded activities at 390x844 — docScrollW 390 + mainScrollW 390 [pre-fix 488] + rowClusterMaxRight 346 [pre-fix 475] + the rail display:none) + 169 (the desktop 1440 — the rail block + the by-type chart 270 wide with 5 bars) — the VLM battery 4/4 + 4/4, zero adjudications (the truncation ellipses + the containment + the live chip counts Call 5 / Email 3 / Meeting 3 / WhatsApp 2 off the pixels); the throwaway scripts deleted
+- GATE (stepwise, the s102-s107 lesson; one load-sensitive flake en route — the S14-P1 settings Defaults-tab test failed inside the first gate:full, passed in isolation + inside the re-run): lint 0/0 - tsc 0 - 1934/1934 unit (108 suites, +2 net) - build - 137/137 e2e fresh CI=1 (3.2m) - the four drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift, NO re-baselining — the fix invisible at the zero-data sweep state)
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 active vars standing; the tree exactly as planned (12 modified + 4 new; src/ = the ONE fix file)
+
+Stage Summary:
+- Session 109 executed end-to-end: the fifth-surface walk (the walk family COMPLETE — all five phone surfaces walked), the M-109c1 shrinkable-cluster fix (the M-108c1 doctrine generalized to flex, validated live by class injection before the plan: 488 -> 390), the F-109a1/a2/a3 line-census fixes + the LIVE-CENSUS pin (the next staleness either face fails the gate), the count ladder 136->137 + 1932->1934 + badge 2071 + the HEAD "in 7 spec", the probe ordinals at the 80th/30th, the captures 168/169 VLM 4/4 x2. Next: the house-style commit + the SSH-wrapper push to main, then the close-out (the 109-close workspace worklog + the session-log follow-ups)

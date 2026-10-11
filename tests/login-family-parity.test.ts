@@ -358,7 +358,12 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // file; the retired form joins its negatives, the doctrine
     // unchanged).
     expect(src).not.toContain("**E2E (Playwright, 135 checks)**");
-    expect(src).toContain("**E2E (Playwright, 136 checks)**");
+    // session-109 lockstep carry-forward: the carrier re-anchored
+    // 136 -> 137 (the S109-P3 activities priority-rows guard in the new
+    // spec file; the retired form joins its negatives, the doctrine
+    // unchanged).
+    expect(src).not.toContain("**E2E (Playwright, 136 checks)**");
+    expect(src).toContain("**E2E (Playwright, 137 checks)**");
   });
 });
 

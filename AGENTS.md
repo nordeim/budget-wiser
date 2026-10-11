@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1932 checks)       | `bun run test`                         |
-|  Browser E2E (136 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (1934 checks)       | `bun run test`                         |
+|  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1932) → `bun run build` → `bun run test:e2e` (136) — or the
+`bun run test` (1934) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4528,4 +4528,101 @@ decisions standing 68th).
   at the zero-data sweep state — no re-baselining). Docs at SKILL
   v1.105.0 [§16cv + project_state + the H1] + README badge 2068 +
   AGENTS/CLAUDE/PAD at 1932+136 + session_218.md + the s108 plan +
+  its execution record + the worklog.
+
+### Session-109 — the fifth-surface seeded mobile walk + the live find + the line-census pin
+
+The audits: 109-a the s108 ship delta GENUINE 9/9 (non-vacuousness
+reproduced EXACT: the mixed-state worktree 27 failed | 107 passed
+(129), all 22 by name + the native 127/127) with THREE REAL finds —
+**F-109a1** (PAD's format.ts module-table row "336" vs live 350 —
+the very file the s108 ship modified; the ship fixed the
+page-layout/reports-data rows but not this one — the F-108a3 genus
+recurring at birth, the module-table still unpinned), **F-109a2**
+(the SKILL header cluster, SEVEN pre-existing stale line-count sites
+newly surfaced: globals.css 171 vs 413 · entity-dialogs 1081 vs
+1222 · mobile-nav 170 vs 206 · schema.prisma 242 vs 244 · seed.ts
+468 vs 466 · auth.ts 133 vs 153 · types/index.ts 277 vs 276 — all
+unchanged since s65-s90), **F-109a3** (PAD's login-reset row "275"
+vs live 279 — N-108a5's face, unfixed + unpinned); 109-b 9/9 layers
+PASS, zero real findings (zero graduations ~66th; SEO/sitemap 46/46
+LIVE first-run clean; the mobile-nav contract INTACT; both operator
+decisions standing 69th).
+
+- **THE HEADLINE — the fifth-surface seeded mobile walk (the
+  activities priority rows at 390×844, the LAST un-walked phone
+  surface) surfaced ONE LIVE FIND before any guard was written**
+  (the ANALYZE-probe-first doctrine): **M-109c1** the priority row's
+  right cluster overflows the 390px frame — the cluster (the time
+  span 40px + the ghost "Check as completed" text button 174px at
+  min-content + the 20px iconSm edit button + two 8px gaps) is a
+  **249px un-shrinkable min-content** inside the 326px panel
+  (content box 302 after `p-3`); the left cluster (`flex-1`,
+  min-content 182) + the right (249) = 431 > 302, so the cluster
+  lays out to right=475 — **98px past the viewport,
+  main.scrollWidth 488** (a horizontally-swipeable /activities, the
+  M-108c1 genus on the FLEX axis). Invisible to every standing gate
+  (the drift sweeps run the ZERO-DATA state — no activities, no
+  rows; the ten-route overflow sweep asserts docScrollW only — the
+  document never overflows, main is the scroller; the existing e2e
+  activities tests run at desktop widths). The reference's own
+  construction (the s76 vx bundle decode) carries the same latent
+  defect — un-live-verifiable at its zero-data state; ours the
+  documented superset: **min-w-0 on both clusters + the inner text
+  block + the button label in a min-w-0 truncate span** (a raw text
+  node cannot shrink — the truncate-engages doctrine; validated
+  live by class injection BEFORE the plan: 488 → 390). Two ANALYZE
+  mysteries resolved and recorded: the whole filters/by-type rail
+  is `hidden lg:block` — display:none below lg on BOTH apps (the
+  reference's own desktop-only model; the by-type chart's w=0 at
+  390 is NOT a defect) — and the quick-log row wraps 2×2 at 390
+  (safe, no header offender).
+- **The e2e guard** (the NEW activities-mobile.spec.ts, +1 → 137):
+  docScrollW AND mainScrollW ≤ 390 (the inner-overflow assertion
+  family) · the KPI ladder 6 cards one-track gap-16 · the segmented
+  tab strip 4 triggers 4-track · the Overdue badge === the panel's
+  row count (self-consistent, never hardcoded) · zero rows past the
+  panel's right edge + zero clusters past their row's right edge
+  (the M-109c1 guard) · the timeline LONG-WEEKDAY h3 single-column ·
+  the rail display:none below lg · the quick-log 2×2 wrap · a REAL
+  Completed-tab switch that keeps the frame at 390; wrong-bound
+  perturbation-proven (mainScrollW ≤ 389 → FAILED live → restored →
+  GREEN).
+- **The unit pin** (+1 it in activities-calendar-parity): the row
+  construction pinned (min-w-0 on both clusters + the inner block +
+  the `text-xs min-w-0` button + the `<span className="min-w-0
+  truncate">` label + the retired bare-label negative).
+- **The F-109a1/a2/a3 fixes + the NEW line-census pin** (the
+  LIVE-CENSUS design, stronger than the four-site form): the it
+  reads each SOURCE file live and asserts the docs' stated counts
+  match — the next staleness, EITHER face (a doc edit OR a source
+  growth), fails `bun run test`. Thirteen pairs: the PAD module-table
+  rows (format.ts 350 · login-reset 279 · settings-mobile 106 · the
+  tilde forms exact-ified: entity-dialogs 1222 · mobile-nav spec
+  277 · reports-mobile 110) + the SKILL header cluster (globals.css
+  413 · entity-dialogs 1222 · mobile-nav 206 · schema.prisma 244 ·
+  seed.ts 466 · auth.ts 153 · types/index.ts 276).
+- **The count ladder**: UNIT 1932 → 1934 (+1 the row pin + 1 the
+  census pin) · SUITES 108 unchanged (both its land in EXISTING
+  files) · E2E 136 → 137 (the activities-mobile guard in a NEW spec
+  file — the mobile-nav battery stays 10) · badge 2068 → 2071 · the
+  HEAD-line template "in 6 spec" → "in 7 spec" (the spec-family
+  census gains activities-mobile) · the probe ordinals 79/29th →
+  80/30th.
+- **RED-1**: 22 failed | 107 passed (129) at the pre-realignment
+  docs + the still-unshrinkable clusters (the 19 docs-counts [16
+  count-axis + the H1 lockstep + the Appendix B] + the N-79b1
+  carrier + the dialog-geometry lockstep + the row pin — enumerated
+  by name; the plan predicted ≈21-24), stash-proven (stash the seven
+  files → 127/127 → pop → 22 RED).
+- **The captures**: 168 (the seeded activities at 390×844 — the KPI
+  ladder + the wrapped quick-log row + the fitting priority rows) +
+  169 (the desktop 1440 — the two-column lg:block rail + the
+  by-type chart) — the VLM battery 4/4 × 2.
+- **GATE**: lint 0/0 · tsc 0 · 1934/1934 unit [108 suites, +2 net] ·
+  build · 137/137 e2e fresh CI=1 + the four drift sweeps CLEAN inside
+  gate:full (the fix is invisible at the zero-data sweep state — no
+  rows render — no re-baselining). Docs at SKILL v1.106.0 [§16cw +
+  project_state + the H1 + the header cluster] + README badge 2071 +
+  AGENTS/CLAUDE/PAD at 1934+137 + session_221.md + the s109 plan +
   its execution record + the worklog.

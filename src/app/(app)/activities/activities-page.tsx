@@ -663,12 +663,27 @@ function PriorityRows({
         const overdueText = hoursLate >= 24 ? `${Math.floor(hoursLate / 24)}d overdue` : `${hoursLate}h overdue`;
         return (
           <div key={a.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg border-b">
-            <div className="flex items-center gap-3 flex-1">
+            {/* Session-109 (M-109c1, the 109-c live find): the clusters
+                are min-w-0 SHRINKABLE at phone width. The pre-fix row
+                carried an un-shrinkable 249px right cluster (the time
+                span 40px + the 174px "Check as completed" text button
+                + the 20px edit icon) inside the 326px panel — the flex
+                min-content line pushed the cluster to right=475 and
+                main.scrollWidth to 488 at 390x844 (a horizontally-
+                swipeable /activities, the M-108c1 genus on the flex
+                axis; invisible to every standing gate — the zero-data
+                sweeps render no rows). The mobile-nav doctrine, ours
+                the documented superset: min-w-0 on both clusters + the
+                name/subject text block, and the button label in a
+                min-w-0 truncate span (a raw text node cannot shrink —
+                the truncate-engages doctrine; the aria-labels already
+                cover the truncated reads). */}
+            <div className="flex items-center gap-3 flex-1 min-w-0">
               <div className="w-10 h-10 bg-blue-100 flex items-center justify-center text-blue-600 text-sm font-semibold">
                 {(a.relatedName ?? a.contact?.name ?? "A").split(" ").map((w) => w[0]).join("")}
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 min-w-0">
                   <p className="font-medium text-sm">{a.relatedName || a.contact?.name || "Activity"}</p>
                   {isOverdue && (
                     <Badge variant="destructive" className="text-xs">
@@ -679,19 +694,19 @@ function PriorityRows({
                 <p className="text-xs text-gray-600">{a.subject}</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 min-w-0">
               <span className={`text-sm font-medium ${isOverdue ? "text-red-600" : "text-gray-900"}`}>
                 {formatTime(a.dueAt ?? a.createdAt)}
               </span>
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs"
+                className="text-xs min-w-0"
                 aria-label={a.status === "completed" ? "Mark as scheduled" : "Check as completed"}
                 onClick={() => onToggle(a)}
               >
                 <CircleCheck className="w-4 h-4 mr-1" aria-hidden="true" />
-                Check as completed
+                <span className="min-w-0 truncate">Check as completed</span>
               </Button>
               {/* Our documented superset: the reference's rows carry no
                   edit affordance (only complete); ours opens the edit
