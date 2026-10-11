@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1921 checks)       | `bun run test`                         |
-|  Browser E2E (134 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (1922 checks)       | `bun run test`                         |
+|  Browser E2E (135 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1921) → `bun run build` → `bun run test:e2e` (134) — or the
+`bun run test` (1922) → `bun run build` → `bun run test:e2e` (135) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -165,7 +165,7 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   hidden` element SILENTLY NO-OPS (keyboard users Tabbed through the
   background behind the aria-modal dialog). The panel also uses
   `h-dvh` (not `h-full`) so it tracks the dynamic viewport on mobile
-  browsers. `tests/e2e/mobile-navigation.spec.ts` (9 checks, 390/700px
+  browsers. `tests/e2e/mobile-navigation.spec.ts` (10 checks, 390/700px
   viewports — the focus-entry test + the ten-route zero-overflow sweep
   included) is the
   regression suite — do not weaken it.
@@ -4300,3 +4300,50 @@ are UNCHANGED (the drift-gate output byte-identical with or without
   [§16cs + project_state] + README badge 2055 + AGENTS/CLAUDE/PAD at
   1921+134 + session_211.md + the s105 plan + its execution record +
   the worklog.
+
+### Session-106 — the third-surface seeded mobile walk + the three count-lockstep fixes
+
+- **Audits**: 106-a the s105 ship delta GENUINE 10/10 (non-vacuousness
+  reproduced: the mixed-state checkout 11 failed | 44 passed [the
+  recorded 10 EXACT + the 11th the widened F-105a1 pin re-proving
+  itself at the pre-s105 tree] + the native 55/55 + the wrong-bound
+  1-failed "Received: 390" → restored GREEN); 106-b 9/9 layers (zero
+  graduations ~63rd; SEO/sitemap 13/13 LIVE; mobile-nav contract
+  intact; both operator decisions standing 66th).
+- **The finds**: F-106a1 REAL (the SKILL H1 not bumped — :16 still
+  read v1.101.0 while the frontmatter read 1.102.0; four s105 records
+  falsely claimed it; the site was UNPINNED); F-106b1 REAL (the stale
+  9-check mobile-nav suite-count at AGENTS:168, s69-vintage — plus its
+  SECOND FACE found in-flight at plan validation: SKILL:359 carried
+  the same construction; the pin widened to SEVEN sites); F-106c1
+  (in-flight: CLAUDE:114's commands-table unit row was an unpinned
+  live-tense count site — joined the dialog-geometry lockstep).
+- **The rotation**: the SEEDED settings surface walked at TRUE
+  390×844 (the THIRD surface family — the picklist genus is the
+  largest phone share at 7.7; the s105-close suggested next #2). The
+  ANALYZE probe mapped the geometry first (docScrollW 390 exact · the
+  segmented tab bar ONE row of THREE equal tracks ~116px · the
+  picklist grid ONE track 358px × 5 cards gap-16 · the REAL Data-tab
+  switch swaps to 3 cards @358 with the frame held at 390), then the
+  NEW tests/e2e/settings-mobile.spec.ts guard transcribed it —
+  wrong-bound-perturbation-proven (docScrollW ≤ 389 → 1 failed live →
+  restored → GREEN). Captures 162 (the seeded CONFIG tab) + 163 (the
+  DATA tab) — the VLM battery 4/4 + 4/4, zero adjudications.
+- **The count ladder**: E2E 134 → 135 · UNIT 1921 → 1922 (+1: the NEW
+  H1↔frontmatter↔project_state lockstep it — the F-106a1 genus
+  structurally retired, a DERIVED pin that reads the frontmatter
+  version so it never goes stale) · badge 2055 → 2057 · the HEAD-line
+  template "in 4 spec" → "in 5 spec" (the spec-family census gains
+  settings-mobile) · the retired 134 constructions joined the
+  negatives ladders · the probe ordinals 76/26th → 77/27th.
+- **RED**: 19 failed | 56 passed (75) at the pre-realignment docs (the
+  17 docs-counts its + the N-79b1 carrier + the dialog-geometry
+  lockstep — **the plan's prediction EXACT**), stash-proven (stash the
+  three test files → 74/74 → pop → 19 RED) + the guard's wrong-bound
+  1-failed proof.
+- **GATE**: lint 0/0 · tsc 0 · 1922/1922 unit [106 suites, +1 net] ·
+  build · 135/135 e2e fresh CI=1 (+1: the settings-tabs guard) + the
+  four drift sweeps CLEAN inside gate:full. Docs at SKILL v1.103.0
+  [§16ct + project_state + the H1 — actually bumped this time] +
+  README badge 2057 + AGENTS/CLAUDE/PAD at 1922+135 + session_213.md +
+  the s106 plan + its execution record + the worklog.

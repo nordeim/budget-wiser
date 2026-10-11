@@ -35,7 +35,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (1921) → `bun run build` → `bun run test:e2e` (134) — or the
+   `bun run test` (1922) → `bun run build` → `bun run test:e2e` (135) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -111,8 +111,8 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (1921 checks)            |
-| `bun run test:e2e`  | Playwright E2E (134 checks, needs build first) |
+| `bun run test`      | Vitest unit suites (1922 checks)            |
+| `bun run test:e2e`  | Playwright E2E (135 checks, needs build first) |
 | `bun run gate`      | The full gate in one command (lint → typecheck → test → build → e2e) |
 | `bun run db:push`   | Push Prisma schema (no migrations folder)     |
 | `bun run db:seed`   | Reseed demo data in place                     |
@@ -122,7 +122,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 1921 checks)** — pure seams: `tests/db-path.test.ts`,
+- **Unit (Vitest, 1922 checks)** — pure seams: `tests/db-path.test.ts`,
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -296,7 +296,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   TABLE_CARD plain-div rule, CALENDAR_CARD, SETTINGS_GRID + the
   design-tokens `th, td { padding: 1px }` platform reset). Node
   environment; `@` alias resolved.
-- **E2E (Playwright, 134 checks)** — `tests/e2e/`: `auth.spec.ts`
+- **E2E (Playwright, 135 checks)** — `tests/e2e/`: `auth.spec.ts`
   (logged-out surface + session-11's login reset-password flow +
   session-21's in-place funnel: the Callout banner with zero toasts,
   the signup view swap + mismatch guard, the verify-email ladder +
@@ -313,6 +313,9 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   seeded-state guard), `reports-mobile.spec.ts` (the s105 seeded-state
   reports-tabs guard — the SECOND surface family walked at phone width:
   the KPI row + the pill tab bar + the 300px charts at 390×844 on the
+  SEEDED e2e.db), `settings-mobile.spec.ts` (the s106 seeded-state
+  settings-tabs guard — the THIRD surface family: the segmented tab
+  bar + the picklist grid + the Data-tab switch at 390×844 on the
   SEEDED e2e.db), and session-12's custom-404 + session-15's entity-dialog geometry
   tests (stock Lead dialog at phone width, the Contact avatar section, the
   wide Event family with its blue submit) + session-16's responsive-layer
@@ -372,7 +375,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 1921).
+the seam (currently 1922).
 
 ## Code Quality Standards
 

@@ -288,8 +288,18 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // README/PAD e2e-site pins + the e2e stale-form negatives + the
     // mobile-nav suite-count pin; this lockstep is a re-anchor, not a
     // new it)
-    expect(claude).toContain("Unit (Vitest, 1921 checks)");
-    expect(claude).toContain("(currently 1921)");
+    // session-105 lockstep carry-forward: unit UNCHANGED at 1921 (the
+    // s105 rotation added zero unit its; this lockstep untouched).
+    // session-106 lockstep carry-forward: 1921 -> 1922 (the s106 +1 —
+    // the docs-counts H1/project_state lockstep it, the F-106a1 fix)
+    // + the F-106c1 third site joined: CLAUDE's commands-table unit
+    // row ("Vitest unit suites (N checks)") was an UNPINNED
+    // live-tense unit-count site — the F-99a1 genus on the CLAUDE
+    // commands-table axis, missed by the s102/s104 locksteps (found
+    // in-flight during the s106 plan validation).
+    expect(claude).toContain("Unit (Vitest, 1922 checks)");
+    expect(claude).toContain("(currently 1922)");
+    expect(claude).toContain("Vitest unit suites (1922 checks)");
     expect(claude).not.toMatch(/1788 checks/);
     expect(claude).not.toMatch(/currently 1788/);
     expect(claude).not.toMatch(/1828 checks/);
