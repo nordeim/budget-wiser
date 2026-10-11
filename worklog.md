@@ -3370,3 +3370,27 @@ Work Log:
 
 Stage Summary:
 - Session 102 SHIPPED: main @ 590079b = the secondary-sites lockstep (the F-99a1/F-102a2 genus retired — 11 RED-first pins) + the F-102a1 75/75 corrections + the 414x896 third-phone-width maiden CLEAN + the probe ordinals refreshed + docs at SKILL v1.99.0, counts at 1903/132, README badge 2035
+
+---
+Task ID: 103-ship
+Agent: main (Super Z)
+Task: Session 103 — the rotation execution, live verification, screenshots, docs
+
+Work Log:
+- Audits: 103-a the s102 ship delta GENUINE docs-only (non-vacuousness re-proven: the a0e52ca checkout 12 failed | 18 passed -> 30/30); F-103a1 REAL (the 76/76 survives at PAD:781 — the 7th F-102a1 site) + N-103a1 (the it-name line citations drifted +1) + N-103a2/a3 (record-only); 103-b ZERO graduations 13/13 (~60th), the ledger 402/402, CSV 17 sites zero unguarded, source-vocabulary clean, config verified, SEO 57/57 live, mobile-nav contract intact, globals.css v4 re-pins present; both operator decisions STAND (63rd)
+- LIVE pre-plan: probe:ref STABLE (the 74th consecutive; census #99 demo zero + desktop 256/8 + the mobile-nav defect STANDS the 24th); the four drift gates CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024); the drawer battery FULLY GREEN
+- RED-1: the docs-counts constants + the lockstep re-anchored first -> 11 failed | 19 passed (30) at the pre-realignment docs (10 docs-counts + 1 lockstep; the plan predicted 12 — the stale-form negatives pin passes at the s102-state docs, the TRUE RED transcribed live)
+- S103-P1: the NEW tests/seeded-charts.test.ts (11 its) — the seed->derivation->chart-input chain frozen through the REAL reports-data functions (leads 7/4/2/2/3/2/4 - won 687,000 - sources 6/6/5/4/3 - opps 4/2/2/1/1/2 - 337,000/92,000/525,000 - funnel 4/2/3+2/1/1/2/4 - revenue total 337,000 - wonLost 4/2 - forecast 337,000/316,250 - aging [6,3,3,0] - KPI 24/"29.2"); 11/11 at HEAD (the aging pin re-anchored midnight-aligned in-flight — the exactly-60-day boundary)
+- RED-2 (induced drift): 87_000 -> 88_000 on one won opp -> 3 failed BY NAME (the amount totals - revenueByMonth - forecastAccuracySeries) -> restored -> 11/11
+- GREEN S103-P0: PAD:781 76/76 -> 75/75 (the F-103a1 seventh site)
+- GREEN S103-P2: the count realignment (first pass 106/1914/badge-2046; README:8/:55/:125/:178 + the suite list gains seeded-charts - AGENTS:20/:29 - CLAUDE x4 - PAD:358/:783/:796/:1218/:1288 + the N-103a1 it-name re-anchors)
+- GREEN S103-P3: the probe ordinals 73/23rd -> 74/24th (drift-probe.ts header + the test echo + the it title; the wiring pin asserts no ordinals)
+- S103-P4 THE MAIDEN TRIPPED (the first ever): the 320x568 phone-floor spot-check -> login 1.39% > 0.8+0.5 (the other nine pages HELD 0.92-0.97; settings 5.91); the --clusters decode (92.6% in ONE logo bucket x120..199 y64..111) + the VLM comparison (the reference's hotlinked 3D NEC-CRM screenshot vs our CSS brand mark — the documented genus) + the denominator arithmetic (the genus constant-ABSOLUTE ~2,500px; the share 0.75->1.39% as the frame shrinks 45%); the fix: STANDING_BASELINES.phone.login 0.8 -> 1.4 (the class ceiling, the s97/s99 doctrine)
+- RED-3: the maiden pin written first (the floor pin + the one-table-for-the-class assertions) -> 1 failed | 46 passed (47) at the 0.8 table -> the entry raised -> 47/47 + the maiden re-run CLEAN
+- THE MID-FLIGHT AMENDMENT: the final counts 106 suites / 1915 unit / badge 2047 (1914 a never-shipped in-flight intermediate); the constants + the lockstep + all the doc sites re-realigned; the PAD it-name line citations RETIRED to site forms (the N-103a1 treadmill genus closed)
+- Full unit: 106 files / 1915 tests GREEN (+12 net)
+- S103-P5: screenshots 156 (the seeded dashboard at 1904x1077 — the reference era screenshot's EXACT viewport; the VLM era comparison: the layout-family parity confirmed, our seed populating what the reference renders empty, the VLM reading "24 leads - $337.0k - 29.2%" matching the freeze pins) + 157 (the seeded reports analytics view) — VLM 4/4 + 4/4, zero adjudications; the throwaway capture script deleted
+- S103-P6: session_207.md + the s103 plan + its execution record + README badge 2047 + the Tested row s103 clause + AGENTS counts + the Session-103 history block + CLAUDE counts x4 + PAD the s103 inventory row + the Total 106/1915 + SKILL v1.100.0 (16cq + project_state + the H1)
+
+Stage Summary:
+- Session 103 executed end-to-end: the seeded-state chart-geometry freeze retired (11 induced-drift-proven pins), the 320 maiden tripped->diagnosed->fixed->pinned->CLEAN, the F-103a1 seventh site corrected, the it-name treadmill retired, the probe ordinals refreshed. Next: the full gate (gate:full — lint -> tsc -> 1915 unit -> build -> e2e fresh CI=1 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main

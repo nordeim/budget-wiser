@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1903 checks)       | `bun run test`                         |
+|  Unit tests (1915 checks)       | `bun run test`                         |
 |  Browser E2E (132 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1903) → `bun run build` → `bun run test:e2e` (132) — or the
+`bun run test` (1915) → `bun run build` → `bun run test:e2e` (132) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4080,3 +4080,69 @@ are UNCHANGED (the drift-gate output byte-identical with or without
   badge 2035 + AGENTS/CLAUDE/PAD at 1903+132 + the F-102a1/F-102a2
   fixes + session_205.md + the s102 plan + its execution record + the
   worklog.
+
+### Session-103 — the seeded-state chart-geometry freeze + the 320 phone-floor maiden (the first maiden to trip)
+
+- **103-a audit**: the s102 ship delta GENUINE (docs-only: session_206.md
+  + the worklog append; non-vacuousness re-proven via the a0e52ca
+  checkout: 12 failed | 18 passed → 30/30, tree clean). **F-103a1 REAL
+  (docs)**: the F-102a1 "76/76" at-birth error survived at **PAD:781**
+  (the s101 inventory row — a 7th site missed by both the 102-a
+  enumeration and the S102-P0 correction; the AGENTS:4043 at-birth-error
+  doctrine sanctions the fix). N-103a1: the docs-counts it-name line
+  citations self-drifted +1 (the s102 PAD inventory-row insertion).
+  N-103a2/N-103a3: record-only.
+- **103-b audit**: ZERO graduations 13/13 (~60th; src/ byte-identical
+  since the s102 ship); the ledger families 402/402; the CSV census 17
+  sites ZERO unguarded; the source-vocabulary clean; the config + SEO
+  layers verified 57/57; the mobile-nav contract INTACT; the globals.css
+  v4 re-pins present. **Both operator decisions re-affirmed (63rd).**
+- **S103-P1 (the headline — the s98 suggested next #3, twice
+  deferred)**: the NEW `tests/seeded-charts.test.ts` (11 its) — the
+  seed→derivation→chart-input chain frozen through the REAL
+  reports-data functions (the leads stage census 7/4/2/2/3/2/4 · the
+  won-lead 687,000 + book 2,086,000 · the post-map source distribution
+  6/6/5/4/3 · the opps census 4/2/2/1/1/2 · the 337,000/92,000/525,000
+  totals · pipelineStageCounts 4/2/3+2/1/1/2/4 · revenueByMonth's
+  337,000 total invariant · wonLostByMonth 4/2 · forecastAccuracySeries
+  337,000/316,250 · agingCounts' [6,3,3,0] design bands · the "29.2"
+  conversion member). **A seed VALUE edit now fails `bun run test`**
+  (the census already pinned the row COUNTS; nothing pinned the value
+  distributions). Non-vacuousness: the INDUCED-DRIFT proof (87_000 →
+  88_000 → 3 failed BY NAME → restored → 11/11).
+- **S103-P4 (THE 320×568 PHONE-FLOOR MAIDEN — the first maiden to
+  TRIP)**: login 1.39% > 0.8 + 0.5 (the other nine pages HELD at
+  0.92–0.97). The diagnosis: the --clusters decode (92.6% of the diff
+  in ONE logo-region bucket) + the VLM comparison (the reference's
+  hotlinked 3D "NEC-CRM" screenshot vs our CSS brand mark — the
+  documented genus) + the denominator arithmetic (**the genus is
+  constant-ABSOLUTE ~2,500px; the share scales inversely with the
+  frame: 0.75% at 390 · 0.82% at 375 · 0.67% at 414 · 1.39% at the
+  320 floor — the frame 45% smaller, the genus unchanged**). The fix:
+  `STANDING_BASELINES.phone.login` 0.8 → **1.4** (the class ceiling,
+  the s97/s99 maiden doctrine) — RED-first pinned (the floor pin +
+  the one-table-for-the-class assertions) → the maiden re-run CLEAN.
+- **S103-P0/P2/P3**: the F-103a1 seventh-site fix (PAD:781 76/76 →
+  75/75) · the count realignment **106 suites · 1915 unit · badge
+  2047** (1914 a never-shipped in-flight intermediate — the maiden's
+  pin joined after the first realign; the N-103a1 it-name re-anchors
+  rode the same touch) · the probe ordinals 73/23rd → 74/24th.
+- **The LIVE verification**: probe:ref — the bundle md5 STABLE (the
+  **74th** consecutive); census #99: demo zero · desktop 256px/8 · the
+  mobile-nav defect STANDS at TRUE 390 (the **24th**). The four
+  standing drift gates CLEAN; the drawer battery FULLY GREEN live.
+- **RED**: 11 failed | 19 passed (30) at the pre-realignment docs (10
+  docs-counts + 1 lockstep — the plan predicted 12; the stale-form
+  negatives pin passes at the s102-state docs, the TRUE RED
+  transcribed live) + the induced-drift 3-failed proof + the maiden
+  pin's 1-failed RED at the 0.8 table.
+- **S103-P5**: screenshots 156 (the seeded dashboard at 1904×1077 —
+  the reference era screenshot's EXACT viewport) + 157 (the seeded
+  reports analytics view) — VLM 4/4 + 4/4, zero adjudications; the
+  era comparison confirms the layout-family parity with our seed
+  populating what the reference renders empty.
+- **GATE**: lint 0/0 · tsc 0 · 1915/1915 unit [106 suites, +12 net] ·
+  build · 132/132 e2e fresh CI=1 + the four drift sweeps CLEAN inside
+  gate:full. Docs at SKILL v1.100.0 [§16cq + project_state] + README
+  badge 2047 + AGENTS/CLAUDE/PAD at 1915+132 + the F-103a1 fix +
+  session_207.md + the s103 plan + its execution record + the worklog.

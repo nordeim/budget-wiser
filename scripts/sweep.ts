@@ -207,9 +207,17 @@ export const STANDING_BASELINES = {
     reports: 0.95,
     settings: 7.7,
     profile: 0.75,
-    // the maiden phone run measured 0.75% — the same logo genus at a
-    // larger share of the narrower frame
-    login: 0.8,
+    // the phone login entry rides the CLASS CEILING (s103): the CSS
+    // brand-mark logo genus is constant-ABSOLUTE (~2,500px — the
+    // reference hotlinks a screenshot; ours draws the white-circle/
+    // blue-dot shape — the s7 note), so its SHARE scales inversely with
+    // the frame: 0.75% at 390x844 · 0.82% at 375x812 · 0.67% at 414x896
+    // · 1.39% at the 320x568 class floor (the maiden s103 walk — the
+    // frame is 45% smaller, the genus unchanged). One entry covers all
+    // four walked widths; the share-based cost is the 390 ceiling
+    // loosening to ~1.9 — a real login regression stacks pixels ON TOP
+    // of the constant genus and still trips.
+    login: 1.4,
   },
   // Session-97 (S97-P0): the TABLET class — the md..lg band (768 <= w <
   // 1024) walked by the maiden 768x1024 run. The desktop layout family

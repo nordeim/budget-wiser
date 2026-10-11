@@ -20,8 +20,14 @@
 // "1880 unit checks"), never a bare whole-file number ban.
 //
 // The count ladder (the lockstep carry-forward, re-anchored each
-// session the suite count grows): s101 1892 → s102 1903 (+11 — this
-// suite's own 11 its).
+// session the suite count grows): s101 1892 → s102 1903 (+11 — that
+// suite's own 11 its) → s103 1915 (+12 — the seeded-charts suite's 11
+// freeze pins + the s103-maiden sweep-tool floor pin; 1914 was a
+// never-shipped in-flight intermediate — the 320 maiden tripped the
+// login genus mid-session, adding its pin after the first realign;
+// N-103a1's it-name line citations re-anchored in the same touch: the
+// s102 PAD inventory-row insertion had shifted the Total :782→:783,
+// HEAD :795→:796, checklist :1217→:1218, commands :1287→:1288).
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -30,12 +36,12 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1903;
+const UNIT = 1915;
 const E2E = 132;
-const SUITES = 105;
+const SUITES = 106;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1903 + 132 = 2035)", () => {
+  it("README badge carries the unit + e2e arithmetic (1915 + 132 = 2047)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -45,12 +51,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).toContain(`# ${SUITES} Vitest suites (${UNIT} checks)`);
   });
 
-  it("README commands comment carries the live unit count AND the two newest suites in the list (the :178 site — F-102a2: 1880 stale + drift-probe-tool missing)", () => {
+  it("README commands comment carries the live unit count AND the three newest suites in the list (the :178 site — F-102a2: 1880 stale + drift-probe-tool missing)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`# ${UNIT} Vitest unit checks (`);
-    // the suite list must carry the s101 + s102 additions (F-102a2's second face)
+    // the suite list must carry the s101 + s102 + s103 additions (F-102a2's second face)
     expect(readme).toContain("drift-probe-tool");
     expect(readme).toContain("docs-counts");
+    expect(readme).toContain("seeded-charts");
   });
 
   it("README Tested row carries the live counts (the headline live-tense row)", () => {
@@ -75,21 +82,21 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).toContain(`# ${SUITES} Vitest suites — ${UNIT} checks`);
   });
 
-  it("PAD Total row carries the live totals (the :782 site)", () => {
+  it("PAD Total row carries the live totals (the site-form anchor — the PAD line citations retired: the inventory table grows every session by design, the N-103a1 treadmill)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain(
       `| **Total** | **${SUITES}** | **${UNIT} unit + ${E2E} e2e** |`,
     );
   });
 
-  it("PAD HEAD line carries the live counts (the :795 site)", () => {
+  it("PAD HEAD line carries the live counts (the site-form anchor)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain(
       `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 3 spec`,
     );
   });
 
-  it("PAD checklist + commands table carry the live count (the :1217 + :1287 sites)", () => {
+  it("PAD checklist + commands table carry the live count (the site-form anchors)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain("`bun run test` — " + `${UNIT}/${UNIT}`);
     expect(pad).toContain(`| \`bun run test\` | root | ${UNIT} unit checks |`);

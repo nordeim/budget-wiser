@@ -228,6 +228,15 @@ describe("session-92 (S92-P5): the sweep tool — the one-command regression", (
     expect(sb(767)).toEqual(b390);
   });
 
+  it("standingBaseline: the phone login entry rides the CLASS CEILING — the 320x568 floor walk (s103 maiden: the logo genus is constant-ABSOLUTE ~2,500px, so its SHARE peaks at the smallest frame — 1.39% at 320 vs 0.75% at 390; one entry covers all four walked widths 390/375/414/320, the share-based cost the class banding makes for the one constant-absolute genus)", async () => {
+    const { standingBaseline } = await sweep();
+    // the s103 maiden measurement at the class floor
+    expect(standingBaseline(320).login).toBeGreaterThanOrEqual(1.39);
+    // ONE table for the whole <768 band — the floor entry IS the 390 entry
+    expect(standingBaseline(320).login).toBe(standingBaseline(390).login);
+    expect(standingBaseline(320).login).toBe(standingBaseline(375).login);
+  });
+
   it("driftVerdict fails a page above ITS OWN baseline+margin and names it (a 0.00% page drifting to 5% fails where a global --max-diff 8 passes)", async () => {
     const { driftVerdict } = await sweep();
     const baselines = { leads: 0.05, settings: 4.9 };
