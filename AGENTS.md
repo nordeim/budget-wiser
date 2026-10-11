@@ -18,7 +18,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
 |  Unit tests (1921 checks)       | `bun run test`                         |
-|  Browser E2E (133 checks)        | `bun run test:e2e` (needs build first) |
+|  Browser E2E (134 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1921) → `bun run build` → `bun run test:e2e` (133) — or the
+`bun run test` (1921) → `bun run build` → `bun run test:e2e` (134) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4216,3 +4216,87 @@ are UNCHANGED (the drift-gate output byte-identical with or without
   project_state] + README badge 2054 + AGENTS/CLAUDE/PAD at 1921+133 +
   the F-104a1 fix + session_209.md + the s104 plan + its execution
   record + the worklog.
+
+### Session-105 — the second-surface seeded mobile walk + the F-105a1 stale-suite-count fix
+
+- **105-a audit**: the s104 ship delta GENUINE 10/10 (non-vacuousness
+  re-produced EXACTLY: the mixed-state checkout 17 failed | 19 passed
+  [the recorded RED-1] + the three-file scope 18 | 56 + the full-suite
+  18 failed | 1903 passed [RED-1 + the N-79b1 carrier] + the RED-2
+  wrong-bound 1 failed [docScrollW ≤ 389 vs the real 390] → restored →
+  GREEN; screenshots 158/159 valid 390×844 PNGs). No real findings;
+  N-105a1/2/3 record-only (the commit-message PAD line-citation
+  treadmill; the 11/11 vs 10/10 phrasing; session_209 rides the feat).
+- **105-b audit**: ZERO graduations 13/13 (~62nd; src/ byte-identical
+  since the s104 ship); the ledger families live 106/1921; the CSV
+  census 17 sites zero unguarded; source-vocabulary byte-identical
+  since s90; the config layer verified; the SEO/sitemap layer 13/13
+  LIVE (sitemap 9 urls 1.0/0.8 weekly · robots exact · manifest · all
+  9 routes' per-route titles, PORT 3123, server killed after); the
+  mobile-nav contract INTACT; the globals.css v4 re-pins present.
+  Both operator decisions STANDING (65th).
+- **S105-P2 (the headline — the reports-tabs e2e guard)**: the SECOND
+  surface family walked at phone width — the s103 157 capture was
+  desktop-only and no e2e pin held the reports geometry at 390. The
+  NEW tests/e2e/reports-mobile.spec.ts: at 390×844 on the SEEDED
+  e2e.db, /reports asserts docScrollW ≤ 390 · the KPI row 5 cards ·
+  ONE track · gap 16px · the pill tab bar 5 triggers · TWO tracks
+  (grid-cols-2 at 390) · active "Sales Overview" · the sales panel 4
+  charts at exactly 300px · gap 24px · single track · a REAL tab
+  switch moves the active tab to "Pipeline & Forecast", swaps the
+  panel (4 charts @300), and keeps the frame at 390. Non-vacuousness
+  by the wrong-bound perturbation: docScrollW ≤ 389 → FAILED live
+  (the real scrollW is exactly 390) → restored → GREEN. E2e census
+  133 → 134 (the guard lives in a NEW spec file — the mobile-nav
+  battery count stays 10).
+- **F-105a1 (the in-flight find, REAL — docs)**: the F-99a1 genus
+  recurring on the mobile-nav suite-count axis. The s104 realignment
+  updated the README/PAD-suite phrases but TWO more sites the pin
+  never covered still read the stale 9-check — CLAUDE's pyramid
+  listing and the PAD census-table row. Both fixed (10-check) and the
+  mobile-nav suite-count pin's scope WIDENED to cover all five sites
+  + the retired 9-check SITE-FORM negatives (a session-history row
+  quoting the forms cannot match them).
+- **S105-P1 (the count ladder)**: E2E 133 → 134; UNIT unchanged 1921
+  (+0 net its); badge 2054 → 2055; the retired 133 constructions join
+  the negatives ladders (docs-counts + the N-79b1 carrier); the
+  HEAD-line template "in 3 spec" → "in 4 spec" (the spec-family
+  census gains reports-mobile).
+- **S105-P3 (the captures + the VLM battery)**: screenshots 160 (the
+  seeded reports SALES tab at 390×844, the tab region scrolled into
+  view — the 5 stacked KPI cards push it below the fold at phone
+  width) + 161 (the seeded reports PIPELINE tab). VLM 4/4 + 4/4, zero
+  adjudications — the VLM independently read the 2×3 tab grid ("5
+  tabs arranged in a 2x3 grid, 2 columns, 3 rows, last cell empty"),
+  all 5 tab names verbatim, "Sales Overview" active, the Revenue chart
+  y-axis, then the SWITCHED state ("Pipeline & Forecast" active, the
+  "Forecasting Accuracy" card with its two-series 0-300,000 chart).
+  The first-viewport capture also read the seeded reports KPI values
+  (Total Leads 18 / Open Leads 6 — the quarter-filtered reports
+  derivations, not the dashboard's 24) off the phone pixels.
+- **S105-P4 (the 834×1112 tablet maiden)**: CLEAN — the second walked
+  tablet width (iPad Pro 10.5 portrait; the maiden walked 768×1024 at
+  s97) judged by the tablet class table; login ~0.44% vs the 1.0
+  allowed (the constant-absolute logo genus ~2,500px; the larger
+  frame shrinks the share, the s103 denominator arithmetic); a
+  one-off re-check, NOT a fifth sweep; gate:full unchanged.
+- **S105-P0/P5**: the probe ordinals 75/25th → 76/26th · session_
+  211.md + the s105 plan + its execution record + the worklog.
+- **The LIVE verification**: probe:ref — the bundle STABLE (the 76th
+  consecutive); census #101: demo zero · desktop 256px/8 · the
+  mobile-nav defect STANDS at TRUE 390 (the 26th). The four drift
+  gates CLEAN; the drawer battery FULLY GREEN live; the S105 ANALYZE
+  probe (throwaway, deleted) mapped the seeded reports geometry at
+  390 before the pin design (docScrollW 390 · the KPI row one track
+  358px ×5 gap-16 · the tab bar two tracks 174×2, 5 triggers, 82px
+  tall · the sales panel 4 charts @300 gap-24 single-track).
+- **RED**: 10 failed | 45 passed (55) at the pre-realignment docs (the
+  9 docs-counts e2e-reading pins + the N-79b1 carrier — **the plan's
+  prediction EXACT**), stash-proven (stash the two test files → 55/55
+  → pop → 10 RED) + the guard's wrong-bound 1-failed proof.
+- **GATE**: lint 0/0 · tsc 0 · 1921/1921 unit [106 suites, +0 net] ·
+  build · 134/134 e2e fresh CI=1 (+1: the reports-tabs guard) + the
+  four drift sweeps CLEAN inside gate:full. Docs at SKILL v1.102.0
+  [§16cs + project_state] + README badge 2055 + AGENTS/CLAUDE/PAD at
+  1921+134 + session_211.md + the s105 plan + its execution record +
+  the worklog.

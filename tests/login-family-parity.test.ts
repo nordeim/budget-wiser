@@ -344,7 +344,11 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // table/pyramid forms — this s79 carrier keeps the pyramid line's
     // historical guard alive beside them).
     expect(src).not.toContain("**E2E (Playwright, 132 checks)**");
-    expect(src).toContain("**E2E (Playwright, 133 checks)**");
+    // session-105 lockstep carry-forward: the carrier re-anchored
+    // 133 -> 134 (the S105-P2 reports-tabs guard in the new spec file;
+    // the retired form joins its negatives, the doctrine unchanged).
+    expect(src).not.toContain("**E2E (Playwright, 133 checks)**");
+    expect(src).toContain("**E2E (Playwright, 134 checks)**");
   });
 });
 

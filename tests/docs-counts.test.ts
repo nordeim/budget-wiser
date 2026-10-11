@@ -34,7 +34,14 @@
 // built the lockstep exposed the ten unpinned live-tense e2e sites —
 // the F-99a1 genus on the e2e axis). The e2e census itself grows
 // 132 → 133 (the S104-P2 drawer-OPEN seeded-state guard in the mobile
-// spec).
+// spec) → s105 (unit UNCHANGED at 1921; the SECOND e2e-count change:
+// the seeded-state mobile walk of the SECOND surface family — the
+// reports analytics tabs at 390, never walked at phone width with
+// data. The new guard lives in a NEW spec file (reports-mobile.spec)
+// so the mobile-nav battery count stays 10; the retired 133
+// constructions join the negatives ladders, and the HEAD-line
+// template's spec-family census grows "3 spec" → "4 spec").
+// The e2e census grows 133 → 134 (the S105-P2 reports-tabs guard).
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -44,7 +51,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
 const UNIT = 1921;
-const E2E = 133;
+const E2E = 134;
 const SUITES = 106;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
@@ -52,7 +59,7 @@ const SUITES = 106;
 const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1921 + 133 = 2054)", () => {
+  it("README badge carries the unit + e2e arithmetic (1921 + 134 = 2055)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -103,7 +110,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
   it("PAD HEAD line carries the live counts (the site-form anchor)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain(
-      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 3 spec`,
+      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 4 spec`,
     );
   });
 
@@ -198,11 +205,31 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // mention cannot match; the pipe-wrapped form is quoted nowhere)
     expect(pad).not.toMatch(/`bun run test:e2e` — 132\/132/);
     expect(pad).not.toMatch(/\| 132 browser checks \|/);
+    // -----------------------------------------------------------------
+    // Session-105: the SECOND e2e-count realignment (133 → 134, the
+    // reports-tabs guard in the new spec file). The retired 133
+    // constructions join the ladder — the same SITE-FORM anchors, the
+    // same doctrine: the s105 inventory row quotes the constructions
+    // only in arrow/singly-quoted form, never the bare site forms.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2054%20checks/);
+    expect(readme).not.toMatch(/# 133 Playwright checks on/);
+    expect(readme).not.toMatch(/# Playwright \(133 checks\)/);
+    expect(agents).not.toMatch(/Browser E2E \(133 checks\)/);
+    expect(claude).not.toMatch(/Playwright E2E \(133 checks/);
+    expect(claude).not.toMatch(/\*\*E2E \(Playwright, 133 checks\)\*\*/);
+    expect(pad).not.toMatch(/`bun run test:e2e` — 133\/133/);
+    expect(pad).not.toMatch(/\| 133 browser checks \|/);
   });
 
-  it("the mobile-nav spec count stays live (the README Tested-row phrase + the testing-section phrase + the PAD suite line)", () => {
+  it("the mobile-nav spec count stays live (the README Tested-row phrase + the testing-section phrase + the PAD suite line + the F-105a1 sites)", () => {
     // S104-P2 grows the mobile-nav spec 9 -> 10 (the drawer-OPEN
-    // seeded-state guard); the three descriptive phrases ride it.
+    // seeded-state guard); the phrases ride it. S105 (F-105a1): the
+    // s104 realignment updated the README/PAD-suite phrases but missed
+    // TWO more sites the pin never covered — CLAUDE's pyramid listing
+    // and the PAD census table row both still read 9-check. The F-99a1
+    // genus recurring on the mobile-nav suite-count axis; the pin's
+    // scope now covers all five sites + the retired 9-check negatives.
     const readme = read("README.md");
     expect(readme).toContain(
       `a ${MOBILE_NAV_E2E}-check mobile-nav regression suite`,
@@ -212,5 +239,18 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).toContain(
       `(${MOBILE_NAV_E2E} checks, 390/700px viewports)`,
     );
+    // the F-105a1 sites — the s104-missed pair:
+    const claude = read("CLAUDE.md");
+    expect(claude).toContain(
+      `${MOBILE_NAV_E2E}-check regression suite for the drawer`,
+    );
+    expect(pad).toContain(
+      `${MOBILE_NAV_E2E}-check mobile drawer regression suite`,
+    );
+    // the retired 9-check forms never return (SITE-FORM anchors — a
+    // session-history row quoting the forms cannot match them)
+    expect(readme).not.toMatch(/a 9-check mobile-nav regression suite/);
+    expect(claude).not.toMatch(/9-check regression suite for the drawer/);
+    expect(pad).not.toMatch(/9-check mobile drawer regression suite/);
   });
 });
