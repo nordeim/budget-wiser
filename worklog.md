@@ -3394,3 +3394,17 @@ Work Log:
 
 Stage Summary:
 - Session 103 executed end-to-end: the seeded-state chart-geometry freeze retired (11 induced-drift-proven pins), the 320 maiden tripped->diagnosed->fixed->pinned->CLEAN, the F-103a1 seventh site corrected, the it-name treadmill retired, the probe ordinals refreshed. Next: the full gate (gate:full — lint -> tsc -> 1915 unit -> build -> e2e fresh CI=1 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main
+
+---
+Task ID: 103-close
+Agent: main (Super Z)
+Task: Session 103 — the gate, the ship, the push, the close-out
+
+Work Log:
+- GATE (the full chain, post-fix, run stepwise in the foreground — the background gate:full invocation died with the session frame, the s102 lesson re-learned): lint 0/0 - tsc 0 - 1915/1915 unit (106 suites, +12 net) - build clean - 132/132 e2e fresh CI=1 (3.2m, the mobile-nav suite green inside the run incl. the ten-route zero-390px-overflow sweep) - the FOUR drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift)
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 active vars standing; the tree exactly as planned (12 modified + 5 new, ZERO src/)
+- The house-style commit c20e28b (17 files, +969/-38, ZERO src/); the SSH push via docs/ssh_git_wrapper_v3.py (paramiko 5.0.0 + the Appendix-A shim on PATH, the operator key 0600 OUTSIDE the repo, dry-run first: f9d9086..c20e28b clean fast-forward, then the real push)
+- The wrapper verified: refs/heads/main @ c20e28b == local HEAD; the tracking ref synced; the key shredded (the wrapper's temp + the operator file, both)
+
+Stage Summary:
+- Session 103 SHIPPED AND PUSHED: main @ c20e28b = the seeded-state chart-geometry freeze (11 induced-drift-proven pins — a seed VALUE edit now fails the unit gate) + the 320x568 phone-floor maiden (the first to TRIP: the login logo genus diagnosed to its constant-absolute denominator arithmetic, the phone login baseline re-anchored to the class ceiling 0.8->1.4, RED-first pinned, the maiden re-run CLEAN) + the F-103a1 seventh-site fix + the it-name treadmill retired + the probe ordinals at the 74th/24th; counts 106/1915, badge 2047, SKILL v1.100.0 + this session-log follow-up
