@@ -3355,3 +3355,18 @@ Work Log:
 
 Stage Summary:
 - Session 102 executed end-to-end: the F-99a1/F-102a2 genus retired (every live-tense count site under the unit gate), the F-102a1 off-by-one corrected, the 414x896 maiden CLEAN, the probe ordinals refreshed. Next: the full gate (gate:full — lint -> tsc -> 1903 unit -> build -> e2e fresh CI=1 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main
+
+---
+Task ID: 102-close
+Agent: main (Super Z)
+Task: Session 102 — the gate, the ship, the push
+
+Work Log:
+- GATE (the full chain, post-fix): lint 0/0 - tsc 0 - 1903/1903 unit (105 suites, +11 net) - build clean - 132/132 e2e fresh CI=1 (3.2m, the mobile-nav suite green inside the run incl. the ten-route zero-390px-overflow sweep) - the FOUR drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift)
+- One in-flight pin refinement during the gate prep: the docs-counts stale-form negatives were initially whole-form regexes, tripped by the s102 PAD inventory row QUOTING the banned forms while documenting the ban -> re-anchored to the SITE-FORM constructions (the "# 103 Vitest suites" / "HEAD: 103 Vitest" / "— 1880/1880" / "| 1880 unit checks |" / the retired badge), re-proven both ways (12 failed at the stashed pre-fix docs -> pop -> 30/30) — the WIDENED-guard doctrine, the F-98a1 string-concatenation lesson applied to docs
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 vars standing; the tree exactly as planned (12 modified + 5 new, ZERO src/)
+- The house-style commit 590079b; the SSH push via docs/ssh_git_wrapper_v3.py (paramiko 5.0.0 + the Appendix-A shim deployed at the workspace bin/, operator key 0600 OUTSIDE the repo, fingerprint-verified SHA256:3ddaNlFhMz1JXiGEDgVEaRsUzI4Ev0IpGEEB7NnU4PU, dry-run first: a0e52ca..590079b clean fast-forward, then the real push)
+- The wrapper verified: refs/heads/main @ 590079b == local HEAD; the tracking ref synced; both key copies shredded (the wrapper's temp + the operator file)
+
+Stage Summary:
+- Session 102 SHIPPED: main @ 590079b = the secondary-sites lockstep (the F-99a1/F-102a2 genus retired — 11 RED-first pins) + the F-102a1 75/75 corrections + the 414x896 third-phone-width maiden CLEAN + the probe ordinals refreshed + docs at SKILL v1.99.0, counts at 1903/132, README badge 2035
