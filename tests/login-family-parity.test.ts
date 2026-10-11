@@ -338,7 +338,13 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     const src = claude();
     expect(src).not.toContain("(131 checks)");
     expect(src).not.toContain("Playwright E2E (131 checks");
-    expect(src).toContain("**E2E (Playwright, 132 checks)**");
+    // session-104 lockstep carry-forward: the carrier re-anchored
+    // 132 -> 133 (the S104-P2 drawer-OPEN seeded-state guard grows the
+    // mobile spec; the new docs-counts e2e-site pins now carry the
+    // table/pyramid forms — this s79 carrier keeps the pyramid line's
+    // historical guard alive beside them).
+    expect(src).not.toContain("**E2E (Playwright, 132 checks)**");
+    expect(src).toContain("**E2E (Playwright, 133 checks)**");
   });
 });
 

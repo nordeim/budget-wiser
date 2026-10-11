@@ -27,7 +27,14 @@
 // login genus mid-session, adding its pin after the first realign;
 // N-103a1's it-name line citations re-anchored in the same touch: the
 // s102 PAD inventory-row insertion had shifted the Total :782→:783,
-// HEAD :795→:796, checklist :1217→:1218, commands :1287→:1288).
+// HEAD :795→:796, checklist :1217→:1218, commands :1287→:1288) →
+// s104 1921 (+6 — the e2e-count lockstep extension: the AGENTS/CLAUDE/
+// README/PAD e2e-site pins + the e2e stale-form negatives + the
+// mobile-nav suite-count pin; the FIRST e2e-count change since s102
+// built the lockstep exposed the ten unpinned live-tense e2e sites —
+// the F-99a1 genus on the e2e axis). The e2e census itself grows
+// 132 → 133 (the S104-P2 drawer-OPEN seeded-state guard in the mobile
+// spec).
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -36,12 +43,16 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1915;
-const E2E = 132;
+const UNIT = 1921;
+const E2E = 133;
 const SUITES = 106;
+// S104-P1: the mobile-nav spec's own census (the README Tested-row
+// phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
+// seeded-state guard.
+const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1915 + 132 = 2047)", () => {
+  it("README badge carries the unit + e2e arithmetic (1921 + 133 = 2054)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -121,5 +132,85 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).not.toMatch(/— 1880\/1880/);
     expect(pad).not.toMatch(/\| 1880 unit checks \|/);
     expect(pad).not.toMatch(/# 1880 Vitest unit checks/);
+  });
+
+  // ------------------------------------------------------------------
+  // Session-104 (S104-P1): the E2E-COUNT LOCKSTEP EXTENSION — the
+  // F-99a1/F-102a2 stale-count genus on the e2e axis. The s102 lockstep
+  // pinned the UNIT sites; the e2e census had been frozen at 132 for so
+  // long that its ten live-tense sites never went stale — until S104-P2
+  // grew the mobile spec (132 -> 133) and every unpinned e2e site was
+  // one edit away from the recurring genus. These pins put them under
+  // the same unit gate.
+  // ------------------------------------------------------------------
+
+  it("AGENTS carries the live e2e count (the commands table + the gate-order e2e half)", () => {
+    const agents = read("AGENTS.md");
+    expect(agents).toContain(`Browser E2E (${E2E} checks)`);
+    expect(agents).toContain("`bun run test:e2e` (" + `${E2E})`);
+  });
+
+  it("CLAUDE carries the live e2e count (the commands table + the gate-order e2e half + the pyramid line)", () => {
+    const claude = read("CLAUDE.md");
+    expect(claude).toContain(
+      `Playwright E2E (${E2E} checks, needs build first)`,
+    );
+    expect(claude).toContain("`bun run test:e2e` (" + `${E2E})`);
+    expect(claude).toContain(`**E2E (Playwright, ${E2E} checks)**`);
+  });
+
+  it("README carries the live e2e count (the file tree + the commands comment)", () => {
+    const readme = read("README.md");
+    expect(readme).toContain(`# Playwright (${E2E} checks)`);
+    expect(readme).toContain(`# ${E2E} Playwright checks on :3100`);
+  });
+
+  it("PAD carries the live e2e count (the file tree + the checklist + the commands table)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    expect(pad).toContain(`+ setup project — ${E2E} checks`);
+    expect(pad).toContain("`bun run test:e2e` — " + `${E2E}/${E2E}`);
+    expect(pad).toContain(
+      `| \`bun run test:e2e\` | root | ${E2E} browser checks (build first) |`,
+    );
+  });
+
+  it("the retired e2e stale forms never return to the live-tense sites (the F-99a1 genus guard on the e2e axis — SITE-FORM anchors)", () => {
+    const readme = read("README.md");
+    // the badge arithmetic site — the retired 2047 construction
+    expect(readme).not.toMatch(/tests-2047%20checks/);
+    // the commands-comment site form
+    expect(readme).not.toMatch(/# 132 Playwright checks on/);
+    // the file-tree site form
+    expect(readme).not.toMatch(/# Playwright \(132 checks\)/);
+    const agents = read("AGENTS.md");
+    // the commands-table site form
+    expect(agents).not.toMatch(/Browser E2E \(132 checks\)/);
+    const claude = read("CLAUDE.md");
+    expect(claude).not.toMatch(/Playwright E2E \(132 checks/);
+    expect(claude).not.toMatch(/\*\*E2E \(Playwright, 132 checks\)\*\*/);
+    const pad = read("Project_Architecture_Document.md");
+    // the checklist + commands site forms (the WIDENED-guard doctrine,
+    // the F-98a1 lesson applied at s102 and re-learned in-flight here:
+    // an inventory row QUOTING a banned form documents the ban, it does
+    // not reinstate it — the s104 inventory row quotes "— 132/132"
+    // free-standing, so the negative anchors to the full site
+    // construction with the backtick command prefix, which a quoted
+    // mention cannot match; the pipe-wrapped form is quoted nowhere)
+    expect(pad).not.toMatch(/`bun run test:e2e` — 132\/132/);
+    expect(pad).not.toMatch(/\| 132 browser checks \|/);
+  });
+
+  it("the mobile-nav spec count stays live (the README Tested-row phrase + the testing-section phrase + the PAD suite line)", () => {
+    // S104-P2 grows the mobile-nav spec 9 -> 10 (the drawer-OPEN
+    // seeded-state guard); the three descriptive phrases ride it.
+    const readme = read("README.md");
+    expect(readme).toContain(
+      `a ${MOBILE_NAV_E2E}-check mobile-nav regression suite`,
+    );
+    expect(readme).toContain(`the ${MOBILE_NAV_E2E}-check`);
+    const pad = read("Project_Architecture_Document.md");
+    expect(pad).toContain(
+      `(${MOBILE_NAV_E2E} checks, 390/700px viewports)`,
+    );
   });
 });

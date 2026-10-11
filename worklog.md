@@ -3408,3 +3408,23 @@ Work Log:
 
 Stage Summary:
 - Session 103 SHIPPED AND PUSHED: main @ c20e28b = the seeded-state chart-geometry freeze (11 induced-drift-proven pins — a seed VALUE edit now fails the unit gate) + the 320x568 phone-floor maiden (the first to TRIP: the login logo genus diagnosed to its constant-absolute denominator arithmetic, the phone login baseline re-anchored to the class ceiling 0.8->1.4, RED-first pinned, the maiden re-run CLEAN) + the F-103a1 seventh-site fix + the it-name treadmill retired + the probe ordinals at the 74th/24th; counts 106/1915, badge 2047, SKILL v1.100.0 + this session-log follow-up
+
+---
+Task ID: 104-ship
+Agent: main (Super Z)
+Task: Session 104 — the rotation execution, live verification, screenshots, docs
+
+Work Log:
+- Audits: 104-a the s103 ship delta GENUINE 12/12 (non-vacuousness re-proven twice: the mixed-state checkout 12|75 + the induced-drift 3|8 -> 98/98); F-104a1 REAL (the "105/1892" stale transcription at session_207.md:41 + the s103 plan:32 — the true count 105/1903) + N-104a1/a2 (record-only); 104-b ZERO graduations 13/13 (~61st), the ledger 402/402, CSV 17 sites zero unguarded, source-vocabulary clean, config verified, SEO 39/39 live + 18 wirings, mobile-nav contract intact, globals.css v4 re-pins present; both operator decisions STAND (64th)
+- LIVE pre-plan: probe:ref STABLE (the 75th consecutive; census #100 demo zero + desktop 256/8 + the mobile-nav defect STANDS the 25th); the four drift gates CLEAN; the drawer battery FULLY GREEN; the ANALYZE probe (throwaway) mapped the drawer-open geometry at 390 (docScrollW 390 - panel 288/288 zero internal overflow - 8 links)
+- RED-1: the docs-counts constants re-anchored (1921/133/2054) + 6 NEW e2e-site its + the lockstep re-anchor (1921) -> 17 failed | 19 passed (36) at the pre-realignment docs — the plan's expected 17 EXACT, enumerated by name; stash-proven (stash -> 30/30 -> pop -> 17 RED)
+- GREEN: the 27-edit doc realignment (assert-guarded, each exactly-once) + the F-104a1 fix (105/1892 -> 105/1903) + the probe ordinals 74/24th -> 75/25th
+- S104-P2: the NEW drawer-OPEN seeded-state e2e guard -> 11/11 mobile spec; RED-2 the wrong-bound perturbation (<= 389 -> 1 failed live -> restored -> GREEN)
+- The N-79b1 IN-FLIGHT DISCOVERY: the hidden s79 e2e-count carrier in login-family-parity caught the CLAUDE 132->133 realignment live — the carrier re-anchored with the retired form joining its negatives (+0 net its)
+- Full unit: 106 files / 1921 tests GREEN (+6 net)
+- S104-P3: screenshots 158 (the seeded dashboard 390x844) + 159 (the seeded drawer OPEN 390x844) — VLM 4/4 + 4/4, zero adjudications (the VLM read the freeze pins' values off the phone pixels: "24 - $337.0k - 29.2%"); the throwaway capture script deleted
+- S104-P4: the 375x812 login maiden re-check CLEAN under the 1.4 class ceiling (login 0.82 vs allowed 1.9 - settings 7.52 - the floor family holding)
+- S104-P7: session_209.md + the s104 plan + its execution record + README badge 2054 + the Tested row s104 clause + AGENTS counts + the Session-104 history block + CLAUDE counts x4 + PAD the s104 inventory row [Files = 1, the with-new-its semantics] + the Total 106/1921+133 + SKILL v1.101.0 (16cr + project_state + the H1)
+
+Stage Summary:
+- Session 104 executed end-to-end: the e2e-count lockstep extension (the F-99a1 genus retired on the e2e axis — 6 pins, a stale e2e count anywhere now fails bun run test), the drawer-OPEN seeded-state e2e guard (wrong-bound-proven), the seeded-state mobile walk (158/159, VLM 4/4 x2), the 375 maiden CLEAN under the 1.4 ceiling, the F-104a1 fix, the N-79b1 carrier rode to 133, the probe ordinals at the 75th/25th. Next: the full gate (gate:full — lint -> tsc -> 1921 unit -> build -> e2e fresh CI=1 133 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main

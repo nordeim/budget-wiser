@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1915 checks)       | `bun run test`                         |
-|  Browser E2E (132 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (1921 checks)       | `bun run test`                         |
+|  Browser E2E (133 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1915) → `bun run build` → `bun run test:e2e` (132) — or the
+`bun run test` (1921) → `bun run build` → `bun run test:e2e` (133) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4146,3 +4146,73 @@ are UNCHANGED (the drift-gate output byte-identical with or without
   gate:full. Docs at SKILL v1.100.0 [§16cq + project_state] + README
   badge 2047 + AGENTS/CLAUDE/PAD at 1915+132 + the F-103a1 fix +
   session_207.md + the s103 plan + its execution record + the worklog.
+
+### Session-104 — the e2e-count lockstep extension + the seeded-state mobile walk at 390
+
+- **104-a audit**: the s103 ship delta GENUINE 12/12 (docs+tests+tooling
+  only, ZERO src/; non-vacuousness re-proven TWICE: the mixed-state
+  checkout 12 failed | 75 passed — the recorded RED-1 11 + RED-3 1 both
+  reproduced — and the induced-drift reproduction 3 failed | 8 passed →
+  restored → 98/98). **F-104a1 REAL (docs)**: session_207.md:41 + the
+  s103 plan:32 recorded the 103-a live census as "105/1892" — the tests
+  half stale by one session (the true s103-baseline count 105/1903; 1892
+  is the s101 count carried from the 102-a template). N-104a1/N-104a2:
+  record-only.
+- **104-b audit**: ZERO graduations 13/13 (~61st; src/ byte-identical
+  since the s103 ship); the ledger families 402/402; the CSV census 17
+  sites ZERO unguarded; the source-vocabulary clean (constants.ts @
+  3a89508 since s90); the config + SEO layers verified (39/39 live + 18
+  static wirings); the mobile-nav contract INTACT; the globals.css v4
+  re-pins present. **Both operator decisions re-affirmed (64th).**
+- **S104-P1 (the headline — the e2e-count lockstep extension)**: the
+  FIRST e2e-count change since s102 built the lockstep (the S104-P2
+  guard grows the mobile spec 132 → 133) exposed **TEN unpinned
+  live-tense e2e sites** — the F-99a1/F-102a2 stale-count genus on the
+  e2e axis. 6 NEW docs-counts its: the AGENTS e2e sites (commands table
+  + gate-order) · the CLAUDE e2e sites (commands table + gate-order +
+  pyramid) · the README e2e sites (tree + commands) · the PAD e2e sites
+  (tree + checklist + commands) · the scoped e2e stale-form negatives
+  (the badge-2047 · the 132 site-forms — never a bare number ban) · the
+  mobile-nav suite-count phrases (README:55/:997 + PAD:207, riding the
+  new MOBILE_NAV_E2E=10 constant). **A stale e2e count anywhere now
+  fails `bun run test`.**
+- **S104-P2 (the drawer-OPEN seeded-state e2e guard)**: the ten-route
+  overflow sweep runs drawer-CLOSED by its own documented design — the
+  OPEN state's 390px contract was never pinned. The NEW mobile spec
+  test: at 390×844 on the SEEDED e2e.db, the open drawer asserts
+  docScrollW ≤ 390 · the panel's scrollW ≤ clientW (zero internal
+  overflow) · the panel rect 288px (w-72; max-w-[85vw]=331.5 inactive
+  at 390) · the 8 destinations. Non-vacuousness by the wrong-bound
+  perturbation: ≤ 389 → FAILED live (the real scrollW is exactly 390) →
+  restored → GREEN.
+- **S104-P3 (the seeded-state mobile walk)**: screenshots 158 (the
+  seeded dashboard at 390×844) + 159 (the seeded drawer OPEN at
+  390×844) — the VLM battery 4/4 + 4/4, zero adjudications; the VLM
+  independently read the freeze pins' values off the phone pixels
+  ("Total Leads 24 (+5.3%) · Deals Closed $337.0k · Conversion Rate
+  29.2%") and confirmed the 8-link panel + the dimmed seeded dashboard
+  behind the overlay.
+- **S104-P4 (the 375×812 login maiden re-check)**: CLEAN under the 1.4
+  class ceiling — login 0.82% vs the allowed 1.9% · settings 7.52 vs
+  7.7+0.5 · the floor family holding; the class margin verified at the
+  second walked width under the class-ceiling semantics.
+- **S104-P0/P5 + the N-79b1 carrier**: the F-104a1 at-birth fix
+  (105/1892 → 105/1903 at both sites) · the probe ordinals 74/24th →
+  **75/25th** · the HIDDEN s79 e2e-count carrier in login-family-parity
+  caught the CLAUDE realignment live (the pyramid-line form) — the
+  carrier re-anchored 132 → 133 with the retired form joining its
+  negatives (the lockstep working as designed).
+- **The LIVE verification**: probe:ref — the bundle md5 STABLE (the
+  **75th** consecutive); census #100: demo zero · desktop 256px/8 · the
+  mobile-nav defect STANDS at TRUE 390 (the **25th**). The four
+  standing drift gates CLEAN; the drawer battery FULLY GREEN live.
+- **RED**: 17 failed | 19 passed (36) at the pre-realignment docs (10
+  re-anchored docs-counts + 6 new e2e-site pins + 1 lockstep — **the
+  plan's prediction EXACT**), stash-proven (stash the two test files →
+  30/30 → pop → 17 RED) + the guard's wrong-bound 1-failed proof.
+- **GATE**: lint 0/0 · tsc 0 · 1921/1921 unit [106 suites, +6 net] ·
+  build · 133/133 e2e fresh CI=1 (+1: the drawer-open guard) + the four
+  drift sweeps CLEAN inside gate:full. Docs at SKILL v1.101.0 [§16cr +
+  project_state] + README badge 2054 + AGENTS/CLAUDE/PAD at 1921+133 +
+  the F-104a1 fix + session_209.md + the s104 plan + its execution
+  record + the worklog.

@@ -38,7 +38,7 @@ the s102 ship state.
   PNGs. Non-vacuousness re-proven: the a0e52ca checkout of the four
   doc files → **12 failed | 18 passed (30)** (all 11 docs-counts + 1
   lockstep, enumerated by name) → restored → **30/30**, tree clean.
-  Live unit 105/1892; e2e static census 132. **Findings**:
+  Live unit 105/1903; e2e static census 132. **Findings**:
   **F-103a1 REAL (docs, Low)** — the F-102a1 "76/76" at-birth error
   survives uncorrected at **PAD:781** (the s101 inventory row), a 7th
   site missed by both the 102-a enumeration and the S102-P0 correction;

@@ -225,4 +225,53 @@ test.describe("mobile navigation drawer", () => {
       expect(scrollW, `${route}: horizontal overflow at 390px`).toBeLessThanOrEqual(390);
     }
   });
+
+  test("the drawer OPEN never overflows the 390px viewport (the seeded-state open-drawer guard)", async ({ page }) => {
+    // Session-104 (S104-P2): the ten-route sweep above pins the CLOSED
+    // state only — its own comment documents "the drawer stays CLOSED
+    // here". The OPEN state's 390px contract was never pinned: a drawer
+    // regression that overflows the phone viewport WITH THE PANEL OUT
+    // (a panel wider than its w-72/max-w-[85vw] budget, or content
+    // poking past the overlay) would sail through the closed-state
+    // sweep. This runs against the SEEDED e2e.db (the global setup
+    // pushes + seeds db/e2e.db) — the seeded-state mobile face the
+    // zero-data drift sweep cannot see.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.waitForLoadState("domcontentloaded");
+
+    await page.getByRole("button", { name: "Open navigation menu" }).click();
+    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    await expect(dialog).toBeVisible();
+    // the s94 exact-selector protocol: the PANEL div.h-dvh.w-72 inside
+    // the dialog root, never the root itself.
+    const panel = dialog.locator("div.h-dvh.w-72");
+    await expect(panel).toBeVisible();
+
+    const openProbe = await page.evaluate(() => {
+      const root = document.querySelector(
+        '[role=dialog][aria-label="Navigation menu"]',
+      );
+      const panelEl = root?.querySelector("div.h-dvh.w-72") as HTMLElement | null;
+      return {
+        // (a) the OPEN state's document-level contract: nothing — panel,
+        // overlay, or the locked main behind — may push past the frame.
+        docScrollW: document.documentElement.scrollWidth,
+        // (b) the panel's INTERNAL contract: no horizontal overflow
+        // inside the 288px column (long labels, badges, or a future
+        // nav-section regression would show up here first).
+        panelClientW: panelEl?.clientWidth ?? -1,
+        panelScrollW: panelEl?.scrollWidth ?? -1,
+        // (c) the design geometry: w-72 computes 288px at 390 — the
+        // max-w-[85vw] clamp (331.5px) stays inactive at this width.
+        panelRectW: panelEl ? Math.round(panelEl.getBoundingClientRect().width) : -1,
+        // (d) every destination reachable with the panel out.
+        linkCount: panelEl ? panelEl.querySelectorAll("a").length : -1,
+      };
+    });
+    expect(openProbe.docScrollW, "the OPEN drawer overflows the 390px frame").toBeLessThanOrEqual(390);
+    expect(openProbe.panelScrollW, "the panel content overflows its own column").toBeLessThanOrEqual(openProbe.panelClientW);
+    expect(openProbe.panelRectW, "the panel left its w-72 budget (288px at 390)").toBe(288);
+    expect(openProbe.linkCount, "the open panel must expose every destination").toBe(8);
+  });
 });

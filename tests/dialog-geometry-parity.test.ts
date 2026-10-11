@@ -283,8 +283,13 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // session-103 lockstep carry-forward: 1903 -> 1915 (the s103 +12 —
     // the 11 seeded-charts freeze pins + the s103-maiden sweep-tool
     // floor pin; this lockstep is a re-anchor, not a new it)
-    expect(claude).toContain("Unit (Vitest, 1915 checks)");
-    expect(claude).toContain("(currently 1915)");
+    // session-104 lockstep carry-forward: 1915 -> 1921 (the s104 +6 —
+    // the docs-counts e2e-count lockstep extension: the AGENTS/CLAUDE/
+    // README/PAD e2e-site pins + the e2e stale-form negatives + the
+    // mobile-nav suite-count pin; this lockstep is a re-anchor, not a
+    // new it)
+    expect(claude).toContain("Unit (Vitest, 1921 checks)");
+    expect(claude).toContain("(currently 1921)");
     expect(claude).not.toMatch(/1788 checks/);
     expect(claude).not.toMatch(/currently 1788/);
     expect(claude).not.toMatch(/1828 checks/);
@@ -307,5 +312,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toMatch(/currently 1892/);
     expect(claude).not.toMatch(/1903 checks/);
     expect(claude).not.toMatch(/currently 1903/);
+    expect(claude).not.toMatch(/1915 checks/);
+    expect(claude).not.toMatch(/currently 1915/);
   });
 });
