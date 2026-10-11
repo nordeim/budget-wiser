@@ -3523,3 +3523,17 @@ Work Log:
 
 Stage Summary:
 - Session 105 executed end-to-end: the second-surface seeded mobile walk (the reports-tabs guard wrong-bound-proven + the captures 160/161 VLM 4/4 x2), the F-105a1 stale-suite-count fix (the F-99a1 genus caught on the mobile-nav axis, the pin widened to five sites), the 834 tablet maiden CLEAN, the count ladder 133->134 + badge 2055 + the HEAD spec-family census 3->4, the probe ordinals at the 76th/26th. Next: the full gate (gate:full — lint -> tsc -> 1921 unit -> build -> e2e fresh CI=1 134 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main
+
+---
+Task ID: 105-close
+Agent: main (Super Z)
+Task: Session 105 — the gate, the ship, the push, the close-out
+
+Work Log:
+- GATE (the full chain, stepwise in the foreground — the s102/s103/s104 lesson): lint 0/0 - tsc 0 - 1921/1921 unit (106 suites, +0 net) - build clean - 134/134 e2e fresh CI=1 (3.2m, +1: the reports-tabs guard green inside the run) - the FOUR drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift)
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 active vars standing; the tree exactly as planned (10 modified + 5 new, ZERO src/)
+- The house-style commit c06348f (15 files, +917/-32, ZERO src/); the SSH push via docs/ssh_git_wrapper_v3.py (paramiko 5.0.0 reinstalled in the fresh sandbox + the Appendix-A shim redeployed at /home/z/my-project/bin/ssh, the operator key 0600 in /tmp OUTSIDE the repo, fingerprint-verified SHA256:3ddaNlFhMz1JXiGEDgVEaRsUzI4Ev0IpGEEB7NnU4PU — matches the s104 record, dry-run first: a93eff4..c06348f clean fast-forward, then the real push)
+- The wrapper verified: refs/heads/main @ c06348f == local HEAD; the tracking ref synced; both key copies shredded (the wrapper's temp + the operator file)
+
+Stage Summary:
+- Session 105 SHIPPED AND PUSHED: main @ c06348f = the second-surface seeded mobile walk (the reports-tabs guard wrong-bound-proven + the captures 160/161 VLM 4/4 x2) + the F-105a1 stale-suite-count fix (the F-99a1 genus caught on the mobile-nav suite-count axis, the pin widened to five sites) + the 834x1112 tablet maiden CLEAN + the count ladder 133->134 + badge 2055 + the HEAD spec-family census 3->4 + the probe ordinals at the 76th/26th; counts 106/1921+134, badge 2055, SKILL v1.102.0 + this session-log follow-up
