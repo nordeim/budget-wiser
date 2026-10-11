@@ -1,0 +1,36 @@
+I'll continue with the neo-crm remediation task. The workspace was RESET — a fresh clone at main @ 8cecd4f (the s107 ship c213e6f + the two session-log follow-ups f8f0a8d/8cecd4f). This run is Session 108 (formal log session_218.md — 217 taken by the prior run's narration).
+
+The environment rebuilt per the house pattern: bun install (533 packages), .env with AUTH_SECRET (the 3-var contract standing), db push + seed (census MATCH 15/24/10/23/12 + 4 users), chromium installed, every op under env -u DATABASE_URL. Core docs absorbed: CLAUDE/AGENTS/README/PAD + the session docs (216/217) + the s107 plan + the worklog tails + the skills catalog + SKILL v1.104.0. The scandihaven patterns re-checked — on-pattern, nothing new to adopt. Baseline gate GREEN: lint 0/0 · tsc 0 · 107 files/1927 unit · build · 135/135 e2e fresh CI=1 — exactly the s107 ship state.
+
+Both audits dispatched in parallel: 108-a the s107 ship delta GENUINE 9/9 (non-vacuousness reproduced EXACT — the mixed-state worktree 19 failed | 46 passed (65), all 19 by name + the native 60/60) with FOUR REAL finds: F-108a1 (the SKILL project_state head still describes "the session-106 layer" — the s107 layer was never prepended; the F-106a1 pin is blind to the layer axis), F-108a2 (SKILL:388 "1520 lines; 180 checks" vs live 1530/182 — stale since s98, the 95-a fix recurred unpinned), F-108a3 (PAD's reports-data row "~213" vs live 279 — the s107 seam omitted), F-108a4 (DEPLOYMENT "16 API route handlers" vs live 27 + the deleted smoke-test.sh reference). 108-b 9/9 PASS, zero real findings (~65th consecutive zero graduations; SEO/sitemap 46/46 LIVE first-run clean; the mobile-nav contract INTACT; both operator decisions standing 68th).
+
+The live verification: probe:ref STABLE the 79th consecutive (the bundle md5 a70a637fcf...); census #104 demo zero · desktop 256px/8 · the mobile-nav defect STANDS the 29th. The four drift gates CLEAN. The drawer battery at TRUE 390×844 FULLY GREEN live 9/9 — the mobile navigation works exactly as expected, no Tailwind v4 regressions.
+
+The rotation decision: the fourth-surface seeded walk (the calendar — the s107-close suggested next #1). The ANALYZE probes mapped the seeded calendar at 390×844 — and surfaced TWO REAL FINDS before any guard was written, both invisible to every standing gate:
+
+**M-108c1 — the chips render at content width.** The event chips are INLINE spans — `truncate` never engages on an inline box. Live-measured: 93-177px chips inside 43px cells at 390 (two pushing main.scrollWidth to 496 — a horizontally-swipeable main) and 134-203px chips overlapping neighboring cells at 1440. Invisible because the drift sweeps run the zero-data state (no events → no chips) and the overflow sweep asserts docScrollW only. The reference's own construction carries the same latent defect (un-live-verifiable at its zero-data state) — ours the documented superset: `block` makes the truncation engage.
+
+**M-108c2 — the 42-cell grid vs the reference's complete-weeks grid.** The s76 "always-42 / 6 constant rows" decode gloss is a MISDECODE. Live-probed on the reference at five months: Oct 2026 = 35 · Nov 2026 = 35 · Jan 2027 = 42 (the 6-week month) · Apr 2027 = 35 · Jul 2026 = 35 — the complete-weeks model, exactly the s51-era "trimmed render". Invisible because the extra 6th row sits below the 900px sweep fold on both apps (VLM-verified off the sweep screenshots — the 0.01% desktop diff explained) and no e2e pinned a cell count. The fix: calendarGrid's leading branch ceils to whole weeks; the fetch window follows exactly (the N-51a contract with equality — the s51-era values return as the bounds).
+
+The plan written and validated against the codebase (every realignment site census'd; the e2e blast radius pre-checked — the S54-P6 trailing-cells test was WRITTEN against the complete-weeks model; the S16-P7 ≥ 35 needed the ≥ 28 floor re-anchor).
+
+RED-1: the count-ladder constants re-anchored (1932/108/136/2068 + the HEAD "in 6 spec") + the NEW calendar-grid suite + the chip pin + the fetch-bounds re-anchors + the four-site pin + the layer-axis lockstep → 27 failed | 55 passed (82), enumerated by name (the plan predicted ≈23-24 — the +3 the e2e-axis under-count). Stash-proven: the seven files → 77/77 → pop → 27 RED.
+
+GREEN: the two src/ fixes (the complete-weeks seam + the block chips) + the full doc realignment (README/AGENTS/CLAUDE/PAD/SKILL v1.105.0 with the missing s107 layer inserted/DEPLOYMENT) + two in-flight finds fixed (the dialog-geometry lockstep's fourth 1927 site; the four-site pin's line-wrapped form) → 108 files / 1932 tests ALL PASSING.
+
+RED-2 both faces: the always-42 reversion → 6 failed by name → restored → GREEN; the block removal → 1 failed by name → restored → GREEN.
+
+The e2e guard: one in-flight fix (the events-fetch wait — the first run measured before fetchEvents resolved) + the wrong-bound perturbation proof (mainScrollW ≤ 389 → FAILED live "Expected: <= 389, Received: 390" → restored → GREEN).
+
+The captures 166 (390×844: mainScrollW 390 — pre-fix 496) + 167 (1440: 35 cells — pre-fix 42, 12/12 chips truncated) — the VLM battery 4/4 + 4/4, zero adjudications: the complete-weeks grid (the last row 25-31, no November row), the contained chips with visible ellipses, clean render quality — all read off the pixels.
+
+The FULL GATE: lint 0/0 · tsc 0 · 1932/1932 unit (108 suites, +5 net) · build · 136/136 e2e fresh CI=1 (3.3m, the calendar-mobile guard #136 green inside the run) + the four drift sweeps CLEAN — NO re-baselining (both fixes only decrease ours-vs-ref diffs, exactly as planned). The closing census MATCH; the tree exactly as planned (17 modified + 5 new; src/ = the two fixes only).
+
+The ship: paramiko 5.0.0 installed on python3.13, the Appendix-A shim deployed at /home/z/my-project/bin/ssh, the operator key 0600 in /tmp (outside the repo), fingerprint VERIFIED (SHA256:3ddaNlFhMz1JXiGEDgVEaRsUzI4Ev0IpGEEB7NnU4PU — matches s104-s107). The house-style commit 2f0798a (23 files, +1443/−94). Dry-run clean (8cecd4f..2f0798a fast-forward) → the real push → **remote verified: main @ 2f0798a == local HEAD**. Keys shredded.
+
+**What was delivered:**
+1. **The headline — the fourth-surface seeded mobile walk + TWO live finds**: the calendar-mobile e2e guard (with the NEW mainScrollW inner-overflow assertion — the assertion that catches the chip genus) + the M-108c1 block-chip fix (the inline-span overflow retired at every width) + the M-108c2 complete-weeks grid reversion (the s76 misdecode retired — the reference's live model, five months probed).
+2. **The four audit finds fixed + pinned**: F-108a1 (the missing s107 layer + the layer-axis lockstep), F-108a2/a3/a4 (the stale page-layout/reports-data/DEPLOYMENT sites — all held by the new four-site pin).
+3. **Full gate green** — 1932 unit (+5, 108 suites) + 136 e2e + badge 2068 + four drift sweeps (no re-baselining) + captures 166/167 (VLM 4/4 × 2) + docs at SKILL v1.105.0 + session_218.md.
+
+**Suggested next (session 109):** the fifth-surface seeded walk (activities at 390 — the last un-walked phone surface), the dashboard KPI seam unification (the dashboard route still derives its KPI row inline — the same genus the reports freeze retired), or the probe `--expect` mode if the reference ever changes. Which shall I take?

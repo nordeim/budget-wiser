@@ -3835,3 +3835,18 @@ Work Log:
 
 Stage Summary:
 - Session 108 executed end-to-end: the fourth-surface seeded mobile walk (the calendar-mobile guard with the NEW mainScrollW inner-overflow assertion + the chip containment + the complete-weeks cell count computed in-test + the REAL month-nav round-trip, wrong-bound-proven), the M-108c2 complete-weeks grid reversion (the s76 "always-42" misdecode retired — the reference live-probed five months), the M-108c1 block-chip fix (the inline-span overflow retired at every width), the F-108a1 layer-axis lockstep + the F-108a2/a3/a4 stale-docs pins, the count ladder 135->136 + 1927->1932 + 106->108 suites + badge 2068 + the HEAD "in 6 spec", the probe ordinals at the 79th/29th, the captures 166/167 VLM 4/4 x2. Next: the house-style commit + the SSH-wrapper push to main, then the close-out (the 108-close worklog + session_219.md narration + the final push)
+
+---
+Task ID: 108-close
+Agent: main (Super Z)
+Task: Session 108 — the gate, the ship, the push, the close-out
+
+Work Log:
+- GATE (the full chain, stepwise in the foreground — the s102-s107 lesson): lint 0/0 - tsc 0 - 1932/1932 unit (108 suites, +5 net) - build clean - 136/136 e2e fresh CI=1 (3.3m, +1: the calendar-mobile guard green inside the run after its in-flight events-fetch-wait fix) - the FOUR drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift, NO re-baselining — both fixes only decrease ours-vs-reference diffs, exactly as the plan predicted)
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 active vars standing; the tree exactly as planned (17 modified + 5 new; src/ = exactly the two fixes [format.ts the complete-weeks seam + calendar-page.tsx the block chips])
+- The house-style commit 2f0798a (23 files, +1443/-94); the SSH push via docs/ssh_git_wrapper_v3.py (paramiko 5.0.0 installed on /usr/bin/python3.13 --break-system-packages [the fresh sandbox, the s105-s107 pattern] + the Appendix-A shim deployed at /home/z/my-project/bin/ssh with the python3.13 shebang, the operator key 0600 in /tmp OUTSIDE the repo, fingerprint-verified SHA256:3ddaNlFhMz1JXiGEDgVEaRsUzI4Ev0IpGEEB7NnU4PU — matches the s104/s105/s106/s107 records, dry-run first: 8cecd4f..2f0798a clean fast-forward, then the real push)
+- The wrapper verified: refs/heads/main @ 2f0798a == local HEAD; the tracking ref synced; the wrapper's temp key shredded + the operator key shredded
+- The closing records: session_218.md (the formal log) + this narration follow-up (session_219.md) + the 108-close worklog record
+
+Stage Summary:
+- Session 108 SHIPPED AND PUSHED: main @ 2f0798a = the fourth-surface seeded mobile walk (the calendar-mobile guard with the NEW mainScrollW inner-overflow assertion + the chip containment + the complete-weeks cell count computed in-test + the REAL month-nav round-trip, wrong-bound-proven) + the M-108c2 complete-weeks grid reversion (the s76 "always-42" misdecode retired — the reference live-probed five months) + the M-108c1 block-chip fix (the inline-span overflow retired at every width) + the F-108a1 layer-axis lockstep + the F-108a2/a3/a4 stale-docs pins + the count ladder 135->136 + 1927->1932 + 107->108 suites + badge 2068 + the HEAD "in 6 spec" + the captures 166/167 VLM 4/4 x2 + the probe ordinals at the 79th/29th; counts 108/1932+136, badge 2068, SKILL v1.105.0 + the session-log follow-up
