@@ -69,6 +69,26 @@
 // live-tense unit-count site [the docs-counts AGENTS gate-order pin
 // covered only AGENTS; CLAUDE:38's e2e half was already pinned]. The
 // retired 1922/106/2057 constructions join the negatives ladders.)
+// → s108 (unit 1927 → 1932: +3 — the NEW calendar-grid suite [the
+// complete-weeks grid freeze: the live-verified members table Feb 2026
+// = 28 · Oct/Nov 2026 = 35 · Jan 2027 = 42 — the reference's
+// eachDayOfInterval(Sunday-before-1st, Saturday-on-or-after-last)
+// model, LIVE-probed five months; the s76 "always-42" gloss a
+// misdecode] + the structural invariants + the fetch-bounds alignment]
+// + 1 — the calendar-cells chip pin [the M-108c1 fix — the event chips
+// were INLINE spans, `truncate` never engaged, 93-177px chips inside
+// 43px cells at 390 pushing main.scrollWidth to 496; `block` pins the
+// engaged form] + 1 — the NEW four-site stale-docs pin [the F-108a2/
+// a3/a4 fixes — SKILL:388's page-layout counts + PAD:1349 + PAD:1348 +
+// DEPLOYMENT's handler count, all stale at their live-tense sites].
+// SUITES 107 → 108 (the new suite file); E2E 135 → 136 (the FOURTH
+// e2e-count change: the seeded-state mobile walk of the FOURTH surface
+// family — the calendar grid at 390, never walked at phone width with
+// data. The new guard lives in a NEW spec file (calendar-mobile.spec)
+// so the mobile-nav battery count stays 10; the retired 135
+// constructions join the negatives ladders, the HEAD-line template's
+// spec-family census grows "5 spec" → "6 spec", and the Appendix B
+// e2e-total row grows "5 spec files" → "6 spec files".)
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -77,16 +97,16 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1927;
-const E2E = 135;
-const SUITES = 107;
+const UNIT = 1932;
+const E2E = 136;
+const SUITES = 108;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
 const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1927 + 135 = 2062)", () => {
+  it("README badge carries the unit + e2e arithmetic (1932 + 136 = 2068)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -106,6 +126,8 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).toContain("docs-counts");
     expect(readme).toContain("seeded-charts");
     expect(readme).toContain("seeded-reports-kpis");
+    // the s108 extension — the newest suite joins the pinned names
+    expect(readme).toContain("calendar-grid");
   });
 
   it("README Tested row carries the live counts (the headline live-tense row)", () => {
@@ -140,7 +162,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
   it("PAD HEAD line carries the live counts (the site-form anchor)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain(
-      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 5 spec`,
+      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 6 spec`,
     );
   });
 
@@ -185,6 +207,18 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).not.toMatch(/# 106 Vitest suites/);
     expect(pad).not.toMatch(/HEAD: 106 Vitest/);
     expect(pad).not.toMatch(/— 1922\/1922/);
+    // -----------------------------------------------------------------
+    // Session-108: the unit-count realignment (1927 → 1932 + 107 → 108
+    // suites + badge 2062 → 2068 — the calendar-grid freeze + the chip
+    // pin + the four-site pin). The retired 1927/107/2062 constructions
+    // join the ladder — the same SITE-FORM anchors, the same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2062%20checks/);
+    expect(readme).not.toMatch(/# 107 Vitest suites/);
+    expect(readme).not.toMatch(/# 1927 Vitest unit checks/);
+    expect(pad).not.toMatch(/# 107 Vitest suites/);
+    expect(pad).not.toMatch(/HEAD: 107 Vitest/);
+    expect(pad).not.toMatch(/— 1927\/1927/);
   });
 
   // ------------------------------------------------------------------
@@ -281,6 +315,21 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(claude).not.toMatch(/\*\*E2E \(Playwright, 134 checks\)\*\*/);
     expect(pad).not.toMatch(/`bun run test:e2e` — 134\/134/);
     expect(pad).not.toMatch(/\| 134 browser checks \|/);
+    // -----------------------------------------------------------------
+    // Session-108: the FOURTH e2e-count realignment (135 → 136, the
+    // calendar-grid guard in the new spec file). The retired 135
+    // constructions join the ladder — the same SITE-FORM anchors, the
+    // same doctrine: the s108 inventory row quotes the constructions
+    // only in arrow/singly-quoted form, never the bare site forms.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2062%20checks/);
+    expect(readme).not.toMatch(/# 135 Playwright checks on/);
+    expect(readme).not.toMatch(/# Playwright \(135 checks\)/);
+    expect(agents).not.toMatch(/Browser E2E \(135 checks\)/);
+    expect(claude).not.toMatch(/Playwright E2E \(135 checks/);
+    expect(claude).not.toMatch(/\*\*E2E \(Playwright, 135 checks\)\*\*/);
+    expect(pad).not.toMatch(/`bun run test:e2e` — 135\/135/);
+    expect(pad).not.toMatch(/\| 135 browser checks \|/);
   });
 
   it("the mobile-nav spec count stays live (the README Tested-row phrase + the testing-section phrase + the PAD suite line + the F-105a1 sites + the F-106b1 sites)", () => {
@@ -359,6 +408,29 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     ).toContain(
       `project_state: ${UNIT} unit checks + ${E2E} e2e checks green`,
     );
+    // ------------------------------------------------------------------
+    // Session-108 (S108-P6, the F-108a1 fix): the LAYER-AXIS assertion.
+    // The 108-a audit found the s107 ship had bumped the head's COUNTS
+    // (1922→1927) but never prepended the session-107 LAYER — the head
+    // still described "the session-106 layer" with the new counts on
+    // it, and "beneath it 1922 + 135" was never inserted. The counts
+    // face above was blind to the layer axis; these assertions hold
+    // the head's first two layers to the last two sessions — a future
+    // ship that bumps the counts but forgets its layer now fails
+    // `bun run test` the same way a forgotten count does.
+    // ------------------------------------------------------------------
+    expect(
+      skill,
+      "the project_state head's FIRST layer must be the current session's",
+    ).toContain(
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-108 layer`,
+    );
+    expect(
+      skill,
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s107 layer was never prepended)",
+    ).toContain(
+      "+ beneath it 1927 unit checks + 135 e2e checks green; the session-107 layer (the 107-c rotation — THE REPORTS KPI-DERIVATIONS UNIT FREEZE",
+    );
   });
 
   // ------------------------------------------------------------------
@@ -385,7 +457,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B e2e-total row must carry the live spec-file + check counts",
-    ).toContain(`| **e2e total** | 5 spec files + the setup project | **${E2E}** |`);
+    ).toContain(`| **e2e total** | 6 spec files + the setup project | **${E2E}** |`);
     expect(
       appendix,
       "the Appendix B mobile-nav row must carry the live 10-check census",
@@ -395,5 +467,50 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // name cannot match)
     expect(appendix).not.toMatch(/\| \*\*unit total\*\* \| 12 files/);
     expect(appendix).not.toMatch(/\| \*\*e2e total\*\* \| 4 files/);
+  });
+
+  // ------------------------------------------------------------------
+  // Session-108 (S108-P6): the F-108a2/a3/a4 fixes — the four-site
+  // stale-docs pin. The 108-a audit found FOUR live-tense sites the
+  // docs-counts pin family never covered: SKILL:388's page-layout
+  // module counts ("1520 lines; 180 checks" — stale since s98, the
+  // 95-a fix recurred because unpinned), PAD:1349's page-layout row
+  // ("1520"), PAD:1348's reports-data row ("~213" — the s107 seam
+  // +66 omitted), and DEPLOYMENT.md's handler count ("16 API route
+  // handlers" vs live 27) + its deleted smoke-test.sh reference. The
+  // site-form anchors below hold all four at their live-tense sites —
+  // the next staleness fails `bun run test` (the F-99a1 genus retired
+  // on the line-count + handler-count axes).
+  // ------------------------------------------------------------------
+
+  it("the four F-108a2/a3/a4 sites carry the live counts (the SKILL page-layout module row + the PAD module-table rows + the DEPLOYMENT handler count)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    expect(
+      skill,
+      "the §5.6 page-layout line must carry the live line + check counts (F-108a2)",
+    ).toContain("test-pinned module (1530 lines; `tests/page-layout.test.ts`, 182 checks");
+    expect(skill).not.toContain("test-pinned module (1520 lines");
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 180 checks");
+    const pad = read("Project_Architecture_Document.md");
+    expect(
+      pad,
+      "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
+    ).toContain("| `src/lib/page-layout.ts` | 1530 |");
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1520 |");
+    expect(
+      pad,
+      "the module-table reports-data row must carry the post-seam line count (F-108a3)",
+    ).toContain("| `src/lib/reports-data.ts` | 279 |");
+    expect(pad).not.toContain("| `src/lib/reports-data.ts` | ~213 |");
+    const deployment = read("docs/DEPLOYMENT.md");
+    expect(
+      deployment,
+      "the build line must carry the live handler count (F-108a4)",
+    ).toContain("the 27 API route handlers");
+    expect(deployment).not.toContain("the 16 API route handlers");
+    // the deleted smoke-test.sh reference must stay gone (deleted at
+    // e16efb9; the line is now the one-command gate)
+    expect(deployment).not.toContain("smoke-test.sh");
+    expect(deployment).toContain("bun run gate");
   });
 });

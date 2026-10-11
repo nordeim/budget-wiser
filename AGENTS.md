@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1927 checks)       | `bun run test`                         |
-|  Browser E2E (135 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (1932 checks)       | `bun run test`                         |
+|  Browser E2E (136 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1927) → `bun run build` → `bun run test:e2e` (135) — or the
+`bun run test` (1932) → `bun run build` → `bun run test:e2e` (136) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4428,3 +4428,104 @@ navigate-close · Escape · resize-past-md release).
   at SKILL v1.104.0 [§16cu + project_state + the H1] + README badge
   2062 + AGENTS/CLAUDE/PAD at 1927+135 + session_215.md + the s107
   plan + its execution record + the worklog.
+
+### Session-108 — the fourth-surface seeded mobile walk + the two live finds + the four stale-docs fixes
+
+The audits: 108-a the s107 ship delta GENUINE 9/9 (non-vacuousness
+reproduced EXACT: the mixed-state worktree 19 failed | 46 passed (65),
+all 19 by name + the native 60/60) with FOUR REAL finds — **F-108a1**
+(the SKILL project_state head's LAYER face: the s107 ship bumped the
+counts 1922→1927 but never prepended the session-107 layer — the head
+still described "the session-106 layer"; the F-106a1 pin asserted only
+the counts face, blind to the layer axis), **F-108a2** (SKILL:388
+"1520 lines; 180 checks" + PAD's module-table row vs live 1530/182 —
+stale since s98, the 95-a fix recurred because unpinned),
+**F-108a3** (PAD's reports-data row "~213" vs live 279 — the s107 seam
++66 omitted from the row + its purpose text), **F-108a4**
+(DEPLOYMENT.md "16 API route handlers" vs live 27 + the deleted
+smoke-test.sh reference — zero pin coverage); 108-b 9/9 layers PASS,
+zero real findings (zero graduations ~65th; SEO/sitemap 46/46 LIVE
+first-run clean; the mobile-nav contract INTACT; both operator
+decisions standing 68th).
+
+- **THE HEADLINE — the fourth-surface seeded mobile walk (the calendar
+  grid at 390×844) surfaced TWO LIVE FINDS before any guard was
+  written** (the ANALYZE-probe-first doctrine): **M-108c1** the event
+  chips render at CONTENT width — the chip spans are INLINE boxes, so
+  `truncate` (overflow:hidden + ellipsis + nowrap) never constrains
+  them: 93-177px chips inside 43px cells at 390 (two pushing
+  main.scrollWidth to **496** — a horizontally-swipeable main) and
+  134-203px chips overlapping the neighboring cells at 1440; the
+  `+N more` span the same genus. Invisible to every standing gate (the
+  drift sweeps run the ZERO-DATA state — no events, no chips; the
+  ten-route overflow sweep asserts docScrollW only — the document
+  never overflows, main is the scroller). The reference's own
+  construction (the s76 L-76c9 bundle decode) carries the same latent
+  defect — un-live-verifiable at its zero-data state; ours the
+  documented superset: `block` on both spans makes the truncation
+  engage at every width. **M-108c2** the 42-cell grid vs the
+  reference's COMPLETE-WEEKS grid — the s76 M-76c8 "always-42 / 6
+  constant rows" gloss a MISDECODE: LIVE-probed five months the
+  reference renders Oct 2026 = 35 [Sep 27..Oct 31] · Nov 2026 = 35
+  [Nov 1..Dec 5] · Jan 2027 = 42 [Dec 27..Feb 6, the 6-week month] ·
+  Apr 2027 = 35 · Jul 2026 = 35 — the complete-weeks model
+  (eachDayOfInterval Sunday-before-the-1st → Saturday-on-or-after-the-
+  last), exactly the s51-era "trimmed render" the s51 test comments
+  describe. Invisible to every gate (the extra 6th row below the 900px
+  sweep fold on both apps — VLM-verified off the sweep screenshots;
+  no e2e cell-count pin). The fix: `calendarGrid`'s leading branch
+  ceils to whole weeks — the page call byte-identical (the s76 GUARD
+  source pin keeps passing), `calendarFetchBounds` follows exactly
+  (the N-51a contract now with equality: Oct → Oct 31 · Nov → Dec 5).
+- **The NEW tests/calendar-grid.test.ts** (3 its): the LIVE-verified
+  members table (Feb 2026 = 28 · Oct/Nov 2026 = 35 · Jan 2027 = 42 ·
+  Jul 2026/Apr 2027 = 35, each with its first/last cell + the
+  not-42-for-October negative) + the structural invariants (whole
+  weeks · Sunday-anchored · contiguous daily steps · the ceil formula
+  · the 1st rendered — every month of 2026-2027) + the fetch-bounds
+  alignment (the window's last day IS the rendered grid's last cell +
+  the seam source form). Induced-drift-proven: a temporary reversion
+  to always-42 fails its (a)+(c) members by name.
+- **The NEW tests/e2e/calendar-mobile.spec.ts** (the fourth-surface
+  walk, +1 e2e): on the SEEDED e2e.db at 390×844 — docScrollW ≤ 390
+  AND **mainScrollW ≤ 390 (the NEW inner-overflow assertion — the
+  M-108c1 catcher; the s105/s106 walks assert docScrollW only)** ·
+  the KPI ladder 4 cards ONE track gap-16 · the DOW grid 7 labels
+  7-track gap-4 · the month grid the COMPLETE-WEEKS cell count
+  computed in-test (never hardcoded) with 7 tracks and cells ≥ 40px ·
+  **zero chips past their cell's right edge (the M-108c1 guard)** ·
+  the Upcoming/Agenda single-track stack · a REAL Next-month click
+  that increments the title and keeps the frame at 390.
+- **The four audit finds fixed + pinned**: F-108a1 (the missing s107
+  layer inserted into the project_state head + the H1 lockstep it
+  gains the layer-axis assertions — the head's first two layers ===
+  the last two sessions, the genus structurally retired) · F-108a2
+  (SKILL §5.6 1530 lines / 182 checks + the PAD module-table row) ·
+  F-108a3 (the reports-data row 279 + the reportsKpis purpose clause)
+  · F-108a4 (DEPLOYMENT 27 handlers + the smoke-test.sh line → `bun
+  run gate`) + the NEW docs-counts four-site it holding all of them.
+- **The count ladder**: UNIT 1927 → 1932 (+3 calendar-grid + 1
+  calendar-cells + 1 docs-counts) · SUITES 107 → 108 · E2E 135 → 136
+  (the calendar-mobile guard in a NEW spec file — the mobile-nav
+  battery stays 10) · badge 2062 → 2068 · the HEAD-line template
+  "in 5 spec" → "in 6 spec" (the spec-family census gains
+  calendar-mobile) · the S16-P7 e2e `monthKids ≥ 35` re-anchored to
+  `≥ 28` (the complete-weeks floor — a 28-cell February would have
+  failed the old bound) · the probe ordinals 78/28th → 79/29th.
+- **RED-1**: 27 failed | 55 passed (82) at the pre-realignment docs +
+  the still-42 grid + the still-inline chips (the 19 docs-counts +
+  the N-79b1 carrier + the 3 calendar-grid + the chip pin + the 3
+  fetch-bounds re-anchors — enumerated by name), stash-proven (stash
+  the seven files → 77/77 → pop → 27 RED).
+- **The captures**: 166 (the seeded calendar at 390×844 — the KPI
+  ladder + the month grid with the truncated chips) + 167 (the
+  desktop 1440 — the complete-weeks grid + the truncated chips + the
+  Filters rail) — the VLM battery 4/4 + 4/4.
+- **GATE**: lint 0/0 · tsc 0 · 1932/1932 unit [108 suites, +5 net] ·
+  build · 136/136 e2e fresh CI=1 + the four drift sweeps CLEAN inside
+  gate:full (both fixes can only DECREASE ours-vs-reference diffs —
+  the 6th row disappears below the fold anyway, the chips invisible
+  at the zero-data sweep state — no re-baselining). Docs at SKILL
+  v1.105.0 [§16cv + project_state + the H1] + README badge 2068 +
+  AGENTS/CLAUDE/PAD at 1932+136 + session_218.md + the s108 plan +
+  its execution record + the worklog.

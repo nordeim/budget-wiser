@@ -842,7 +842,11 @@ test("the calendar card ships the split DOW/month grids + the bold title (S16-P7
   expect(anatomy.titleCls).toBe("text-xl sm:text-2xl font-bold text-gray-900");
   expect(anatomy.dowGridCount).toBe(2);
   expect(anatomy.dowKids).toBe(7);
-  expect(anatomy.monthKids).toBeGreaterThanOrEqual(35);
+  // Session-108 (M-108c2): the complete-weeks grid renders 28/35/42
+  // cells as the month demands (the reference's live model) — the
+  // floor is the 4-week February (Feb 2026 starts a Sunday), never a
+  // hardcoded 35.
+  expect(anatomy.monthKids).toBeGreaterThanOrEqual(28);
   expect(anatomy.dowLabelCls).toBe(
     "text-center text-xs sm:text-sm font-semibold text-gray-600 py-2",
   );

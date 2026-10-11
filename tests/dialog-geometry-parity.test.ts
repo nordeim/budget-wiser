@@ -305,10 +305,18 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // gate-order pin covered only AGENTS while CLAUDE's e2e half was
     // already pinned (the asymmetry; found in-flight during the s107
     // plan validation).
-    expect(claude).toContain("Unit (Vitest, 1927 checks)");
-    expect(claude).toContain("(currently 1927)");
-    expect(claude).toContain("Vitest unit suites (1927 checks)");
-    expect(claude).toContain("`bun run test` (1927)");
+    // session-108 lockstep carry-forward: 1927 -> 1932 (the s108 +5 —
+    // the calendar-grid freeze suite [+3] + the calendar-cells chip
+    // pin [+1] + the docs-counts four-site pin [+1]); the four sites
+    // re-anchored, the retired 1927 forms join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1932 checks)");
+    expect(claude).toContain("(currently 1932)");
+    expect(claude).toContain("Vitest unit suites (1932 checks)");
+    expect(claude).toContain("`bun run test` (1932)");
+    expect(claude).not.toContain("Unit (Vitest, 1927 checks)");
+    expect(claude).not.toContain("(currently 1927)");
+    expect(claude).not.toContain("Vitest unit suites (1927 checks)");
+    expect(claude).not.toContain("`bun run test` (1927)");
     expect(claude).not.toMatch(/1788 checks/);
     expect(claude).not.toMatch(/currently 1788/);
     expect(claude).not.toMatch(/1828 checks/);

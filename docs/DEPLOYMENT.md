@@ -11,7 +11,7 @@ bun install
 bun run build          # next build + standalone assembly (.next/standalone)
 ```
 
-The build compiles the page shell and the 16 API route handlers, then copies
+The build compiles the page shell and the 27 API route handlers, then copies
 `.next/static` and `public/` into `.next/standalone/` (see the `build`
 script in `package.json`). `next.config.ts` pins `outputFileTracingRoot` to
 the repo root — keep it; the standalone trace depends on it.
@@ -95,7 +95,7 @@ bun run build
 ```bash
 curl -s https://your-host/api/health          # {"status":"ok",...}
 bun run lint && bun run typecheck && bun run test
-./scripts/smoke-test.sh                       # 30 E2E checks (local)
+bun run gate                                  # the one-command gate (local)
 bun run test:e2e                              # Playwright suite (local)
 ```
 

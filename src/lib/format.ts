@@ -279,9 +279,11 @@ export function startOfYear(d: Date | string | number): Date {
   return x;
 }
 
-/** Calendar grid for a month. With `leading`, a full 6-week Monday/Sunday-
- * anchored grid (previous-month days included); without, only the month's
- * own days. */
+/** Calendar grid for a month. With `leading`, the COMPLETE-WEEKS
+ * Sunday/Monday-anchored grid (previous-month days included, padded to
+ * a whole number of weeks — 28/35/42 as the month demands, the
+ * reference's live model, session-108); without, only the month's own
+ * days. */
 export function calendarGrid(
   year: number,
   month: number, // 0-indexed
@@ -290,10 +292,21 @@ export function calendarGrid(
 ): Date[] {
   const first = new Date(year, month, 1);
   const offset = firstDay === "monday" ? (first.getDay() + 6) % 7 : first.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
   const start = leading
     ? new Date(year, month, 1 - offset)
     : new Date(year, month, 1);
-  const total = leading ? 42 : new Date(year, month + 1, 0).getDate();
+  // Session-108 (M-108c2): the COMPLETE-WEEKS grid — the reference's
+  // live model, replacing the s76 "always-42" gloss (a misdecode of
+  // its eachDayOfInterval(Sunday-before-the-1st, Saturday-on-or-after-
+  // the-last)): LIVE-probed five months — Oct 2026 = 35 [Sep 27..Oct
+  // 31] · Nov 2026 = 35 [Nov 1..Dec 5] · Jan 2027 = 42 [Dec 27..Feb 6,
+  // the 6-week month] · Apr 2027 = 35 · Jul 2026 = 35. The count is
+  // 28/35/42 as the month demands (ceil to whole weeks); the old
+  // always-42 form padded complete weeks to a 6th row the reference
+  // never renders — invisible to the pixel gates (below the 900px
+  // sweep fold on both apps) and to the e2e (no cell-count pin).
+  const total = leading ? Math.ceil((offset + daysInMonth) / 7) * 7 : daysInMonth;
   const days: Date[] = [];
   for (let i = 0; i < total; i += 1) {
     days.push(new Date(start.getFullYear(), start.getMonth(), start.getDate() + i));
@@ -301,17 +314,18 @@ export function calendarGrid(
   return days;
 }
 
-/** Fetch window for a calendar month view (session-51, N-51a). `from`
+/** Fetch window for a calendar month view (session-51, N-51a; the bound
+ * re-anchored to the complete-weeks grid at session-108). `from`
  * deliberately over-covers a FULL previous month (the leading grid cells
  * + the today-side KPI cards when viewing ahead); `to` covers the LAST
- * day the grid can render — the UNTRIMMED 42-cell Sunday-anchored grid's
- * final cell, so the trailing next-month cells are always inside the
- * window. The old month-end bound (`endOfDay(new Date(year, month + 1,
- * 0))`) lost the trailing cells' events after a month flip: the s45
- * last-call-wins token makes the windowed fetch authoritative, and the
- * page trims the grid to whole weeks whose trailing cells extend up to
- * 6 days into the next month (e.g. Nov 2026 renders Dec 1-5). The
- * untrimmed bound also survives future changes to the page's trim. */
+ * day the grid can render — the complete-weeks Sunday-anchored grid's
+ * final cell (the Saturday on-or-after the month's last day), so the
+ * trailing next-month cells are always inside the window. The old
+ * month-end bound (`endOfDay(new Date(year, month + 1, 0))`) lost the
+ * trailing cells' events after a month flip: the s45 last-call-wins
+ * token makes the windowed fetch authoritative, and the grid's
+ * trailing cells extend up to 6 days into the next month (e.g. Nov
+ * 2026 renders Dec 1-5). */
 export function calendarFetchBounds(year: number, month: number): { from: string; to: string } {
   const grid = calendarGrid(year, month, "sunday", true);
   return {

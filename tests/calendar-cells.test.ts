@@ -116,6 +116,26 @@ describe("session-27: the day-cell contract", () => {
     const region = src.slice(src.indexOf("monthGrid"), src.indexOf("monthGrid") + 3200);
     expect(region).toMatch(/slice\(0, 2\)/);
   });
+
+  it("the chips are BLOCK-level so truncate engages — no content-width overflow past the cell (the M-108c1 fix)", () => {
+    // Session-108 (S108-P2): the event chips (and the "+N more" line)
+    // were INLINE spans — `truncate` (overflow:hidden + ellipsis +
+    // nowrap) NEVER constrains an inline box, so every chip rendered at
+    // full content width: 93-177px chips inside 43px cells at 390 (two
+    // pushing main.scrollWidth to 496 — a horizontally-swipeable main)
+    // and 134-203px chips inside 97px cells at 1440 (overlapping the
+    // neighboring cells). The reference's own construction carries the
+    // same latent defect (un-live-verifiable at its zero-data state);
+    // ours is the documented superset: `block` on both spans makes the
+    // truncation engage, constraining every chip to its cell.
+    const src = page();
+    const region = src.slice(src.indexOf("monthGrid"), src.indexOf("monthGrid") + 3600);
+    expect(region).toMatch(/block cursor-pointer truncate rounded px-1 py-0\.5 text-xs/);
+    // the "+N more" line carries the same block+truncate pair
+    expect(region).toMatch(/block truncate text-xs/);
+    // the retired inline form never returns
+    expect(region).not.toMatch(/"cursor-pointer truncate rounded px-1 py-0\.5 text-xs"/);
+  });
 });
 
 describe("session-27: the Upcoming Events rail rows", () => {

@@ -158,12 +158,18 @@ export default function CalendarPage() {
   // (see buildVisibleEvents above).
   const visible = buildVisibleEvents(events, activeTypes, activeDates, query);
 
-  // Session-76 (M-76c8, bundle-decoded from jAe): the grid is ALWAYS the
-  // UNTRIMMED 42 cells — the reference's eachDayOfInterval from the
-  // Sunday before the 1st to the Saturday after the last (6 constant
-  // rows; our trim-to-whole-weeks made the card height jump between
-  // 28/35/42-cell months). The calendarFetchBounds seam already computes
-  // its `to` bound against this untrimmed grid (N-51a).
+  // Session-76 (M-76c8, bundle-decoded from jAe — RE-ANCHORED at
+  // session-108, M-108c2): the grid is the COMPLETE-WEEKS form — the
+  // reference's eachDayOfInterval from the Sunday before the 1st to
+  // the Saturday on-or-after the last (28/35/42 cells as the month
+  // demands; LIVE-probed five months on the reference: Oct 2026 = 35
+  // [Sep 27..Oct 31] · Nov 2026 = 35 [Nov 1..Dec 5] · Jan 2027 = 42
+  // [Dec 27..Feb 6, the 6-week month]). The s76 "always-42 / 6
+  // constant rows" gloss was a misdecode — the always-42 form padded
+  // complete weeks to a 6th row the reference never renders (the
+  // extra row below the 900px sweep fold on both apps, invisible to
+  // every pixel gate). The calendarFetchBounds seam already computes
+  // its `to` bound against this same grid (N-51a — now exact).
   const days = React.useMemo(() => calendarGrid(year, month, "sunday", true), [year, month]);
   const today = new Date();
 
@@ -390,7 +396,18 @@ export default function CalendarPage() {
                         space-y-0.5 stack directly under the number (the
                         reference's construction); the mt-auto flex
                         bottom-pinning was an invention riding the button
-                        superset. */}
+                        superset. Session-108 (M-108c1): the chip gains
+                        `block` — the reference's own inline-span form
+                        leaves `truncate` inert (overflow:hidden never
+                        constrains an inline box), so every chip rendered
+                        at CONTENT width: 93-177px chips inside 43px cells
+                        at 390 (two pushing main.scrollWidth to 496) and
+                        134-203px chips overlapping the neighboring cells
+                        at 1440. Ours is the documented superset (the
+                        mobile-nav doctrine — the reference's own latent
+                        defect, un-live-verifiable at its zero-data state):
+                        block-level chips truncate to their cell at every
+                        width. */}
                     <span className="space-y-0.5">
                       {dayEvents.slice(0, 2).map((e) => {
                         // Defensive DB-read posture (s65 N-65l, the s63
@@ -410,7 +427,7 @@ export default function CalendarPage() {
                               setDialogOpen(true);
                             }}
                             className={cn(
-                              "cursor-pointer truncate rounded px-1 py-0.5 text-xs",
+                              "block cursor-pointer truncate rounded px-1 py-0.5 text-xs",
                               isToday
                                 ? "bg-white/20 text-white"
                                 : `${chip.bg} ${chip.text}`,
@@ -425,9 +442,11 @@ export default function CalendarPage() {
                       })}
                       {/* The "+N more" overflow — a SEPARATE line after the
                           chips (the reference reads "+N more", never the
-                          scaffold's inline "+N"). */}
+                          scaffold's inline "+N"). Session-108 (M-108c1):
+                          the same block+truncate pair — the inline form
+                          could push ~45px of text past a 43px cell. */}
                       {dayEvents.length > 2 && (
-                        <span className={cn("text-xs", isToday ? "text-white" : "text-gray-500")}>
+                        <span className={cn("block truncate text-xs", isToday ? "text-white" : "text-gray-500")}>
                           +{dayEvents.length - 2} more
                         </span>
                       )}

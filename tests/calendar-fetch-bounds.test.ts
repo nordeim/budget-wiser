@@ -60,14 +60,16 @@ function region(src: string, start: string, end: string): string {
 }
 
 describe("session-51: the calendar fetch window covers the rendered grid (N-51a)", () => {
-  it("calendarFetchBounds covers the trailing next-month cells (Nov 2026 → Dec 5)", async () => {
+  it("calendarFetchBounds covers the rendered grid exactly (Nov 2026 → Dec 5)", async () => {
     const { calendarFetchBounds, endOfDay } = await import("@/lib/format");
     const { from, to } = calendarFetchBounds(2026, 10); // November 2026
-    // The UNTRIMMED 42-cell Sunday-anchored grid: Nov 1 2026 is a
-    // Sunday, so the grid runs Nov 1 .. Dec 12 (42nd cell).
-    expect(to).toBe(endOfDay(new Date(2026, 11, 12)).toISOString());
-    // The trimmed render for Nov 2026: lead 0 + 30 days → 5 weeks →
-    // the grid SHOWS through Dec 5 — the trailing-cell coverage floor.
+    // Session-108 (M-108c2): the COMPLETE-WEEKS grid — the reference's
+    // live model (LIVE-probed five months). Nov 1 2026 is a Sunday, so
+    // the grid runs Nov 1 .. Dec 5 (35 cells — 5 whole weeks).
+    expect(to).toBe(endOfDay(new Date(2026, 11, 5)).toISOString());
+    // The N-51a floor: the trailing next-month cells (Dec 1-5 rendered)
+    // stay inside the window — now with EQUALITY (the window's last
+    // day IS the rendered grid's last cell).
     expect(new Date(to).getTime()).toBeGreaterThanOrEqual(endOfDay(new Date(2026, 11, 5)).getTime());
     // The leading side keeps the deliberate full-prev-month coverage.
     expect(from).toBe(new Date(2026, 9, 1).toISOString());
@@ -76,11 +78,12 @@ describe("session-51: the calendar fetch window covers the rendered grid (N-51a)
   it("calendarFetchBounds covers a zero-trailing month (Oct 2026 → Oct 31)", async () => {
     const { calendarFetchBounds, endOfDay } = await import("@/lib/format");
     const { from, to } = calendarFetchBounds(2026, 9); // October 2026
-    // Oct 1 2026 is a Thursday → the Sunday-anchored grid starts
-    // Sep 27; the untrimmed 42nd cell is Nov 7.
-    expect(to).toBe(endOfDay(new Date(2026, 10, 7)).toISOString());
-    // The trimmed render ends Oct 31 (lead 4 + 31 days = exactly
-    // 5 weeks) — zero trailing cells, but the bound still covers it.
+    // Session-108 (M-108c2): Oct 1 2026 is a Thursday → the complete-
+    // weeks grid starts Sep 27 and ends Oct 31 (a Saturday — lead 4 +
+    // 31 days = exactly 5 weeks, 35 cells; the LIVE-verified reference
+    // value — the reference renders 35 for October 2026, not 42).
+    expect(to).toBe(endOfDay(new Date(2026, 9, 31)).toISOString());
+    // The render ends Oct 31 — zero trailing cells, the bound exact.
     expect(new Date(to).getTime()).toBeGreaterThanOrEqual(endOfDay(new Date(2026, 9, 31)).getTime());
     expect(from).toBe(new Date(2026, 8, 1).toISOString()); // Sep 1
   });
@@ -113,16 +116,18 @@ describe("session-51: the calendar fetch window covers the rendered grid (N-51a)
     expect(kpi).toMatch(/const callsThisWeek = events\.filter/);
   });
 
-  it("GUARD: the neighbors unchanged — the seam, the quirks, the verb (s76 re-anchor)", () => {
-    // calendarGrid keeps the 42-cell leading form + the monday default.
+  it("GUARD: the neighbors unchanged — the seam, the quirks, the verb (the s108 re-anchor)", () => {
+    // calendarGrid's leading form now produces COMPLETE WEEKS (the
+    // s108 M-108c2 reversion: the reference's live model — 28/35/42 as
+    // the month demands; the s76 "always-42" gloss was a misdecode)
+    // + the monday default.
     const lib = format();
-    expect(lib).toContain("total = leading ? 42 :");
+    expect(lib).toContain("total = leading ? Math.ceil((offset + daysInMonth) / 7) * 7 : daysInMonth;");
     expect(lib).toMatch(/firstDay: "monday" \| "sunday" = "monday"/);
     const src = page();
-    // Session-76 (M-76c8): the page now renders the UNTRIMMED grid
-    // (the reference's always-42 construction — the whole-week trim
-    // and its Math.max/ceil/slice machinery retired); the seam call is
-    // still the sunday-anchored leading form, now consumed whole.
+    // The page still consumes the seam's sunday-anchored leading form
+    // whole — no trim machinery in the page (the complete-weeks logic
+    // lives IN the seam now).
     expect(src).toContain('calendarGrid(year, month, "sunday", true)');
     expect(src).not.toMatch(/Math\.max\(Math\.ceil\(\(lead/);
     // Session-76 (M-76c6): the Total Events pseudo-delta + the trend()
