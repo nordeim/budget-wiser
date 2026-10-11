@@ -3428,3 +3428,18 @@ Work Log:
 
 Stage Summary:
 - Session 104 executed end-to-end: the e2e-count lockstep extension (the F-99a1 genus retired on the e2e axis — 6 pins, a stale e2e count anywhere now fails bun run test), the drawer-OPEN seeded-state e2e guard (wrong-bound-proven), the seeded-state mobile walk (158/159, VLM 4/4 x2), the 375 maiden CLEAN under the 1.4 ceiling, the F-104a1 fix, the N-79b1 carrier rode to 133, the probe ordinals at the 75th/25th. Next: the full gate (gate:full — lint -> tsc -> 1921 unit -> build -> e2e fresh CI=1 133 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main
+
+---
+Task ID: 104-close
+Agent: main (Super Z)
+Task: Session 104 — the gate, the ship, the push, the close-out
+
+Work Log:
+- GATE (the full chain, post-fix, run stepwise in the foreground — the s102/s103 lesson): lint 0/0 - tsc 0 - 1921/1921 unit (106 suites, +6 net) - build clean - 133/133 e2e fresh CI=1 (3.2m, +1: the drawer-OPEN seeded-state guard green inside the run incl. the ten-route zero-390px-overflow sweep) - the FOUR drift sweeps CLEAN (desktop 1440 - phone 390 - tablet 768 - landscape 1024, each --fail-on-drift)
+- One in-flight pin refinement during the docs phase: the new e2e stale-form negatives were initially bare forms, tripped by the s104 PAD inventory row QUOTING the banned "- 132/132" form while documenting the ban -> re-anchored to the full SITE-FORM construction (the backtick-command prefix a quoted mention cannot match), re-proven green 84/84 — the WIDENED-guard doctrine, the s102 pattern repeating, documented in the plan's execution record
+- The closing census MATCH (15/24/10/23/12 + 4 users); .env.example tracked, 3 active vars standing; the tree exactly as planned (14 modified + 4 new, ZERO src/)
+- The house-style commit a2d4582 (18 files, +856/-42, ZERO src/); the SSH push via docs/ssh_git_wrapper_v3.py (paramiko 5.0.0 + the Appendix-A shim on PATH at /home/z/my-project/bin/ssh, the operator key 0600 in /tmp OUTSIDE the repo, fingerprint-verified SHA256:3ddaNlFhMz1JXiGEDgVEaRsUzI4Ev0IpGEEB7NnU4PU, dry-run first: 104f756..a2d4582 clean fast-forward, then the real push)
+- The wrapper verified: refs/heads/main @ a2d4582 == local HEAD; the tracking ref synced; both key copies shredded (the wrapper's temp + the operator file)
+
+Stage Summary:
+- Session 104 SHIPPED AND PUSHED: main @ a2d4582 = the e2e-count lockstep extension (the F-99a1 genus retired on the e2e axis — 6 pins, a stale e2e count anywhere now fails bun run test) + the drawer-OPEN seeded-state e2e guard (wrong-bound-proven) + the seeded-state mobile walk (158/159, VLM 4/4 x2, the freeze pins' values read off the phone pixels) + the 375 maiden CLEAN under the 1.4 ceiling + the F-104a1 fix + the N-79b1 carrier rode to 133 + the probe ordinals at the 75th/25th; counts 106/1921+133, badge 2054, SKILL v1.101.0
