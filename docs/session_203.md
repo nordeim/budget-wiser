@@ -123,7 +123,7 @@ standing program (the s100-close suggested next #3).**
   (the two blocks merged into one [x 0..159] bucket).
 - **Non-vacuousness stash-proven**: stash `scripts/sweep.ts` +
   `scripts/drift-probe.ts` + `package.json` + `CLAUDE.md` → **13
-  failed | 62 passed** → pop → **76/76**.
+  failed | 62 passed** → pop → **75/75**.
 - **GREEN**: the guards + the tool + the docs fixes; the full unit
   suite **104 files / 1892 tests ALL PASSING** (+12 net).
 - **S101-P5**: screenshots 152 (the dashboard at 375×812 — the

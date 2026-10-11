@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1892 checks)       | `bun run test`                         |
+|  Unit tests (1903 checks)       | `bun run test`                         |
 |  Browser E2E (132 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1892) → `bun run build` → `bun run test:e2e` (132) — or the
+`bun run test` (1903) → `bun run build` → `bun run test:e2e` (132) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4005,7 +4005,7 @@ are UNCHANGED (the drift-gate output byte-identical with or without
   guard wiring pin) + the NEW tests/drift-probe-tool.test.ts (10 its)
   + the CLAUDE-count lockstep re-anchor (1880 → 1892). **13 failed |
   62 passed** pre-fix; stash-proven (sweep.ts + drift-probe.ts +
-  package.json + CLAUDE.md stashed → 13 failed → pop → 76/76).
+  package.json + CLAUDE.md stashed → 13 failed → pop → 75/75).
 - **S101-P5**: screenshots 152 (the dashboard at 375×812) + 153 (the
   leads table at 375×812, the seeded rows + the in-card scroll) —
   VLM 4/4 + 4/4, zero adjudications.
@@ -4014,3 +4014,69 @@ are UNCHANGED (the drift-gate output byte-identical with or without
   project_state] + README badge 2024 + AGENTS/CLAUDE/PAD at 1892+132 +
   the F-101a2/B-101a-1 fixes + session_203.md + the plan + its
   execution record + the worklog.
+
+### Session-102 — the secondary-sites lockstep + the off-by-one fix + the 414 drift-gate maiden
+
+- **102-a audit**: the s101 ship delta GENUINE **8/8** (non-vacuousness
+  re-proven twice: the 3-file checkout 4 failed | 71 passed + the true
+  pre-fix tree **13 failed | 62 passed (75)** — the 13 enumerated, the
+  RED re-proving F-101a1 live; live unit 104/1892; e2e static census
+  132). **F-102a1 REAL (docs)**: the s101 "76/76" green-state claim is
+  an off-by-one — the true stash-pop count is **75/75** (13 + 62 = 75;
+  session_204.md:48 recorded it live, the summary layer transcribed
+  76), carried at 6 repo-doc sites + the immutable 1017a5b commit
+  message (record-only). **F-102a2 REAL (docs)**: **6 stale live-tense
+  secondary count sites** (103/1880 stale at HEAD 104/1892) — README:125
+  (the tree) + README:178 (the commands comment; the suite list also
+  missing drift-probe-tool) + PAD:358/:795/:1217/:1287 — the recurring
+  **F-99a1 genus** (unpinned, so it re-stales every session the count
+  grows). N-102a1: the probe header ordinals written pre-maiden (71/
+  21st where the live standing is 73rd/23rd). Zero Critical/High.
+- **102-b audit**: ZERO graduations 13/13 (~59th; src/ byte-identical
+  since the s101 ship); the CSV census 17 sites ZERO unguarded (70/70
+  live); the source-vocabulary clean (constants.ts @ 3a89508 since
+  s90); the config + SEO/sitemap layers verified **57/57 live** (+
+  the implementation review — zero routes missing metadata); the
+  mobile-nav contract INTACT; the globals.css v4 re-pins present.
+  **Both operator decisions re-affirmed (62nd): CSV posture (b) +
+  source-vocabulary parity.**
+- **S102-P0 (F-102a1)**: 76/76 → 75/75 at the 6 repo-doc sites —
+  at-birth ERROR corrections, the F-100a2 history-record doctrine
+  honored (a record corrected to match what actually happened).
+- **S102-P1/P2 (the genus retired)**: the NEW `tests/docs-counts.test.ts`
+  (11 its: the README badge arithmetic + tree + commands + Tested row ·
+  the AGENTS commands + gate-order lines · the PAD tree + Total + HEAD
+  + checklist + commands sites · the scoped stale-form negatives —
+  never a whole-file number ban, the history blocks keep their
+  numbers) + the CLAUDE-count lockstep re-anchor (1892 → 1903). GREEN
+  = the full count realignment: **105 suites · 1903 unit · badge
+  2035**; README:178's suite list gains drift-probe-tool + docs-counts.
+  **Every live-tense count site is now under the unit gate — a stale
+  secondary count fails `bun run test` instead of surfacing at the
+  next audit.**
+- **S102-P3 (N-102a1)**: the probe ordinals corrected to the live
+  standing — "73 consecutive sessions" + "the 23rd consecutive census"
+  (the drift-probe.ts header + the test echo).
+- **The LIVE verification**: probe:ref post-fix reproduced every
+  standing layer — the bundle md5 a70a637f... EXACT **STABLE (the 73rd
+  consecutive)**; census #98: demo zero · desktop 256px/8 · **the
+  mobile-nav defect STANDS at TRUE 390 (the 23rd consecutive)**. The
+  MAIDEN 414×896 third-phone-width drift-gate spot-check **CLEAN** —
+  floor 0.45–0.49 · login 0.67 · settings 8.15 (the picklist genus at
+  its highest phone share yet, within the 7.7 + 0.5 standing margin,
+  arithmetic verified against the STANDING_BASELINES table) — the
+  phone-class margin HOLDS at the third walked width. The four standing
+  drift gates CLEAN; the drawer battery FULLY GREEN live twice.
+- **RED**: 12 failed (11 docs-counts + 1 lockstep) at the pre-fix docs,
+  the failures enumerated by name; stash-proven (README + AGENTS +
+  CLAUDE + PAD stashed → 12 failed → pop → 30/30).
+- **S102-P5**: screenshots 154 (the dashboard at 414×896 — the
+  third-phone-width maiden view) + 155 (the mobile drawer OPEN at
+  390×844 — the blue panel, all 8 links, the dimmed main, the
+  Dashboard active state) — VLM 4/4 + 4/4, zero adjudications.
+- **GATE**: lint 0/0 · tsc 0 · 1903/1903 unit [105 suites, +11 net] ·
+  build · 132/132 e2e fresh CI=1 + the four drift sweeps CLEAN inside
+  gate:full. Docs at SKILL v1.99.0 [§16cp + project_state] + README
+  badge 2035 + AGENTS/CLAUDE/PAD at 1903+132 + the F-102a1/F-102a2
+  fixes + session_205.md + the s102 plan + its execution record + the
+  worklog.

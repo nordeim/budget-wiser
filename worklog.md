@@ -3308,7 +3308,7 @@ Task: Session 101 — the rotation execution, live verification, docs, gate
 
 Work Log:
 - RED: 2 new sweep-tool pins (edge-wrap geometry + browser-twin guard) + the NEW tests/drift-probe-tool.test.ts (10 its) + the CLAUDE-count lockstep re-anchor (1880 -> 1892); 13 failed | 62 passed pre-fix — the RED run proved F-101a1 live (two edge blocks merged into one [x 0..159] bucket)
-- Non-vacuousness stash-proven: stash sweep.ts + drift-probe.ts + package.json + CLAUDE.md -> 13 failed -> pop -> 76/76
+- Non-vacuousness stash-proven: stash sweep.ts + drift-probe.ts + package.json + CLAUDE.md -> 13 failed -> pop -> 75/75
 - GREEN S101-P0: the column-bounds guard in BOTH clusterDiff copies (node seam + browser twin, no-bundling doctrine)
 - GREEN S101-P1: scripts/drift-probe.ts + package.json probe:ref — the reference-stability drift probe promoted (bundle md5 + demo-data census + desktop/TRUE-390 nav census; exit 1 on CHANGED; --json; PURE seams pinned; NOT in gate/gate:full)
 - GREEN S101-P2: PAD:779 + PAD:780 Files 2->1 (the s93-s98 with-new-its semantics) + the AGENTS:3938 space
@@ -3334,3 +3334,24 @@ Work Log:
 
 Stage Summary:
 - Session 101 SHIPPED: main @ 1017a5b = the F-101a1 edge-wrap fix (both clusterDiff copies) + the drift probe promoted (bun run probe:ref, 10 PURE-seam pins) + the 375x812 drift-gate maiden CLEAN + all standing layers verified (bundle STABLE 72nd, defect STANDS 22nd, drawer battery green) + docs at SKILL v1.98.0, counts at 1892/132, README badge 2024
+
+---
+Task ID: 102-ship
+Agent: main (Super Z)
+Task: Session 102 — the rotation execution, live verification, screenshots, docs
+
+Work Log:
+- Audits: 102-a the s101 ship delta GENUINE 8/8 (non-vacuousness re-proven twice: the 3-file checkout 4|71 + the true pre-fix tree 13|62 -> 75/75); F-102a1 (the 76/76 off-by-one — true 75/75, 6 repo-doc sites) + F-102a2 (6 stale secondary count sites + the README:178 suite list missing drift-probe-tool — the recurring F-99a1 genus) + N-102a1 (the probe header ordinals pre-maiden 71/21st) + N-102a2 (phrasing, record-only); 102-b 13/13 GENUINE zero graduations (~59th), CSV 17 sites zero unguarded, source-vocabulary clean, config verified, SEO 57/57 live, mobile-nav contract intact, globals.css v4 re-pins present; both operator decisions STAND (62nd)
+- LIVE pre-plan: probe:ref STABLE (the 73rd consecutive; census #98 demo zero + desktop 256/8 + the mobile-nav defect STANDS the 23rd); the desktop + phone 390 drift gates CLEAN; the drawer battery FULLY GREEN
+- RED: the NEW tests/docs-counts.test.ts (11 its — the README badge/tree/commands/Tested-row + AGENTS commands/gate-order + PAD tree/Total/HEAD/checklist/commands + the scoped stale-form negatives) + the CLAUDE-count lockstep re-anchor (1892 -> 1903); 12 failed at the pre-fix docs, enumerated by name
+- Non-vacuousness stash-proven: stash README+AGENTS+CLAUDE+PAD -> 12 failed -> pop -> 30/30
+- GREEN S102-P0: 76/76 -> 75/75 at the 6 F-102a1 sites (session_203.md:126 - the s101 plan :183 - AGENTS:4008 - session_204.md:91 - SKILL 16co - worklog:3311)
+- GREEN S102-P2: the count realignment 105 suites / 1903 unit / badge 2035 (README:8/:55/:125/:178 + the suite list gains drift-probe-tool + docs-counts; AGENTS:20/:29; CLAUDE x4; PAD:358/:782/:795/:1217/:1287)
+- GREEN S102-P3: the probe ordinals 71/21st -> 73/23rd (drift-probe.ts header + the test echo; the wiring pin asserts no ordinals — verified before the edit)
+- Full unit: 105 files / 1903 tests GREEN (+11 net)
+- LIVE S102-P4: fresh dev boot; probe:ref post-fix all standing layers reproduced; the MAIDEN 414x896 third-phone-width drift-gate spot-check CLEAN (floor 0.45-0.49 - login 0.67 - settings 8.15 the picklist genus at its highest phone share yet, within the 7.7+0.5 standing margin, arithmetic verified against STANDING_BASELINES); the drawer battery FULLY GREEN again post-fix
+- S102-P5: screenshots 154 (dashboard 414x896 — the third-phone-width maiden view) + 155 (the mobile drawer OPEN 390x844 — the blue panel, 8 links, the dimmed main, the Dashboard active state) — VLM 4/4 + 4/4, zero adjudications; the throwaway capture script deleted
+- S102-P6: session_205.md + the s102 plan + README badge 2035 + the Tested row s102 clause + AGENTS counts + the Session-102 history block + CLAUDE counts x4 + PAD the s102 inventory row [Files = 1, the with-new-its semantics — the near-miss caught in-flight] + the Total 105/1903 + SKILL v1.99.0 (16cp + project_state + the H1)
+
+Stage Summary:
+- Session 102 executed end-to-end: the F-99a1/F-102a2 genus retired (every live-tense count site under the unit gate), the F-102a1 off-by-one corrected, the 414x896 maiden CLEAN, the probe ordinals refreshed. Next: the full gate (gate:full — lint -> tsc -> 1903 unit -> build -> e2e fresh CI=1 -> the four drift sweeps), the closing census, then the house-style commit + the SSH-wrapper push to main

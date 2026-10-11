@@ -180,7 +180,7 @@ Executed exactly as planned, RED-first:
   [x 0..159] bucket.
 - **Non-vacuousness stash-proven**: stash `scripts/sweep.ts` +
   `scripts/drift-probe.ts` + `package.json` + `CLAUDE.md` → **13
-  failed | 62 passed** → pop → **76/76**.
+  failed | 62 passed** → pop → **75/75**.
 - **GREEN (S101-P0)**: the column-bounds guard
   `if (cx + dx < 0 || cx + dx >= cw) continue;` in BOTH clusterDiff
   copies (the node seam + the browser inline twin, the no-bundling

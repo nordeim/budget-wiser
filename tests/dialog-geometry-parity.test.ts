@@ -277,8 +277,11 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // session-101 lockstep carry-forward: 1880 -> 1892 (the s101 +12 —
     // the 2 clusterDiff edge-wrap pins + the 10 drift-probe-tool pins;
     // this lockstep is a re-anchor, not a new it)
-    expect(claude).toContain("Unit (Vitest, 1892 checks)");
-    expect(claude).toContain("(currently 1892)");
+    // session-102 lockstep carry-forward: 1892 -> 1903 (the s102 +11 —
+    // the 11 docs-counts secondary-sites pins; this lockstep is a
+    // re-anchor, not a new it)
+    expect(claude).toContain("Unit (Vitest, 1903 checks)");
+    expect(claude).toContain("(currently 1903)");
     expect(claude).not.toMatch(/1788 checks/);
     expect(claude).not.toMatch(/currently 1788/);
     expect(claude).not.toMatch(/1828 checks/);
@@ -297,5 +300,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toMatch(/currently 1872/);
     expect(claude).not.toMatch(/1880 checks/);
     expect(claude).not.toMatch(/currently 1880/);
+    expect(claude).not.toMatch(/1892 checks/);
+    expect(claude).not.toMatch(/currently 1892/);
   });
 });

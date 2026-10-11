@@ -88,7 +88,7 @@ All pushed and verified. Let me record the completion in the workspace worklog a
 
 **What was delivered:**
 - **Audits clean**: 101-a found the s100 delta GENUINE 12/12 but surfaced **F-101a1 — a real edge-wrap defect** in the s100-promoted `clusterDiff` (union-find neighbor lookup wrapped columns, falsely merging edge clusters); 101-b confirmed zero graduations (58th), 17 CSV sites guarded, both operator decisions standing (61st: **CSV posture (b)** + **source-vocabulary parity**)
-- **The fix** (TDD RED-first, 13 RED → stash-proof → 76/76): the column-bounds guard in both `clusterDiff` copies
+- **The fix** (TDD RED-first, 13 RED → stash-proof → 75/75): the column-bounds guard in both `clusterDiff` copies
 - **The drift probe promoted**: `bun run probe:ref` — the 9-session throwaway pattern is now a one-command, gateable tool (bundle md5 + census + TRUE-390 defect check; 10 PURE-seam pins; offline gate untouched)
 - **Maiden verifications live**: reference bundle **STABLE for the 72nd consecutive session**; mobile-nav defect STANDS (22nd); the **375×812 second-phone-width drift gate CLEAN**; all four standing gates + drawer battery green
 - **Gate**: lint 0/0 · tsc 0 · **1892/1892 unit** · build · **132/132 e2e**; screenshots 152/153 VLM-verified; docs at SKILL v1.98.0, session_203.md, README badge 2024
