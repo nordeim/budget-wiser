@@ -14,6 +14,7 @@ import {
   forecastAccuracySeries,
   monthKey,
   pipelineStageCounts,
+  reportsKpis,
   revenueByMonth,
   wonLostByMonth,
 } from "@/lib/reports-data";
@@ -179,21 +180,12 @@ export async function GET(req: Request) {
       : activities.filter((a) => activityDate(a) >= from && activityDate(a) <= now);
 
   // ---- KPI row (the reference's m memo) ----
-  const kpis: ReportsData["kpis"] = {
-    totalLeads: leads.length,
-    // openLeads counts new+contacted ONLY (NOT qualified — the bundle's
-    // `X.status==="new"||X.status==="contacted"`).
-    openLeads: leads.filter((l) => l.stage === "new" || l.stage === "contacted").length,
-    wonDeals: wonOpps.length,
-    wonValue: wonOpps.reduce((s, o) => s + (o.amount || 0), 0),
-    lostDeals: lostOpps.length,
-    lostValue: lostOpps.reduce((s, o) => s + (o.amount || 0), 0),
-    // The OPPORTUNITY conversion rate: won/(won+lost), one decimal.
-    conversionRate:
-      wonOpps.length + lostOpps.length > 0
-        ? ((wonOpps.length / (wonOpps.length + lostOpps.length)) * 100).toFixed(1)
-        : "0",
-  };
+  // Session-107 (S107-P1): the derivation moved to its pure seam
+  // (src/lib/reports-data.ts reportsKpis — the house seam doctrine;
+  // the formulas byte-identical). Pinned by tests/seeded-reports-kpis.
+  // test.ts: the seed→rolling-quarter→KPI-value chain (the seeded db's
+  // quarter row: 18/6/4/$337.0K/2/$92.0K/"66.7").
+  const kpis: ReportsData["kpis"] = reportsKpis(leads, wonOpps, lostOpps);
 
   // ---- tab 1: the close_date month series (insertion order) ----
   const revenueOverTime = revenueByMonth(wonOpps);

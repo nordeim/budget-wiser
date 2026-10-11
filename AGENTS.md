@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1922 checks)       | `bun run test`                         |
+|  Unit tests (1927 checks)       | `bun run test`                         |
 |  Browser E2E (135 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1922) → `bun run build` → `bun run test:e2e` (135) — or the
+`bun run test` (1927) → `bun run build` → `bun run test:e2e` (135) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4347,3 +4347,84 @@ are UNCHANGED (the drift-gate output byte-identical with or without
   [§16ct + project_state + the H1 — actually bumped this time] +
   README badge 2057 + AGENTS/CLAUDE/PAD at 1922+135 + session_213.md +
   the s106 plan + its execution record + the worklog.
+
+### Session-107 — the reports KPI-derivations unit freeze + the Appendix B / gate-order lockstep fixes
+
+The audits: 107-a the s106 ship delta GENUINE 10/10 (non-vacuousness
+reproduced — the mixed-state 19 failed | 56 passed EXACT + the native
+75/75) with **F-107a1 REAL** (the SKILL Appendix B test-inventory
+table stale since s12: the mobile-nav row "7" vs live 10, the e2e total
+"4 files | 28" vs live 135, the unit total "12 files | 206" vs live
+106|1922 — the F-99a1 genus at an EIGHTH site, invisible to every
+widening); 107-b 9/9 layers PASS (zero graduations ~64th; SEO/sitemap
+46/46 LIVE; the mobile-nav contract INTACT; both operator decisions
+standing 67th). The live layers: probe:ref STABLE the 78th consecutive
+(census #103 — demo zero · desktop 256px/8 · the TRUE-390 defect
+STANDS the 28th, the reference's own bug, our drawer the superset) +
+the four drift gates CLEAN + the drawer battery at TRUE 390×844 FULLY
+GREEN live 9/9 (trigger · panel 288px · 8 links · focus · dual lock ·
+navigate-close · Escape · resize-past-md release).
+
+- **THE HEADLINE — the reports KPI-derivations unit freeze** (the
+  s106-close suggested next #1, "the s107 candidate"): the
+  quarter-filtered KPI row (the values the s105 phone capture read —
+  Total Leads 18 / Open Leads 6, NOT the dashboard's 24) derived
+  INLINE in the route handler since s31 with no seam and no freeze.
+  S107-P1 extracted the pure `reportsKpis(leads, wonOpps, lostOpps)`
+  seam into src/lib/reports-data.ts (the house seam doctrine — the
+  FIRST src/ change since s90, behavior-preserving, the formulas
+  byte-identical); the NEW tests/seeded-reports-kpis.test.ts (4 its)
+  pins the seam-formula members (openLeads new+contacted STRICTLY ·
+  the toFixed(1) conversion · the zero-division guard · the null-safe
+  sums) + the route-wiring (the handler orchestrates, no inline
+  derivation survives) + the seeded rolling-quarter row through the
+  REAL seam + the REAL subMonthsClamped window (**18/6/4/$337.0K/
+  2/$92.0K/"66.7"**) + the window boundary (the −95-created lead
+  outside [Jul 8 < Jul 11], the −80 the oldest inside — a 12-day
+  margin) + the all-time contrast (24 vs 18: the same seed, two
+  windows). Induced-drift-proven BOTH faces: a seed stage perturbation
+  (won→contacted) fails the seeded its by name; a seam formula
+  perturbation (qualified joined to openLeads) fails four its — both
+  restored → GREEN.
+- **F-107a1 fixed + pinned**: the Appendix B refreshed (the per-suite
+  rows DATED as an s12 snapshot per the F-100a2 doctrine; the three
+  live-tense totals now live: unit 107 files | 1927 · e2e 5 spec files
+  + the setup project | 135 · mobile-nav 10) + the NEW docs-counts it
+  pinning all three constructions against the SKILL source — the genus
+  structurally retired at the eighth site.
+- **F-107b1 fixed + pinned** (the in-flight plan-validation find):
+  CLAUDE's gate-order unit half ("`bun run test` (1922)") was another
+  UNPINNED live-tense unit-count site (the docs-counts AGENTS
+  gate-order pin covered only AGENTS; CLAUDE's e2e half was already
+  pinned — the asymmetry) — the FOURTH assertion joined the
+  dialog-geometry CLAUDE unit lockstep carrier (the F-106c1
+  precedent); the opportunity-model KPI it re-anchored onto the seam
+  construction (the route calls reportsKpis + the seam carries the
+  new/contacted strictness).
+- **The count ladder**: UNIT 1922 → 1927 (+4 the KPI suite + 1 the
+  Appendix B pin) · SUITES 106 → 107 (the new suite file) · E2E
+  UNCHANGED at 135 (the N-79b1 carrier + the e2e-site pins untouched)
+  · badge 2057 → 2062 · the README commands suite list gains
+  seeded-reports-kpis · the retired 1922/106/2057 constructions joined
+  the negatives ladders · the probe ordinals 77/27th → 78/28th.
+- **RED-1**: 19 failed | 46 passed (65) at the pre-realignment docs +
+  the still-inline route (the 10 unit-axis docs-counts pins + the
+  stale-forms negatives it tripping on the still-live old forms + the
+  H1/project_state counts face + the NEW Appendix B it + the
+  dialog-geometry lockstep + the 4 KPI-suite its [the seam not yet
+  born] + the opportunity-model re-anchor — the plan predicted 18, the
+  +1 the stale-forms it, its RED failure the negatives working as
+  designed), stash-proven (stash the four test files → 60/60 → pop →
+  19 RED).
+- **The captures**: 164 (the seeded reports KPI row at 390×844, first
+  viewport — the 18/6 ladder readable off the phone pixels) + 165 (the
+  desktop 1440 full 5-card row + the "This Quarter" filter) — the VLM
+  battery 4/4 + 4/4, zero adjudications: the VLM independently read
+  ALL five frozen values verbatim (18 · 6 · 4 $337.0K · 2 $92K ·
+  66.7%) plus the period filter off BOTH viewports' pixels.
+- **GATE**: lint 0/0 · tsc 0 · 1927/1927 unit [107 suites, +5 net] ·
+  build · 135/135 e2e fresh CI=1 (the seam behavior-preserving — no
+  re-baselining) + the four drift sweeps CLEAN inside gate:full. Docs
+  at SKILL v1.104.0 [§16cu + project_state + the H1] + README badge
+  2062 + AGENTS/CLAUDE/PAD at 1927+135 + session_215.md + the s107
+  plan + its execution record + the worklog.

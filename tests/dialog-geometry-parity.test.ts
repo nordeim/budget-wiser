@@ -297,9 +297,18 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // live-tense unit-count site — the F-99a1 genus on the CLAUDE
     // commands-table axis, missed by the s102/s104 locksteps (found
     // in-flight during the s106 plan validation).
-    expect(claude).toContain("Unit (Vitest, 1922 checks)");
-    expect(claude).toContain("(currently 1922)");
-    expect(claude).toContain("Vitest unit suites (1922 checks)");
+    // session-107 lockstep carry-forward: 1922 -> 1927 (the s107 +5 —
+    // the seeded-reports-kpis freeze suite [+4] + the docs-counts
+    // Appendix B totals pin [+1]) + the F-107b1 FOURTH site joined:
+    // CLAUDE's gate-order unit half ("`bun run test` (N)") was another
+    // UNPINNED live-tense unit-count site — the docs-counts AGENTS
+    // gate-order pin covered only AGENTS while CLAUDE's e2e half was
+    // already pinned (the asymmetry; found in-flight during the s107
+    // plan validation).
+    expect(claude).toContain("Unit (Vitest, 1927 checks)");
+    expect(claude).toContain("(currently 1927)");
+    expect(claude).toContain("Vitest unit suites (1927 checks)");
+    expect(claude).toContain("`bun run test` (1927)");
     expect(claude).not.toMatch(/1788 checks/);
     expect(claude).not.toMatch(/currently 1788/);
     expect(claude).not.toMatch(/1828 checks/);
@@ -324,5 +333,11 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toMatch(/currently 1903/);
     expect(claude).not.toMatch(/1915 checks/);
     expect(claude).not.toMatch(/currently 1915/);
+    // session-107: the retired 1922 forms join the ladder (CLAUDE keeps
+    // no session-history blocks — after the realignment no 1922
+    // construction may remain anywhere in the file)
+    expect(claude).not.toMatch(/1922 checks/);
+    expect(claude).not.toMatch(/currently 1922/);
+    expect(claude).not.toMatch(/`bun run test` \(1922\)/);
   });
 });

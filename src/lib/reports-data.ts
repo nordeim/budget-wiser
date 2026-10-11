@@ -211,3 +211,69 @@ export function dealsAtRiskRows(
     .slice(0, 20)
     .map((o) => ({ id: o.id, deal: o.name, account: o.accountName, amount: o.amount }));
 }
+
+// ---------------------------------------------------------------------------
+// Session-107 (S107-P1): the reports KPI row — the pure seam. The derivation
+// lived INLINE in src/app/api/reports/route.ts since session-31 (a pure
+// computation on the period-filtered arrays — the house seam doctrine says
+// it belongs here). Extracted behavior-preserving: the formulas are
+// byte-identical, the route now orchestrates (builds the filtered arrays,
+// calls this seam, assigns to ReportsData["kpis"]).
+//
+// Pinned by tests/seeded-reports-kpis.test.ts: the formula members (the
+// synthetic face) + the seed→rolling-quarter→KPI-value chain (the seeded
+// face — the values the s105 phone capture read live: 18/6/4/$337.0K/
+// 2/$92.0K/"66.7" on the seeded db at the default quarter period) + the
+// route wiring (the seam doctrine, source-level).
+// ---------------------------------------------------------------------------
+
+/** A lead row as the KPI derivation sees it (the period-filtered set). */
+export interface KpiLeadRow {
+  stage: string;
+}
+
+/** A closed opportunity row as the KPI derivation sees it. */
+export interface KpiOppRow {
+  amount: number;
+}
+
+/** The reports page's KPI row (ReportsData["kpis"], structural). */
+export interface ReportsKpis {
+  totalLeads: number;
+  openLeads: number;
+  wonDeals: number;
+  wonValue: number;
+  lostDeals: number;
+  lostValue: number;
+  conversionRate: string;
+}
+
+/**
+ * The reference's KPI-row memo (the `m` memo, bundle-decoded): totalLeads =
+ * the filtered lead count; openLeads counts new+contacted ONLY (NOT
+ * qualified — the bundle's `X.status==="new"||X.status==="contacted"`); the
+ * won/lost count+value pairs sum the filtered closed opps (the `|| 0` guards
+ * preserved from the inline era); the OPPORTUNITY conversion rate is
+ * won/(won+lost) at one decimal, "0" when nothing has closed.
+ */
+export function reportsKpis(
+  leads: ReadonlyArray<KpiLeadRow>,
+  wonOpps: ReadonlyArray<KpiOppRow>,
+  lostOpps: ReadonlyArray<KpiOppRow>,
+): ReportsKpis {
+  return {
+    totalLeads: leads.length,
+    // openLeads counts new+contacted ONLY (NOT qualified — the bundle's
+    // `X.status==="new"||X.status==="contacted"`).
+    openLeads: leads.filter((l) => l.stage === "new" || l.stage === "contacted").length,
+    wonDeals: wonOpps.length,
+    wonValue: wonOpps.reduce((s, o) => s + (o.amount || 0), 0),
+    lostDeals: lostOpps.length,
+    lostValue: lostOpps.reduce((s, o) => s + (o.amount || 0), 0),
+    // The OPPORTUNITY conversion rate: won/(won+lost), one decimal.
+    conversionRate:
+      wonOpps.length + lostOpps.length > 0
+        ? ((wonOpps.length / (wonOpps.length + lostOpps.length)) * 100).toFixed(1)
+        : "0",
+  };
+}

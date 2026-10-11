@@ -53,6 +53,22 @@
 // and the mobile-nav suite-count pin widens to SEVEN sites — the
 // F-106b1 fix [AGENTS:168 + SKILL:359, the stale 9-check sites]).
 // The e2e census grows 134 → 135 (the S106-P2 settings-tabs guard).
+// → s107 (unit 1922 → 1927: +4 — the NEW seeded-reports-kpis suite [the
+// reports KPI-derivations unit freeze: the seam-formula members + the
+// route-wiring pin + the seeded rolling-quarter KPI row {18/6/4/337k/
+// 2/92k/"66.7"} + the window-boundary/all-time contrast] + 1 — the NEW
+// Appendix B totals pin [the F-107a1 fix — the SKILL Appendix B
+// test-inventory table was an s12 snapshot stale at THREE total sites
+// since 652511b, invisible to every widening; the pin anchors the
+// unit-total/e2e-total/mobile-nav-row constructions so it can never
+// re-stale]. SUITES 106 → 107 (the new suite file); E2E UNCHANGED at
+// 135 — the N-79b1 carrier and the e2e-site pins untouched this
+// session; the F-107b1 fix joins CLAUDE:38's gate-order unit half to
+// the dialog-geometry CLAUDE unit lockstep carrier as its FOURTH
+// assertion — the in-flight plan-validation find, another unpinned
+// live-tense unit-count site [the docs-counts AGENTS gate-order pin
+// covered only AGENTS; CLAUDE:38's e2e half was already pinned]. The
+// retired 1922/106/2057 constructions join the negatives ladders.)
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -61,16 +77,16 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1922;
+const UNIT = 1927;
 const E2E = 135;
-const SUITES = 106;
+const SUITES = 107;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
 const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1922 + 135 = 2057)", () => {
+  it("README badge carries the unit + e2e arithmetic (1927 + 135 = 2062)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -83,10 +99,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
   it("README commands comment carries the live unit count AND the three newest suites in the list (the :178 site — F-102a2: 1880 stale + drift-probe-tool missing)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`# ${UNIT} Vitest unit checks (`);
-    // the suite list must carry the s101 + s102 + s103 additions (F-102a2's second face)
+    // the suite list must carry the s101 + s102 + s103 + s107 additions
+    // (F-102a2's second face; the s107 extension — the newest suite
+    // joins the pinned names)
     expect(readme).toContain("drift-probe-tool");
     expect(readme).toContain("docs-counts");
     expect(readme).toContain("seeded-charts");
+    expect(readme).toContain("seeded-reports-kpis");
   });
 
   it("README Tested row carries the live counts (the headline live-tense row)", () => {
@@ -150,6 +169,22 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).not.toMatch(/— 1880\/1880/);
     expect(pad).not.toMatch(/\| 1880 unit checks \|/);
     expect(pad).not.toMatch(/# 1880 Vitest unit checks/);
+    // -----------------------------------------------------------------
+    // Session-107: the unit-count realignment (1922 → 1927 + 106 → 107
+    // suites + badge 2057 → 2062 — the seeded-reports-kpis freeze + the
+    // Appendix B pin). The retired 1922/106/2057 constructions join the
+    // ladder — the same SITE-FORM anchors, the same doctrine: history
+    // rows quote the forms only in arrow/gate-phrasing form, never the
+    // bare site constructions (the AGENTS §Session-106 GATE line reads
+    // "1922/1922 unit [106 suites" — not the commands-table or
+    // gate-order forms; the PAD s106 inventory row quotes by name).
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2057%20checks/);
+    expect(readme).not.toMatch(/# 106 Vitest suites/);
+    expect(readme).not.toMatch(/# 1922 Vitest unit checks/);
+    expect(pad).not.toMatch(/# 106 Vitest suites/);
+    expect(pad).not.toMatch(/HEAD: 106 Vitest/);
+    expect(pad).not.toMatch(/— 1922\/1922/);
   });
 
   // ------------------------------------------------------------------
@@ -324,5 +359,41 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     ).toContain(
       `project_state: ${UNIT} unit checks + ${E2E} e2e checks green`,
     );
+  });
+
+  // ------------------------------------------------------------------
+  // Session-107 (S107-P4): the F-107a1 fix — the Appendix B totals pin.
+  // The 107-a audit found the SKILL Appendix B "Test Inventory & Runtime
+  // Costs" table still carrying its s12-era totals (the mobile-nav row
+  // "7", the e2e total "4 files | 28", the unit total "12 files | 206")
+  // — stale since 652511b (s12) and invisible to every widening because
+  // the seven-site mobile-nav pin anchors the SPEC-LINE construction,
+  // not the inventory-table row. The F-99a1 genus at an EIGHTH site.
+  // The refresh dates the per-suite rows as an s12 snapshot (the
+  // F-100a2 history doctrine) and re-anchors the THREE live-tense total
+  // sites; this pin holds them there — a future count change that
+  // forgets the Appendix fails `bun run test`.
+  // ------------------------------------------------------------------
+
+  it("the SKILL Appendix B carries the live totals (the F-107a1 pin — unit total · e2e total · the mobile-nav row)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    const appendix = skill.slice(skill.indexOf("## Appendix B"));
+    expect(
+      appendix,
+      "the Appendix B unit-total row must carry the live suite + check counts",
+    ).toContain(`| **unit total** | ${SUITES} files | **${UNIT}** |`);
+    expect(
+      appendix,
+      "the Appendix B e2e-total row must carry the live spec-file + check counts",
+    ).toContain(`| **e2e total** | 5 spec files + the setup project | **${E2E}** |`);
+    expect(
+      appendix,
+      "the Appendix B mobile-nav row must carry the live 10-check census",
+    ).toContain(`| e2e mobile nav regression (incl. focus entry) | \`tests/e2e/mobile-navigation.spec.ts\` | ${MOBILE_NAV_E2E} |`);
+    // the retired s12 totals never return (SITE-FORM anchors — the
+    // table's own row constructions; a history row quoting them by
+    // name cannot match)
+    expect(appendix).not.toMatch(/\| \*\*unit total\*\* \| 12 files/);
+    expect(appendix).not.toMatch(/\| \*\*e2e total\*\* \| 4 files/);
   });
 });

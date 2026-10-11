@@ -224,12 +224,24 @@ describe("session-31: the reports derivations (the five tab components)", () => 
     expect(filterBlock).toMatch(/owner/);
   });
 
-  it("the KPI row: openLeads = new+contacted ONLY; won/lost/conversion from OPPS", () => {
+  it("the KPI row: openLeads = new+contacted ONLY; won/lost/conversion from OPPS (the s107 seam extraction — the formula lives in reportsKpis, the route orchestrates)", () => {
     const src = route();
-    const openBlock = src.slice(src.indexOf("openLeads"), src.indexOf("openLeads") + 400);
+    // the route hands the filtered arrays to the seam (S107-P1)
+    expect(src).toMatch(/reportsKpis\(/);
+    // the formula itself — read from the SEAM source now (the s31
+    // inline derivation moved to src/lib/reports-data.ts; the seam
+    // keeps the strictness: new+contacted, never qualified). The
+    // slice anchors on the FUNCTION body (the interface's own
+    // `openLeads: number` member must not shadow the formula).
+    const seam = stripComments(read("src/lib/reports-data.ts") ?? "");
+    const fn = seam.slice(seam.indexOf("export function reportsKpis"));
+    const openBlock = fn.slice(fn.indexOf("openLeads"), fn.indexOf("openLeads") + 400);
     expect(openBlock).toMatch(/"new"/);
     expect(openBlock).toMatch(/"contacted"/);
     expect(openBlock).not.toMatch(/"qualified"/);
+    expect(seam).toMatch(/wonOpps/);
+    expect(seam).toMatch(/lostOpps/);
+    // the route still builds the won/lost branches that feed the seam
     expect(src).toMatch(/wonOpps/);
     expect(src).toMatch(/lostOpps/);
   });
