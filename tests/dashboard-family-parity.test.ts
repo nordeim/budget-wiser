@@ -210,15 +210,27 @@ describe("session-78: the dashboard route slim (the dch wire-extra policy)", () 
     expect(typesSrc()).not.toMatch(/daysUntil/);
   });
 
-  it("the route KEEPS the unfiltered members: totalLeads / salesTarget / conversionRate / avgSalesCycleDays + revenueOverTime + leadSources + upcomingActivities", () => {
+  it("the route KEEPS the unfiltered members: revenueOverTime + leadSources + upcomingActivities + the KPI seam call (s110: the five KPI members live in dashboardKpis now)", () => {
+    // Session-110 (S110-P4): the KPI-member constructions moved to
+    // src/lib/dashboard-data.ts (the house seam doctrine, the s107
+    // precedent) — the route keeps the three remaining derivations +
+    // orchestrates the KPI row through the seam.
     const src = dashRoute();
-    expect(src).toMatch(/totalLeads/);
-    expect(src).toMatch(/salesTarget\s*=\s*0/);
-    expect(src).toMatch(/conversionRate/);
-    expect(src).toMatch(/avgSalesCycleDays/);
+    expect(src).toMatch(/dashboardKpis\(/);
+    expect(src).toMatch(/from "@\/lib\/dashboard-data"/);
     expect(src).toMatch(/revenueOverTime/);
     expect(src).toMatch(/leadSources/);
     expect(src).toMatch(/upcomingActivities/);
+    // the retired inline KPI constructions never return to the route
+    expect(src).not.toMatch(/const salesTarget\s*=\s*0/);
+    expect(src).not.toMatch(/const avgSalesCycleDays/);
+    // the seam carries the five members (the s31 constructions live there)
+    const seam = stripComments(read("src/lib/dashboard-data.ts") ?? "");
+    expect(seam).toMatch(/totalLeads: leads\.length/);
+    expect(seam).toMatch(/salesTarget:\s*0/);
+    expect(seam).toMatch(/salesTargetProgress:\s*0/);
+    expect(seam).toMatch(/conversionRate/);
+    expect(seam).toMatch(/avgSalesCycleDays/);
   });
 
   it("the three DB reads stay inside the try (leads + opportunities + activities — every remaining member needs them)", () => {

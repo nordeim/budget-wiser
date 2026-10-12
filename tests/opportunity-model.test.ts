@@ -162,12 +162,20 @@ describe("session-31: the Opportunity Prisma model + seed + API + store + reset"
 describe("session-31: the dashboard KPI derivations (the bundle's Eke memo)", () => {
   const route = () => stripComments(read("src/app/api/dashboard/route.ts") ?? "");
 
-  it("the KPI block hardcodes salesTarget 0 + targetProgress 0 (the reference's V=0 quirk)", () => {
-    const src = route();
-    const kpiBlock = src.slice(src.indexOf("const salesTarget"), src.indexOf("const salesTarget") + 300);
-    expect(kpiBlock).toMatch(/salesTarget\s*=\s*0/);
-    const progBlock = src.slice(src.indexOf("salesTargetProgress"), src.indexOf("salesTargetProgress") + 200);
-    expect(progBlock).toMatch(/=\s*0/);
+  it("the KPI block hardcodes salesTarget 0 + targetProgress 0 (the reference's V=0 quirk — s110: the formula lives in the dashboardKpis seam, the route orchestrates)", () => {
+    // Session-110 (S110-P4): the s31 inline derivation moved to
+    // src/lib/dashboard-data.ts; the formula itself is read from the
+    // SEAM source now (the s107 reportsKpis precedent), and the route
+    // carries only the seam call. The slice anchors on the FUNCTION
+    // body (the interface's own `salesTarget: number` member is the
+    // type, not the formula).
+    const seam = stripComments(read("src/lib/dashboard-data.ts") ?? "");
+    const body = seam.slice(seam.indexOf("export function dashboardKpis"));
+    const kpiBlock = body.slice(body.indexOf("salesTarget"), body.indexOf("salesTarget") + 300);
+    expect(kpiBlock).toMatch(/salesTarget:\s*0/);
+    const progBlock = body.slice(body.indexOf("salesTargetProgress"), body.indexOf("salesTargetProgress") + 200);
+    expect(progBlock).toMatch(/:\s*0/);
+    expect(route()).toMatch(/dashboardKpis\(/);
   });
 
   it("dealsClosedValue + revenueThisMonth derive from the page's FILTERED won opps (the s78 p-memo re-derivation — the route members retired)", () => {
@@ -181,11 +189,17 @@ describe("session-31: the dashboard KPI derivations (the bundle's Eke memo)", ()
     expect(wonBlock).toMatch(/filteredOpps|filteredWon/);
   });
 
-  it("avgSalesCycle is the average AGE of won leads (now − created, per-lead floored)", () => {
-    const src = route();
-    const block = src.slice(src.indexOf("avgSalesCycleDays"), src.indexOf("avgSalesCycleDays") + 600);
+  it("avgSalesCycle is the average AGE of won leads (now − created, per-lead floored — s110: read from the SEAM source)", () => {
+    // Session-110 (S110-P4): the derivation moved to the seam; the
+    // createdAt-not-closedAt contract is pinned at the SEAM source now
+    // (the interface's own createdAt field IS the structural pin —
+    // closedAt never enters the signature).
+    const seam = stripComments(read("src/lib/dashboard-data.ts") ?? "");
+    const block = seam.slice(seam.indexOf("avgSalesCycleDays"), seam.indexOf("avgSalesCycleDays") + 600);
     expect(block).toMatch(/createdAt/);
     expect(block).not.toMatch(/closedAt/);
+    expect(seam).not.toMatch(/closedAt/);
+    expect(route()).toMatch(/dashboardKpis\(/);
   });
 
   it("the revenue chart window is the FIXED Nov..May labels (the reference's hardcoded quirk)", () => {

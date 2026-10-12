@@ -313,14 +313,18 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // the activities-calendar-parity row pin [+1] + the docs-counts
     // line-census pin [+1]); the four sites re-anchored again, the
     // retired 1932 forms join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1934 checks)");
-    expect(claude).toContain("(currently 1934)");
-    expect(claude).toContain("Vitest unit suites (1934 checks)");
-    expect(claude).toContain("`bun run test` (1934)");
-    expect(claude).not.toContain("Unit (Vitest, 1932 checks)");
-    expect(claude).not.toContain("(currently 1932)");
-    expect(claude).not.toContain("Vitest unit suites (1932 checks)");
-    expect(claude).not.toContain("`bun run test` (1932)");
+    // session-110 lockstep carry-forward: 1934 -> 1938 (the s110 +4 —
+    // the seeded-dashboard-kpis freeze suite, the dashboardKpis seam
+    // extraction); the four sites re-anchored again, the retired 1934
+    // forms join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1938 checks)");
+    expect(claude).toContain("(currently 1938)");
+    expect(claude).toContain("Vitest unit suites (1938 checks)");
+    expect(claude).toContain("`bun run test` (1938)");
+    expect(claude).not.toContain("Unit (Vitest, 1934 checks)");
+    expect(claude).not.toContain("(currently 1934)");
+    expect(claude).not.toContain("Vitest unit suites (1934 checks)");
+    expect(claude).not.toContain("`bun run test` (1934)");
     expect(claude).not.toMatch(/1788 checks/);
     expect(claude).not.toMatch(/currently 1788/);
     expect(claude).not.toMatch(/1828 checks/);

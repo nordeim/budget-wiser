@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { ok, ERR, isGuarded, requireSession } from "@/lib/api";
+import { dashboardKpis } from "@/lib/dashboard-data";
 import type { DashboardData } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,16 @@ export const dynamic = "force-dynamic";
 // avgSalesCycleDays (the leads `l`), salesTarget (its literal 0),
 // revenueOverTime (the opps `f`), leadSources (leads) + the upcoming
 // window (activities).
+//
+// Session-110 (S110-P2): the KPI row — the LAST inline KPI derivation —
+// extracted behavior-preserving into the dashboardKpis seam
+// (src/lib/dashboard-data.ts, the s107 reportsKpis precedent; the house
+// seam doctrine: handlers orchestrate, seams derive). The route hands
+// the fetched leads + now to the seam and assigns its return to
+// DashboardData["kpis"]; the wonLeads intermediate retired with the
+// block (only the seam consumes it). Pinned by
+// tests/seeded-dashboard-kpis.test.ts (the seed→seam chain: 24 / 0 /
+// 0 / "29.2" / 83 on the parsed seed at the synthetic seed-time NOW).
 
 /** The reference's FIXED 7-label window — hardcoded in its bundle, it does
  *  NOT track the data months (the labels stay Nov..May forever; the data
@@ -57,33 +68,14 @@ export async function GET() {
   const [leads, opportunities, activities] = rows;
 
   const wonOpps = opportunities.filter((o) => o.stage === "closed_won");
-  const wonLeads = leads.filter((l) => l.stage === "won");
 
-  // ---- KPIs (the Eke memo's UNFILTERED members — the leads list `l`) ----
-  const totalLeads = leads.length;
-
-  // The reference's HARDCODED zero target (its literal V=0) — the Sales
-  // Target card renders $0k / 0% on both sides. Our derived
-  // max(50_000, openPipeline/4) model is retired.
-  const salesTarget = 0;
-  const salesTargetProgress = 0;
-
-  // Conversion rate: the WON-LEAD share of all leads, one decimal (the
-  // reference's toFixed(1) — a string on the wire).
-  const conversionRate = leads.length > 0 ? ((wonLeads.length / leads.length) * 100).toFixed(1) : "0";
-
-  // Avg sales cycle: the average AGE of the won leads — floor((now −
-  // created)/day) per lead, averaged, rounded (NOT created→closed; the
-  // s29 H/U doctrine now applied to the dashboard KPI too).
-  const avgSalesCycleDays =
-    wonLeads.length > 0
-      ? Math.round(
-          wonLeads.reduce(
-            (s, l) => s + Math.floor((now.getTime() - l.createdAt.getTime()) / 86_400_000),
-            0,
-          ) / wonLeads.length,
-        )
-      : 0;
+  // ---- KPIs (the Eke memo's UNFILTERED members — the leads list `l`) —
+  //      derived by the dashboardKpis seam since session-110 (the s107
+  //      reportsKpis precedent applied to the LAST inline KPI row: the
+  //      hardcoded V=0 target, the toFixed(1) won-LEAD conversion, the
+  //      per-lead-floored average AGE — formulas byte-identical,
+  //      src/lib/dashboard-data.ts) ----
+  const kpis = dashboardKpis(leads, now);
 
   // ---- Revenue over time: the FIXED Nov..May labels + the 55k±random
   //      target (the reference recomputes the random per render; per request is
@@ -126,13 +118,7 @@ export async function GET() {
     }));
 
   const data: DashboardData = {
-    kpis: {
-      totalLeads,
-      salesTarget,
-      salesTargetProgress,
-      conversionRate,
-      avgSalesCycleDays,
-    },
+    kpis,
     revenueOverTime,
     leadSources,
     upcomingActivities,

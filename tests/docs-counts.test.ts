@@ -116,16 +116,16 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1934;
+const UNIT = 1938;
 const E2E = 137;
-const SUITES = 108;
+const SUITES = 109;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
 const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1934 + 137 = 2071)", () => {
+  it("README badge carries the unit + e2e arithmetic (1938 + 137 = 2075)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -147,6 +147,8 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).toContain("seeded-reports-kpis");
     // the s108 extension — the newest suite joins the pinned names
     expect(readme).toContain("calendar-grid");
+    // the s110 extension — the dashboard KPI seam freeze joins the list
+    expect(readme).toContain("seeded-dashboard-kpis");
   });
 
   it("README Tested row carries the live counts (the headline live-tense row)", () => {
@@ -251,6 +253,19 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).not.toMatch(/# 1932 Vitest unit checks/);
     expect(pad).not.toMatch(/— 1932\/1932/);
     expect(pad).not.toMatch(/e2e checks in 6 spec/);
+    // -----------------------------------------------------------------
+    // Session-110: the unit-count realignment (1934 → 1938 + 108 → 109
+    // suites + badge 2071 → 2075 — the dashboardKpis seam extraction
+    // + the seeded-dashboard-kpis freeze; E2E UNCHANGED at 137 — the
+    // extraction is server-internal). The retired 1934/108/2071
+    // constructions join the ladder — the same SITE-FORM anchors, the
+    // same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2071%20checks/);
+    expect(readme).not.toMatch(/# 108 Vitest suites/);
+    expect(readme).not.toMatch(/# 1934 Vitest unit checks/);
+    expect(pad).not.toMatch(/# 108 Vitest suites/);
+    expect(pad).not.toMatch(/— 1934\/1934/);
   });
 
   // ------------------------------------------------------------------
@@ -468,13 +483,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-109 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-110 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s108 layer now beneath the s109 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s109 layer now beneath the s110 head)",
     ).toContain(
-      "+ beneath it 1932 unit checks + 136 e2e checks green; the session-108 layer (the 108-c rotation — THE FOURTH-SURFACE SEEDED MOBILE WALK",
+      "+ beneath it 1934 unit checks + 137 e2e checks green; the session-109 layer (the 109-c rotation — THE FIFTH-SURFACE SEEDED MOBILE WALK",
     );
   });
 
@@ -593,6 +608,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       settingsMobileSpec: lines("tests/e2e/settings-mobile.spec.ts"),
       mobileNavSpec: lines("tests/e2e/mobile-navigation.spec.ts"),
       reportsMobileSpec: lines("tests/e2e/reports-mobile.spec.ts"),
+      dashboardData: lines("src/lib/dashboard-data.ts"),
     };
     const pad = read("Project_Architecture_Document.md");
     const skill = read("neo-crm_SKILL.md");
@@ -629,6 +645,14 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       "the reports-mobile spec row (the ~110 tilde exact-ified)",
     ).toContain(`| \`tests/e2e/reports-mobile.spec.ts\` | ${live.reportsMobileSpec} |`);
     expect(pad).not.toContain("| `tests/e2e/reports-mobile.spec.ts\` | ~110 |");
+
+    // the FOURTEENTH pair (s110, at birth — the F-109a1-genus
+    // prevention): the new seam's module-table row can never go stale —
+    // a doc edit OR a source growth fails here.
+    expect(
+      pad,
+      "the dashboard-data row (s110 — the new seam, pinned at birth)",
+    ).toContain(`| \`src/lib/dashboard-data.ts\` | ${live.dashboardData} |`);
 
     // the SKILL header cluster (F-109a2 — the seven stale line-counts)
     expect(

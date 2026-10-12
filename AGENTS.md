@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1934 checks)       | `bun run test`                         |
+|  Unit tests (1938 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1934) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1938) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4626,3 +4626,86 @@ decisions standing 69th).
   project_state + the H1 + the header cluster] + README badge 2071 +
   AGENTS/CLAUDE/PAD at 1934+137 + session_221.md + the s109 plan +
   its execution record + the worklog.
+
+### Session-110 — the dashboard KPI seam unification + the seeded freeze
+
+The s109-close suggested next #1, twice deferred behind the mobile
+walks: the dashboard KPI row — the LAST inline KPI derivation (the
+exact s107-genus the reportsKpis extraction retired for the reports
+route) — derived inline in `src/app/api/dashboard/route.ts` since
+session-31, violating the house seam doctrine for 79 sessions. The
+s103 seeded-charts pin held two of its members through a MIRRORED
+formula inside the test body (a route formula edit would NOT have
+failed it — the mirror keeps passing while the app drifts).
+
+**The seam (S110-P1/P2):** the derivation extracted
+behavior-preserving into `dashboardKpis(leads, now)` in
+`src/lib/dashboard-data.ts` (the s107 precedent — formulas
+byte-identical: the reference's HARDCODED V=0 salesTarget +
+targetProgress 0, the toFixed(1) WON-LEAD conversion share with the
+"0" zero-division guard, the per-lead-floored rounded average AGE of
+the won leads — createdAt only, closedAt never enters the signature).
+The route now orchestrates: fetches the arrays, hands leads + now to
+the seam, assigns to `DashboardData["kpis"]`; the wonLeads
+intermediate retired with the block (only the seam consumes it);
+wonOpps/revenueOverTime/leadSources/upcomingActivities untouched (the
+s78 slim's members). Behavior-preserving — the API response is
+byte-identical; the drift sweeps and the e2e golden path unchanged,
+NO re-baselining.
+
+**The freeze (S110-P3):** `tests/seeded-dashboard-kpis.test.ts` — 4
+its: the seam-formula members (synthetic — the V=0 quirk, the
+toFixed(1) won-LEAD share, the FLOOR-then-average-then-ROUND order,
+both zero-division guards) · the route wiring (source-level: the seam
+call, no inline construction survives) · the seeded dashboard KPI row
+through the REAL seam at the synthetic seed-time NOW: **totalLeads 24
+· salesTarget 0 · progress 0 · conversionRate "29.2" (7/24) ·
+avgSalesCycleDays 83** (the ages 140+120+95+80+62+45+38 = 580, /7 →
+83) · the cross-seam contrast (the unification face): the SAME seed
+through reportsKpis's rolling quarter reads 18/"66.7" while the
+dashboard face reads 24/"29.2" — the WINDOW axis (all-time vs
+quarter) AND the NUMERATOR axis (won-LEADS vs won-OPPS) pinned
+side-by-side; a future edit pointing either route at the wrong seam
+fails BOTH its.
+
+**The re-anchors (S110-P4):** opportunity-model ×2 (the salesTarget +
+avgSalesCycle pins read the SEAM source now, the s107 precedent) ·
+dashboard-family-parity ×1 (the route-KEEPS pin: the three remaining
+derivations + the seam call; the five KPI constructions asserted at
+the seam) · seeded-charts ×1 (the s103 MIRRORED formula retired — the
+members assert through the REAL imported seam).
+
+**The count ladder:** UNIT 1934 → 1938 (+4 — the new suite; the four
+re-anchors land in EXISTING its) · SUITES 108 → 109 (the FIRST new
+unit suite since s108's calendar-grid) · E2E 137 UNCHANGED (the
+extraction is server-internal) · badge 2071 → 2075 · the README
+commands suite list + file-tree lib comment gain the new names · the
+Appendix B unit-total 109|1938 + the per-suite row · the line-census
+gains its FOURTEENTH pair AT BIRTH (the PAD dashboard-data.ts row —
+the F-109a1-genus prevention) · the retired 1934/108/2071
+constructions join the negatives ladders · the dialog-geometry CLAUDE
+lockstep 1934 → 1938 · the probe ordinals 80/30th → 81/31st.
+
+**RED-first:** 19 failed | 97 passed (116) at the still-inline route +
+the still-old docs (the 14 docs-counts count-axis its + the new
+suite's route-wiring it + the opportunity-model ×2 + the
+dashboard-family-parity + the dialog-geometry lockstep — enumerated by
+name; the plan predicted ≈19-21), stash-proven (the nine files stashed
+with -u → the native 112/112 → pop → 19 RED) + BOTH induced-drift
+proofs (the seam-formula toFixed(1)→toFixed(0) perturbation fails the
+formula + seeded + seeded-charts its by name; the seed stage
+perturbation won→contacted fails the seeded-row its by name; both
+restored → GREEN).
+
+**The captures:** 170 (the seeded dashboard KPI row at 1440 — Total
+Leads 24 · Sales Target $0k/0% · Conversion Rate 29.2% · Avg Sales
+Cycle 83d) + 171 (the KPI ladder at 390×844) — the VLM battery 4/4 ×
+2, the KPI values read off the pixels on both viewports.
+
+**GATE:** lint 0/0 · tsc 0 · 1938/1938 unit [109 suites, +4 net] ·
+build · 137/137 e2e fresh CI=1 + the four drift sweeps CLEAN inside
+gate:full (the extraction is server-internal — the rendered pixels
+identical, no re-baselining). Docs at SKILL v1.107.0 [§16cx +
+project_state + the H1 + Appendix B] + README badge 2075 +
+AGENTS/CLAUDE/PAD at 1938+137 + session_225.md + the s110 plan + its
+execution record + the worklog.

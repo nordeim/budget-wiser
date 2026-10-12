@@ -3,7 +3,7 @@
 // s100-close suggested next #2: "promote the drift probe [bundle md5
 // + census] into a tool beside the sweep"). Every session since s92
 // re-derived the same probe by hand: the reference's POST-LOGIN
-// app-shell bundle md5 (80 consecutive stable sessions measured
+// app-shell bundle md5 (81 consecutive stable sessions measured
 // a70a637fcf1d4291da8e0d965676dc11, 1,631,071 bytes), the reference
 // census (demo data zero · the desktop nav 256px/8 visible links),
 // and the TRUE-390 mobile-nav defect check (the reference's own bug:
@@ -38,7 +38,7 @@ describe("session-101 (S101-P1): the drift probe — the reference-stability too
     expect(pickAppBundle([])).toBe(null);
   });
 
-  it("stabilityVerdict: STABLE only on the EXACT md5 + byte count (the 80-consecutive-stable contract)", async () => {
+  it("stabilityVerdict: STABLE only on the EXACT md5 + byte count (the 81-consecutive-stable contract)", async () => {
     const { stabilityVerdict, STANDING } = await probe();
     expect(stabilityVerdict(STANDING.bundle, STANDING.bundle)).toBe("STABLE");
   });

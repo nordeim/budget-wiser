@@ -8,6 +8,7 @@ import {
   revenueByMonth,
   wonLostByMonth,
 } from "@/lib/reports-data";
+import { dashboardKpis } from "@/lib/dashboard-data";
 
 // Session-103 pins (S103-P1): the seeded-state chart-geometry freeze —
 // the s98 suggested next #3, twice deferred. The drift sweep runs the
@@ -197,11 +198,17 @@ describe("session-103 (S103-P1): the seeded-state chart-geometry freeze — the 
     expect(bands.map((b) => b.label)).toEqual(["<30 days", "30-60 days", "60-90 days", ">90 days"]);
   });
 
-  it("the dashboard KPI members on the PARSED seed — totalLeads 24 + conversionRate \"29.2\" (the route's toFixed(1) formula mirrored)", () => {
-    const totalLeads = leads.length;
-    const wonLeads = leads.filter((l) => l.stage === "won").length;
-    const conversionRate = totalLeads > 0 ? ((wonLeads / totalLeads) * 100).toFixed(1) : "0";
-    expect(totalLeads).toBe(24);
-    expect(conversionRate).toBe("29.2"); // 7/24 — src/app/api/dashboard/route.ts's formula
+  it("the dashboard KPI members on the PARSED seed — totalLeads 24 + conversionRate \"29.2\" through the REAL dashboardKpis seam (s110: the s103 mirrored formula retired)", () => {
+    // Session-110 (S110-P4): this it mirrored the route's toFixed(1)
+    // formula inside the test body (the s103-era form) — a route
+    // formula edit would NOT have failed it. The derivation now lives
+    // in the dashboardKpis seam (src/lib/dashboard-data.ts) and this
+    // pin asserts through the REAL imported function — a formula edit
+    // fails HERE and in seeded-dashboard-kpis.
+    const kpis = dashboardKpis(leads, new Date(NOW));
+    expect(kpis.totalLeads).toBe(24);
+    expect(kpis.conversionRate).toBe("29.2"); // 7/24 — the seam's formula (the s31 contract)
+    expect(kpis.salesTarget).toBe(0); // the reference's hardcoded V=0
+    expect(kpis.avgSalesCycleDays).toBe(83); // 580/7 → 83 at the synthetic NOW
   });
 });

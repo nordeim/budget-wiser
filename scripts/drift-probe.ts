@@ -5,7 +5,7 @@
 //
 //   1. the reference bundle md5 — the POST-LOGIN app-shell JS (the
 //      pre-auth login shell references different rolldown chunks; the
-//      tracked bundle is what the authenticated app rides). 80
+//      tracked bundle is what the authenticated app rides). 81
 //      consecutive sessions measured the SAME fingerprint:
 //      index-DZ-xbrIm.js · a70a637fcf1d4291da8e0d965676dc11 ·
 //      1,631,071 bytes.
@@ -13,7 +13,7 @@
 //      a re-seed changes every zero-data parity baseline) + the
 //      desktop sidebar geometry (256px / 8 visible links).
 //   3. the TRUE-390 mobile-nav defect — the reference's OWN bug: nav
-//      w=0, 0 visible links, NO menu button at phone width (the 30th
+//      w=0, 0 visible links, NO menu button at phone width (the 31st
 //      consecutive census). Our drawer is the documented superset.
 //
 // A CHANGED verdict anywhere is a parity EVENT, not a failure of this

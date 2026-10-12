@@ -3868,3 +3868,20 @@ Work Log:
 
 Stage Summary:
 - Session 109 executed end-to-end: the fifth-surface walk (the walk family COMPLETE — all five phone surfaces walked), the M-109c1 shrinkable-cluster fix (the M-108c1 doctrine generalized to flex, validated live by class injection before the plan: 488 -> 390), the F-109a1/a2/a3 line-census fixes + the LIVE-CENSUS pin (the next staleness either face fails the gate), the count ladder 136->137 + 1932->1934 + badge 2071 + the HEAD "in 7 spec", the probe ordinals at the 80th/30th, the captures 168/169 VLM 4/4 x2. Next: the house-style commit + the SSH-wrapper push to main, then the close-out (the 109-close workspace worklog + the session-log follow-ups)
+
+---
+Task ID: 110-execute
+Agent: main (Super Z)
+Task: Session 110 — the dashboard KPI seam unification + the seeded freeze (the 110-c rotation, executed RED-first)
+
+Work Log:
+- The plan written (docs/plans/2026-10-12-session110-parity-remediation.md) + validated against the codebase (the arithmetic 1938/2075/109/"29.2"/83 exact; every carrier site confirmed; the e2e label-level-only dashboard assertions verified by grep)
+- RED-1: the seam created FIRST (src/lib/dashboard-data.ts, zero consumers) + the NEW tests/seeded-dashboard-kpis.test.ts (4 its) + the four re-anchors (opportunity-model ×2, dashboard-family-parity ×1, seeded-charts ×1 — the s103 MIRRORED formula retired) + the docs-counts ladder (UNIT 1938 + SUITES 109 + badge 2075 + the negatives + the suite list + Appendix B + the FOURTEENTH census pair + the H1/project_state lockstep counts+layer faces) + the dialog-geometry lockstep → 19 failed | 97 passed (116), all 19 by name (the plan predicted ≈19-21); stash-proven (the nine files → 112/112 native → pop → 19 RED)
+- GREEN: the route slim (+19/−33: the seam call, the KPI block + wonLeads retired) + the full doc realignment (README/AGENTS/CLAUDE/PAD/SKILL v1.107.0 + session_225.md) → 109 files / 1938 tests ALL PASSING (+4 net). One in-flight fix: the opportunity-model salesTarget slice re-anchored on the FUNCTION body (the interface member is the type, not the formula)
+- RED-2 both faces: (A) the toFixed(0) seam perturbation → 4 its FAILED by name → restored → 15/15; (B) the seed stage perturbation (won→contacted) → 7 its FAILED by name across all three seeded suites → restored → 19/19
+- The e2e: the first run hit the two documented load-sensitive settings flakes (S14-P1 + S72-P2, both passing in isolation — the known genus, untouched by this change); the re-run 137/137 fresh CI=1 (3.2m)
+- The captures 170/171 (the throwaway script, deleted after): the live /api/dashboard envelope through the NEW seam reads 24/0/0/"29.2"/82 (the avg's pre-09:00 same-day face of the design-83 — the s103 seed-hour nuance, documented in the record); the VLM battery 4/4 + 4/4 zero adjudications — all six KPI cards read verbatim off both viewports, the 390 frame contained
+- GATE stepwise: lint 0/0 · tsc 0 · 1938/1938 · build · 137/137 e2e · the four drift sweeps CLEAN (no re-baselining — server-internal change) · the closing census MATCH; the tree exactly as planned (src/ = the TWO files)
+
+Stage Summary:
+- Session 110 executed end-to-end: the LAST inline KPI derivation extracted into the dashboardKpis seam (behavior-preserving, byte-identical response), the seed→seam chain frozen (24/0/0/"29.2"/83), the cross-seam unification contrast pinned (24/"29.2" vs 18/"66.7"), the count ladder 109 files/1938/2075, the probe ordinals 81/31st, the captures 170/171 VLM-verified. Next: the house-style commit + the SSH-wrapper push to main + the close-out.
