@@ -1631,6 +1631,37 @@ describe("session-15: dialog chrome — content, overlay, header, footer, close 
     expect(DIALOG_CLOSE).not.toContain("hover:bg-");
     expect(DIALOG_CLOSE).not.toContain("p-1");
   });
+
+  it("the close X byte-matches the reference's CURRENT stock string (S112-P2, D-112a1 — the dialog-family walk's re-pin)", () => {
+    // Session-112 (the 112-c walk): the reference's close carries the
+    // CURRENT stock shadcn string — our s15-era form predates its
+    // shadcn bump (the s15 extraction recorded the then-current form;
+    // the reference redeployed since; the bundle itself STABLE the
+    // 83rd). LIVE-measured on the walk2 full-string extraction:
+    //   ref: absolute right-4 top-4 rounded-sm opacity-70
+    //        ring-offset-background transition-opacity
+    //        hover:opacity-100 focus:outline-none focus:ring-2
+    //        focus:ring-ring focus:ring-offset-2
+    //        disabled:pointer-events-none data-[state=open]:bg-accent
+    //        data-[state=open]:text-muted-foreground
+    // The two data-[state=open] arms are INERT on both apps (the
+    // Radix DialogClose never carries a data-state attribute) — the
+    // s111 D2/D5 byte-parity genus: the class strings are the
+    // contract, even when inert.
+    expect(DIALOG_CLOSE).toContain("data-[state=open]:bg-accent");
+    expect(DIALOG_CLOSE).toContain("data-[state=open]:text-muted-foreground");
+    // `disabled:opacity-70` RETIRED — the reference's current string
+    // does not carry it (the close is never disabled; inert on ours).
+    expect(DIALOG_CLOSE).not.toContain("disabled:opacity-70");
+    // `ring-offset-background` is the COMPUTED-CONTRACT EXCEPTION —
+    // DELIBERATELY ABSENT (the s11 computed-gap rule: re-derive from
+    // the computed value, never copy the class string). The
+    // reference's focused-close ring offset computes hsl(0 0% 100%)
+    // = #fff; ours computes #fff (the v4 default); the class would
+    // set var(--color-background) = #f9fafb — INTRODUCING the very
+    // divergence it would pin away (LIVE-measured on both apps).
+    expect(DIALOG_CLOSE).not.toContain("ring-offset-background");
+  });
 });
 
 describe("session-15: dialog body anatomy — groups and wrappers (S15-P7/P8)", () => {

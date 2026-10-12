@@ -116,9 +116,14 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1942;
 const E2E = 137;
 const SUITES = 109;
+// Session-112: 1942 → 1944 (+2 — the s112 dialog-family walk's two
+// new its: the close-X byte-parity re-pin [page-layout] + the camera
+// aria-label superset pin [contact-photo]; both land in EXISTING
+// files — SUITES stays 109; the six D-112a3 mount-focus expects are
+// added expects INSIDE existing e2e test() blocks — E2E stays 137).
+const UNIT = 1944;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -278,6 +283,18 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).not.toMatch(/tests-2075%20checks/);
     expect(readme).not.toMatch(/# 1938 Vitest unit checks/);
     expect(pad).not.toMatch(/— 1938\/1938/);
+    // -----------------------------------------------------------------
+    // Session-112: the unit-count realignment (1942 → 1944 + badge
+    // 2079 → 2081 — the dialog-family LIVE re-walk's two new its;
+    // SUITES stays 109 and E2E stays 137 — the s112 pins land in
+    // EXISTING files, and the six D-112a3 mount-focus pins are added
+    // expects inside EXISTING e2e test() blocks). The retired
+    // 1942/2079 constructions join the ladder — the same SITE-FORM
+    // anchors, the same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2079%20checks/);
+    expect(readme).not.toMatch(/# 1942 Vitest unit checks/);
+    expect(pad).not.toMatch(/— 1942\/1942/);
   });
 
   // ------------------------------------------------------------------
@@ -495,13 +512,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-111 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-112 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s110 layer now beneath the s111 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s111 layer now beneath the s112 head)",
     ).toContain(
-      "+ beneath it 1938 unit checks + 137 e2e checks green; the session-110 layer (the 110-c rotation — THE DASHBOARD KPI SEAM UNIFICATION",
+      "+ beneath it 1942 unit checks + 137 e2e checks green; the session-111 layer (the 111-c rotation — THE LOGIN-FAMILY LIVE RE-WALK",
     );
   });
 
@@ -573,15 +590,15 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       skill,
       "the §5.6 page-layout line must carry the live line + check counts (F-108a2)",
-    ).toContain("test-pinned module (1530 lines; `tests/page-layout.test.ts`, 182 checks");
-    expect(skill).not.toContain("test-pinned module (1520 lines");
-    expect(skill).not.toContain("`tests/page-layout.test.ts`, 180 checks");
+    ).toContain("test-pinned module (1548 lines; `tests/page-layout.test.ts`, 183 checks");
+    expect(skill).not.toContain("test-pinned module (1530 lines");
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 182 checks");
     const pad = read("Project_Architecture_Document.md");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1530 |");
-    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1520 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1548 |");
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1530 |");
     expect(
       pad,
       "the module-table reports-data row must carry the post-seam line count (F-108a3)",

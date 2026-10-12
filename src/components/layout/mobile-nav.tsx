@@ -140,6 +140,15 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
         `fixed inset-0 z-50 transition-[visibility] duration-300 ${MOBILE_NAV_LAYOUT.drawerRange}`,
         open ? "visible" : "invisible pointer-events-none",
       )}
+      // Session-112 (D-112a4, the dialog-family walk's tooling rule):
+      // this drawer is PERMANENTLY MOUNTED with role="dialog" and NO
+      // data-state attribute — a CSS `[role="dialog"]` selector matches
+      // THIS hidden drawer first and never resolves to the open Radix
+      // dialogs (the s112 walk's third iteration, live-debugged: the
+      // real dialog opened while waitForSelector hung on this wrapper).
+      // Key CSS selectors on `[role="dialog"][data-state="open"]` or use
+      // getByRole("dialog") — Playwright's role engine excludes hidden
+      // elements, which is why the e2e suite never tripped this.
       role="dialog"
       aria-modal="true"
       aria-label="Navigation menu"

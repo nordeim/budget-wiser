@@ -3902,3 +3902,20 @@ Work Log:
 
 Stage Summary:
 - Session 111 shipped: the login family re-walked LIVE; 3 real drifts fixed + 2 inert re-pins; the count ladder 109 files/1942 unit/137 e2e/badge 2079; the post-fix cards byte-match the reference at both widths (signup 470/422, verify 488/412)
+
+---
+Task ID: s112
+Session: 112 (2026-10-12)
+
+Work Log:
+- The intake: git pull a8541ba..be95db5 (session_232 +107 — the s111 close-out); core docs + session docs reviewed; environment standing verified; the stray DATABASE_URL hazard re-confirmed (all ops under env -u)
+- The baseline gate: lint 0/0 · tsc 0 · 109/1942 · build · 137/137 e2e — exactly the s111 ship state
+- The audits: 112-a GENUINE 9/9 zero findings (non-vacuousness reproduced: 22|74(96) all by name; native arithmetic 92 exact); 112-b 9/9 PASS zero findings (~69th; SEO 46/46 + 11/11 supplements; drawer battery 10/10 exit 0; census MATCH)
+- The live verification: probe:ref 83rd STABLE; the defect STANDS 33rd; the four drift gates CLEAN; census MATCH
+- The rotation (112-c): the dialog-family LIVE re-walk (the second un-walked family) — the ANALYZE (3 walk-script iterations incl. the D-112a4 role=dialog shadowing find) verified FULL live parity on all 7 dialogs at both widths + adjudicated 4 finds: D-112a1 the close-X byte-parity re-pin (the computed-contract exception documented) + D-112a2 the camera aria-label superset + D-112a3 the unpinned mount-focus behavior + D-112a4 the tooling rule
+- The TDD: RED-1 16|230(246) stash-proven 244/244 (the camera it a staging-passing freeze pin; one in-flight census-literal correction 1543/212→1548/215); GREEN 1944/1944; RED-2 both faces by name (the bg-accent arm + the aria-label)
+- The gate: lint/tsc/1944/build/137 (the six focus expects green on their first run) + the four sweeps CLEAN (no re-baselining) + census MATCH; the captures 176-179 + the VLM battery 4/4 x4 (one adjudication — the 179 ring at 3x zoom)
+- The docs: SKILL v1.109.0 + README badge 2081 + AGENTS/CLAUDE/PAD 1944+137 + session_233 + the s112 plan + its execution record
+
+Stage Summary:
+- Session 112 shipped: the dialog family re-walked LIVE — FULL parity verified (the s92 fixes + the s15 pins + 20 sessions of changes, all live-confirmed at both widths); the close-X re-pinned to the reference's current stock; the camera superset + the mount-focus behavior frozen; the role=dialog rule documented; the count ladder 109 files/1944 unit/137 e2e/badge 2081

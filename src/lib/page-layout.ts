@@ -806,9 +806,27 @@ export const DIALOG_FOOTER_WIDE = "flex justify-end gap-3 pt-4";
 /** Session-15 (S15-P6): the close X is the STOCK opacity pattern —
  *  `absolute right-4 top-4 rounded-sm opacity-70 transition-opacity
  *  hover:opacity-100 focus:ring-2 ring-offset-2` (no padding, no bg
- *  wash — ours shipped a rounded-md p-1 hover:bg pill). */
+ *  wash — ours shipped a rounded-md p-1 hover:bg pill).
+ *
+ *  Session-112 (D-112a1, the dialog-family LIVE re-walk): byte-pinned
+ *  to the reference's CURRENT stock close — the s15-era form below
+ *  predates the reference's shadcn bump (the s15 extraction recorded
+ *  the then-current form; the reference redeployed since; the bundle
+ *  itself STABLE, the 83rd consecutive). The two inert
+ *  `data-[state=open]` arms gained (the Radix DialogClose never
+ *  carries a data-state attribute — inert on both apps, the s111
+ *  D2/D5 byte-parity genus: the class strings are the contract, even
+ *  when inert) + the inert `disabled:opacity-70` retired (the close
+ *  is never disabled; the reference's current string does not carry
+ *  it). `ring-offset-background` is the COMPUTED-CONTRACT EXCEPTION,
+ *  deliberately absent (the s11 computed-gap rule: re-derive from the
+ *  computed value, never copy the class string) — the reference's
+ *  focused-close ring offset computes hsl(0 0% 100%) = #fff; ours
+ *  computes #fff (the v4 default); the class would set
+ *  var(--color-background) = #f9fafb, introducing the very divergence
+ *  it would pin away. */
 export const DIALOG_CLOSE =
-  "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-70";
+  "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground";
 
 /** Session-15 (S15-P7): the max-w-lg family's field groups are the
  *  reference's `space-y-2` divs — computed 12px label->control gap /

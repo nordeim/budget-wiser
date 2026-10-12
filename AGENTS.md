@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1942 checks)       | `bun run test`                         |
+|  Unit tests (1944 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1942) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1944) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4790,3 +4790,76 @@ the sweep routes — no re-baselining). Docs at SKILL v1.108.0 [§16cy +
 project_state + the H1 + Appendix B + the wall-clock fix] + README
 badge 2079 + AGENTS/CLAUDE/PAD at 1942+137 + session_229.md + the s111
 plan + its execution record + the worklog + the captures 172-175.
+
+### Session-112 — the dialog-family LIVE re-walk + the four finds
+
+The s111-close's third candidate taken: the DIALOG family — the
+largest interactive surface group never walked live at BOTH widths
+(the s92 walk was 390-ONLY, 20 sessions of changes ago; the dialogs'
+mount-focus behavior — the s111 D1 genus — never measured). A
+throwaway walk script (repo-internal, deleted before ship) drove
+BOTH apps through the CREATE-dialog ladder (New Lead · New Account
+· New Contact · Import Contacts · New Event · Log Call · Save
+Custom Report View) at 1440×900 + 390×844, extracting the
+content-box geometry, the overlay, the header, the close X, the
+first field group, the footer, the MOUNT-FOCUS state, the child
+census, and the scroll widths; every candidate adjudicated against
+the source contracts. **THE RESULT: the dialog family is in
+COMPLETE LIVE PARITY** — every geometry axis on all 7 dialogs × 2
+viewports AND the mount-focus behavior identical on all seven (the
+first input on lead/account/event/savereport · the camera button on
+contact · the type select trigger on activity · the Cancel on
+import — the dropzone label is not focusable).
+
+- **D-112a1 (class-string, the close X)**: the reference's CURRENT
+  stock close carries `ring-offset-background` + the two inert
+  `data-[state=open]` arms and NOT `disabled:opacity-70` — our
+  s15-era string predates its shadcn bump. The two inert arms gained
+  + `disabled:opacity-70` retired (the s111 D2/D5 byte-parity
+  genus). `ring-offset-background` is the COMPUTED-CONTRACT
+  EXCEPTION, deliberately absent: the ref's focused-close offset
+  computes hsl(0 0% 100%) = #fff = our v4 default; the class would
+  set #f9fafb (the s11 computed-gap rule).
+- **D-112a2 (a11y superset, pinned)**: the reference's icon-only
+  camera button is UNNAMED (its own defect); ours carries
+  `aria-label="Upload photo"` — the mobile-nav genus, now pinned.
+- **D-112a3 (behavioral, six e2e freezes)**: the dialog focus
+  landing pinned on the walked dialogs — added expects INSIDE
+  existing test() blocks, the e2e census stays 137 (the s111 D1
+  precedent).
+- **D-112a4 (tooling rule)**: the permanently-mounted mobile-nav
+  drawer carries `role="dialog"` with no data-state — CSS
+  `[role=dialog]` selectors match it first and never resolve
+  (the walk's third iteration, live-debugged); key on
+  `[data-state="open"]` or use getByRole (which excludes hidden).
+  Documented at the mobile-nav source.
+
+The noise families adjudicated away: the oklab/rgba overlay
+serialization; the transparent-shadow prepends (the focused-input
+ring computed-equal — the identical 1px #0a0a0a ring + shadow-sm);
+the labelMb v3/v4 space-y mechanism flip; the border-input/
+border-line + the trigger w-full orderings (the s86 notes).
+
+**The count ladder:** UNIT 1942 → 1944 (+2 — the close-X it in
+page-layout + the camera it in contact-photo; both in EXISTING
+files) · SUITES 109 UNCHANGED · E2E 137 UNCHANGED · badge 2079 →
+2081 · the page-layout census rows 1530 → 1548 + 182 → 183 checks ·
+the mobile-nav census row 206 → 215.
+
+**RED-first:** 16 failed | 230 passed (246) at the still-unfixed
+src + the still-old docs (the 14 docs-counts + the dialog-geometry
+CLAUDE lockstep + the close-X it — enumerated by name; the camera it
+a freeze pin passing at staging; the plan predicted 12-16),
+stash-proven (the four files → the native 244/244 → pop → 16 RED).
+One in-flight correction: the census literals (1543/212 drafted vs
+1548/215 actual). RED-2 both faces by name (the bg-accent arm
+removal → the close-X it; the aria-label removal → the camera it).
+
+**GATE:** lint 0/0 · tsc 0 · 1944/1944 unit [109 suites] · build ·
+137/137 e2e (the six focus expects green on their first run) + the
+four drift sweeps CLEAN (no re-baselining — the re-pin is
+render-inert) + the closing census MATCH. The captures 176–179 (the
+VLM battery 4/4 × 4, one adjudication — the 179 ring at 3x zoom).
+Docs at SKILL v1.109.0 + README badge 2081 + AGENTS/CLAUDE/PAD at
+1944+137 + session_233.md + the s112 plan + its execution record +
+the worklog.

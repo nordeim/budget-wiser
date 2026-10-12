@@ -672,6 +672,12 @@ test("the New Lead dialog ships the stock geometry at phone width (S15-P1/P3/P9)
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
 
+  // Session-112 (D-112a3, the dialog-family walk): the MOUNT FOCUS
+  // lands on the FIRST INPUT (the Name field) — LIVE-measured on both
+  // apps at both widths (the s111 D1 genus: behavioral parity no
+  // class-string pin can see; Radix focuses the first focusable).
+  await expect(dialog.locator("input").first()).toBeFocused();
+
   // The stock zoom-in-95/slide-in enter animation is still running right
   // after toBeVisible — poll until the width settles at full bleed.
   await expect
@@ -714,7 +720,14 @@ test("the New Contact dialog ships the avatar section with the Name field inside
   await expect(section).toBeVisible();
   await expect(section.locator(".rounded-full.bg-gradient-to-br")).toBeVisible();
   await expect(section.getByLabel("Name *")).toBeVisible();
-  await expect(section.getByRole("button").filter({ has: page.locator("svg.lucide-camera") })).toBeVisible();
+  // Session-112 (D-112a3, the dialog-family walk): the MOUNT FOCUS
+  // lands on the CAMERA button — the first focusable in the Contact
+  // dialog (the dropzone-less avatar section precedes the Name field) —
+  // LIVE-measured on both apps at both widths. Asserted BEFORE the Ada
+  // fill (which moves focus to the Name input).
+  const camera = section.getByRole("button").filter({ has: page.locator("svg.lucide-camera") });
+  await expect(camera).toBeVisible();
+  await expect(camera).toBeFocused();
 
   // The initials render live from the typed name.
   await section.getByLabel("Name *").fill("Ada Lovelace");
@@ -730,6 +743,11 @@ test("the New Event dialog is the wide family with the blue submit (S15-P12)", a
 
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
+
+  // Session-112 (D-112a3, the dialog-family walk): the MOUNT FOCUS
+  // lands on the FIRST INPUT (the Title field) — LIVE-measured on both
+  // apps at both widths.
+  await expect(dialog.locator("input").first()).toBeFocused();
 
   // max-w-2xl: 672px cap at desktop widths. Session-28 (S28-P7): the raw
   // boundingBox() raced the dialog's zoom-in-95 entrance animation
@@ -1470,6 +1488,10 @@ test("the Save Custom Report View round-trip (S25-P4)", async ({ page }) => {
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Save Custom Report View" })).toBeVisible();
   await expect(page.getByPlaceholder("e.g., Q1 Won Deals by Region")).toBeVisible();
+  // Session-112 (D-112a3, the dialog-family walk): the MOUNT FOCUS
+  // lands on the NAME INPUT (the first focusable) — LIVE-measured on
+  // both apps at both widths.
+  await expect(page.getByPlaceholder("e.g., Q1 Won Deals by Region")).toBeFocused();
   // The 6 column checkboxes + the 3-dimension Current Filters summary.
   for (const col of ["Name", "Account", "Owner", "Value", "Stage", "Won Date"]) {
     await expect(page.getByRole("checkbox", { name: col })).toBeVisible();
@@ -1658,6 +1680,11 @@ test("the Import Contacts dialog matches the reference's structure (S26-P6)", as
   await expect(dlg.getByRole("heading", { name: "Import Contacts" })).toBeVisible();
   await expect(dlg.getByText("Upload a CSV or Excel file with contact information")).toBeVisible();
   await expect(dlg.getByText("Select File")).toBeVisible();
+  // Session-112 (D-112a3, the dialog-family walk): the MOUNT FOCUS
+  // lands on the CANCEL button — the dropzone is a <label> (not
+  // focusable), so the footer's first button is the dialog's first
+  // FOCUSABLE — LIVE-measured on both apps at both widths.
+  await expect(dlg.getByRole("button", { name: "Cancel" })).toBeFocused();
   await expect(dlg.getByText("Click to upload CSV or Excel")).toBeVisible();
   await expect(dlg.getByText("CSV, XLS, XLSX")).toBeVisible();
   await expect(dlg.getByText("Required columns:")).toBeVisible();
@@ -2400,6 +2427,11 @@ test("the Log Activity quick-create round-trip (S71-P6: the ActivityDialog's fir
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("heading", { name: "Log Activity" })).toBeVisible();
+  // Session-112 (D-112a3, the dialog-family walk): the MOUNT FOCUS
+  // lands on the TYPE SELECT TRIGGER (the first focusable in the
+  // ActivityForm — the combobox precedes the Description textarea) —
+  // LIVE-measured on both apps at both widths.
+  await expect(dialog.getByRole("combobox").first()).toBeFocused();
   await page.getByLabel("Description *").fill("E2E probe activity");
 
   // The M-71a1 contract: the typed value SURVIVES the first-load store

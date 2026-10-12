@@ -97,6 +97,26 @@ describe("session-30: the camera button + the hidden input", () => {
     expect(dialogs()).toMatch(/disabled=\{uploading\}/);
   });
 
+  it("the camera button carries aria-label=\"Upload photo\" (S112-P2, D-112a2 — the walk-verified a11y superset)", () => {
+    // Session-112 (the 112-c dialog-family walk): the reference's
+    // camera button is ICON-ONLY and UNNAMED (live-measured: its
+    // focused button reports no accessible name — the reference's own
+    // a11y defect; the mobile-nav genus). Ours carries the
+    // aria-label — the documented superset, everything else on the
+    // button byte-matching the reference (absolute bottom-0 right-0
+    // w-8 h-8 bg-white rounded-full flex items-center justify-center
+    // shadow-md hover:bg-gray-50…). The walk also measured the MOUNT
+    // FOCUS landing on this button on BOTH apps (the first focusable
+    // in the Contact dialog) — the e2e freeze lives in crm.spec's
+    // avatar test.
+    expect(dialogs()).toMatch(/aria-label="Upload photo"/);
+    // the label rides THE camera button itself (the CONTACT_AVATAR.camera
+    // construction — not a stray aria-label elsewhere in the file)
+    expect(dialogs()).toMatch(
+      /className=\{CONTACT_AVATAR\.camera\}\s*\n\s*aria-label="Upload photo"/,
+    );
+  });
+
   it("the hidden input keeps the explicit MIME trio (the s19 pin, unchanged)", () => {
     // Raw source read — stripComments eats the `image/*` inside the string.
     const raw = read("src/components/shared/entity-dialogs.tsx") ?? "";
