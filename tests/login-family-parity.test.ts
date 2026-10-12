@@ -120,9 +120,9 @@ describe("session-79: the back-button overlap fix (M-79c2 + L-79c9)", () => {
     expect(L.back).not.toContain("-mb-2");
   });
 
-  it("the verify back button is mb-2 (the same overlap fix)", async () => {
+  it("the verify back button is the responsive mb-2 sm:mb-4 ladder (s111: the reference's collapsed 24-8=16 at >=640)", async () => {
     const L = await verifyLayout();
-    expect(L.back).toContain("mb-2");
+    expect(L.back).toContain("mb-2 sm:mb-4");
     expect(L.back).not.toContain("-mb-2");
   });
 
@@ -239,8 +239,12 @@ describe("session-79: the verify stack/form spacing (L-79c8)", () => {
 
   it("the verify call site uses the verify form (not the signup's tighter family)", () => {
     const src = loginCard();
+    // Session-111: the anchor gained the ' ? (' discriminator — the D1
+    // focus effect + the D3a stack conditional introduced earlier
+    // `view === "verify"` / `view === "signup"` occurrences in the
+    // hooks + the shared stack div (the s111 in-flight re-derivation).
     const verifyArm = src.slice(
-      src.indexOf('view === "verify"'),
+      src.indexOf('view === "verify" ? ('),
       src.indexOf("LOGIN_VERIFY_LAYOUT.buttonsGroup"),
     );
     expect(verifyArm).toContain("LOGIN_VERIFY_LAYOUT.form");
@@ -266,13 +270,16 @@ describe("session-79: the input-icon color split (L-79c10)", () => {
 
   it("the reset + signup call sites consume their own icon records", () => {
     const src = loginCard();
+    // Session-111: the anchors gained the ' ? (' discriminator (the
+    // D3a stack conditional introduced an earlier `view === "signup"`
+    // occurrence — the s111 in-flight re-derivation).
     const resetArm = src.slice(
-      src.indexOf('view === "reset"'),
-      src.indexOf('view === "signup"'),
+      src.indexOf('view === "reset" ? ('),
+      src.indexOf('view === "signup" ? ('),
     );
     const signupArm = src.slice(
-      src.indexOf('view === "signup"'),
-      src.indexOf('view === "verify"'),
+      src.indexOf('view === "signup" ? ('),
+      src.indexOf('view === "verify" ? ('),
     );
     expect(resetArm).toContain("LOGIN_RESET_LAYOUT.inputIcon");
     expect(signupArm).toContain("LOGIN_SIGNUP_LAYOUT.inputIcon");
@@ -386,5 +393,63 @@ describe("session-79: the documented parities re-held (green anchors)", () => {
     // the mobile-nav suite's 9 checks stay frozen elsewhere.
     const src = loginCard();
     expect(src).toContain('className="w-full max-w-md"');
+  });
+});
+
+describe("session-111: the login-family LIVE re-walk (the first since s79)", () => {
+  // The first LIVE parity re-walk of the auth family since s79 — the
+  // pre-auth shell rides UNTRACKED rolldown chunks (probe:ref tracks
+  // only the POST-LOGIN bundle) and the four drift gates never touch
+  // the auth pages. The walk (both apps through the full view ladder
+  // at 1440x900 + 390x844, computed styles + the per-child viewStack
+  // census) found three real drifts + two inert class-string
+  // divergences, all adjudicated against the source contracts:
+  //
+  // - D1 (behavioral, verify): the reference AUTO-FOCUSES the first
+  //   code box on verify mount — live-measured as the 2px ring on box
+  //   1 only (box 6 rests at none), reproduced twice at both viewports.
+  // - D3 (structural, signup): the reference's signup rides a FLAT
+  //   space-y-4 stack with the h2 as a DIRECT child; ours inherited the
+  //   reset view's shared space-y-4 sm:space-y-6 — the s21-authored
+  //   LOGIN_SIGNUP_LAYOUT.viewStack const was correct but never wired
+  //   (+8px at >=640 in the title->form gap).
+  // - D4 (structural, verify): the reference's verify back->heading gap
+  //   computes 16 at >=640 (its -mb-2 collapses with the v3 mt 24);
+  //   ours rode flat mb-2 — the reset view's back already had the
+  //   ladder (pinned above, re-anchored).
+  // - D2 (inert, verify): the headingStack — the tile's own mb-3
+  //   sm:mb-4 always overrides the stack's space-y on both apps (the
+  //   heading heights measure 168/144 identical); re-pinned for byte
+  //   parity (the s21 "the sent view's family" misread retired).
+  // - D5 (inert, sent): the sentCallout's [&>svg] arm family — no svg
+  //   ever renders on the auth surfaces; re-pinned for byte parity in
+  //   tests/login-reset.test.ts.
+  it("D1: the verify view auto-focuses the first code box on mount (the reference's focus-entry)", () => {
+    const src = loginCard();
+    expect(src).toContain('if (view === "verify") codeRefs.current[0]?.focus();');
+  });
+
+  it("D2: the verify headingStack is text-center space-y-2 (the s21 'sent view family' misread retired)", async () => {
+    const L = await verifyLayout();
+    expect(L.headingStack).toBe("text-center space-y-2");
+  });
+
+  it("D3a: the signup view rides its OWN flat space-y-4 stack (the s21 const finally wired)", async () => {
+    const src = loginCard();
+    const L = await signupLayout();
+    expect(L.viewStack).toBe("space-y-4");
+    expect(src).toContain('view === "signup" ? LOGIN_SIGNUP_LAYOUT.viewStack : LOGIN_RESET_LAYOUT.viewStack');
+  });
+
+  it("D3b: the signup h2 is a DIRECT stack child — the inert titleStack wrapper retired (the reference's census structure)", () => {
+    const src = loginCard();
+    // The slice spans the signup branch's back button to its form —
+    // the exact scope the wrapper lived in (the reset view keeps its
+    // OWN text-center space-y-2 wrapper, the reference's).
+    const start = src.indexOf("LOGIN_SIGNUP_LAYOUT.back");
+    const end = src.indexOf("LOGIN_SIGNUP_LAYOUT.form");
+    const branch = src.slice(start, end);
+    expect(branch).toContain('<h2 className={LOGIN_SIGNUP_LAYOUT.title}>Create your account</h2>');
+    expect(branch).not.toContain("text-center space-y-2");
   });
 });

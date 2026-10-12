@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1938 checks)       | `bun run test`                         |
+|  Unit tests (1942 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1938) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1942) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4709,3 +4709,84 @@ identical, no re-baselining). Docs at SKILL v1.107.0 [§16cx +
 project_state + the H1 + Appendix B] + README badge 2075 +
 AGENTS/CLAUDE/PAD at 1938+137 + session_225.md + the s110 plan + its
 execution record + the worklog.
+
+### Session-111 — the login-family LIVE re-walk + the five finds
+
+The s110-close suggested next #3: the first LIVE parity re-walk of a
+surface family since s79 — the LOGIN family, the one surface family
+the standing probes cannot see. probe:ref tracks only the POST-LOGIN
+bundle (`index-DZ-xbrIm.js`; the pre-auth shell rides DIFFERENT
+rolldown chunks — zero auth markers in the 1.63MB bundle, the s79
+finding); the four drift gates sweep only the nine (app) routes; the
+last live walk was s79 — 32 sessions of our changes since. The walk
+(a throwaway script, repo-internal, deleted before ship): both apps
+driven through the full view ladder — signin, the failed-login
+callout, reset, sent, signup (a real POST through to verify) — at
+1440x900 + 390x844 on a throwaway walk db, computed-style extraction
++ a per-child viewStack census, every candidate adjudicated against
+the source contracts. Three real drifts + two inert class-string
+divergences found:
+
+- **D1 (behavioral, verify)**: the reference AUTO-FOCUSES the first
+  code box on verify mount — live-measured as the 2px ring on box 1
+  only (box 6 rests at none), reproduced twice at both viewports.
+  Fixed with a `[view]`-keyed effect (`codeRefs.current[0]?.focus()` —
+  a DOM focus, never setState); the e2e verify test now asserts
+  `toBeFocused()` (an added expect inside the existing test() block —
+  the e2e census stays 137).
+- **D3 (structural, signup)**: the reference's signup rides a FLAT
+  `space-y-4` stack with the h2 as a DIRECT child (its census:
+  `[BUTTON, H2, FORM]`); ours inherited the reset view's shared
+  `space-y-4 sm:space-y-6` — the s21-authored
+  `LOGIN_SIGNUP_LAYOUT.viewStack = "space-y-4"` const was correct but
+  NEVER WIRED in login-card (+8px at >=640 in the title->form gap).
+  Fixed: the shared stack div went view-conditional + the inert
+  titleStack wrapper retired (the h2 direct, the reference's own
+  structure).
+- **D4 (structural, verify)**: the reference's verify back->heading
+gap computes 16 at >=640 (its `-mb-2` collapses with the v3 stack's mt
+24) and 8 at <640; our verify back rode flat `mb-2` (8px at all
+widths). Fixed: `LOGIN_VERIFY_LAYOUT.back` gains the `sm:mb-4` arm
+(the reset view's back already had the ladder).
+- **D2 (inert, verify)** + **D5 (inert, sent)**: the verify
+  headingStack (`text-center space-y-2` — the tile's own
+  `mb-3 sm:mb-4` always overrides the stack's space-y on both apps,
+  the heading heights 168/144 identical) + the sentCallout's `[&>svg]`
+  arm family — re-pinned for byte parity, zero rendered effect.
+
+The reconciliation: the post-fix cards byte-match the reference at
+BOTH widths — the signup 470@1440/422@390, the verify 488@1440/412@390.
+Everything else measured FULL parity (the signin/reset/sent views, the
+callout, the code inputs, the tile, the hint, the icons — byte-
+identical classes or computed-equal v3/v4 mechanisms; the oklab/rgba
+serialization, the transparent-shadow prepends, and the zinc-vs-
+neutral inherited foreground are noise — never visible).
+
+**The count ladder:** UNIT 1938 → 1942 (+4 — the four new s111 its in
+login-family-parity [D1/D2/D3a/D3b]; the D4 + D5 re-anchors land in
+EXISTING its) · SUITES 109 UNCHANGED · E2E 137 UNCHANGED (the D1 pin
+is an added expect inside the EXISTING verify test) · badge 2075 →
+2079 · the F-111a1 fix (the Appendix B wall-clock phrase "108 suites"
+→ 109 + the new phrase pin — the 111-a audit find) · the two
+slice-anchor re-derivations in login-family-parity (the `? (`
+discriminator — the D1 effect + the D3a conditional introduced earlier
+`view ===` occurrences) · the retired 1938/2075 constructions join
+the negatives ladders · the dialog-geometry CLAUDE lockstep 1938 →
+1942 · the PAD login-reset.ts census row 279 → 291 (the +12 comment
+growth — the LIVE-CENSUS re-anchored at the same edit).
+
+**RED-first:** 20 failed | 76 passed (96) at the still-unfixed src +
+the still-old docs (13 docs-counts count-axis its + the H1 lockstep +
+the Appendix B [the F-111a1 wall-clock] + the dialog-geometry lockstep
++ the D4/D1/D2/D3a/D3b five + the D5 re-anchor — enumerated by name;
+the plan predicted 8-10, under-counting the docs-counts axis — the
+s110 precedent's 19 was the better guide), stash-proven (the five
+files stashed → the native 92/92 → pop → 20 RED re-confirmed) + the
+induced-drift proofs below.
+
+**GATE:** lint 0/0 · tsc 0 · 1942/1942 unit [109 suites] · build ·
+137/137 e2e + the four drift sweeps CLEAN (the auth pages are not in
+the sweep routes — no re-baselining). Docs at SKILL v1.108.0 [§16cy +
+project_state + the H1 + Appendix B + the wall-clock fix] + README
+badge 2079 + AGENTS/CLAUDE/PAD at 1942+137 + session_229.md + the s111
+plan + its execution record + the worklog + the captures 172-175.

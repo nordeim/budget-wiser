@@ -125,8 +125,13 @@ export const LOGIN_RESET_LAYOUT = {
   sentEmailLine: "text-slate-600 text-sm sm:text-base",
   /** The email itself — medium-weight slate-900. */
   sentEmailSpan: "font-medium text-slate-900",
-  /** The green callout box (no icon renders on the reference). */
-  sentCallout: "relative w-full border p-4 bg-green-50/70 border-green-200 rounded-xl",
+  /** The green callout box (no icon renders on the reference).
+   *  Session-111 [D5, inert]: the reference's callout carries the FULL
+   *  [&>svg] arm family — the same form the error/info callouts ship
+   *  (the s11 extraction's asymmetry); no svg ever renders on the
+   *  auth surfaces, the arms are byte-parity only. */
+  sentCallout:
+    "relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground text-foreground bg-green-50/70 border-green-200 rounded-xl",
   /** The callout's text (leading-relaxed green-700 14px). */
   sentCalloutText: "[&_p]:leading-relaxed text-green-700 text-sm",
   /** The sent view's full-width centered Back to sign in. */
@@ -197,12 +202,19 @@ export const LOGIN_VERIFY_LAYOUT = {
    *  space-y-4-only pin was the s21 misread). */
   viewColumn: "w-full",
   viewStack: "space-y-4 sm:space-y-6",
-  /** The back button (left-aligned — the signup view's mb-2 twin after
-   *  the session-79 M-79c2 overlap fix). */
-  back: "flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 font-medium transition-colors mb-2",
+  /** The back button (left-aligned — the reset view's mb-2 sm:mb-4
+   *  twin; session-111 [D4]: the reference's verify back->heading gap
+   *  computes 16 at >=640 [its -mb-2 collapses with the v3 mt 24;
+   *  LIVE-measured on the s111 re-walk] — the flat mb-2 rode 8px at
+   *  all widths, 8px short at desktop). */
+  back: "flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 font-medium transition-colors mb-2 sm:mb-4",
   backIcon: "h-4 w-4",
-  /** The centered heading stack (the sent view's family). */
-  headingStack: "text-center space-y-3 sm:space-y-4",
+  /** The centered heading stack — session-111 [D2, inert]: the
+   *  reference's own class is text-center space-y-2 (the s21 "the sent
+   *  view's family" misread); INERT on both apps — the tile's own
+   *  mb-3 sm:mb-4 always overrides the stack's space-y (the heading
+   *  heights measure 168/144 identical); re-pinned for byte parity. */
+  headingStack: "text-center space-y-2",
   /** The envelope tile — the sent view's icon circle + its own mb. */
   iconWrap:
     "mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-slate-100 rounded-full flex items-center justify-center mb-3 sm:mb-4",

@@ -76,6 +76,15 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
     return () => clearTimeout(timer);
   }, [info]);
 
+  // Session-111 [D1, the s111 login-family re-walk]: the reference
+  // lands focus on the FIRST code box when the verify view mounts —
+  // live-measured as the 2px ring on box 1 only (box 6 rests at none),
+  // reproduced twice at both viewports. A DOM focus, never setState;
+  // fires only on transitions INTO verify.
+  React.useEffect(() => {
+    if (view === "verify") codeRefs.current[0]?.focus();
+  }, [view]);
+
   /** Swap the card's view via the login state machine (s11 + s21). */
   function goto(intent: LoginViewIntent) {
     setError(null);
@@ -257,7 +266,17 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                     replace the login column entirely (no logo, no Google
                     button, no divider — DOM-verified on the reference). */}
                 <div className={LOGIN_RESET_LAYOUT.viewColumn}>
-                  <div className={LOGIN_RESET_LAYOUT.viewStack}>
+                  {/* Session-111 [D3, the s111 re-walk]: the signup view
+                      rides its OWN FLAT space-y-4 stack — the s21-authored
+                      LOGIN_SIGNUP_LAYOUT.viewStack const, correct but never
+                      wired (the shared reset stack's sm:space-y-6 arm rode
+                      +8px at >=640 in the title->form gap; the reference's
+                      signup stack is FLAT, LIVE-measured on the re-walk). */}
+                  <div
+                    className={
+                      view === "signup" ? LOGIN_SIGNUP_LAYOUT.viewStack : LOGIN_RESET_LAYOUT.viewStack
+                    }
+                  >
                     {view === "reset" ? (
                       <>
                         <button
@@ -314,9 +333,12 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                           <ArrowLeft className={LOGIN_SIGNUP_LAYOUT.backIcon} aria-hidden="true" />
                           Back to sign in
                         </button>
-                        <div className="text-center space-y-2">
-                          <h2 className={LOGIN_SIGNUP_LAYOUT.title}>Create your account</h2>
-                        </div>
+                        {/* Session-111 [D3b]: the reference's signup h2
+                            is a DIRECT stack child (its census:
+                            [BUTTON, H2, FORM] — no titleStack wrapper);
+                            the s21-era wrapper was an inert single-child
+                            text-center space-y-2 div. */}
+                        <h2 className={LOGIN_SIGNUP_LAYOUT.title}>Create your account</h2>
                         <form className={LOGIN_SIGNUP_LAYOUT.form} onSubmit={onSignupSubmit} noValidate>
                           <div className={LOGIN_SIGNUP_LAYOUT.fields}>
                             <div className={LOGIN_SIGNUP_LAYOUT.field}>

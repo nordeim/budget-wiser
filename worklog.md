@@ -3885,3 +3885,20 @@ Work Log:
 
 Stage Summary:
 - Session 110 executed end-to-end: the LAST inline KPI derivation extracted into the dashboardKpis seam (behavior-preserving, byte-identical response), the seed→seam chain frozen (24/0/0/"29.2"/83), the cross-seam unification contrast pinned (24/"29.2" vs 18/"66.7"), the count ladder 109 files/1938/2075, the probe ordinals 81/31st, the captures 170/171 VLM-verified. Next: the house-style commit + the SSH-wrapper push to main + the close-out.
+
+---
+Task ID: s111
+Session: 111 (2026-10-12)
+
+Work Log:
+- The intake: git pull 741d355..e131326 (session_228 +94 — the s110 close-out); core docs + session docs reviewed; environment standing verified; the stray DATABASE_URL hazard re-confirmed (all ops under env -u)
+- The baseline gate: lint 0/0 · tsc 0 · 109/1938 · build · 137/137 e2e — exactly the s110 ship state
+- The audits: 111-a GENUINE 9/9 + F-111a1 (the SKILL wall-clock "108 suites" — the Appendix B prose line); 111-b 9/9 PASS zero findings (SEO 46/46 first-run, drawer battery exit 0)
+- The live verification: probe:ref 82nd STABLE; the defect STANDS 32nd; the four drift gates CLEAN; census MATCH
+- The rotation: the login-family LIVE re-walk (the first since s79) — the ANALYZE (3 iterations) adjudicated 5 finds: D1 the verify focus-entry + D3 the signup flat stack + D4 the verify back ladder (REAL) + D2/D5 (inert byte-parity)
+- The TDD: RED-1 20|76(96) stash-proven 92/92; GREEN 1942/1942 (2 in-flight anchor re-derivations + the spacey census 108); RED-2 both faces by name
+- The gate: lint/tsc/1942/build/137 + the four sweeps CLEAN; the captures 172-175 + the VLM battery 4/4 x4; the live geometry envelope (signup 422@390 + verify 412@390 + firstBoxFocused true)
+- The docs: SKILL v1.108.0 + README badge 2079 + AGENTS/CLAUDE/PAD 1942+137 + session_229 + the plan + its execution record
+
+Stage Summary:
+- Session 111 shipped: the login family re-walked LIVE; 3 real drifts fixed + 2 inert re-pins; the count ladder 109 files/1942 unit/137 e2e/badge 2079; the post-fix cards byte-match the reference at both widths (signup 470/422, verify 488/412)

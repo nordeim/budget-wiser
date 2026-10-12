@@ -124,8 +124,12 @@ describe("login reset flow — reference class vocabulary", () => {
     // <div class="[&_p]:leading-relaxed text-green-700 text-sm">.
     expect(LOGIN_RESET_LAYOUT.sentEmailLine).toBe("text-slate-600 text-sm sm:text-base");
     expect(LOGIN_RESET_LAYOUT.sentEmailSpan).toBe("font-medium text-slate-900");
+    // Session-111 (D5, the s111 re-walk): the reference's sent callout
+    // carries the FULL inert [&>svg] arm family (the same form the
+    // error/info callouts ship — the s11 extraction's asymmetry; no svg
+    // ever renders on the auth surfaces).
     expect(LOGIN_RESET_LAYOUT.sentCallout).toBe(
-      "relative w-full border p-4 bg-green-50/70 border-green-200 rounded-xl",
+      "relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground text-foreground bg-green-50/70 border-green-200 rounded-xl",
     );
     expect(LOGIN_RESET_LAYOUT.sentCalloutText).toBe(
       "[&_p]:leading-relaxed text-green-700 text-sm",

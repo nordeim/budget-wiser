@@ -195,7 +195,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
   // occurrence count is the census below). This it IS the method: the
   // s91 suite's own noComments() strip + a global occurrence count
   // over src/**/*.{ts,tsx}. Re-derive here when the codebase changes.
-  it("the census: 110 comment-stripped space-y occurrences across the 18 src files that carry one", () => {
+  it("the census: 108 comment-stripped space-y occurrences across the 18 src files that carry one", () => {
     const files = execFileSync(
       "grep",
       ["-rl", "space-y-", `${root}/src`, "--include=*.ts", "--include=*.tsx"],
@@ -217,13 +217,18 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
     // base's `space-y-1.5` retired to the `[&>*+*]:mt-1.5` v3-semantics
     // variant — the F-98c1 row-genus fix; card.tsx's only space-y, the
     // file drops out of the census)
-    expect(total).toBe(110);
+    // session-111 re-anchor: 110 -> 108 (the s111 login-family re-walk:
+    // the signup titleStack wrapper retired [its inert single-child
+    // space-y-2] + the verify headingStack's `space-y-3 sm:space-y-4`
+    // re-pinned to the reference's flat `space-y-2` — the sm: arm's
+    // second occurrence retired; net −2)
+    expect(total).toBe(108);
   });
 
   it("the s91 header's unstable '99' claim is re-derived (spacey-hazard-parity no longer asserts an un-derivable count)", () => {
     const s91 = read("tests/spacey-hazard-parity.test.ts");
     expect(s91).not.toMatch(/all 99 space-y/);
-    expect(s91).toMatch(/110 comment-stripped/);
+    expect(s91).toMatch(/108 comment-stripped/);
   });
 
   it("the SKILL project_state + the PAD row carry the re-derived census (the living docs, method-stated)", () => {
@@ -233,7 +238,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
     // moment the s93 project_state stopped repeating it. Flexible
     // whitespace keeps the semantic anchor (the census, method-stated)
     // without depending on where the line breaks.
-    expect(read("neo-crm_SKILL.md")).toMatch(/110\s+comment-stripped space-y occurrences/);
+    expect(read("neo-crm_SKILL.md")).toMatch(/108\s+comment-stripped space-y occurrences/);
     expect(read("Project_Architecture_Document.md")).not.toMatch(/all 99 space-y/);
   });
 });
@@ -317,10 +322,18 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // the seeded-dashboard-kpis freeze suite, the dashboardKpis seam
     // extraction); the four sites re-anchored again, the retired 1934
     // forms join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1938 checks)");
-    expect(claude).toContain("(currently 1938)");
-    expect(claude).toContain("Vitest unit suites (1938 checks)");
-    expect(claude).toContain("`bun run test` (1938)");
+    // session-111 lockstep carry-forward: 1938 -> 1942 (the s111 +4 —
+    // the login-family LIVE re-walk's four new its; the two re-anchors
+    // land in existing its, no net change); the four sites re-anchored
+    // again, the retired 1938 forms join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1942 checks)");
+    expect(claude).toContain("(currently 1942)");
+    expect(claude).toContain("Vitest unit suites (1942 checks)");
+    expect(claude).toContain("`bun run test` (1942)");
+    expect(claude).not.toContain("Unit (Vitest, 1938 checks)");
+    expect(claude).not.toContain("(currently 1938)");
+    expect(claude).not.toContain("Vitest unit suites (1938 checks)");
+    expect(claude).not.toContain("`bun run test` (1938)");
     expect(claude).not.toContain("Unit (Vitest, 1934 checks)");
     expect(claude).not.toContain("(currently 1934)");
     expect(claude).not.toContain("Vitest unit suites (1934 checks)");

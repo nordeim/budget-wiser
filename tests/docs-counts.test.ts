@@ -116,7 +116,7 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const UNIT = 1938;
+const UNIT = 1942;
 const E2E = 137;
 const SUITES = 109;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
@@ -125,7 +125,7 @@ const SUITES = 109;
 const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
-  it("README badge carries the unit + e2e arithmetic (1938 + 137 = 2075)", () => {
+  it("README badge carries the unit + e2e arithmetic (1942 + 137 = 2079)", () => {
     const readme = read("README.md");
     expect(readme).toContain(`tests-${UNIT + E2E}%20checks`);
   });
@@ -266,6 +266,18 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).not.toMatch(/# 1934 Vitest unit checks/);
     expect(pad).not.toMatch(/# 108 Vitest suites/);
     expect(pad).not.toMatch(/— 1934\/1934/);
+    // -----------------------------------------------------------------
+    // Session-111: the unit-count realignment (1938 → 1942 + badge
+    // 2075 → 2079 — the login-family LIVE re-walk's four new its + the
+    // :123/:127 in-place re-anchors; SUITES stays 109 and E2E stays 137
+    // — the s111 pins land in EXISTING files, and the D1 e2e pin is an
+    // added expect inside an EXISTING test() block). The retired
+    // 1938/2075 constructions join the ladder — the same SITE-FORM
+    // anchors, the same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2075%20checks/);
+    expect(readme).not.toMatch(/# 1938 Vitest unit checks/);
+    expect(pad).not.toMatch(/— 1938\/1938/);
   });
 
   // ------------------------------------------------------------------
@@ -483,13 +495,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-110 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-111 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s109 layer now beneath the s110 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s110 layer now beneath the s111 head)",
     ).toContain(
-      "+ beneath it 1934 unit checks + 137 e2e checks green; the session-109 layer (the 109-c rotation — THE FIFTH-SURFACE SEEDED MOBILE WALK",
+      "+ beneath it 1938 unit checks + 137 e2e checks green; the session-110 layer (the 110-c rotation — THE DASHBOARD KPI SEAM UNIFICATION",
     );
   });
 
@@ -518,6 +530,15 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       appendix,
       "the Appendix B e2e-total row must carry the live spec-file + check counts",
     ).toContain(`| **e2e total** | 7 spec files + the setup project | **${E2E}** |`);
+    // Session-111 (F-111a1): the Appendix B wall-clock PROSE line is a
+    // live-tense count site — the s110 realignment updated the table
+    // rows but missed the phrase (it read "108 suites" for one session
+    // while the unit-total row two lines above said 109 files). The
+    // phrase is now pinned so it can never re-stale.
+    expect(
+      appendix,
+      "the Appendix B wall-clock phrase must carry the live suite count (F-111a1)",
+    ).toContain("unit\n~15 s (109 suites, one worker per file)");
     expect(
       appendix,
       "the retired six-spec form never returns (the s109 re-anchor — the spec-family census grows activities-mobile)",

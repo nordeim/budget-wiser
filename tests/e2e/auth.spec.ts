@@ -142,6 +142,11 @@ test("a fresh signup swaps to the verify-email view with its ladder", async ({ p
 
   // The verify view: the envelope tile + h2 + the email line + six inputs.
   await expect(page.getByRole("heading", { name: "Verify your email" })).toBeVisible();
+  // S111 (D1, the s111 login-family re-walk): the first code box is
+  // FOCUSED on mount — the reference's focus-entry (live-measured: the
+  // 2px ring rests on box 1 only, box 6 at none); ours made keyboard
+  // users Tab to box 1 before the fix.
+  await expect(page.locator('input[inputmode="numeric"]').first()).toBeFocused();
   await expect(page.getByText("We’ve sent a 6-digit code to")).toBeVisible();
   await expect(page.getByText(signupEmail)).toBeVisible();
   for (let i = 1; i <= 6; i += 1) {
