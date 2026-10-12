@@ -2113,6 +2113,41 @@ test("the accounts ⋮ menu ships Edit / View Insights / Delete + the health bad
   // header/cell mismatch).
   const cell = firstRow.locator("td").nth(6);
   await expect(cell.getByText(/Healthy|At Risk|Needs Attention/)).toBeVisible();
+
+  // Session-115 (D-115a3): the ACCOUNT INSIGHTS DIALOG battery freeze —
+  // the dialog's first live walk (the s115 ours-only rotation; the
+  // reference's zero-data state leaves it un-openable there, the
+  // documented s73 genus). The row click opens it, the header + the
+  // three stat cards + the three tabs render (the seeded first
+  // account's deterministic values — the walk's live measurements), a
+  // REAL tab switch moves the active tab, and Escape closes.
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await firstRow.click();
+  const insights = page.getByRole("dialog");
+  await expect(insights).toBeVisible();
+  // The header: the seeded first account's name + industry + status badge.
+  await expect(insights.getByText("Al Noor Manufacturing")).toBeVisible();
+  await expect(insights.getByText("Manufacturing", { exact: true })).toBeVisible();
+  await expect(insights.getByText("active", { exact: true })).toBeVisible();
+  // The three stat cards: labels + the deterministic seeded values
+  // (wonRevenue 0 → $0.0M · notLostCount 0 · 2 account contacts). The
+  // label asserts scope to the cards' own .text-xs class — "Open
+  // Deals"/"Contacts" also name the tab triggers (strict mode).
+  await expect(insights.getByText("Total Revenue")).toBeVisible();
+  await expect(insights.getByText("$0.0M")).toBeVisible();
+  await expect(insights.locator("div.text-xs.text-gray-500").filter({ hasText: /^Open Deals$/ })).toBeVisible();
+  await expect(insights.locator("div.text-xs.text-gray-500").filter({ hasText: /^Contacts$/ })).toBeVisible();
+  // The three tab triggers (the segmented variant — the D-115a4 unit pin).
+  await expect(insights.getByRole("tab", { name: "Recent Activities" })).toBeVisible();
+  await expect(insights.getByRole("tab", { name: "Contacts" })).toBeVisible();
+  await expect(insights.getByRole("tab", { name: "Open Deals" })).toBeVisible();
+  // A REAL tab switch: the active tab moves + the panel swaps.
+  await insights.getByRole("tab", { name: "Contacts" }).click();
+  await expect(insights.getByRole("tabpanel", { name: "Contacts" })).toBeVisible();
+  // The Escape close: the dialog unmounts.
+  await page.keyboard.press("Escape");
+  await expect(insights).toBeHidden();
 });
 
 test("the leads ⋮ Edit opens the Mke edit dialog with the 4-option statuses (S28-P2)", async ({ page }) => {

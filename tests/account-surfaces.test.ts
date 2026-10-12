@@ -118,6 +118,20 @@ describe("session-28: the Ece Account Insights dialog", () => {
     expect(src).toContain("No open deals");
   });
 
+  // Session-115 (D-115a4): the tabs' SEGMENTED construction freeze. The
+  // s115 ours-only walk (the insights dialog's first live walk — the
+  // reference's zero-data state leaves it un-openable there, the
+  // documented s73 genus) measured the segmented triggers live: 237x28
+  // each at 1440, 111x28 at 390 (three equal grid tracks). The variant
+  // + cols construction was unpinned (the it above pins names + empty
+  // states only) — this freezes it.
+  it("the tabs ride the reference's segmented variant, 3 columns (D-115a4)", () => {
+    const src = insights();
+    expect(src).toMatch(/variant="segmented"/);
+    expect(src).toMatch(/cols=\{3\}/);
+    expect(src).toMatch(/className="w-full"/);
+  });
+
   it("the type-tinted activity icon rows (Email=blue, Call=green, else purple)", () => {
     const src = insights();
     expect(src).toMatch(/bg-blue-100 text-blue-600/);

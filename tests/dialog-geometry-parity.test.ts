@@ -343,10 +343,21 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // wiring pin; both land in profile-family-parity.test.ts); the
     // four sites re-anchored again, the retired 1946 forms join the
     // negatives below.
-    expect(claude).toContain("Unit (Vitest, 1948 checks)");
-    expect(claude).toContain("(currently 1948)");
-    expect(claude).toContain("Vitest unit suites (1948 checks)");
-    expect(claude).toContain("`bun run test` (1948)");
+    // session-115 lockstep carry-forward: 1948 -> 1950 (the s115 +2 —
+    // the Defaults-tab + insights-dialog family walk's two freeze its:
+    // the Defaults label htmlFor/id association superset pin
+    // [settings-defaults-parity.test.ts] + the insights tabs
+    // segmented-variant construction pin [account-surfaces.test.ts]);
+    // the four sites re-anchored again, the retired 1948 forms join
+    // the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1950 checks)");
+    expect(claude).toContain("(currently 1950)");
+    expect(claude).toContain("Vitest unit suites (1950 checks)");
+    expect(claude).toContain("`bun run test` (1950)");
+    expect(claude).not.toContain("Unit (Vitest, 1948 checks)");
+    expect(claude).not.toContain("(currently 1948)");
+    expect(claude).not.toContain("Vitest unit suites (1948 checks)");
+    expect(claude).not.toContain("`bun run test` (1948)");
     expect(claude).not.toContain("Unit (Vitest, 1946 checks)");
     expect(claude).not.toContain("(currently 1946)");
     expect(claude).not.toContain("Vitest unit suites (1946 checks)");

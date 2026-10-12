@@ -103,4 +103,83 @@ test("the seeded settings tabs hold the 390px phone contract (the third-surface 
     "the data cards must fit the 358px phone column",
   ).toBe(true);
   expect(switched.docScrollW, "the switched panel must not overflow the 390px frame").toBeLessThanOrEqual(390);
+
+  // (e) Session-115 (D-115a2): the DEFAULTS-tab block — the family's
+  // live-census + interaction-battery freeze (the s115 two-app walk
+  // measured complete parity; this pins the phone face). The switch
+  // moves the active tab, the six-group census holds (6 labels, 4
+  // inputs + 2 combobox triggers), the frame stays at 390, and the
+  // select round-trip works (open → the Month/Week census → choose →
+  // the trigger text swaps → the debounced PUT lands 200 → restore).
+  await page.getByRole("tab", { name: "Defaults" }).click();
+  await expect(page.getByRole("tabpanel", { name: "Defaults" })).toBeVisible();
+  const defaultsGeo = await page.evaluate(() => {
+    const panel = document.querySelector(
+      '[role="tabpanel"]:not([hidden])',
+    ) as HTMLElement | null;
+    const labels = panel ? Array.from(panel.querySelectorAll("label")) : [];
+    const inputs = panel ? Array.from(panel.querySelectorAll("input")) : [];
+    const combos = panel
+      ? Array.from(panel.querySelectorAll('[role="combobox"]'))
+      : [];
+    return {
+      activeTab:
+        document
+          .querySelector('[role="tab"][data-state="active"]')
+          ?.textContent?.trim() ?? null,
+      labelCount: labels.length,
+      labelTexts: labels.map((l) => l.textContent?.trim()),
+      inputCount: inputs.length,
+      comboCount: combos.length,
+      comboTexts: combos.map((c) => c.textContent?.trim()),
+      inputWidths: inputs.map((i) =>
+        Math.round(i.getBoundingClientRect().width),
+      ),
+      docScrollW: document.documentElement.scrollWidth,
+    };
+  });
+  expect(defaultsGeo.activeTab, "the Defaults switch must move the active tab").toBe("Defaults");
+  expect(defaultsGeo.labelCount, "the Defaults panel must ship its 6 groups").toBe(6);
+  expect(defaultsGeo.labelTexts).toEqual([
+    "Default Currency",
+    "Default Lead Stage",
+    "Default Account Tier",
+    "Follow-up Days After Activity",
+    "Default Calendar View",
+    "First Day of Week",
+  ]);
+  expect(defaultsGeo.inputCount, "the Defaults panel must ship 4 text/number inputs").toBe(4);
+  expect(defaultsGeo.comboCount, "the Defaults panel must ship 2 select triggers").toBe(2);
+  expect(defaultsGeo.comboTexts, "the selects' initial values are Month + Monday").toEqual(["Month", "Monday"]);
+  expect(
+    defaultsGeo.inputWidths.every((w) => w > 0 && w <= 358),
+    "the Defaults inputs must fit the phone column",
+  ).toBe(true);
+  expect(defaultsGeo.docScrollW, "the Defaults panel must not overflow the 390px frame").toBeLessThanOrEqual(390);
+
+  // The select round-trip: open the calendar-view select, the 2-option
+  // census, choose Week, the trigger swaps, the debounced PUT lands,
+  // then RESTORE Month (the s114 state-pollution lesson — always leave
+  // the shared settings singleton as found).
+  const calview = page.locator('[role="combobox"]').first();
+  await calview.click();
+  for (const opt of ["Month", "Week"]) {
+    await expect(page.getByRole("option", { name: opt, exact: true })).toBeVisible();
+  }
+  const putResp = page.waitForResponse(
+    (r) => r.url().includes("/api/settings") && r.request().method() === "PUT",
+    { timeout: 10_000 },
+  );
+  await page.getByRole("option", { name: "Week", exact: true }).click();
+  await expect(calview).toHaveText("Week");
+  expect((await putResp).status(), "the debounced save PUT must land 200").toBe(200);
+  // The restore (a second PUT through the same seam).
+  await calview.click();
+  const restoreResp = page.waitForResponse(
+    (r) => r.url().includes("/api/settings") && r.request().method() === "PUT",
+    { timeout: 10_000 },
+  );
+  await page.getByRole("option", { name: "Month", exact: true }).click();
+  await expect(calview).toHaveText("Month");
+  expect((await restoreResp).status()).toBe(200);
 });

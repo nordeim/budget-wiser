@@ -118,13 +118,16 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
 const E2E = 137;
 const SUITES = 109;
-// Session-114: 1946 → 1948 (+2 — the s114 profile + settings Data-tab
-// family walk's two new its: the profile email/role ID construction pin
-// + the camera/file-input wiring pin [both in profile-family-parity.
-// test.ts]; SUITES stays 109 (both its land in EXISTING files); the
-// D-114a3 upload + save-round-trip expects are added expects INSIDE an
-// existing e2e test() block — E2E stays 137).
-const UNIT = 1948;
+// Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
+// family walk's two freeze its: the Defaults label htmlFor/id association
+// superset pin [settings-defaults-parity.test.ts — ours the a11y superset
+// over the reference's bare unassociated labels, the s112 D-112a2 genus]
+// + the insights tabs segmented-variant construction pin
+// [account-surfaces.test.ts]; SUITES stays 109 (both its land in EXISTING
+// files); the D-115a2 Defaults round-trip + D-115a3 insights battery
+// expects are added expects INSIDE existing e2e test() blocks — E2E stays
+// 137).
+const UNIT = 1950;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -523,13 +526,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-114 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-115 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s113 layer now beneath the s114 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s114 layer now beneath the s115 head)",
     ).toContain(
-      "+ beneath it 1946 unit checks + 137 e2e checks green; the session-113 layer (the 113-c rotation — THE MENU/POPOVER-FAMILY LIVE RE-WALK",
+      "+ beneath it 1948 unit checks + 137 e2e checks green; the session-114 layer (the 114-c rotation — THE PROFILE + SETTINGS DATA-TAB FAMILY LIVE WALK",
     );
   });
 

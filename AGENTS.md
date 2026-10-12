@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1948 checks)       | `bun run test`                         |
+|  Unit tests (1950 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1948) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1950) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4996,3 +4996,67 @@ source; the case-sensitive fileInputRef regex). The captures 184–187
 (the VLM battery). Docs at SKILL v1.111.0 + README badge 2085 +
 AGENTS/CLAUDE/PAD at 1948+137 + session_241.md + the s114 plan + its
 execution record + the worklog.
+
+### Session-115 — the Defaults-tab re-walk (two-app) + the insights-dialog family walk + the four freeze finds
+
+The s114 close's three candidates scout-adjudicated: the settings
+Defaults-tab editors walked TWO-APP (the first Defaults re-walk since
+s81, 34 sessions — the s114 close listed it as un-walked, the s81
+suite header the correction), the accounts detail surfaces walked
+OURS-ONLY (the reference at its zero-data state renders "No accounts
+found" — re-confirmed live; the insights dialog un-openable there, the
+documented s73 genus, the s113 row-menu precedent), and the reports
+tables DEFERRED to session 116 (the populated face ours-only at the
+reference's zero-data; the s10 e2e structure tests + the s105 mobile
+walk already hold the family's structure).
+
+THE RESULT — zero real parity defects; four freeze finds. The Defaults
+family in COMPLETE live parity on every computed axis at both widths
+(the tab trigger 371×28/117×28; the card 1120×604/358×604; the header
+1118×90 with the title DIV + the subtitle DIV 14px/20px/#737373; the
+six groups — the labels byte-equal, the label→control gap 12 + the
+control marginTop 8 on BOTH [the s14 controlMt compensator
+live-validated], the four inputs + two triggers 1070×36/308×36 with
+the values AED/new/B/3, the number input min/max-free [L-81c4
+re-verified]; the select dropdown census 1072×74 + the options
+Month/Week 1062×32; the interaction battery identical — choose Week →
+the trigger swaps + the save round-trip, ours PUT /api/settings 200 vs
+the reference's POST+GET+PUT+GET entity dance, the s72 platform
+equivalent). The insights dialog (its FIRST live walk, against the
+s28/s84 decoded contracts): the chrome rides the s112-verified stock
+family (768 @1440 / full-bleed 390 with the p-6 children 340); the
+header (text-xl title + industry + the green-100 badge 63×22); the
+three stat cards 229×114/103×130 with the three icons; the segmented
+tabs 237×28/111×28; the activities rows 718×66 with the 40×40
+rounded-lg tinted icon boxes; the battery (the Contacts switch with
+the avatar circles + the Open Deals empty state + the Escape close)
+healthy at both widths.
+
+The finds: D-115a1 THE DEFAULTS LABEL HTMLFOR/ID ASSOCIATION SUPERSET
+(ours wires the six def-* pairs; the reference's six labels BARE
+UNASSOCIATED — ours the a11y superset, the s112 D-112a2 camera genus
++ the s114 Danger-confirm precedent, KEPT + frozen in
+settings-defaults-parity) + D-115a2 THE DEFAULTS INTERACTION-BATTERY
+FREEZE (the Defaults-tab block inside the settings-mobile e2e guard —
+the six-group census + the select round-trip with the restore, the
+s114 state-pollution lesson applied) + D-115a3 THE INSIGHTS-DIALOG
+BATTERY FREEZE (the open/switch/close expects inside the accounts ⋮
+menu e2e test — the dialog never before opened by any e2e) + D-115a4
+THE INSIGHTS SEGMENTED-VARIANT FREEZE (the variant/cols construction
+in account-surfaces). The noise families adjudicated away: the header
+mechanism (space-y-1.5 vs the arbitrary variant — the documented v4
+house pattern), the token-maps (s73/s86), the input class ordering
+(s86), the select-content shadow prepends (s112), the avatar radius
+9999-vs-3.35544e+07 (the v4 rounded-full genus, s114), the mount-focus
+(the Radix close-X default, no reference face).
+
+The count ladder: UNIT 1948→1950 (+2 — the D-115a1 association pin +
+the D-115a4 variant pin, both in EXISTING files) · SUITES 109
+UNCHANGED · E2E 137 UNCHANGED (added expects, zero new its) · badge
+2085→2087. RED-first: 14 failed | 73 passed (87) at the still-old docs
+(the 13 docs-counts-family + the CLAUDE lockstep — enumerated by name;
+the plan predicted 12-15), stash-proven (the native 85/85 → pop → 14
+RED; both freeze its staging-pass, the s112 camera precedent). The
+captures 188-191 (the VLM battery). Docs at SKILL v1.112.0 + README
+badge 2087 + AGENTS/CLAUDE/PAD at 1950+137 + session_245.md + the
+s115 plan + its execution record + the worklog.

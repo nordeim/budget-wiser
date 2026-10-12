@@ -304,3 +304,45 @@ describe("session-81: green-by-design anchors (the measured parities)", () => {
     expect(doc).toContain("ring-offset-background");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-115 (D-115a1): the Defaults label htmlFor/id ASSOCIATION
+// SUPERSET freeze. The s115 two-app walk (the first Defaults re-walk since
+// s81) measured the reference's six Defaults labels as BARE UNASSOCIATED
+// <label> elements (for=None on all six, live-extracted at 1440 + 390);
+// OURS wires the six htmlFor="def-*" + id="def-*" pairs — the a11y
+// SUPERSET over the reference's own unassociated construction, the s112
+// D-112a2 camera-aria-label genus + the s114 Danger-confirm-label
+// precedent (both KEPT + documented). This pin freezes the association so
+// a future edit cannot silently drop it; read on the RAW source (the s114
+// stripComments lesson — freeze pins never ride a comment-stripped read).
+// ---------------------------------------------------------------------------
+describe("session-115: the label htmlFor/id association superset (D-115a1)", () => {
+  it("the six Defaults groups wire the htmlFor/id pairs — the a11y superset over the reference's bare unassociated labels", () => {
+    const body = defaultsEditorBody();
+    // The six pairs, by their exact constructions (the walk's live
+    // census: 6 labels, 4 inputs + 2 SelectTrigger comboboxes).
+    for (const id of [
+      "def-currency",
+      "def-stage",
+      "def-tier",
+      "def-follow",
+      "def-calview",
+      "def-firstday",
+    ]) {
+      expect(
+        body,
+        `the DefaultsEditor must wire htmlFor="${id}"`,
+      ).toContain(`htmlFor="${id}"`);
+      expect(
+        body,
+        `the DefaultsEditor must wire id="${id}"`,
+      ).toMatch(new RegExp(`id="${id}"`));
+    }
+    // The NEGATIVE — the labels never ship bare: every <Label in the
+    // editor body carries a htmlFor attribute (the reference's own
+    // unassociated-label defect is NOT mirrored; ours the superset).
+    const bareLabels = body.match(/<Label(?![^>]*htmlFor)/g);
+    expect(bareLabels, "no bare unassociated <Label> may ship in the DefaultsEditor").toBeNull();
+  });
+});
