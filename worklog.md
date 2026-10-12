@@ -3919,3 +3919,20 @@ Work Log:
 
 Stage Summary:
 - Session 112 shipped: the dialog family re-walked LIVE — FULL parity verified (the s92 fixes + the s15 pins + 20 sessions of changes, all live-confirmed at both widths); the close-X re-pinned to the reference's current stock; the camera superset + the mount-focus behavior frozen; the role=dialog rule documented; the count ladder 109 files/1944 unit/137 e2e/badge 2081
+
+---
+Task ID: s113
+Session: 113 (2026-10-12)
+
+Work Log:
+- The intake: fresh clone (the workspace had been reset) at ef06550 (the s112 ship + session_236); environment rebuilt (.env from .env.example + AUTH_SECRET, db:push + db:seed, census MATCH); the Playwright browser installed; the scandihaven pattern repo re-cloned; core docs + session docs (235/236/the s112 plan) reviewed; the stray DATABASE_URL hazard re-confirmed (all ops under env -u)
+- The baseline gate: lint 0/0 · tsc 0 · 109/1944 · build · 137/137 e2e — exactly the s112 ship state
+- The audits: 113-a GENUINE 10/10 zero findings (the s112 ship delta verified hunk-by-hunk; the full suite reproduced live); 113-b 8/8 PASS zero findings (~70th; SEO live 6/6 on a scratch db; drawer battery 10/10 exit 0; design-tokens 15/15; census MATCH)
+- The live verification: probe:ref 84th STABLE (bundle md5 exact; the mobile-nav defect STANDS 34th); the four drift gates CLEAN; census MATCH
+- The rotation (113-c): scout-adjudicated — the topbar search renders NO dropdown on either app (the s32 dead-decode confirmed live), the chart tooltips are recharts defaults — the MENU/POPOVER family committed; the walk (both apps, 1440×900 + 390×844, two throwaway scripts) verified the account menu + the Filters popover in COMPLETE computed parity (the geometry byte-identical at both widths; the mount-focus + keyboard model identical) + adjudicated 3 finds: D-113a1 the Filters field-labels re-tagged span → LABEL (the reference renders bare <label>s), D-113a2 the MENU_CONTENT outline-none retired (the reference's current stock does not carry it — the s112 D-112a1 genus, verified inert), D-113a3 the mount-focus + keyboard e2e freezes (2 expects inside existing blocks, census stays 137)
+- The TDD: RED-1 16|190(206) stash-proven 204/204; GREEN 1946/1946 (one in-flight census correction 1556→1559 + two lockstep re-anchors discovered en route: the dialog-geometry CLAUDE carrier + the layer-axis literals); RED-2 both faces by name (the outline-none re-add + the Status-span revert)
+- The gate: lint/tsc/1946/build/137 (the two focus expects green on their first run) + the four sweeps CLEAN (no re-baselining — render-inert fixes) + census MATCH; the captures 180-183 (the geometry envelope byte-matching the walk; the 182 labels=4 live) + the VLM battery 4/4 × 4 zero adjudications
+- The docs: SKILL v1.110.0 + README badge 2083 + AGENTS/CLAUDE/PAD at 1946+137 + session_237 + the s113 plan + its execution record + the worklog
+
+Stage Summary:
+- Session 113 shipped: the menu/popover family re-walked LIVE — the account menu + the Filters popover in complete computed parity (the s13 pins verified live 13 sessions on, the mount-focus + keyboard model measured for the first time); the Filters labels re-tagged to real <label> semantics; the MENU_CONTENT re-pinned to the reference's current stock; the count ladder 109 files/1946 unit/137 e2e/badge 2083

@@ -597,6 +597,18 @@ test("the topbar account menu is a real role=menu with Profile/Logout (S13-P4)",
   await expect(menu.getByRole("menuitem", { name: "Profile" })).toBeVisible();
   await expect(menu.getByRole("menuitem", { name: "Logout" })).toBeVisible();
 
+  // S113 (D-113a3, the menu-family walk's mount-focus freeze): on
+  // click-open Radix focuses the CONTENT container (activeElement = the
+  // [role=menu] div) — live-measured IDENTICAL on both apps at both
+  // widths. ArrowDown then lands the first item (the s111 D1 genus:
+  // behavioral parity no class-string pin can see — the walk's
+  // #f5f5f5 data-highlighted wash rides the same focus).
+  await expect(menu).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(
+    menu.getByRole("menuitem", { name: "Profile" }),
+  ).toBeFocused();
+
   // Profile navigates to the reference's /Profile target (its menuitem
   // is an <A href="/Profile"> — the capital casing renders in place per
   // S24-P1; the URL is preserved, never normalized).
@@ -2134,6 +2146,12 @@ test("the ⋮ menu ships Edit / the DEAD Convert to Opportunity / Delete (S29-P2
   const row = page.locator("tbody tr", { hasText: "E2E — Playwright deal" });
   await row.getByLabel(/^Actions for /).click();
   await expect(page.getByRole("menuitem", { name: "Convert to Opportunity" })).toBeVisible();
+
+  // S113 (D-113a3, the menu-family walk's mount-focus freeze): the row
+  // menus land focus on the CONTENT container on click-open — the same
+  // Radix model as the account menu, live-measured on the walk.
+  await expect(page.locator('[role="menu"]')).toBeFocused();
+
   // The reference's own quirk: the item is DEAD — no dialog, no navigation.
   await page.getByRole("menuitem", { name: "Convert to Opportunity" }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);

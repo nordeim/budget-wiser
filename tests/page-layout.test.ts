@@ -533,6 +533,30 @@ describe("session-8 parity pins (DOM-verified 2026-09-30)", () => {
     ]);
   });
 
+  it("the leads Filters field labels are LABEL elements (S113, D-113a1 — the reference renders <label>, ours shipped <span>)", () => {
+    // The s113 menu/popover-family LIVE re-walk: the reference's Filters
+    // popover renders FOUR <label> elements (cls `text-sm font-medium
+    // mb-2 block`, bare + unassociated — the live census) for Status /
+    // Source / Min Deal Value / Follow-up Date. Ours shipped the same
+    // four as <span>s — real label semantics (the a11y tree + the
+    // form-labeling family) is the strict-mirror fix. The bare-label
+    // construction byte-matches the reference (no htmlFor on either
+    // side — the login-card htmlFor family is the ASSOCIATED genus,
+    // this surface the reference's own unassociated one).
+    const src = read("src/app/(app)/leads/leads-page.tsx")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    for (const labelText of ["Status", "Source", "Min Deal Value", "Follow-up Date"]) {
+      expect(src).toContain(
+        `<label className={LEADS_FILTERS_POPOVER.fieldLabel}>${labelText}</label>`,
+      );
+    }
+    // The retired span forms — zero survive.
+    expect(src).not.toContain(
+      `<span className={LEADS_FILTERS_POPOVER.fieldLabel}>`,
+    );
+  });
+
   it("Log WhatsApp is the DEFAULT variant + the bare emerald pair (the reference's own construction)", () => {
     // Session-83 (L-83c4): the reference rides the DEFAULT Button
     // variant + className:"bg-emerald-600 hover:bg-emerald-700" — the
@@ -1396,6 +1420,33 @@ describe("session-13: stock account menu (S13-P4)", () => {
     expect(MENU_ITEM).not.toContain("hover:bg-line-soft");
     expect(MENU_ITEM).not.toContain("cursor-pointer");
     expect(MENU_ITEM).not.toContain("w-full");
+  });
+
+  it("the menu content byte-matches the reference's CURRENT stock string (S113, D-113a2 — the outline-none retired)", () => {
+    // The s113 menu-family LIVE re-walk (both apps, 1440×900 + 390×844):
+    // the reference's CURRENT stock DropdownMenu content carries NO
+    // `outline-none` — our s13-era string predates the reference's
+    // shadcn bump (the s112 D-112a1 close-X genus). Verified INERT live
+    // on both open paths: the click-open's programmatic focus on the
+    // content is not :focus-visible (no outline renders on either
+    // app), and the keyboard-open focuses the first ITEM — the content
+    // never holds focus-visible. The token-map arms (border-line /
+    // bg-surface / text-foreground for the reference's bare border /
+    // bg-popover / text-popover-foreground) STAY — the documented s73
+    // computed-equal mechanism, live-verified (white / #e5e5e5 / #0a0a0a
+    // on both apps, the s86 border-input precedent).
+    expect(MENU_CONTENT).not.toContain("outline-none");
+    expect(MENU_CONTENT).toContain("border-line bg-surface p-1 text-foreground");
+    expect(MENU_CONTENT).toContain("data-[state=open]:animate-in");
+    expect(MENU_CONTENT).toContain("data-[side=bottom]:slide-in-from-top-2");
+    expect(MENU_CONTENT).toContain("data-[side=left]:slide-in-from-right-2");
+    expect(MENU_CONTENT).toContain("data-[side=right]:slide-in-from-left-2");
+    expect(MENU_CONTENT).toContain("data-[side=top]:slide-in-from-bottom-2");
+    // The ITEM's own outline-none is NOT in scope here — the
+    // reference's stock menuitem DOES carry it (live-verified: `relative
+    // flex cursor-default select-none items-center gap-2 rounded-sm px-2
+    // py-1.5 text-sm outline-none transition-colors focus:bg-accent …`).
+    expect(MENU_ITEM).toContain("outline-none");
   });
 
   it("the topbar account menu renders a real role=menu (e2e-pinned)", () => {

@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1944 checks)       | `bun run test`                         |
+|  Unit tests (1946 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1944) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1946) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4863,3 +4863,75 @@ VLM battery 4/4 × 4, one adjudication — the 179 ring at 3x zoom).
 Docs at SKILL v1.109.0 + README badge 2081 + AGENTS/CLAUDE/PAD at
 1944+137 + session_233.md + the s112 plan + its execution record +
 the worklog.
+
+### Session-113 — the menu/popover-family LIVE re-walk + the three finds
+
+The s112-close's candidates adjudicated by a two-app scout: the topbar
+search renders NO dropdown on EITHER app (the s32 dead-decode confirmed
+live — zero popper surfaces on click and on fill), and the chart
+tooltips are recharts defaults on both sides (the s10 doctrine). The
+**menu/popover family** was the walk: the s13-era MENU_CONTENT/MENU_ITEM
+pins are class-string level (extracted 2026-09-30, thirteen sessions and
+one reference shadcn bump ago), the family's mount-focus + keyboard
+behavior was never measured (the s111 D1 genus), and the Filters
+popover's field-label TAGS were never census'd. Two throwaway walk
+scripts drove BOTH apps through the account-menu + leads-Filters +
+(ours-only) leads-row-menu ladder at 1440×900 + 390×844, extracting
+trigger censuses, open-panel geometry, computed styles, item censuses,
+mount-focus states, the ArrowDown highlight, and Escape closes.
+**THE RESULT: the family is in COMPLETE LIVE PARITY on every computed
+axis** — the account menu's geometry byte-identical at 1440 (x=1280
+y=56 w=128 h=74, bottom/end, the popper transform equal), the content
+computed-equal on every axis (white / #e5e5e5 / 6px / shadow-md / 4px
+pad / #0a0a0a / 128px min-w), the item census identical ([A/Profile
+href="/Profile", DIV/Logout] · 118×32 · 6px 8px · 4px radius · 14px),
+the mount-focus identical (the content DIV on click-open), the keyboard
+model identical (ArrowDown → the first item + #f5f5f5 highlight); the
+Filters popover geometry byte-identical at BOTH widths (320×398
+@304,483 at 1440; the 390 collision FLIP-UP to data-side=top matched),
+the census identical (2 selects · 2 inputs · the four buttons); the
+row menus ours-only walkable (the reference's zero-data state — the
+documented genus; the s73 bundle decode the contract).
+
+- **D-113a1 (REAL, structural/a11y)**: the reference's Filters popover
+  renders FOUR bare `<label>` elements (`text-sm font-medium mb-2
+  block`, unassociated); ours shipped the same four as `<span>`s —
+  real label semantics is the strict-mirror fix (leads-page.tsx ×4).
+- **D-113a2 (inert class-string — the D-112a1 genus)**: our s13-era
+  MENU_CONTENT carries `outline-none`; the reference's CURRENT stock
+  content does NOT (the s13 dump predates its shadcn bump). Retired for
+  byte parity — verified INERT live on both open paths (the click-open's
+  programmatic focus is not :focus-visible; the keyboard-open focuses
+  the first ITEM). The token-map arms (border-line/bg-surface/
+  text-foreground) STAY — the documented s73 computed-equal mechanism,
+  live-verified (the s86 border-input precedent).
+- **D-113a3 (behavioral, UNPINNED)**: the mount-focus + keyboard model
+  frozen as e2e expects INSIDE existing test() blocks (the census stays
+  137) — the account menu's content focus + the ArrowDown first-item
+  landing + the row menu's content focus.
+
+The noise families adjudicated away: the ring-arms' string position
+(the s86 ordering), the transparent-shadow prepends (the s112 v4
+serialization noise), the token-map mechanism (s73/s86), the topbar
+@390 arrangement (the s93 standing genus — the walk re-confirmed both
+censuses exactly).
+
+**The count ladder:** UNIT 1944 → 1946 (+2 — the MENU re-pin it + the
+labels it, both in page-layout.test.ts) · SUITES 109 UNCHANGED · E2E
+137 UNCHANGED · badge 2081 → 2083 · the page-layout census rows 1548 →
+1559 + 183 → 185 checks.
+
+**RED-first:** 16 failed | 190 passed (206) at the still-unfixed src +
+the still-old docs (the 14 docs-counts count-axis its + the MENU it +
+the labels it — enumerated by name; the plan predicted 15-18),
+stash-proven (the two staged files → the native 204/204 → pop → 16
+RED). One in-flight correction: the census literal drafted 1556 landed
+at **1559** (the comments ran longer than drafted — the s112 genus).
+
+**GATE:** lint 0/0 · tsc 0 · 1946/1946 unit [109 suites] · build ·
+137/137 e2e + the four drift sweeps CLEAN (no re-baselining — the
+label re-tag renders identically; the class retirement is
+render-inert) + the closing census MATCH. The captures 180–183 (the
+VLM battery). Docs at SKILL v1.110.0 + README badge 2083 +
+AGENTS/CLAUDE/PAD at 1946+137 + session_237.md + the s113 plan + its
+execution record + the worklog.

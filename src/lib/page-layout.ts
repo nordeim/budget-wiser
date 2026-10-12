@@ -960,9 +960,20 @@ export const DIALOG_TEXTAREA =
 /** Session-13 (S13-P4): the reference's topbar account menu is the STOCK
  *  Radix DropdownMenu surface (role=menu) — z-50, rounded-md, shadow-md,
  *  min-w-[8rem] — with the stock menuitem anatomy (rounded-sm,
- *  focus:bg-accent, cursor-default). */
+ *  focus:bg-accent, cursor-default).
+ *  Session-113 (the menu-family LIVE re-walk, D-113a2): the reference's
+ *  CURRENT stock content carries NO `outline-none` — the s13-era string
+ *  predates the reference's shadcn bump (the s112 D-112a1 close-X genus);
+ *  retired for byte parity. Verified INERT live on both open paths: the
+ *  click-open's programmatic focus on the content is not :focus-visible
+ *  (no outline renders on either app), and the keyboard-open focuses the
+ *  first ITEM — the content never holds focus-visible. The token-map arms
+ *  (border-line/bg-surface/text-foreground for the reference's bare
+ *  border/bg-popover/text-popover-foreground) STAY — the documented s73
+ *  computed-equal mechanism, live-verified (white / #e5e5e5 / #0a0a0a on
+ *  both apps at both widths; the s86 border-input precedent). */
 export const MENU_CONTENT =
-  "z-50 min-w-[8rem] overflow-hidden rounded-md border border-line bg-surface p-1 text-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2";
+  "z-50 min-w-[8rem] overflow-hidden rounded-md border border-line bg-surface p-1 text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2";
 
 export const MENU_ITEM =
   "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-line-soft focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0";

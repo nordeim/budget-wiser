@@ -331,10 +331,20 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // byte-parity re-pin + the camera aria-label superset pin; both
     // land in EXISTING files); the four sites re-anchored again, the
     // retired 1942 forms join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1944 checks)");
-    expect(claude).toContain("(currently 1944)");
-    expect(claude).toContain("Vitest unit suites (1944 checks)");
-    expect(claude).toContain("`bun run test` (1944)");
+    // session-113 lockstep carry-forward: 1944 -> 1946 (the s113 +2 —
+    // the menu/popover-family LIVE re-walk's two new its: the
+    // MENU_CONTENT outline-none retirement re-pin + the Filters
+    // field-label LABEL-element pin; both land in page-layout.test.ts);
+    // the four sites re-anchored again, the retired 1944 forms join
+    // the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1946 checks)");
+    expect(claude).toContain("(currently 1946)");
+    expect(claude).toContain("Vitest unit suites (1946 checks)");
+    expect(claude).toContain("`bun run test` (1946)");
+    expect(claude).not.toContain("Unit (Vitest, 1944 checks)");
+    expect(claude).not.toContain("(currently 1944)");
+    expect(claude).not.toContain("Vitest unit suites (1944 checks)");
+    expect(claude).not.toContain("`bun run test` (1944)");
     expect(claude).not.toContain("Unit (Vitest, 1942 checks)");
     expect(claude).not.toContain("(currently 1942)");
     expect(claude).not.toContain("Vitest unit suites (1942 checks)");

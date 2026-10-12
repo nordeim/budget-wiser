@@ -488,7 +488,7 @@ export default function LeadsPage() {
               <DropdownContent align="start" sideOffset={4} className={cn("rounded-md shadow-md", LEADS_FILTERS_POPOVER.content)}>
                 <div className={LEADS_FILTERS_POPOVER.stack}>
                   <div>
-                    <span className={LEADS_FILTERS_POPOVER.fieldLabel}>Status</span>
+                    <label className={LEADS_FILTERS_POPOVER.fieldLabel}>Status</label>
                     {/* S29-P3: the RAW slugs with the explicit All item
                         bound to the "all" sentinel (value "new", label
                         "New" — live-confirmed options). */}
@@ -504,7 +504,7 @@ export default function LeadsPage() {
                     </Select>
                   </div>
                   <div>
-                    <span className={LEADS_FILTERS_POPOVER.fieldLabel}>Source</span>
+                    <label className={LEADS_FILTERS_POPOVER.fieldLabel}>Source</label>
                     <Select value={filters.source} onValueChange={(v) => setFilters((f) => ({ ...f, source: v }))}>
                       <SelectTrigger className={LEADS_FILTERS_POPOVER.select} aria-label="Filter by source">
                         <SelectValue placeholder="All Sources" />
@@ -517,7 +517,7 @@ export default function LeadsPage() {
                     </Select>
                   </div>
                   <div>
-                    <span className={LEADS_FILTERS_POPOVER.fieldLabel}>Min Deal Value</span>
+                    <label className={LEADS_FILTERS_POPOVER.fieldLabel}>Min Deal Value</label>
                     {/* Session-77 (L-77c7, bundle-decoded): the RAW STRING
                         storage — `t("minValue", d.target.value)` verbatim;
                         the truthiness + parseFloat live in the filter
@@ -536,7 +536,7 @@ export default function LeadsPage() {
                     />
                   </div>
                   <div>
-                    <span className={LEADS_FILTERS_POPOVER.fieldLabel}>Follow-up Date</span>
+                    <label className={LEADS_FILTERS_POPOVER.fieldLabel}>Follow-up Date</label>
                     <Input
                       type="date"
                       className={LEADS_FILTERS_POPOVER.dateInput}

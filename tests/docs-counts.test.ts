@@ -118,12 +118,13 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
 const E2E = 137;
 const SUITES = 109;
-// Session-112: 1942 → 1944 (+2 — the s112 dialog-family walk's two
-// new its: the close-X byte-parity re-pin [page-layout] + the camera
-// aria-label superset pin [contact-photo]; both land in EXISTING
-// files — SUITES stays 109; the six D-112a3 mount-focus expects are
-// added expects INSIDE existing e2e test() blocks — E2E stays 137).
-const UNIT = 1944;
+// Session-113: 1944 → 1946 (+2 — the s113 menu/popover-family walk's
+// two new its: the MENU_CONTENT outline-none retirement re-pin + the
+// Filters field-label LABEL-element pin [both in page-layout.test.ts];
+// SUITES stays 109 (both its land in EXISTING files); the D-113a3
+// mount-focus expects are added expects INSIDE existing e2e test()
+// blocks — E2E stays 137).
+const UNIT = 1946;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -295,6 +296,16 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).not.toMatch(/tests-2079%20checks/);
     expect(readme).not.toMatch(/# 1942 Vitest unit checks/);
     expect(pad).not.toMatch(/— 1942\/1942/);
+    // -----------------------------------------------------------------
+    // Session-113: the unit-count realignment (1944 → 1946 + badge
+    // 2081 → 2083 — the menu/popover-family LIVE re-walk's two new
+    // its, both in page-layout.test.ts; SUITES stays 109 and E2E
+    // stays 137). The retired 1944/2081 constructions join the
+    // ladder — the same SITE-FORM anchors, the same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2081%20checks/);
+    expect(readme).not.toMatch(/# 1944 Vitest unit checks/);
+    expect(pad).not.toMatch(/— 1944\/1944/);
   });
 
   // ------------------------------------------------------------------
@@ -512,13 +523,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-112 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-113 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s111 layer now beneath the s112 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s112 layer now beneath the s113 head)",
     ).toContain(
-      "+ beneath it 1942 unit checks + 137 e2e checks green; the session-111 layer (the 111-c rotation — THE LOGIN-FAMILY LIVE RE-WALK",
+      "+ beneath it 1944 unit checks + 137 e2e checks green; the session-112 layer (the 112-c rotation — THE DIALOG-FAMILY LIVE RE-WALK",
     );
   });
 
@@ -590,15 +601,20 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       skill,
       "the §5.6 page-layout line must carry the live line + check counts (F-108a2)",
-    ).toContain("test-pinned module (1548 lines; `tests/page-layout.test.ts`, 183 checks");
+    ).toContain("test-pinned module (1559 lines; `tests/page-layout.test.ts`, 185 checks");
     expect(skill).not.toContain("test-pinned module (1530 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 182 checks");
+    // Session-113: the retired 1548/183 forms join the negatives ladder
+    // (the s113 walk-note comment growth + the two new its).
+    expect(skill).not.toContain("test-pinned module (1548 lines");
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 183 checks");
     const pad = read("Project_Architecture_Document.md");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1548 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1559 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1530 |");
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1548 |");
     expect(
       pad,
       "the module-table reports-data row must carry the post-seam line count (F-108a3)",
