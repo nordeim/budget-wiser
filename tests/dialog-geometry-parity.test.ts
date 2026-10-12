@@ -337,10 +337,20 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // field-label LABEL-element pin; both land in page-layout.test.ts);
     // the four sites re-anchored again, the retired 1944 forms join
     // the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1946 checks)");
-    expect(claude).toContain("(currently 1946)");
-    expect(claude).toContain("Vitest unit suites (1946 checks)");
-    expect(claude).toContain("`bun run test` (1946)");
+    // session-114 lockstep carry-forward: 1946 -> 1948 (the s114 +2 —
+    // the profile + settings Data-tab family walk's two new its: the
+    // profile email/role ID construction pin + the camera/file-input
+    // wiring pin; both land in profile-family-parity.test.ts); the
+    // four sites re-anchored again, the retired 1946 forms join the
+    // negatives below.
+    expect(claude).toContain("Unit (Vitest, 1948 checks)");
+    expect(claude).toContain("(currently 1948)");
+    expect(claude).toContain("Vitest unit suites (1948 checks)");
+    expect(claude).toContain("`bun run test` (1948)");
+    expect(claude).not.toContain("Unit (Vitest, 1946 checks)");
+    expect(claude).not.toContain("(currently 1946)");
+    expect(claude).not.toContain("Vitest unit suites (1946 checks)");
+    expect(claude).not.toContain("`bun run test` (1946)");
     expect(claude).not.toContain("Unit (Vitest, 1944 checks)");
     expect(claude).not.toContain("(currently 1944)");
     expect(claude).not.toContain("Vitest unit suites (1944 checks)");

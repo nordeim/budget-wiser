@@ -118,13 +118,13 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
 const E2E = 137;
 const SUITES = 109;
-// Session-113: 1944 → 1946 (+2 — the s113 menu/popover-family walk's
-// two new its: the MENU_CONTENT outline-none retirement re-pin + the
-// Filters field-label LABEL-element pin [both in page-layout.test.ts];
-// SUITES stays 109 (both its land in EXISTING files); the D-113a3
-// mount-focus expects are added expects INSIDE existing e2e test()
-// blocks — E2E stays 137).
-const UNIT = 1946;
+// Session-114: 1946 → 1948 (+2 — the s114 profile + settings Data-tab
+// family walk's two new its: the profile email/role ID construction pin
+// + the camera/file-input wiring pin [both in profile-family-parity.
+// test.ts]; SUITES stays 109 (both its land in EXISTING files); the
+// D-114a3 upload + save-round-trip expects are added expects INSIDE an
+// existing e2e test() block — E2E stays 137).
+const UNIT = 1948;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -523,13 +523,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-113 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-114 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s112 layer now beneath the s113 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s113 layer now beneath the s114 head)",
     ).toContain(
-      "+ beneath it 1944 unit checks + 137 e2e checks green; the session-112 layer (the 112-c rotation — THE DIALOG-FAMILY LIVE RE-WALK",
+      "+ beneath it 1946 unit checks + 137 e2e checks green; the session-113 layer (the 113-c rotation — THE MENU/POPOVER-FAMILY LIVE RE-WALK",
     );
   });
 
@@ -601,20 +601,25 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       skill,
       "the §5.6 page-layout line must carry the live line + check counts (F-108a2)",
-    ).toContain("test-pinned module (1559 lines; `tests/page-layout.test.ts`, 185 checks");
+    ).toContain("test-pinned module (1566 lines; `tests/page-layout.test.ts`, 185 checks");
     expect(skill).not.toContain("test-pinned module (1530 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 182 checks");
     // Session-113: the retired 1548/183 forms join the negatives ladder
     // (the s113 walk-note comment growth + the two new its).
     expect(skill).not.toContain("test-pinned module (1548 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 183 checks");
+    // Session-114: the retired 1559 form joins the negatives ladder
+    // (the s114 D-114a1 walk-note comment growth; the checks count
+    // UNCHANGED at 185 — the s114 its land in profile-family-parity).
+    expect(skill).not.toContain("test-pinned module (1559 lines");
     const pad = read("Project_Architecture_Document.md");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1559 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1566 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1530 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1548 |");
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1559 |");
     expect(
       pad,
       "the module-table reports-data row must carry the post-seam line count (F-108a3)",

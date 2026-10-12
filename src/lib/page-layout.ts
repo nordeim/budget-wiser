@@ -496,10 +496,17 @@ export const SETTINGS_DANGER = {
   inputCls: "max-w-xs",
   resetFg: "text-neutral-50",
   /** Session-26 (S26-P1): the Danger Zone header subtitle — the reference
-   *  ships it as a `text-red-600` DIV (live DOM probe; the s14 pin recorded
+   *  ships it as a red warning DIV (live DOM probe; the s14 pin recorded
    *  the card chrome + "no warning paragraph" from a different reference
-   *  state — the live reference ships the paragraph today). */
-  desc: "text-red-600",
+   *  state — the live reference ships the paragraph today).
+   *  Session-114 (D-114a1): the reference's CURRENT construction carries
+   *  text-sm too — live-walked @1440: `text-sm text-red-600`, 14px/20px,
+   *  the line h=20, the card 1120x240 (ours pre-fix: the bare class at
+   *  16px/24px, card 244 — the +4px propagating the whole inner ladder;
+   *  the s26 probe under-read it, the s112 D-112a1 genus; the drift
+   *  sweeps never see the Data tab, they sweep the default tab — the
+   *  walk is the standing check). text-sm joined for byte parity. */
+  desc: "text-sm text-red-600",
 } as const;
 
 /** Session-8: mobile-nav drawer contracts. The auto-close media query MUST

@@ -3936,3 +3936,21 @@ Work Log:
 
 Stage Summary:
 - Session 113 shipped: the menu/popover family re-walked LIVE — the account menu + the Filters popover in complete computed parity (the s13 pins verified live 13 sessions on, the mount-focus + keyboard model measured for the first time); the Filters labels re-tagged to real <label> semantics; the MENU_CONTENT re-pinned to the reference's current stock; the count ladder 109 files/1946 unit/137 e2e/badge 2083
+
+---
+Task ID: s114
+Session: 114 (2026-10-12)
+
+Work Log:
+- The intake: git pull 7111709..0470815 (session_240 +120 — the s113 close-out); environment standing verified (.env + census MATCH + node_modules + browsers; no reset); the stray DATABASE_URL hazard re-confirmed (all ops under env -u); core docs + session docs (239/240/the s113 plan) reviewed
+- The baseline gate: lint 0/0 · tsc 0 · 109/1946 · build · 137/137 e2e — exactly the s113 ship state
+- The audits: 114-a GENUINE 10/10 zero real findings (the s113 ship delta verified hunk-by-hunk; the arithmetic + the reproduction exact; 7 record-only notes); 114-b 9/9 PASS zero real findings (~71st; SEO live 6/6; drawer battery 10/10 exit 0; design-tokens 15/15; the vocabulary pair 6/6; census MATCH)
+- The live verification: probe:ref 85th STABLE (bundle md5 exact; the mobile-nav defect STANDS 35th); the four drift gates CLEAN; census MATCH
+- The rotation (114-c): scout-adjudicated — the chrome re-walk ELIMINATED (the drift gates are its standing live walk), the profile + settings Data-tab family walked as ONE interlocked personal-workspace walk (six throwaway scripts across four iterations, both apps, 1440×900 + 390×844): the /Profile surface in near-complete live parity (the geometry byte-identical at both widths; the interaction battery identical — camera→filechooser, the upload round-trip + toast, the save UNCONDITIONAL) + the Data tab byte-computed-equal (the Import/Export 1120×160; the tabgap 24) + the templates md5-IDENTICAL ×3 + the reference's zero-data exports EMPTY (the s26 verification re-confirmed); adjudicated 3 finds: D-114a1 the Danger Zone text-sm re-pin (the reference's 14px/20px card-240 vs our bare-class 16px/24px card-244 — the s26 under-read, the s112 D-112a1 genus; the sweeps never see the Data tab), D-114a2 the profile email/role id re-pin (the reference's bare id pairs vs our profile-* — the s113 D-113a1 labels genus), D-114a3 the interaction-battery freezes (+2 its + the e2e expects)
+- The TDD: RED-1 17|50(67) stash-proven 65/65 (the camera it a staging-passing freeze pin; two staging lessons: the stripComments /* hazard + the case-sensitive fileInputRef); GREEN 1948/1948 (one in-flight re-anchor: the README :125 file-tree site; the census literal 1566 EXACT — no correction); RED-2 both faces by name (the text-sm drop + the id revert)
+- The e2e phase: the s114 STATE-POLLUTION genus found + fixed (the :414 test's save persisted photoUrl on the shared e2e user → :2316's NO-img negative broke in the full run; the cleanup seam restores the user via page.request PATCH — with the page.request-bypasses-the-page-network lesson); 137/137 after the fix + the S72-P2 flake re-run
+- The gate: lint/tsc/1948/build/137 + the four sweeps CLEAN (no re-baselining) + census MATCH; the captures 184-187 (the Danger 1120×240 post-fix, the desc 14px/20px — the envelope byte-matching the reference walk) + the VLM battery 4/4 × 4 zero adjudications
+- The docs: SKILL v1.111.0 + README badge 2085 + AGENTS/CLAUDE/PAD at 1948+137 + session_241 + the s114 plan + its execution record + the worklog
+
+Stage Summary:
+- Session 114 shipped: the profile + settings Data-tab family re-walked LIVE — the fourth family in the re-walked set (login s111 · dialogs s112 · menus s113); the Danger Zone desc re-pinned to the reference's current text-sm construction (the +4px card delta retired, live-verified at both widths); the profile form's bare email/role ids restored; the interaction battery (camera/upload/save) measured identical + frozen; the count ladder 109 files/1948 unit/137 e2e/badge 2085

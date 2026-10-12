@@ -245,12 +245,18 @@ function ProfileForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="profile-email">Email</Label>
+            {/* Session-114 (D-114a2): the reference's BARE email/role ids —
+                its labels wire htmlFor="email"/"role" (the display_name
+                pair already matched byte-for-byte); our profile-* ids
+                retired for construction parity (no collision exists on
+                the route — the only other id="email" in src/ is the login
+                card, a different route). */}
+            <Label htmlFor="email">Email</Label>
             {/* Session-13 (S13-P2): the reference's disabled email input
                 carries the bg-gray-50 wash (ours was bg-transparent —
                 indistinguishable from an editable input). */}
             <Input
-              id="profile-email"
+              id="email"
               type="email"
               value={user.email}
               disabled
@@ -260,11 +266,11 @@ function ProfileForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="profile-role">Role</Label>
+            <Label htmlFor="role">Role</Label>
             {/* Session-13 (S13-P2): bg-gray-50 + capitalize — the raw
                 value "user" displays "User" like the reference. */}
             <Input
-              id="profile-role"
+              id="role"
               value={user.role}
               disabled
               className={cn(PROFILE_LAYOUT.roleDisabled, PROFILE_LAYOUT.controlMt)}

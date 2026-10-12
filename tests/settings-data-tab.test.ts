@@ -11,7 +11,10 @@ import { describe, expect, it } from "vitest";
 //                        text-muted-foreground #737373 = our muted-ink token)
 //   Export Data       → "Export your CRM data to CSV"          (same)
 //   Danger Zone       → "Permanently delete all CRM data. This cannot be
-//                        undone."                               (text-red-600)
+//                        undone."            (text-sm text-red-600 — the s114
+//                        D-114a1 live walk: the reference's CURRENT line
+//                        carries text-sm too, 14px/20px, card 1120x240;
+//                        the s26 probe under-read it as the bare red class)
 //
 // The s14 pin recorded the Data tab's card chrome but never the header
 // subtitles — the same class-of-pin blind spot as s24's dead More... button.
@@ -37,10 +40,12 @@ describe("session-26: the Data tab CardDescription lines (S26-P1)", () => {
     expect(block).toMatch(/desc:\s*"text-sm text-muted-ink"/);
   });
 
-  it("SETTINGS_DANGER carries the red description pin", () => {
+  it("SETTINGS_DANGER carries the red description pin (the s114 D-114a1 re-anchor: the reference's CURRENT line carries text-sm too — live-walked 14px/20px, the card 1120x240 vs our pre-fix 16px/24px at 244)", () => {
     const layout = read("src/lib/page-layout.ts")!;
     const block = layout.slice(layout.indexOf("SETTINGS_DANGER = {"), layout.indexOf("SETTINGS_DANGER = {") + 1400);
-    expect(block).toMatch(/desc:\s*"text-red-600"/);
+    expect(block).toMatch(/desc:\s*"text-sm text-red-600"/);
+    // the retired s26-era bare form must stay gone (the under-read probe)
+    expect(block).not.toMatch(/desc:\s*"text-red-600"/);
   });
 
   it("the settings page ships the Import Templates description", () => {

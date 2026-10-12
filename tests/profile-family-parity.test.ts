@@ -151,7 +151,7 @@ describe("session-80: the profile email input type (L-80c3)", () => {
     // categorization + password-manager field detection + the a11y
     // role computation all read the type.
     const src = profileSrc();
-    const emailInput = src.match(/<Input[^>]*id="profile-email"[^>]*\/>/);
+    const emailInput = src.match(/<Input[^>]*id="email"[^>]*\/>/);
     expect(emailInput).not.toBeNull();
     expect(emailInput![0]).toContain('type="email"');
   });
@@ -220,5 +220,61 @@ describe("session-80: the documented parities, pinned green (N-80c5)", () => {
   it("the upload icon carries its margin ON THE SVG (w-4 h-4 mr-2)", async () => {
     const L = await pageLayout();
     expect(L.uploadIcon).toBe("h-4 w-4 mr-2");
+  });
+});
+
+describe("session-114: the profile form's bare email/role IDs (D-114a2)", () => {
+  it("the labels wire the reference's bare htmlFor pairs — email/role, the display_name pair already matching", () => {
+    // Live-walked on BOTH apps @1440 (the 114-c family walk): the
+    // reference's profile form wires label[for="email"] + input#email
+    // and label[for="role"] + input#role — the Full Name pair
+    // (display_name) already matched byte-for-byte. Ours shipped
+    // profile-email/profile-role (an early defensive uniqueness that
+    // no longer buys anything — no collision exists on the route; the
+    // only other id="email" in src/ is the login card, a different
+    // route). The strict-mirror fix (the s113 D-113a1 labels genus:
+    // the form-labeling family's construction parity). The walk also
+    // measured the label census IDENTICAL (all four <label> with the
+    // stock text-sm font-medium leading-none classes).
+    const src = profileSrc();
+    expect(src).toContain('<Label htmlFor="display_name">Full Name</Label>');
+    expect(src).toContain('<Label htmlFor="email">Email</Label>');
+    expect(src).toContain('<Label htmlFor="role">Role</Label>');
+    expect(src).toMatch(/<Input[^>]*id="display_name"/);
+    expect(src).toMatch(/<Input[^>]*id="email"/);
+    expect(src).toMatch(/<Input[^>]*id="role"/);
+    // the retired profile-* forms must stay gone
+    expect(src).not.toContain('htmlFor="profile-email"');
+    expect(src).not.toContain('id="profile-email"');
+    expect(src).not.toContain('htmlFor="profile-role"');
+    expect(src).not.toContain('id="profile-role"');
+  });
+});
+
+describe("session-114: the profile camera wiring census (D-114a3a)", () => {
+  it("the hidden file input + the camera button match the reference's construction (the walk's live-measured pair, both apps)", () => {
+    // Live-walked on BOTH apps: the camera button ("Upload Photo" +
+    // the lucide-camera icon, 159x36 @537,312) opens the FILE CHOOSER
+    // on click — the hidden input[type=file] accept="image/*" beside
+    // it. The upload round-trip: POST /api/upload 200 → the avatar
+    // preview swaps to the uploaded img + the "Photo uploaded
+    // successfully" toast. The save round-trip: unconditional (the
+    // button never gates on dirty — the s62 decode), PATCH /api/users
+    // → the 500ms reload. The behavioral freezes ride the e2e /Profile
+    // test; this pin freezes the wiring construction. NOTE: pinned on
+    // the RAW source — stripComments would eat accept="image/*" (the
+    // literal contains the /* comment-opener; the S30 comment's prose
+    // form "accept image/*" never matches the attribute literal).
+    const src = profileSrc();
+    expect(src).toContain('type="file"');
+    expect(src).toContain('accept="image/*"');
+    expect(src).toContain('className="hidden"');
+    expect(src).toMatch(/Upload Photo/);
+    expect(src).toMatch(/<Camera/);
+    expect(src).toMatch(/fileInputRef/);
+    // the api/upload POST seam + the unconditional save (no dirty gate —
+    // the buttons gate on BUSY states only: disabled={uploading}/{saving})
+    expect(src).toContain('"/api/upload"');
+    expect(src).not.toMatch(/disabled=\{!/);
   });
 });

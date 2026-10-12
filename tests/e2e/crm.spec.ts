@@ -423,6 +423,58 @@ test("/Profile (capital P) renders the profile page IN PLACE (S14-P4 -> S24-P1)"
   await expect(page).toHaveURL(/\/Profile$/);
   await expect(page.getByRole("heading", { name: "Profile & Settings" })).toBeVisible();
   await expect(page.getByText("Personal Information")).toBeVisible();
+
+  // Session-114 (D-114a3): the interaction battery — live-walked
+  // identical on BOTH apps (the 114-c family walk) and frozen here: the
+  // upload round-trip (the hidden input[type=file] → POST /api/upload →
+  // the avatar preview swaps to the uploaded img + the "Photo uploaded
+  // successfully" toast) + the save round-trip (UNCONDITIONAL — the
+  // s62 decode: the button never gates on dirty; PATCH /api/users →
+  // the 500ms reload → /Profile with the h1 re-rendered). The toast
+  // assertions ride the pre-reload window; the save's PATCH is caught
+  // via waitForResponse (the toast/reload race — the walk's lesson:
+  // the reference's own toast auto-dismisses inside any fixed wait).
+  // The e2e db re-seeds every run (global-setup) — the avatar starts
+  // at the fallback glyph and the upload is deterministic.
+  const png = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+    "base64",
+  );
+  const nameBefore = await page
+    .getByPlaceholder("Enter your full name")
+    .inputValue();
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "s114-freeze.png",
+    mimeType: "image/png",
+    buffer: png,
+  });
+  await expect(page.getByText("Photo uploaded successfully")).toBeVisible();
+  const avatarImg = page.locator("main span.rounded-full img").first();
+  await expect(avatarImg).toBeVisible();
+  await expect(avatarImg).toHaveAttribute("src", /\/api\/uploads\//);
+  const save = page.getByRole("button", { name: "Save Changes" });
+  await expect(save).toBeEnabled(); // unconditional — never dirty-gated
+  const [patch] = await Promise.all([
+    page.waitForResponse(
+      (r) => r.request().method() === "PATCH" && r.url().includes("/api/users"),
+    ),
+    save.click(),
+  ]);
+  expect(patch.status()).toBe(200);
+  await page.waitForLoadState("load"); // the 500ms reload
+  await expect(
+    page.getByRole("heading", { name: "Profile & Settings" }),
+  ).toBeVisible();
+  // Cleanup (the s114 state-pollution lesson): this test's SAVE persists
+  // photoUrl on the SHARED e2e user — the later upload tests (:2316's
+  // NO-img negative + :2333's round-trip) start from the clean state.
+  // Restore it via the same PATCH seam (photoUrl: null, the same name).
+  // NOTE: page.request bypasses the PAGE's network layer — assert on the
+  // response object directly, never via waitForResponse (the s114 lesson).
+  const cleanup = await page.request.patch("/api/users", {
+    data: { name: nameBefore, photoUrl: null },
+  });
+  expect(cleanup.status()).toBe(200);
 });
 
 test("the sidebar hrefs are the reference's CAPITALIZED paths (S24-P2)", async ({ page }) => {

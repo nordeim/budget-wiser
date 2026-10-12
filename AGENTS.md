@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1946 checks)       | `bun run test`                         |
+|  Unit tests (1948 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1946) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1948) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -4934,4 +4934,65 @@ label re-tag renders identically; the class retirement is
 render-inert) + the closing census MATCH. The captures 180–183 (the
 VLM battery). Docs at SKILL v1.110.0 + README badge 2083 +
 AGENTS/CLAUDE/PAD at 1946+137 + session_237.md + the s113 plan + its
+execution record + the worklog.
+
+### Session-114 — the profile + settings Data-tab family LIVE re-walk + the three finds
+
+The s113-close's three candidates scout-adjudicated: the chrome re-walk
+ELIMINATED (the sidebar/topbar ride every pixel sweep at all four
+viewports every session — the drift gates are its standing live walk);
+the profile photo family and the settings Data-tab family walked as ONE
+interlocked personal-workspace walk (four throwaway scripts, both apps,
+1440×900 + 390×844, the standalone build on a scratch walk db). The
+scout also settled the download axis in one pass: the three CSV
+templates download md5-IDENTICAL on both apps; the reference's
+zero-data exports are EMPTY files (the s26 verification re-confirmed;
+ours dump the seeded rows per the s26-P4 bundle-decoded contract).
+
+THE RESULT — near-complete live parity: the /Profile geometry
+byte-identical at both widths (the grid 896×594/358×1236; the personal
+card 589×594; the four side cards 283×224/98/98/98; the avatar 96/80 +
+blue-100 + the stroke-2 user glyph; the camera 159×36; the nameGap 12)
++ the computed styles equal on every axis + the interaction battery
+identical (the camera → filechooser on both; the upload POST + the
+avatar preview swap + the toast; the save UNCONDITIONAL — disabledBefore
+false on both, PATCH /api/users vs the reference's PUT
+…/entities/User/me, the platform difference the documented s72
+equivalent) + the Data tab cards byte-computed-equal (the Import +
+Export 1120×160 both; the seven buttons identical; the tablist→panel
+gap 24 both).
+
+The finds: D-114a1 THE DANGER ZONE TEXT-SM RE-PIN (the reference's
+CURRENT warning line carries text-sm — live-walked 14px/20px, the card
+1120×240; ours rendered the bare class at 16px/24px, the card 244, the
++4px propagating the whole inner ladder; the s26 probe under-read it —
+the s112 D-112a1 genus; the drift sweeps never see the Data tab —
+text-sm joined SETTINGS_DANGER.desc for byte parity) + D-114a2 THE
+PROFILE EMAIL/ROLE ID RE-PIN (the reference wires the BARE
+htmlFor="email"/"role" + id pairs, the display_name pair already
+matched; ours shipped profile-email/profile-role — retired at the four
+profile-page sites, the s113 D-113a1 labels genus, no collision on the
+route) + D-114a3 THE INTERACTION-BATTERY FREEZES (the camera/file-input
+wiring pin + the email/role id pin, both in profile-family-parity, +2
+its; the upload + save round-trip expects INSIDE the existing /Profile
+e2e test — the census stays 137). The noise families adjudicated away:
+the shadow transparent-prepends (s112), the side-chip span-vs-div +
+inline-style (s73 computed-equal), the class orderings (s86), the
+token-maps (s73/s86), the avatar radius 9999-vs-33554432 (the v3/v4
+rounded-full genus), the Danger confirm-label association (ours the
+a11y superset, the s112 D-112a2 genus — KEPT), the nameGap 12 (the s91
+compensator validated), the reference's toast auto-dismiss timing.
+
+The count ladder: UNIT 1946→1948 (+2, both its in
+profile-family-parity.test.ts) · SUITES 109 UNCHANGED · E2E 137
+UNCHANGED · badge 2083→2085 · the page-layout census row 1559→1566.
+RED-first: 17 failed | 50 passed (67) at the still-unfixed src + the
+still-old docs (the 14 docs-counts-family + the email re-anchor + the
+labels it + the danger-desc re-anchor), stash-proven (the four staged
+files → the native 65/65 → pop → 17 RED; the camera it a
+staging-passing freeze pin — the s112 precedent; two staging lessons:
+the stripComments regex eats accept="image/*" — pinned on the raw
+source; the case-sensitive fileInputRef regex). The captures 184–187
+(the VLM battery). Docs at SKILL v1.111.0 + README badge 2085 +
+AGENTS/CLAUDE/PAD at 1948+137 + session_241.md + the s114 plan + its
 execution record + the worklog.
