@@ -3973,3 +3973,63 @@ Work Log:
 
 Stage Summary:
 - Session 115 shipped: the Defaults family re-verified two-app after 34 sessions (complete parity — zero real defects), the insights dialog walked live for the first time and frozen, the association superset kept + pinned, the count ladder 109 files/1950 unit/137 e2e/badge 2087 — a freeze session with ZERO src changes
+
+---
+Task ID: 116-a
+Agent: audit subagent (session 116)
+Task: The s115 ship-delta audit (c4a0fdc..60c2de0 hunk-by-hunk against the s115 plan)
+
+Work Log:
+- Commit inventory: ee094b1 = 18 files +876/-35 EXACT (the 6 test files + the 5 docs + the plan +372 + captures 188-191 + session_245 + worklog); zero unaccounted
+- Follow-ups docs-only: c2e4d46 = session_246/247 only; 60c2de0 = session_248 only; delta total 21 files +1160/-35 consistent
+- src/ BYTE-IDENTICAL across c4a0fdc..60c2de0 (empty diff) — the freeze session as planned
+- Zero throwaway scripts: scripts/ = the 7 standing only; git ls-files zero s115-*/walk; tree clean (.env + db/custom.db ignored)
+- Live unit run (env -u DATABASE_URL): 109 files / 1950 tests ALL PASSING (15.32s) — the GREEN + gate numbers exact
+- e2e census: settings-mobile 1→1, crm 114→114 test( lines (111 declarations both sides); playwright --list authoritative: 137 tests in 8 files (136 spec + 1 setup)
+- Count sites: README badge 2087 + tree 1950 + the Tested s115 clause; AGENTS 1950/137 ×2 + §Session-115; CLAUDE the four sites; PAD Total 109|1950+137 + HEAD + the s115 row; SKILL v1.112.0; zero stale 1948/2085 live sites
+- D-115a1 non-vacuous: RAW read of settings-page.tsx sliced at function DefaultsEditor; six htmlFor + six id asserts + the bare-Label negative; source carries the six pairs :570-628, zero def- ids elsewhere in src/; pre-delta zero association pins
+- D-115a4 non-vacuous: fs read of account-insights-dialog.tsx; variant="segmented" + cols={3} + w-full asserted; source :129-130 exact; pre-delta zero segmented pins
+- it arithmetic: settings-defaults-parity 23→24, account-surfaces 22→23 (+1 each, EXISTING files; SUITES 109); dialog-geometry = the four-site CLAUDE lockstep carrier; docs-counts = UNIT 1950 + project_state re-anchors
+- D-115a2 block exact (six-group census + containment + the Month→Week→PUT 200→restore-with-asserted-200 round-trip inside the existing settings-mobile test); D-115a3 block exact (menu-closed → row-click open → header/stat-labels/$0.0M/tabs → real Contacts switch → Escape, inside the existing ⋮ menu test)
+- Captures 188-191: valid PNGs at 1440x900/390x844, 36-121KB
+
+Stage Summary:
+- GENUINE PASS (14/14 checks, zero real findings). The s115 ship delta maps to the plan hunk-by-hunk: zero src changes, 109/1950 unit live-reproduced, e2e 137 with zero new tests, badge 2087, both freeze its non-vacuous source-reading pins. 5 record-only notes: (N1) the insights e2e pins only $0.0M — the narrated 0/2 card values are not directly asserted (strict-mode genus); (N2) D-115a4 rides the stripComments helper while D-115a1's comment sets raw-read as the freeze default (inert here); (N3) the `:not([hidden])` selector renders mangled through the diff/grep display layer — od confirms the bytes; auditors verify exact bytes via od/sed; (N4) the pre-delta `id="def-follow"` hit at :200 is the s81 min/max indexOf anchor, not an association pin (pattern-scope note); (N5) grep census 137 needs the auth.setup test (8 files) — --list is the authoritative face
+
+---
+Task ID: 116-b
+Agent: audit subagent (session 116)
+Task: The standing-layers audit (the ~73rd consecutive)
+
+Work Log:
+- SEO live 6/6 on the standing standalone build (scratch db :3127, killed + cleaned): sitemap 200 application/xml, 9 lowercase locs (the pinned contract: / accounts contacts leads calendar activities reports settings profile), weekly ×9, priority 1.0+0.8×8; robots.txt Sitemap: line; manifest.json valid JSON "NEO CRM"; /login desc exactly 405 chars (407 bytes — the em-dash) + og:×8 + twitter:×6; /accounts junk-cookie 307→/login + canonical present
+- Drawer battery 10/10 exit 0 at TRUE 390×844: trigger 36×36@16,16 · panel 288px@x0 · 8 links · focus inside · dual body+main lock · nav-close→/Leads full release · Escape · reopen re-lock · resize-past-md release (spawned dev server killed, dev.log cleaned)
+- design-tokens 15/15; the vocabulary pair 6/6 (insights + source)
+- Config zero drift: postcss @tailwindcss/postcss :5 · NO tailwind.config.* · playwright pins E2E_DATABASE_URL "file:../db/e2e.db" :30 (wired :78) · skills/ excluded in all four (eslint ignores :47, tsconfig exclude :46, vitest include src/**+tests/**, playwright testDir ./tests/e2e)
+- Census MATCH pristine 15/24/10/23/12 + 4 users (untouched — the scratch db was the only write target)
+- The Tailwind v4 layer: @theme :30-293 with 137 token lines, ZERO var( inside, --shadow-sm re-pin :103, --blur-sm: 4px :112
+- The defect ledger unchanged: mobile-navigation.spec.ts 10 test( blocks (the no-mobile-nav reference defect header intact); db-path pins 20/20
+- http-headers + metadata + pwa-metadata 37/37
+
+Stage Summary:
+- 9/9 PASS — zero real findings (~73rd standing audit). Record-only: (1) the task paraphrase's sitemap list named /login,/signup — the pinned contract (sitemap route :16-26, the reference's 9 lowercased) serves /settings,/profile instead; live matches the pin. (2) 116-a appended its record concurrently mid-audit (the worklog's uncommitted delta was theirs).
+
+---
+Task ID: s116
+Session: 116 (2026-10-13)
+
+Work Log:
+- The intake: fresh clone (the workspace reset — the s113/s115 pattern) at 60c2de0 (the s115 ship ee094b1 + session_246/247/248); the environment REBUILT (.env from .env.example + a fresh AUTH_SECRET, db:push + db:seed, the census MATCH first try, 533 packages, the Playwright browsers + the 116-b repair [chromium_headless_shell-1243 re-installed, left standing]); the scandihaven pattern repo re-cloned at d4789c3 (on-pattern, nothing to adopt — the standing holds); core docs + session docs (247/248/the s115 plan) reviewed; the stray DATABASE_URL hazard re-confirmed (all ops under env -u)
+- The baseline gate: lint 0/0 · tsc 0 · 109/1948 · build · 137/137 e2e (3.2m, zero flakes) — exactly the s115 ship state
+- The audits: 116-a GENUINE PASS 14/14 zero real findings (the s115 ship delta c4a0fdc..60c2de0 verified hunk-by-hunk; src/ byte-identical; the count arithmetic + the non-vacuousness + the e2e --list census exact; 5 record-only notes); 116-b 9/9 PASS zero real findings (~73rd; SEO live 6/6 on a scratch db :3127; the drawer battery 10/10 exit 0; design-tokens 15/15; the vocabulary pair 6/6; config zero drift; census MATCH; the Tailwind v4 layer 137 token lines; the ledger unchanged; the db-path pins 20/20 + the metadata family 37/37)
+- The live verification: probe:ref 87th STABLE (bundle md5 exact; the mobile-nav defect STANDS 37th); the four drift gates CLEAN; census MATCH
+- The rotation (116-c): THE REPORTS-TABLES FAMILY — the last un-walked family. The ZERO-DATA face walked TWO-APP (both apps at 1440×900 + 390×844, the zero-data tool on the scratch walk db, PORT 3141): COMPLETE byte-equal parity on every computed axis (the five tab triggers 222×28/174×24 · the ten heads + ten CardTitles + ten empty-state copies byte-equal · the empty rows 14px/400 rgb(107,114,128) firstRowH 37 · the card-height family 167/189/215/247 byte-equal — the pipeline export-button headers + the phone title-wraps · the chart-card census · docScrollW contained both widths). The POPULATED face walked OURS-ONLY (the reference's zero-data genus): the ten tables' seeded row contracts (4/10/6/5/13/4/10/5/2/10, quarter AND all-time identical) + the first cells 14px/500 + the outline-Badge census (5 sites, the STOCK chrome 12px/600 border #e5e5e5) + the red-tint rows (bg-red-50 on exactly 3 tables) + the red At Risk badge + the 18d ago text + the MMM d, yyyy date + the $87K revenue cell — every axis healthy against the s27/s31/s74/s85 decoded contracts. ZERO real parity defects
+- The finds (both freezes, zero src changes): D-116a2 the ten-CardTitle + risk-construction census pin [reports-tabcontent-parity +1 it — the titles never pinned as a set ("Top Deals by Value" in NO test assertion before); the outline-Badge 5-site + bg-red-50 3-site + red-badge 1-site census on the RAW source] + D-116a1 the populated-tables e2e battery [expects INSIDE the existing crm.spec reports test — the default-tab titles + row counts before the All-Time switch, the per-tab row contracts + the badge texts + the red-tint classes + 18d ago + the MMM d, yyyy PATTERN (the s18 time-bomb lesson); the email-default lead folds into an existing source key so the tab-4 census holds; the census stays 137]
+- The TDD: RED-1 13|45(58) stash-proven 57/57 (the D-116a2 it a staging-passing freeze pin, the s112 camera precedent); GREEN 1950→1951/1951 (no in-flight line-census re-anchor — the crm.spec growth outside the thirteen-census set); RED-2 both faces by name (the title edit + the tint drop; one in-flight lesson: the replace-first-match restore hazard — the swap kept the census totals while both sites were wrong, restored via git checkout for the byte-identical src)
+- The e2e phase: the single-test verification passed FIRST RUN (the s115 strict-mode lessons pre-applied); the first full run 136/137 — the documented S72-P2 debounce flake (the battery read-only, zero mutations); the isolated re-run PASS + the full re-run 137/137 (3.3m)
+- The gate: lint/tsc/1951/build/137 (re-run against the fresh build — the gate-order rule) + the four sweeps CLEAN (no re-baselining) + census MATCH; the tree: src/ ZERO files, the four test files, the five docs, the plan, the four captures, session_249, the worklog
+- The captures 192-195 (the sales tables @1440 · the pipeline tables @1440 · the activity tables @390 · the health tables @1440) + the VLM battery 4/4 × 4 (one adjudication: the first 192 read "11" rows vs the e2e-pinned 10 — the header-row miscount genus, the e2e authoritative)
+- The docs: SKILL v1.113.0 (§16dd + the project_state s116 layer + the H1 + the Appendix B 1951) + README badge 2088 + AGENTS/CLAUDE/PAD at 1951+137 + the §Session-116 block + session_249 + the s116 plan + its execution record + the worklog
+
+Stage Summary:
+- Session 116 shipped: the reports-tables family — the LAST un-walked family — walked live (the zero-data face two-app in complete byte-equal parity; the populated face ours-only, healthy against the decoded contracts); the ten-title + risk-construction census frozen; the populated-tables e2e battery frozen; the count ladder 109 files/1951 unit/137 e2e/badge 2088 — a freeze session with ZERO src changes. The un-walked list is now EMPTY: every family in the app has been walked live

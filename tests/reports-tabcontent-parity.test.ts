@@ -281,4 +281,55 @@ describe("session-85: the tab-content foundations re-held (green by design)", ()
     // The $XK revenue cell.
     expect(src).toMatch(/\$\{\(r\.revenue \/ 1e3\)\.toFixed\(0\)\}K/);
   });
+
+  it("the ten CardTitles + the risk-construction census (the s116 reports-tables walk freeze)", () => {
+    // Session-116 (D-116a2): the reports-tables family walk measured
+    // the ten table titles byte-equal on BOTH apps (the zero-data face
+    // — walked two-app at 1440 + 390, COMPLETE parity) and the
+    // construction census healthy against the decoded contracts (the
+    // populated face, ours-only — the reference's zero-data genus, the
+    // s113 row-menu precedent): exactly 5 outline-Badge sites (the
+    // topDeals + openDeals stage cells · the overdue type cell · the
+    // leadsList + accountSummary status cells — the STOCK chrome
+    // 12px/600, border #e5e5e5, radius 6px, transparent bg), exactly 3
+    // bg-red-50 TableRow sites (dealsAtRisk + overdueActivities +
+    // atRiskAccounts — rgb(254,242,242) live-measured), exactly 1 red
+    // At Risk badge (bg red-100 / text red-800). The titles were never
+    // pinned as a set before this it — "Top Deals by Value" appeared
+    // in NO test assertion (only 6 of the 10 rode e2e visibility
+    // asserts). Read on the RAW source (the s114 stripComments lesson:
+    // the raw read is the house default for freeze pins).
+    const raw = read("src/app/(app)/reports/reports-page.tsx");
+    for (const title of [
+      "Recent Won Deals",
+      "Top Deals by Value",
+      "Open Deals by Stage",
+      "Deals at Risk (No Activity 14+ Days)",
+      "Overdue Activities",
+      "Activity Log by Owner",
+      "Leads List by Source",
+      "Source Performance Summary",
+      "At Risk Accounts",
+      "Account Summary",
+    ]) {
+      expect(raw, `the CardTitle "${title}" must ship verbatim`).toContain(
+        `<CardTitle>${title}</CardTitle>`,
+      );
+    }
+    // the construction census — exactly 5 outline badges, 3 tinted
+    // rows, 1 red badge (a fourth tint site or a sixth badge site is a
+    // parity event, not a growth)
+    expect(
+      (raw.match(/<Badge variant="outline">/g) ?? []).length,
+      "the outline-Badge census must stay at exactly 5 sites",
+    ).toBe(5);
+    expect(
+      (raw.match(/className="bg-red-50"/g) ?? []).length,
+      "the bg-red-50 row census must stay at exactly 3 sites",
+    ).toBe(3);
+    expect(
+      (raw.match(/<Badge className="bg-red-100 text-red-800">At Risk<\/Badge>/g) ?? []).length,
+      "the red At Risk badge census must stay at exactly 1 site",
+    ).toBe(1);
+  });
 });

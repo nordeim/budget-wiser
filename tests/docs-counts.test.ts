@@ -127,7 +127,16 @@ const SUITES = 109;
 // files); the D-115a2 Defaults round-trip + D-115a3 insights battery
 // expects are added expects INSIDE existing e2e test() blocks — E2E stays
 // 137).
-const UNIT = 1950;
+// Session-116: 1950 → 1951 (+1 — the s116 reports-tables family walk's
+// freeze it: the ten-CardTitle + risk-construction census pin [the
+// titles never pinned as a set — "Top Deals by Value" in NO test
+// assertion; the outline-Badge 5-site + bg-red-50 3-site + red-badge
+// 1-site constructions measured live this session]
+// [reports-tabcontent-parity.test.ts]; SUITES stays 109 (the it lands
+// in an EXISTING file); the D-116a1 populated-tables battery expects
+// are added expects INSIDE the existing crm.spec reports test — E2E
+// stays 137).
+const UNIT = 1951;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -526,13 +535,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-115 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-116 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s114 layer now beneath the s115 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s115 layer now beneath the s116 head)",
     ).toContain(
-      "+ beneath it 1948 unit checks + 137 e2e checks green; the session-114 layer (the 114-c rotation — THE PROFILE + SETTINGS DATA-TAB FAMILY LIVE WALK",
+      "+ beneath it 1950 unit checks + 137 e2e checks green; the session-115 layer (the 115-c rotation — THE DEFAULTS-TAB RE-WALK",
     );
   });
 

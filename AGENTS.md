@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1950 checks)       | `bun run test`                         |
+|  Unit tests (1951 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1950) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1951) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5060,3 +5060,53 @@ RED; both freeze its staging-pass, the s112 camera precedent). The
 captures 188-191 (the VLM battery). Docs at SKILL v1.112.0 + README
 badge 2087 + AGENTS/CLAUDE/PAD at 1950+137 + session_245.md + the
 s115 plan + its execution record + the worklog.
+
+**Session-116 (SKILL v1.113.0)** — the reports-tables family walk (the
+116-c rotation on the s115 close's single remaining candidate — the
+un-walked list's last name, THE LAST FAMILY: both apps driven through
+/reports at 1440×900 + 390×844 with computed-style + census extraction,
+login first on both, the zero-data tool on the scratch walk db, PORT
+3141 the s115 precedent). THE ZERO-DATA FACE walked TWO-APP — COMPLETE
+byte-equal parity on every computed axis at both widths: the five tab
+triggers (texts byte-equal, 222×28 14px/500 each @1440 · 174×24 12px/500
+@390 — the pill grid), the ten table heads byte-equal, the ten
+CardTitles byte-equal (incl. "Top Deals by Value" + "Deals at Risk (No
+Activity 14+ Days)"), the ten empty-state copies byte-equal, the empty
+rows 14px/400 rgb(107,114,128) centered firstRowH 37 on both, the
+card-height family byte-equal (the plain-header tables 167 at both
+widths · the two pipeline tables' export-button headers 189 @1440 · the
+phone title-wraps 215 + 247 @390), the chart-card census byte-equal
+(titles + 548/357 widths + 390 heights + the Forecasting Accuracy
+1120-wide row), docScrollW contained 1440/390 on both. THE POPULATED
+FACE walked OURS-ONLY (the reference's zero-data genus, re-confirmed
+live): the ten tables' seeded row contracts (Recent Won 4 · Top Deals 10
+· Open Deals 6 · At Risk Deals 5 · Overdue 13 · By Owner 4 · Leads List
+10 · Source Perf 5 · At Risk Accounts 2 · Account Summary 10 — the API
+census at quarter AND all-time identical), the first cells 14px/500
+rgb(10,10,10) font-medium, the outline Badge census (5 sites: topDeals
+`closed_won` · openDeals `prospecting` · overdue `Meeting` · leadsList
+`new` · accountSummary `active` — the STOCK chrome 12px/600, border
+#e5e5e5, radius 6px, transparent bg), the red-tint rows (bg-red-50
+rgb(254,242,242) on exactly 3 tables: dealsAtRisk + overdue +
+atRiskAccounts), the red At Risk badge (bg red-100 rgb(254,226,226) /
+text red-800 rgb(153,27,27)), the "18d ago" last-activity text, the
+overdue date "MMM d, yyyy", the $87K revenue cell — every axis healthy
+against the s27/s31/s74/s85 decoded contracts. ZERO src changes — the
+two freeze finds: D-116a2 the ten-CardTitle + risk-construction census
+pin [reports-tabcontent-parity — the titles never pinned as a set
+("Top Deals by Value" in NO test assertion before); the outline-Badge
+5-site + bg-red-50 3-site + red-badge 1-site census, read on the RAW
+source] + D-116a1 the populated-tables e2e battery [INSIDE the existing
+crm.spec reports test — the default-tab titles + row counts, the per-tab
+row contracts + the badge texts + the red-tint classes + 18d ago + the
+MMM d, yyyy PATTERN (the s18 time-bomb lesson — never a literal date);
+the email-default lead folds into an existing source key so the tab-4
+census holds; the census stays 137]. The count ladder: UNIT 1950→1951
+(+1) · SUITES 109 UNCHANGED · E2E 137 UNCHANGED · badge 2087→2088.
+RED-first: 13 failed | 45 passed (58) at the still-old docs (the 12
+docs-counts-family + the CLAUDE lockstep — enumerated by name; the plan
+predicted 12-15), stash-proven (the native 57/57 → pop → 13 RED; the
+D-116a2 it staging-pass, the s112 camera precedent). The captures
+192-195 (the VLM battery). Docs at SKILL v1.113.0 + README badge 2088
++ AGENTS/CLAUDE/PAD at 1951+137 + session_249.md + the s116 plan + its
+execution record + the worklog.

@@ -101,6 +101,23 @@ test("reports page loads analytics tabs with seeded data", async ({ page }) => {
   // Parity pin: the Saved Reports bookmark button ships in the header.
   await expect(page.getByRole("button", { name: "Saved Reports (0)" })).toBeVisible();
 
+  // Session-116 (D-116a1 — the reports-tables family walk's populated
+  // battery): the default-tab tables' seeded row contracts, measured
+  // live on the walk (the s116 plan). The row counts are the seed
+  // contract — opportunity-derived on this tab, so the :39 lead
+  // creation earlier in this file cannot perturb them (the leads-only
+  // surfaces stay unasserted here: the "email"-default lead folds
+  // into an existing source key, so even the tab-4 key census holds).
+  const wonDealsCard = page.locator("main .rounded-xl", { hasText: "Recent Won Deals" });
+  await expect(wonDealsCard).toBeVisible();
+  await expect(wonDealsCard.locator("tbody tr")).toHaveCount(4);
+  const topDealsCard = page.locator("main .rounded-xl", { hasText: "Top Deals by Value" });
+  await expect(topDealsCard).toBeVisible();
+  await expect(topDealsCard.locator("tbody tr")).toHaveCount(10);
+  // the Stage cell rides the STOCK outline Badge with the RAW slug
+  // (the M-74c5 pin, asserted live here for the first time).
+  await expect(topDealsCard.locator("tbody tr").first().getByText("closed_won", { exact: true })).toBeVisible();
+
   // Regression: the "all" filter sentinel must not leak into the query —
   // the view (owner/stage/status=all) must show the seeded pipeline, not
   // zeros. Session-18 fixed a TIME BOMB here: the assertion hardcoded the
@@ -118,6 +135,23 @@ test("reports page loads analytics tabs with seeded data", async ({ page }) => {
   await page.getByRole("tab", { name: "Account Health" }).click();
   await expect(page.getByText("Account Health Distribution")).toBeVisible();
 
+  // Session-116 (D-116a1): the health-tab tables' populated battery —
+  // the At Risk rows carry the red tint + the red At Risk badge + the
+  // "Nd ago" last-activity text (the s27 decoded contract, live-pinned
+  // for the first time); the Account Summary rows the outline badge.
+  const atRiskAcctsCard = page.locator("main .rounded-xl", { hasText: "At Risk Accounts" });
+  await expect(atRiskAcctsCard).toBeVisible();
+  await expect(atRiskAcctsCard.locator("tbody tr")).toHaveCount(2);
+  await expect(atRiskAcctsCard.locator("tbody tr").first()).toHaveClass(/bg-red-50/);
+  await expect(atRiskAcctsCard.getByText("18d ago", { exact: true })).toBeVisible();
+  const atRiskBadge = atRiskAcctsCard.locator("tbody tr").first().locator("div.inline-flex");
+  await expect(atRiskBadge).toContainText("At Risk");
+  await expect(atRiskBadge).toHaveClass(/bg-red-100/);
+  const acctSummaryCard = page.locator("main .rounded-xl", { hasText: "Account Summary" });
+  await expect(acctSummaryCard).toBeVisible();
+  await expect(acctSummaryCard.locator("tbody tr")).toHaveCount(10);
+  await expect(acctSummaryCard.locator("tbody tr").first().getByText("active", { exact: true })).toBeVisible();
+
   // Session-10 (S10-8): the rebuilt tab 2-4 structure. Tab 2 ships the
   // Forecasting Accuracy caption + the Open Deals / Deals at Risk tables
   // with their Export buttons; tab 3 the Overdue Activities + Activity
@@ -130,14 +164,50 @@ test("reports page loads analytics tabs with seeded data", async ({ page }) => {
   await expect(page.getByText("Open Deals by Stage")).toBeVisible();
   await expect(page.getByText("Deals at Risk (No Activity 14+ Days)")).toBeVisible();
 
+  // Session-116 (D-116a1): the pipeline-tab tables' populated battery —
+  // the Open Deals outline badge + the at-risk rows' red tint (the
+  // walk's live-measured constructions).
+  const openDealsCard = page.locator("main .rounded-xl", { hasText: "Open Deals by Stage" });
+  await expect(openDealsCard.locator("tbody tr")).toHaveCount(6);
+  await expect(openDealsCard.locator("tbody tr").first().getByText("prospecting", { exact: true })).toBeVisible();
+  const riskDealsCard = page.locator("main .rounded-xl", { hasText: "Deals at Risk (No Activity 14+ Days)" });
+  await expect(riskDealsCard.locator("tbody tr")).toHaveCount(5);
+  await expect(riskDealsCard.locator("tbody tr").first()).toHaveClass(/bg-red-50/);
+
   await page.getByRole("tab", { name: "Activity & Productivity" }).click();
   await expect(page.getByText("Overdue Activities")).toBeVisible();
   await expect(page.getByText("Activity Log by Owner")).toBeVisible();
+
+  // Session-116 (D-116a1): the activity-tab tables' populated battery —
+  // the overdue rows' red tint + the outline Type badge + the Due
+  // Date cell's MMM d, yyyy format (asserted as a PATTERN, never a
+  // literal — the s18 TIME-BOMB lesson: the seed's due dates ride day
+  // offsets, so the literal value rolls with the run date).
+  const overdueCard = page.locator("main .rounded-xl", { hasText: "Overdue Activities" });
+  await expect(overdueCard.locator("tbody tr")).toHaveCount(13);
+  await expect(overdueCard.locator("tbody tr").first()).toHaveClass(/bg-red-50/);
+  await expect(overdueCard.locator("tbody tr").first().getByText("Meeting", { exact: true })).toBeVisible();
+  await expect(overdueCard.locator("tbody tr").first().locator("td").nth(2)).toHaveText(/^[A-Z][a-z]{2} \d{1,2}, \d{4}$/);
+  const byOwnerCard = page.locator("main .rounded-xl", { hasText: "Activity Log by Owner" });
+  await expect(byOwnerCard.locator("tbody tr")).toHaveCount(4);
 
   await page.getByRole("tab", { name: "Lead Sources" }).click();
   await expect(page.getByText("Leads List by Source")).toBeVisible();
   await expect(page.getByText("Source Performance Summary")).toBeVisible();
   await expect(page.getByText("Win Rate by Source (%)")).toBeVisible();
+
+  // Session-116 (D-116a1): the sources-tab tables' populated battery —
+  // the Leads List rows are OPPORTUNITY-derived (10, the M-74c4 slice,
+  // immune to the :39 lead) with the outline Status badge; the Source
+  // Performance key census holds at 5 (the email-default lead folds
+  // into the existing key) with the referral revenue cell $87K
+  // (opportunity-derived, stable).
+  const leadsListCard = page.locator("main .rounded-xl", { hasText: "Leads List by Source" });
+  await expect(leadsListCard.locator("tbody tr")).toHaveCount(10);
+  await expect(leadsListCard.locator("tbody tr").first().getByText("new", { exact: true })).toBeVisible();
+  const sourcePerfCard = page.locator("main .rounded-xl", { hasText: "Source Performance Summary" });
+  await expect(sourcePerfCard.locator("tbody tr")).toHaveCount(5);
+  await expect(sourcePerfCard.getByText("$87K", { exact: true })).toBeVisible();
 });
 
 test("the reports by-type pie renders the pinned fill palette (S70-P2, N-70c4)", async ({ page }) => {
