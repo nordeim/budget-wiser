@@ -355,10 +355,19 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // risk-construction census pin [reports-tabcontent-parity.test.ts]);
     // the four sites re-anchored again, the retired 1950 forms join
     // the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1951 checks)");
-    expect(claude).toContain("(currently 1951)");
-    expect(claude).toContain("Vitest unit suites (1951 checks)");
-    expect(claude).toContain("`bun run test` (1951)");
+    // session-117 lockstep carry-forward: 1951 -> 1952 (the s117 +1 —
+    // the accounts-list family walk's freeze it: the five-KPI-label
+    // census pin [account-contacts-parity.test.ts]);
+    // the four sites re-anchored again, the retired 1951 forms join
+    // the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1952 checks)");
+    expect(claude).toContain("(currently 1952)");
+    expect(claude).toContain("Vitest unit suites (1952 checks)");
+    expect(claude).toContain("`bun run test` (1952)");
+    expect(claude).not.toContain("Unit (Vitest, 1951 checks)");
+    expect(claude).not.toContain("(currently 1951)");
+    expect(claude).not.toContain("Vitest unit suites (1951 checks)");
+    expect(claude).not.toContain("`bun run test` (1951)");
     expect(claude).not.toContain("Unit (Vitest, 1950 checks)");
     expect(claude).not.toContain("(currently 1950)");
     expect(claude).not.toContain("Vitest unit suites (1950 checks)");

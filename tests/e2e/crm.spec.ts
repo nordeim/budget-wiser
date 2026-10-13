@@ -57,6 +57,48 @@ test("accounts page lists seeded accounts and supports search", async ({ page })
   await page.getByRole("textbox", { name: "Search accounts", exact: true }).fill("Meridian");
   await expect(page.getByText("Meridian Financial").first()).toBeVisible();
   await expect(page.getByText("Emirates Global Trading")).toHaveCount(0);
+
+  // Session-117 (D-117a1 — the accounts-list family walk's populated
+  // battery, the D-116a1 genus): the seeded KPI + row contracts, measured
+  // live on the walk (the s117 plan). The KPI values ride the seed
+  // contract: 10 accounts · 8 active · 9 Key-tier by the >$1M revenue
+  // rule (+1 A) · $77.5M summed · 3 accounts with >=1 past-due scheduled
+  // activity (Northwind/Cedar/Al Noor). The search predicate is
+  // name-only (L-86c3) — the "Meridian" query above already pins it
+  // live (1 hit + the count-0 negative).
+  await page.getByRole("textbox", { name: "Search accounts", exact: true }).fill("");
+  const kpiCard = (label: string) =>
+    page.locator("main div.grid").first().locator("> div").filter({ hasText: label });
+  await expect(kpiCard("Total Accounts").locator('div[class*="text-2xl"]')).toHaveText("10");
+  await expect(kpiCard("Active Accounts").locator('div[class*="text-2xl"]')).toHaveText("8");
+  await expect(kpiCard("Key Accounts").locator('div[class*="text-2xl"]')).toHaveText("9");
+  await expect(kpiCard("Total Revenue").locator('div[class*="text-2xl"]')).toHaveText("$77.5M");
+  await expect(kpiCard("Overdue Activities").locator('div[class*="text-2xl"]')).toHaveText("3");
+
+  // The tier census: the Tier column (td 4) carries the Key badge
+  // (bg-yellow-100) on exactly 9 rows + the A badge (bg-green-100) on 1;
+  // the Key star (the lucide-star fill) on exactly the 9 Key rows.
+  const tierCells = page.locator("main table tbody td:nth-child(4)");
+  await expect(tierCells.locator('[class*="bg-yellow-100"]')).toHaveCount(9);
+  await expect(tierCells.locator('[class*="bg-green-100"]')).toHaveCount(1);
+  await expect(page.locator("main table svg.lucide-star")).toHaveCount(9);
+
+  // The overdue rows: exactly 3 carry the "1 Overdue" destructive
+  // badge + the 4px red left border (the N-65d construction).
+  const overdueRows = page.locator("main table tbody tr").filter({ hasText: "1 Overdue" });
+  await expect(overdueRows).toHaveCount(3);
+  await expect(overdueRows.first()).toHaveClass(/border-l-4/);
+  await expect(overdueRows.first()).toHaveClass(/border-l-red-500/);
+
+  // The Cards view (the functional superset over the reference's dead
+  // switcher — S8-3): the switch swaps the table for the 3-col card
+  // grid with all 10 accounts.
+  await page.getByRole("combobox").first().click();
+  await page.getByRole("option", { name: "Cards" }).click();
+  await expect(page.locator("main table")).toHaveCount(0);
+  const cardEls = page.locator('main div.grid [class*="rounded-lg"]');
+  await expect(cardEls).toHaveCount(10);
+  await expect(cardEls.first()).toBeVisible();
 });
 
 test("contacts page renders seeded contacts", async ({ page }) => {
@@ -143,7 +185,13 @@ test("reports page loads analytics tabs with seeded data", async ({ page }) => {
   await expect(atRiskAcctsCard).toBeVisible();
   await expect(atRiskAcctsCard.locator("tbody tr")).toHaveCount(2);
   await expect(atRiskAcctsCard.locator("tbody tr").first()).toHaveClass(/bg-red-50/);
-  await expect(atRiskAcctsCard.getByText("18d ago", { exact: true })).toBeVisible();
+  // Session-117 (D-117a0 — the F-117a2 defuse): the "18d ago" literal
+  // was a time-of-day time-bomb — the seed's d() anchor pins
+  // lastActivityAt to 10:00 LOCAL (Al Noor's d(-19)), so the computed
+  // daysSince reads 18 before 10:00 and 19 after; the bounded pattern
+  // holds at every hour (the s18 time-bomb lesson, the N-66d shape
+  // genus).
+  await expect(atRiskAcctsCard.getByText(/^1[89]d ago$/)).toBeVisible();
   const atRiskBadge = atRiskAcctsCard.locator("tbody tr").first().locator("div.inline-flex");
   await expect(atRiskBadge).toContainText("At Risk");
   await expect(atRiskBadge).toHaveClass(/bg-red-100/);
@@ -184,9 +232,22 @@ test("reports page loads analytics tabs with seeded data", async ({ page }) => {
   // literal — the s18 TIME-BOMB lesson: the seed's due dates ride day
   // offsets, so the literal value rolls with the run date).
   const overdueCard = page.locator("main .rounded-xl", { hasText: "Overdue Activities" });
-  await expect(overdueCard.locator("tbody tr")).toHaveCount(13);
+  // Session-117 (D-117a0 — the F-117a2 defuse): the exact 13 was a
+  // time-of-day time-bomb — the two due:0 seed rows ("Check-in —
+  // patient portal" at 10:00, "Prepare RFP response" at 14:00) join
+  // the overdue set after their seeded hours: 13 before 10:00, 14
+  // after 10:00, 15 after 14:00 (the createdAt-desc order puts the
+  // joiners FIRST, which also retires the first-row "Meeting"
+  // dependency below — the badge census is row-independent at the
+  // card level). toHaveCount is exact-only, so the bounded manual
+  // count (the N-66d shape genus).
+  const overdueN = await overdueCard.locator("tbody tr").count();
+  expect(overdueN).toBeGreaterThanOrEqual(13);
+  expect(overdueN).toBeLessThanOrEqual(15);
   await expect(overdueCard.locator("tbody tr").first()).toHaveClass(/bg-red-50/);
-  await expect(overdueCard.locator("tbody tr").first().getByText("Meeting", { exact: true })).toBeVisible();
+  // card-level with .first(): MULTIPLE Meeting-type rows exist (the
+  // badge census is row-independent — any row carries one).
+  await expect(overdueCard.getByText("Meeting", { exact: true }).first()).toBeVisible();
   await expect(overdueCard.locator("tbody tr").first().locator("td").nth(2)).toHaveText(/^[A-Z][a-z]{2} \d{1,2}, \d{4}$/);
   const byOwnerCard = page.locator("main .rounded-xl", { hasText: "Activity Log by Owner" });
   await expect(byOwnerCard.locator("tbody tr")).toHaveCount(4);
@@ -196,11 +257,14 @@ test("reports page loads analytics tabs with seeded data", async ({ page }) => {
   await expect(page.getByText("Source Performance Summary")).toBeVisible();
   await expect(page.getByText("Win Rate by Source (%)")).toBeVisible();
 
-  // Session-116 (D-116a1): the sources-tab tables' populated battery —
-  // the Leads List rows are OPPORTUNITY-derived (10, the M-74c4 slice,
-  // immune to the :39 lead) with the outline Status badge; the Source
-  // Performance key census holds at 5 (the email-default lead folds
-  // into the existing key) with the referral revenue cell $87K
+  // Session-116 (D-116a1; the comment corrected at Session-117 —
+  // D-117a0's record-only finding): the sources-tab tables' populated
+  // battery — the Leads List rows are LEAD-derived (db.lead,
+  // createdAt-desc): the :39 "E2E — Playwright deal" lead IS row 1 —
+  // the count holds via the M-74c4 slice cap (10) and the first-row
+  // badge holds because the dialog's default stage is "new"; the
+  // Source Performance key census holds at 5 (the email-default lead
+  // folds into the existing key) with the referral revenue cell $87K
   // (opportunity-derived, stable).
   const leadsListCard = page.locator("main .rounded-xl", { hasText: "Leads List by Source" });
   await expect(leadsListCard.locator("tbody tr")).toHaveCount(10);

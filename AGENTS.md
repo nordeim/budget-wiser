@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1951 checks)       | `bun run test`                         |
+|  Unit tests (1952 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1951) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1952) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5110,3 +5110,52 @@ D-116a2 it staging-pass, the s112 camera precedent). The captures
 192-195 (the VLM battery). Docs at SKILL v1.113.0 + README badge 2088
 + AGENTS/CLAUDE/PAD at 1951+137 + session_249.md + the s116 plan + its
 execution record + the worklog.
+
+
+### Session-117 (2026-10-13) — the accounts-list family walk (the stalest un-re-walked family, 31 sessions) + the three freeze finds
+
+The rotation ledger's next name (the s86-era decode, never live-walked
+two-app): both apps driven through /accounts at 1440×900 + 390×844
+with computed-style + census extraction, login first on both, the
+zero-data tool on the scratch walk db (PORT 3141, the s115/s116
+precedent).
+
+- **The ZERO-DATA face — COMPLETE two-app byte-equal parity** on every
+  compared axis @1440 (the KPI row: 5 labels byte-equal, the zero
+  values 0/0/0/$0.0M/0, the 12px/400 labels + 30px/700 values, the
+  211px ×5 grid · the toolbar switcher · the 8 heads · the empty state
+  "No accounts found" 14px/400 rgb(107,114,128) centered rowH 85 · the
+  rail 320px/hidden-390). The 390 overflow face re-confirms the
+  documented s95 genus 22 sessions on (the reference's bare flex-1
+  lets its 472px card poke out, toolbar 440, MAIN h-scrolls 488; ours
+  min-w-0 contains at 358/326 with the in-box scroll — visually
+  equivalent, do NOT restructure).
+- **The POPULATED face (ours-only, the reference's zero-data genus)** —
+  every axis healthy: the KPI values 10/8/9/$77.5M/3 · the tier census
+  9 Key + 1 A + the star census 9 · the health census 5/3/2 · the
+  overdue 3× "1 Overdue" + the 4px red borders · the Key oklab tint ·
+  the name-only predicate verified LIVE ("Logistics" → Sahara by NAME,
+  "Finance" → the empty state) · the Cards view 3×240×10.
+- **D-117a2** the five-KPI-label census pin [account-contacts-parity
+  +1 it — the labels never pinned as a set, "Total Accounts" in NO
+  test assertion before; the per-card trend/color adjacency + the arm
+  census on the comment-stripped source: trend="up" ×4, color= ×6 (the
+  sixth the Cards-view Avatar hex) — a fifth trend site or a seventh
+  color site is a parity event].
+- **D-117a1** the populated accounts e2e battery [expects INSIDE the
+  existing crm.spec accounts test, the census stays 137: the five KPI
+  values + the tier/star census + the three overdue rows + the
+  Cards-view switch].
+- **D-117a0** the F-117a2 wall-clock defuse [the 117-a audit's find:
+  the "18d ago" literal was a 10:00-local time-bomb (the seed's d()
+  anchor) — the bounded /^1[89]d ago$/ pattern; the Overdue 13 count
+  shared the bomb via the two due-today seed rows — the 13-15 bounds;
+  the first-row "Meeting" dependency retired to the card level; the
+  tab-4 comment corrected (the Leads List is LEAD-derived, the :39
+  lead IS row 1)]. Plus F-117a1 closed: the README Tested row's s116
+  clause (missed at the s116 ship) shipped together with the s117
+  clause.
+- The count ladder: UNIT 1951→1952 (+1, an EXISTING file) · SUITES 109
+  UNCHANGED · E2E 137 UNCHANGED · badge 2088→2089; RED-first
+  13|1939(1952) stash-proven 1951/1951; GREEN 109/1952; RED-2 both
+  faces by name; the captures 196-199 + the VLM battery.

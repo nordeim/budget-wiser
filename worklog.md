@@ -4033,3 +4033,49 @@ Work Log:
 
 Stage Summary:
 - Session 116 shipped: the reports-tables family — the LAST un-walked family — walked live (the zero-data face two-app in complete byte-equal parity; the populated face ours-only, healthy against the decoded contracts); the ten-title + risk-construction census frozen; the populated-tables e2e battery frozen; the count ladder 109 files/1951 unit/137 e2e/badge 2088 — a freeze session with ZERO src changes. The un-walked list is now EMPTY: every family in the app has been walked live
+
+---
+Task ID: 117-a
+Audit: the s116 ship-delta (246646a^..246646a) hunk-by-hunk
+- 16 files +740/−27 exact; src/ ZERO files (name-only ∅, --stat set identical, no hidden files) — the freeze confirmed
+- D-116a2 GENUINE: the ten <CardTitle> literals verbatim (reports-page.tsx :503-:1101); measured censuses outline-Badge=5 · bg-red-50=3 · red-badge=1 — all exact on the raw source
+- D-116a1 GENUINE: all +70 expects INSIDE the existing reports test (0 new test( blocks; playwright --list = 137); seed-verified: Overdue=13 (13 strictly-past non-note activities) · At-Risk Accts=2 (the closed_lost-deal accounts Al Noor + Sahara) · At-Risk Deals=5 (only AI-forecasting fresh at 2d) · 10/6/4/4/10/5/10 rows · $87K = the 87_000 referral won opp; MMM d, yyyy pinned as a PATTERN
+- counts re-anchored coherently: docs-counts UNIT=1951 (:139) + the dialog-geometry CLAUDE lockstep 4-site carry — zero stale live-1950 forms
+- docs realignment verified: README badge 2088 · AGENTS §Session-116 · CLAUDE 4×1951 · PAD s116 inventory row + Total 1951/137 · SKILL v1.113.0 · session_249 + the s116 plan + execution record + the worklog append + captures 192-195
+- F-117a1 CONFIRMED: the README Tested row (:55) tail byte-identical pre/post ship — ends at the s115 clause; the s110-s115 convention held, s116 missed it
+- F-117a2 CONFIRMED: "18d ago" exact literal at crm.spec:146; the seed d() helper pins timestamps to 10:00 local → the d(-19) lastActivityAt reads daysSince 18 pre-10:00 / 19 post-10:00 — the literal flips
+- NEW (measured, the F-117a2 blast radius): the Overdue=13 count shares the time-bomb — the two due:0 seed activities (10:00 + 14:00) join the overdue set after their seeded hours (→14/15 rows; the first-row "Meeting" badge reorderable via the createdAt-desc order); record-only: the tab-4 e2e comment calls the Leads List "OPPORTUNITY-derived / immune to the :39 lead" but the route reads db.lead — the :39 lead becomes row 1, the asserts hold via the slice cap + the dialog's default stage "new"
+Stage Summary:
+- 8/10 clean; F-117a1 (the README s116-clause miss) + F-117a2 (the 10:00-local time-bomb — "18d ago" AND the Overdue=13/first-row asserts) both CONFIRMED; the delta itself GENUINE — src/ byte-identical, every census/count/docs claim measured exact
+
+---
+Task ID: 117-b
+Audit: the standing layers (~75th consecutive)
+1. SEO LIVE 6/6 PASS — :3127 standalone walk: sitemap 9 lowercase <loc>s, robots Sitemap: directive, manifest 200 JSON, root og: family on site origin, /login auth head (canonical+og:url=/login), /accounts 307→/login
+2. DRAWER BATTERY PASS — CI=1 playwright mobile-navigation.spec.ts exit 0; 10/10 spec tests + 1 setup auth test
+3. DESIGN-TOKENS PASS — vitest tests/design-tokens.test.ts 15/15
+4. VOCABULARY PAIR PASS — source-vocabulary (4) + insights-vocabulary (2) = 6/6
+5. CONFIG ZERO DRIFT PASS — git status/diff empty at a0bcebb, clean again post-audit
+6. CENSUS MATCH PASS — pristine: MATCH (15/24/10/23/12 + 4 users), pre+post
+7. TAILWIND V4 PASS — globals.css @theme (L30-293): 137 --token lines, matches standing 137
+8. DEFECT LEDGER PASS — 10 test( blocks in mobile-navigation.spec.ts; db-path pins 20/20
+9. METADATA FAMILY PASS — metadata(14)+http-headers(9)+pwa-metadata(14) = 37/37
+Stage Summary:
+- VERDICT: 9/9 PASS — all standing layers green at a0bcebb, zero drift, ledger intact
+
+---
+Task ID: s117
+Session: 117 (2026-10-13)
+
+Work Log:
+- The intake: the THIRD restart — but the workspace SURVIVED this time (the worklog audit records intact, HEAD a0bcebb, the environment fully standing: .env, db, deps, chromium-1243, the .next/standalone build — no rebuild needed; the baseline gate + both audits + probe:ref had landed before the crash)
+- The live verification completed: the four drift gates CLEAN (desktop 1440 · phone 390 · tablet 768 · landscape 1024, each --fail-on-drift) + scandihaven re-cloned at d4789c3 (on-pattern); probe:ref the 88th STABLE (pre-crash)
+- The rotation (117-c): THE ACCOUNTS-LIST FAMILY — the stalest un-re-walked family (the s86-era decode, 31 sessions). The ZERO-DATA face walked TWO-APP: COMPLETE byte-equal parity on every compared axis @1440 (the KPI 5 labels/zero values/211px grid/12px-400/30px-700 · the toolbar switcher · the 8 heads · the empty state 14px/400 rgb(107,114,128) rowH 85 · the rail 320px/hidden-390); the 390 overflow = the DOCUMENTED s95 GENUS re-confirmed live 22 sessions on (ref tableCard 472/toolbar 440/mainScrollW 488 vs ours 358/326/390-contained with the in-box scroll at natural 945 — visually equivalent, do NOT restructure). The POPULATED face walked OURS-ONLY (the reference's zero-data genus): the KPI 10/8/9/$77.5M/3 (seed-verified independently) · the tier census 9 Key + 1 A · the star census 9 · the health census 5/3/2 · the overdue 3× "1 Overdue" + the 4px red borders · the Key oklab tint · the name-only predicate verified LIVE ("Logistics" → Sahara BY NAME; "Finance" → the empty state) · the Cards view 3×240×10 — ZERO real parity defects
+- The finds (the s116 close's pattern, zero src changes): D-117a2 the five-KPI-label census pin [account-contacts-parity +1 it — the labels never pinned as a set, "Total Accounts" in NO test assertion before; the per-card trend/color adjacency + the arm census on the comment-stripped source (trend="up" ×4 · color= ×6, the sixth the Cards-view Avatar hex)] + D-117a1 the populated accounts e2e battery [expects INSIDE the existing crm.spec accounts test, the census stays 137] + D-117a0 the F-117a2 wall-clock defuse [the "18d ago" literal → the bounded /^1[89]d ago$/; the Overdue 13 → the 13-15 bounds (the two due-today seed rows join after their hours); the first-row "Meeting" → the card-level badge; the tab-4 comment corrected (LEAD-derived, the :39 lead IS row 1)] + F-117a1 CLOSED [the README Tested row's s116 clause shipped together with the s117 clause]
+- The TDD: RED-1 13|1939(1952) stash-proven (the native 1951/1951 → pop → RED restored; the 13 enumerated by name — the 12 docs-counts-family + the CLAUDE lockstep); GREEN 109/1952 (the docs realignment: README badge 2089 + the Tested clauses [one junction-bracket repair], AGENTS 2 sites + §Session-117, CLAUDE 4 sites, PAD 5 sites + the s117 inventory row, SKILL v1.114.0 [frontmatter + H1 + the project_state s117 layer via python surgery + Appendix B + §16de]); RED-2 both faces by name (Face A: the "Total Accounts " label edit fails the D-117a2 pin; Face B: the "Active Accounts" 8→9 edit fails the battery, expected "9" received "8")
+- The e2e phase: the accounts battery FIRST RUN pass; the reports defuse tripped ONE strict-mode violation (three meeting-type rows — the card-level getByText resolved to 3; the .first() fix, the badge census genuinely row-independent); the full suite 137/137 (3.4m, zero flakes)
+- The gate: lint 0/0 · tsc 0 (after the five throwaway scripts deleted — one pid-typing error) · 109/1952 · build standing · 137/137 · src/ ZERO files (the freeze session) · census MATCH · the four drift sweeps CLEAN at close
+- The captures 196-199 (the standing build on PORT 3141 + the seeded scratch walk db) + the VLM battery 4/4 × 4 (two adjudications: 196's 6 visible headers — the Status/⋮ columns ride the documented in-box scroll, the e2e 8-head pin authoritative; 196's 8-star first read — the targeted re-read settles 9, the e2e toHaveCount(9) authoritative); the docs: session_252.md + the s117 plan + its execution record + this worklog
+
+Stage Summary:
+- Session 117 shipped: the accounts-list family — the rotation ledger's oldest name — walked live (the zero-data face two-app in complete byte-equal parity; the populated face ours-only, healthy on every decoded contract); the five-KPI-label census + the populated accounts battery frozen; the F-117a2 wall-clock time-bomb defused + F-117a1 closed; the count ladder 109 files/1952 unit/137 e2e/badge 2089 — a freeze session with ZERO src changes

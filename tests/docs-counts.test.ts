@@ -136,7 +136,16 @@ const SUITES = 109;
 // in an EXISTING file); the D-116a1 populated-tables battery expects
 // are added expects INSIDE the existing crm.spec reports test — E2E
 // stays 137).
-const UNIT = 1951;
+// Session-117: 1951 → 1952 (+1 — the s117 accounts-list family walk's
+// freeze it: the five-KPI-label census pin [the labels never pinned as
+// a set — "Total Accounts" in NO test assertion before; the per-card
+// trend/color adjacency + the arm census on the comment-stripped
+// source, the sixth color site the Cards-view Avatar hex]
+// [account-contacts-parity.test.ts]; SUITES stays 109 (the it lands
+// in an EXISTING file); the D-117a1 populated accounts battery expects
+// + the D-117a0 wall-clock defuse are added expects/edits INSIDE the
+// existing crm.spec tests — E2E stays 137).
+const UNIT = 1952;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -535,13 +544,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-116 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-117 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s115 layer now beneath the s116 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s116 layer now beneath the s117 head)",
     ).toContain(
-      "+ beneath it 1950 unit checks + 137 e2e checks green; the session-115 layer (the 115-c rotation — THE DEFAULTS-TAB RE-WALK",
+      "+ beneath it 1951 unit checks + 137 e2e checks green; the session-116 layer (the 116-c rotation — THE REPORTS-TABLES FAMILY WALK",
     );
   });
 

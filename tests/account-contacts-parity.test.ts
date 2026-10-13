@@ -85,6 +85,47 @@ describe("session-75: the accounts KPI family", () => {
     expect(src).not.toMatch(/revenueSpark/);
   });
 
+  // Session-117 (D-117a2 — the accounts-list family walk's freeze): the
+  // five KPI labels were never pinned as a set ("Total Accounts" appeared
+  // in ZERO test assertions before this it). The per-card adjacency
+  // (label -> the next label) pins each card's OWN trend/color pair —
+  // trend="up" on the first four, NONE on Overdue (the reference's own
+  // call-site quirk, the L-90c4 decode); the arm census on the
+  // comment-stripped source pins the SITE TOTALS: a fifth trend site or a
+  // seventh color site is a parity event, not a growth (the sixth color
+  // site is the Cards-view Avatar's hex prop).
+  it("the five KPI labels + the per-card trend/color pairs (the s117 census pin)", () => {
+    const src = accountsPage();
+    const cards: Array<{ label: string; trend: string | null; color: string }> = [
+      { label: "Total Accounts", trend: "up", color: "blue" },
+      { label: "Active Accounts", trend: "up", color: "green" },
+      { label: "Key Accounts", trend: "up", color: "cyan" },
+      { label: "Total Revenue", trend: "up", color: "purple" },
+      { label: "Overdue Activities", trend: null, color: "red" },
+    ];
+    for (let i = 0; i < cards.length; i += 1) {
+      const card = cards[i]!;
+      const start = src.indexOf(`label="${card.label}"`);
+      expect(start, `the ${card.label} card must exist`).toBeGreaterThan(-1);
+      const end =
+        i + 1 < cards.length
+          ? src.indexOf(`label="${cards[i + 1]!.label}"`)
+          : src.indexOf('color="red"', start) + 12;
+      expect(end).toBeGreaterThan(start);
+      const slice = src.slice(start, end);
+      if (card.trend) {
+        expect(slice, `${card.label}: the trend arm`).toContain(`trend="${card.trend}"`);
+      } else {
+        expect(slice, "Overdue: NO trend arm (the reference's own quirk)").not.toContain(`trend="up"`);
+      }
+      expect(slice, `${card.label}: the color KEY`).toContain(`color="${card.color}"`);
+    }
+    // The arm census (comment-stripped): trend="up" at EXACTLY four
+    // sites; color= at EXACTLY six (the five KPI keys + the Avatar hex).
+    expect(src.match(/trend="up"/g) ?? []).toHaveLength(4);
+    expect(src.match(/color="/g) ?? []).toHaveLength(6);
+  });
+
   it("the trailing TableHead is w-12 (the reference's literal)", () => {
     const src = accountsPage();
     expect(src).toMatch(/<TableHead className="w-12" \/>/);
