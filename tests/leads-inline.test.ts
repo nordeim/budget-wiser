@@ -192,6 +192,23 @@ describe("session-29: the row + thead chrome", () => {
     expect(src).toMatch(/items-center gap-2/);
     expect(src).toMatch(/<ArrowUpDown/);
   });
+
+  it("the sortable th's carry cursor-pointer — exactly the three wired heads (the 120-c walk census)", () => {
+    const src = page();
+    // Session-120 (the 120-c two-app walk): the reference computes
+    // cursor:pointer on EXACTLY Lead Name/Email/Value at BOTH widths
+    // (1440 + 390, byte-equal live census) — the class lives on the
+    // SortHead's OWN th carrier, not the inner button; the inert th's
+    // (Phone/Company/Status/Source/Next Follow-up/actions) carry none.
+    // The module-level SortHead renders the carrier ONCE in source; the
+    // three call-sites are the wired set.
+    expect(src).toMatch(/<TableHead className="cursor-pointer">/);
+    expect(src.match(/<TableHead className="cursor-pointer">/g)).toHaveLength(1);
+    expect(src.match(/<SortHead label=/g)).toHaveLength(3);
+    expect(src).toMatch(/<SortHead label="Lead Name"/);
+    expect(src).toMatch(/<SortHead label="Email"/);
+    expect(src).toMatch(/<SortHead label="Value"/);
+  });
 });
 
 describe("session-29: the store's optimistic updateLead", () => {

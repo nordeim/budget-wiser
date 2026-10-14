@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1956 checks)       | `bun run test`                         |
+|  Unit tests (1957 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1956) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1957) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5266,3 +5266,48 @@ The count ladder: UNIT 1953→1956 (+3, EXISTING files) · SUITES 109
 UNCHANGED · E2E 137 UNCHANGED · badge 2090→2093; RED-first
 15|1941(1956) stash-proven 1953/1953; GREEN 109/1956; RED-2 three
 faces by name; the captures 204-207 + the verification battery.
+
+### Session-120 (2026-10-14) — the leads interactive-table family walk (a clean walk, the pin-only session)
+
+The rotation ledger's next-stalest name (the session_257 close's
+named candidate — the s29-era leads interactive-table decode, ~91
+sessions old, last rotated s77): both apps driven through /leads at
+1440×900 + 390×844 with computed-style + census extraction, login
+first on both, the zero-data tool on the scratch walk db, PORT 3141
+the s115-s119 precedent, the walk scripts OUTSIDE the repo. THE
+ZERO-DATA FACE walked TWO-APP byte-equal on every compared axis at
+BOTH widths — the 9 table heads (cursor:pointer on EXACTLY Lead
+Name/Email/Value + the static ArrowUpDown glyphs + the w-12 actions
+header) · the Gke filter panel LIVE byte-equal (320×398, the 4
+labels, the 286×36 comboboxes, the Clear/Save View 139×36 footer) ·
+the (Active) suffix mechanics · the Save View native prompt + the
+saved-views select · the Export client-side download byte-equal
+(leads_ISO.csv + the UNQUOTED 8-col header) · the phone 390
+hidden-column set + docScrollW contained — ZERO parity defects, the
+DIFF reporter 0 diffs. THE POPULATED FACE walked OURS-ONLY (the
+reference's zero-data genus): healthy on every decoded contract —
+every value seed-verified off the db first + every mutation verified
+back onto the db after (the 24-row census + the stage census with
+the 4 blank negotiation/proposal Radix mirrors + the source census +
+the L-77c9 raw code-unit sort LIVE + the Gke filters LIVE with data
++ the Export populated/filtered + the Save View applyView round-trip
++ the inline Value/Status/date round-trips + the overdue face LIVE +
+the ⋮ Edit dialog / DEAD Convert / Delete + the phone 390 face on
+the table's own overflow-auto scroll area) — 40/40 walk checks, ZERO
+defects found.
+
+The remediation — ZERO src changes: D-120a0 THE SORTHEAD
+cursor-pointer CENSUS PIN (+1 it in leads-inline.test.ts — the th
+class pinned NOWHERE before) + D-120a1 THE /LEADS EXPORT E2E CLICK
+(inside the existing round-trip test, the census stays 137 — the
+page's OWN Export button, the one call-site the e2e never exercised
+directly) + D-120a2 the docs realignment + session_258 + the
+captures 208-211.
+
+The count ladder: UNIT 1956→1957 (+1, an EXISTING file) · SUITES 109
+UNCHANGED · E2E 137 UNCHANGED · badge 2093→2094; RED-1 the
+stash-proof (the class removed → the pin REDs alone) · GREEN
+109/1957 · RED-2 the e2e header literal; the full suite 137/137; the
+audits 120-a [9/9 Verified, zero real findings] + 120-b [9/9, ~78th
+consecutive]; probe:ref the 91st STABLE, the four drift gates CLEAN,
+scandihaven d4789c3 on-pattern.

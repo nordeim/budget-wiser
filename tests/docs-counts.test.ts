@@ -169,7 +169,16 @@ const SUITES = 109;
 // its land in EXISTING files); the D-119a2 populated contacts battery + the
 // F-119a1 epoch-gate are added expects/edits INSIDE the existing
 // crm.spec tests — E2E stays 137).
-const UNIT = 1956;
+// Session-120: 1956 → 1957 (+1 — the s120 leads interactive-table
+// family walk's freeze it: the SortHead cursor-pointer census pin [the
+// th's own class pinned NOWHERE before — only the ROW's absence of it
+// was pinned; the 120-c two-app walk's live census: cursor:pointer on
+// EXACTLY Lead Name/Email/Value at BOTH widths, byte-equal; the carrier
+// + the three call-sites + the wired label set] [leads-inline.test.ts];
+// SUITES stays 109 (the it lands in an EXISTING file); the D-120a1
+// /leads Export e2e click is added expects INSIDE the existing
+// crm.spec round-trip test — E2E stays 137).
+const UNIT = 1957;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -568,13 +577,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-119 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-120 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s118 layer now beneath the s119 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s119 layer now beneath the s120 head)",
     ).toContain(
-      "+ beneath it 1953 unit checks + 137 e2e checks green; the session-118 layer (the 118-c rotation — THE DASHBOARD-CHARTS + LEADS-STATCARD FAMILY WALK",
+      "+ beneath it 1956 unit checks + 137 e2e checks green; the session-119 layer (the 119-c rotation — THE CONTACTS-LIST FAMILY WALK",
     );
   });
 

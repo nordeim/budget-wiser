@@ -2521,6 +2521,24 @@ test("the inline Value/Status/Date editing round-trip persists (S29-P2, the C2 c
   await expect(rowAfter.getByLabel(/^Value for /)).toHaveValue("999999");
   await expect(rowAfter.getByLabel(/^Status for /)).toHaveText("Won");
   await expect(rowAfter.getByLabel(/^Next follow-up for /)).toHaveClass(/border-red-500/);
+
+  // Session-120 (the 120-c walk pin): the /leads page's OWN Export
+  // button — the one call-site the e2e never exercised directly (the
+  // two existing Export clicks are the DASHBOARD's twin call-site of
+  // the same builders; this wiring was unit-only until the walk
+  // live-verified it two-app byte-equal). The s29 builder contract:
+  // leads_ISO.csv + the UNQUOTED 8-col header + the FILTERED rows (no
+  // filter active here — the full census, incl. this test's own
+  // mutated row). The store is committed (rowAfter visible — the
+  // reload-persistence block above is the hydration signal).
+  const leadsExport = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Export" }).click();
+  const leadsCsv = await leadsExport;
+  expect(leadsCsv.suggestedFilename()).toMatch(/^leads_\d{4}-\d{2}-\d{2}\.csv$/);
+  const { readFileSync: readCsv } = await import("node:fs");
+  const leadsCsvBody = readCsv((await leadsCsv.path())!, "utf8");
+  expect(leadsCsvBody.split("\n")[0]).toBe("Name,Email,Phone,Company,Value,Status,Source,Next Follow-up");
+  expect(leadsCsvBody).toContain("E2E — Playwright deal");
 });
 
 test("the ⋮ menu ships Edit / the DEAD Convert to Opportunity / Delete (S29-P2)", async ({ page }) => {
