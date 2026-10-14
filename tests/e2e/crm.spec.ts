@@ -22,6 +22,48 @@ test("dashboard renders seeded KPIs, charts and recent deals", async ({ page }) 
 
   // Seeded rows are present (24 leads seeded).
   await expect(page.getByText("24", { exact: true }).first()).toBeVisible();
+
+  // Session-118 (D-118a1 — the dashboard-charts family walk's populated
+  // battery, the D-117a1 genus): the KPI value contracts, measured live
+  // on the walk + seed-verified independently. Deals Closed $337.0k =
+  // the 4 won opps (87k+145k+39k+66k, the s78 FILTERED-set derivation);
+  // Conversion 29.2% = 7 won leads / 24 (toFixed(1), the s110 seam);
+  // the Sales Target card carries the reference's hardcoded $0k + 0%
+  // (the V=0 decode). The Avg. Sales Cycle is the average-age
+  // DAY-COUNTER (+1 daily — a literal would be the F-118a1 genus at day
+  // scale; the s110 unit seam freezes the exact 83 at the synthetic
+  // seed-time anchor) — pinned as the SHAPE here.
+  const dashCard = (label: string) =>
+    page.locator("main div.grid").first().locator("> div").filter({ hasText: label });
+  await expect(dashCard("Total Leads").locator('span[class*="text-3xl"]')).toHaveText("24");
+  await expect(dashCard("Deals Closed").locator('span[class*="text-3xl"]')).toHaveText("$337.0k");
+  await expect(dashCard("Conversion Rate").locator('span[class*="text-3xl"]')).toHaveText("29.2%");
+  await expect(dashCard("Sales Target").locator('span[class*="text-3xl"]')).toHaveText("$0k");
+  await expect(dashCard("Avg. Sales Cycle").locator('span[class*="text-3xl"]')).toHaveText(/^\d+$/);
+
+  // Revenue This Month is a MONTH-ROLLER: the seed pins the four won
+  // opps' updatedAt at day-offsets −1/−20/−1/−33 (hour 16 — month
+  // membership is day-scale only), so the "updated this month" subset
+  // shifts at month boundaries ($126.0k today → $271k from the 21st →
+  // $0k next month). The expected sum is computed IN-TEST from the seed
+  // contract (the calendar-rollover precedent, s75-P13b): an app-side
+  // derivation drift fails the pin — the test derives from the seed
+  // constants, not a mirrored app formula.
+  const wonOppUpdatedAtOffsets: Array<[number, number]> = [
+    [-1, 87_000],
+    [-20, 145_000],
+    [-1, 39_000],
+    [-33, 66_000],
+  ];
+  const now = new Date();
+  let expectedRevThisMonth = 0;
+  for (const [offset, amount] of wonOppUpdatedAtOffsets) {
+    const updated = new Date(now);
+    updated.setDate(updated.getDate() + offset);
+    if (updated.getMonth() === now.getMonth()) expectedRevThisMonth += amount;
+  }
+  const revK = `$${(expectedRevThisMonth / 1000).toFixed(1)}k`;
+  await expect(dashCard("Revenue This Month").locator('span[class*="text-3xl"]')).toHaveText(revK);
 });
 
 test("leads page shows the seeded pipeline and charts", async ({ page }) => {
@@ -34,6 +76,28 @@ test("leads page shows the seeded pipeline and charts", async ({ page }) => {
 
   // A seeded lead appears in the table.
   await expect(page.getByText("Security audit retainer").first()).toBeVisible();
+
+  // Session-118 (D-118a1 — the leads-statcard family walk's populated
+  // battery, the D-116a1/D-117a1 genus — the test was THIN: heading +
+  // three chart titles + one name, ZERO statcard value contracts): the
+  // six statcard values, measured live on the walk + seed-verified
+  // independently (24 raw · Open = new+contacted+qualified = 4+2+3 ·
+  // Won 7 with the $687,000 value sum · Dropped = lost STRICTLY 4 with
+  // the $226,000 sum · Conversion 7/24 = 29.2%). The Avg. Sales Cycle
+  // is the average-age DAY-COUNTER (+1 daily — a literal would be the
+  // F-118a1 genus at day scale) — pinned as the SHAPE.
+  const leadCard = (label: string) =>
+    page.locator("main div.grid").first().locator("> div").filter({ hasText: label });
+  const leadVal = (label: string) =>
+    leadCard(label).locator("span.font-bold");
+  await expect(leadVal("Total Leads")).toHaveText("24");
+  await expect(leadVal("Open Leads")).toHaveText("9");
+  await expect(leadVal("Won Deals")).toHaveText("7");
+  await expect(leadCard("Won Deals").locator("span.text-gray-500")).toHaveText("$687,000");
+  await expect(leadVal("Dropped Deals")).toHaveText("4");
+  await expect(leadCard("Dropped Deals").locator("span.text-gray-500")).toHaveText("$226,000");
+  await expect(leadVal("Conversion Rate")).toHaveText("29.2%");
+  await expect(leadVal("Avg. Sales Cycle")).toHaveText(/^\d+ days$/);
 });
 
 test("create a lead through the New Lead dialog", async ({ page }) => {
@@ -73,7 +137,20 @@ test("accounts page lists seeded accounts and supports search", async ({ page })
   await expect(kpiCard("Active Accounts").locator('div[class*="text-2xl"]')).toHaveText("8");
   await expect(kpiCard("Key Accounts").locator('div[class*="text-2xl"]')).toHaveText("9");
   await expect(kpiCard("Total Revenue").locator('div[class*="text-2xl"]')).toHaveText("$77.5M");
-  await expect(kpiCard("Overdue Activities").locator('div[class*="text-2xl"]')).toHaveText("3");
+  // Session-118 (D-118a0 — the F-118a1/F-118a2 defuse): the exact "3"
+  // was a time-of-day time-bomb — the F-117a2 genus reintroduced on the
+  // s117 battery itself. The seed pins activity dueAt to hour
+  // `10 + ownerIdx * 2` (prisma/seed.ts), so the two `due: 0` rows join
+  // the overdue set after their seeded hours: "Check-in — patient
+  // portal" (ownerIdx 0 → today 10:00 → Oasis Healthcare joins) and
+  // "Prepare RFP response" (ownerIdx 2 → today 14:00 → Emirates Global
+  // Trading joins) — both accounts distinct from the standing three
+  // (Northwind/Cedar/Al Noor). The KPI reads 3 before 10:00, 4 in
+  // [10:00, 14:00), 5 after. toHaveText is exact-only, so the bounded
+  // manual read (the D-117a0 idiom, the N-66d shape genus).
+  const overdueKpi = await kpiCard("Overdue Activities").locator('div[class*="text-2xl"]').textContent();
+  expect(Number(overdueKpi)).toBeGreaterThanOrEqual(3);
+  expect(Number(overdueKpi)).toBeLessThanOrEqual(5);
 
   // The tier census: the Tier column (td 4) carries the Key badge
   // (bg-yellow-100) on exactly 9 rows + the A badge (bg-green-100) on 1;
@@ -83,10 +160,16 @@ test("accounts page lists seeded accounts and supports search", async ({ page })
   await expect(tierCells.locator('[class*="bg-green-100"]')).toHaveCount(1);
   await expect(page.locator("main table svg.lucide-star")).toHaveCount(9);
 
-  // The overdue rows: exactly 3 carry the "1 Overdue" destructive
-  // badge + the 4px red left border (the N-65d construction).
+  // The overdue rows: the "1 Overdue" destructive badges + the 4px red
+  // left border (the N-65d construction). Session-118 (D-118a0): the
+  // count shares the KPI's wall-clock flip (each joining account's row
+  // gains its own "1 Overdue" badge) — 3 before 10:00, 4 in
+  // [10:00, 14:00), 5 after; toHaveCount is exact-only, so the bounded
+  // manual count (the D-117a0 idiom).
   const overdueRows = page.locator("main table tbody tr").filter({ hasText: "1 Overdue" });
-  await expect(overdueRows).toHaveCount(3);
+  const overdueRowN = await overdueRows.count();
+  expect(overdueRowN).toBeGreaterThanOrEqual(3);
+  expect(overdueRowN).toBeLessThanOrEqual(5);
   await expect(overdueRows.first()).toHaveClass(/border-l-4/);
   await expect(overdueRows.first()).toHaveClass(/border-l-red-500/);
 

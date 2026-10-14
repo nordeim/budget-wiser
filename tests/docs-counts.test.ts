@@ -145,7 +145,18 @@ const SUITES = 109;
 // in an EXISTING file); the D-117a1 populated accounts battery expects
 // + the D-117a0 wall-clock defuse are added expects/edits INSIDE the
 // existing crm.spec tests — E2E stays 137).
-const UNIT = 1952;
+// Session-118: 1952 → 1953 (+1 — the s118 dashboard-charts +
+// leads-statcard family walk's freeze it: the six-label + adjacency
+// census pin [the labels never pinned as a set — "Open Leads" in NO
+// unit label-set assertion before, the D-117a2 genus; the per-card
+// icon/chipTone/subValue adjacency + the six-chipTone arm census on
+// the RAW source] [leads-statcard-parity.test.ts]; SUITES stays 109
+// (the it lands in an EXISTING file); the D-118a1 populated batteries
+// (the leads statcards + the dashboard KPIs) + the D-118a0 wall-clock
+// defuse (the F-118a1/F-118a2 time-bombs — the accounts battery's two
+// exact "3" asserts) are added expects/edits INSIDE the existing
+// crm.spec tests — E2E stays 137).
+const UNIT = 1953;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -544,13 +555,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-117 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-118 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s116 layer now beneath the s117 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s117 layer now beneath the s118 head)",
     ).toContain(
-      "+ beneath it 1951 unit checks + 137 e2e checks green; the session-116 layer (the 116-c rotation — THE REPORTS-TABLES FAMILY WALK",
+      "+ beneath it 1952 unit checks + 137 e2e checks green; the session-117 layer (the 117-c rotation — THE ACCOUNTS-LIST FAMILY WALK",
     );
   });
 

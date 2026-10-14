@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1952 checks)       | `bun run test`                         |
+|  Unit tests (1953 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1952) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1953) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5159,3 +5159,52 @@ precedent).
   UNCHANGED · E2E 137 UNCHANGED · badge 2088→2089; RED-first
   13|1939(1952) stash-proven 1951/1951; GREEN 109/1952; RED-2 both
   faces by name; the captures 196-199 + the VLM battery.
+
+### Session-118 (2026-10-14) — the dashboard-charts + leads-statcard family walk + the F-118a1/F-118a2 defuse
+
+The s117 close's named candidates (the s74/s85-era surfaces, 30+
+sessions stale): both surfaces walked in one interlocked pass — both
+apps driven through / and /leads at 1440×900 + 390×844 with
+computed-style + census extraction, login first on both, the zero-data
+tool on the scratch walk db (PORT 3141, the s115/s116/s117 precedent).
+
+The zero-data face walked TWO-APP in COMPLETE byte-equal parity on
+every compared axis at both widths: the dashboard KPI row (6 labels
+byte-equal, the zero values 0/$0.0k/$0.0k/$0k/0%/0, 14px/400 labels +
+30px/700 values @1440 / 12px + 24px/700 @390, the 173.3px ×6 grid),
+the 6 chart cards (titles/fonts/widths/SVG heights/zero-data censuses
+byte-equal — the REAL chart at zero data on both), the Recent Deals 8
+heads byte-equal, the leads statcards (6 labels byte-equal, the zero
+values, 24px/700 values, the chip backgrounds blue-50/orange-50/
+green-50/red-50/purple-50/cyan-50 byte-equal, the chip widths
+40/40/40/34/32/32 byte-equal), the leads 9 heads byte-equal, docScrollW
+contained on both apps at both widths. One diff adjudicated as the
+documented s91 chart-noise genus (Revenue Over Time @390 gridline
+count 26 vs 25 — the drift gate's phone floor authoritative).
+
+The populated face walked OURS-ONLY (the reference's zero-data genus):
+the dashboard KPIs 24/$337.0k/$126.0k/$0k+0%/29.2%/83 + the leads
+statcards 24/9/7($687,000)/4($226,000)/29.2%/83 days — every value
+seed-verified independently off the db. ZERO real parity defects.
+
+The freeze finds (zero src changes): D-118a0 THE F-118a1/F-118a2
+DEFUSE [the s117 accounts battery's own two exact "3" asserts were
+10:00/14:00-local time-bombs — the seed pins activity dueAt to hour
+10 + ownerIdx*2, the two due:0 rows join after their hours (Oasis
+Healthcare @10:00, Emirates Global Trading @14:00), the KPI/rows read
+3/4/5 by window; the baseline gate live-reproduced 136/137 post-14:00;
+the bounded 3-5 counts, the D-117a0 idiom applied to the session's own
+battery] + D-118a1 the populated batteries [INSIDE the existing leads
++ dashboard tests, the census stays 137: the six statcard values +
+subValues + the Avg-Cycle SHAPE (the day-counter — never a literal)
++ the dashboard KPIs + the Revenue-This-Month in-test month
+computation (the month-roller pinned exact at every run date)] +
+D-118a2 the six-label + adjacency census pin [leads-statcard-parity
++1 it — the labels never pinned as a set, "Open Leads" in NO unit
+label-set assertion before; the per-card icon/chipTone/subValue
+adjacency + the six-chipTone arm census on the RAW source].
+
+The count ladder: UNIT 1952→1953 (+1, an EXISTING file) · SUITES 109
+UNCHANGED · E2E 137 UNCHANGED · badge 2089→2090; RED-first
+13|1940(1953) stash-proven 49/49; GREEN 109/1953; RED-2 both faces
+by name; the captures 200-203 + the verification battery.

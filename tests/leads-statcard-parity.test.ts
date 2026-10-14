@@ -140,3 +140,58 @@ describe("session-89: the icon identities (N-89c4 + N-89c6)", () => {
     expect(iconsSrc()).toContain("library-injected aria-hidden superset");
   });
 });
+
+// Session-118 (D-118a2 — the leads-statcard family walk's freeze): the
+// six labels never pinned as a set ("Open Leads" was in ZERO unit
+// assertions as a label-set member before — the exact D-117a2 genus),
+// and the per-card adjacency (label → icon → chipTone, plus the
+// subValue sites on exactly Won/Dropped) walked live at both widths on
+// BOTH apps (the zero-data chips byte-equal: blue-50/orange-50/
+// green-50/red-50/purple-50/cyan-50). The census reads the RAW
+// leads-page source: a seventh call site, a reordering, a tone swap,
+// or an icon swap is a parity event, not a growth.
+describe("session-118: the six-label + adjacency census (D-118a2 — the walk's freeze)", () => {
+  it("the six statcard labels as an ordered set + the per-card icon/chipTone/subValue adjacency — a seventh site is a parity event, not a growth", () => {
+    const src = leadsPageSrc();
+    // The ordered label set — the walk's byte-equal zero-data face.
+    const labels = [...src.matchAll(/<IconStatCard[^>]*?label="([^"]+)"/g)].map((m) => m[1]);
+    expect(labels).toEqual([
+      "Total Leads",
+      "Open Leads",
+      "Won Deals",
+      "Dropped Deals",
+      "Conversion Rate",
+      "Avg. Sales Cycle",
+    ]);
+    // The per-card adjacency: label → [icon, chipTone] — the s77 pairs
+    // consumed in the walked order. Each segment starts with its own
+    // tag's props, so the FIRST label=/icon={</chipTone=" match per
+    // segment is that card's own (the subValue= scan is safe: exactly
+    // two sites file-wide, both inside the Won/Dropped segments).
+    const segments = src.split("<IconStatCard").slice(1);
+    expect(segments).toHaveLength(6);
+    const census = segments.map((seg) => {
+      const label = seg.match(/label="([^"]+)"/)?.[1] ?? null;
+      const icon = seg.match(/icon=\{<(\w+)/)?.[1] ?? null;
+      const tone = seg.match(/chipTone="(\w+)"/)?.[1] ?? null;
+      const sub = seg.includes("subValue=");
+      return { label, icon, tone, sub };
+    });
+    expect(census).toEqual([
+      { label: "Total Leads", icon: "TrendingUp", tone: "blue", sub: false },
+      { label: "Open Leads", icon: "Target", tone: "orange", sub: false },
+      { label: "Won Deals", icon: "CircleCheckBig", tone: "green", sub: true },
+      { label: "Dropped Deals", icon: "CircleX", tone: "red", sub: true },
+      { label: "Conversion Rate", icon: "Percent", tone: "purple", sub: false },
+      { label: "Avg. Sales Cycle", icon: "Calendar", tone: "cyan", sub: false },
+    ]);
+    // The arm census on the raw source: exactly six chipTone sites
+    // (a seventh is a parity event — the tone keys stay the s77 set).
+    expect(src.match(/chipTone="/g)).toHaveLength(6);
+    // The Won/Dropped subValues ride the toLocaleString full-currency
+    // formula (the $687,000/$226,000 walk values, the leads-FULL
+    // CLAUDE.md contract).
+    expect(src).toContain("$${won.reduce((s, l) => s + (l.value || 0), 0).toLocaleString()}");
+    expect(src).toContain("$${lost.reduce((s, l) => s + (l.value || 0), 0).toLocaleString()}");
+  });
+});
