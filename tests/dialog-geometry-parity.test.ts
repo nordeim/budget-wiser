@@ -377,15 +377,23 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // the leads interactive-table family walk's freeze it: the SortHead
     // cursor-pointer census pin [leads-inline.test.ts, the pin-only
     // session, ZERO src changes]);
-    // the four sites re-anchored again, the retired 1956 forms join
-    // the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1957 checks)");
-    expect(claude).toContain("(currently 1957)");
-    expect(claude).toContain("Vitest unit suites (1957 checks)");
-    expect(claude).toContain("`bun run test` (1957)");
+    // session-121 lockstep carry-forward: 1957 -> 1964 (the s121 +7 —
+    // the photo-upload family walk's fixes + freezes: the F-121c1
+    // uploads standalone-anchor fix + its 4-it trap pins [a NEW file]
+    // + the both-avatar-carriers pin + the profile hint/in-flight
+    // pins); the four sites re-anchored again, the retired 1957 forms
+    // join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1964 checks)");
+    expect(claude).toContain("(currently 1964)");
+    expect(claude).toContain("Vitest unit suites (1964 checks)");
+    expect(claude).toContain("`bun run test` (1964)");
+    expect(claude).not.toContain("Unit (Vitest, 1957 checks)");
     expect(claude).not.toContain("Unit (Vitest, 1956 checks)");
+    expect(claude).not.toContain("(currently 1957)");
     expect(claude).not.toContain("(currently 1956)");
+    expect(claude).not.toContain("Vitest unit suites (1957 checks)");
     expect(claude).not.toContain("Vitest unit suites (1956 checks)");
+    expect(claude).not.toContain("`bun run test` (1957)");
     expect(claude).not.toContain("`bun run test` (1956)");
     expect(claude).not.toContain("Unit (Vitest, 1953 checks)");
     expect(claude).not.toContain("(currently 1953)");

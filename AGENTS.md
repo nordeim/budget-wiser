@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1957 checks)       | `bun run test`                         |
+|  Unit tests (1964 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1957) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1964) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5311,3 +5311,82 @@ stash-proof (the class removed → the pin REDs alone) · GREEN
 audits 120-a [9/9 Verified, zero real findings] + 120-b [9/9, ~78th
 consecutive]; probe:ref the 91st STABLE, the four drift gates CLEAN,
 scandihaven d4789c3 on-pattern.
+
+### Session-121 (2026-10-14) — the photo-upload family walk + the standalone uploads-anchor fix
+
+The intake: the fresh clone at `2c3ceca` (the operator's session_259.md
+docs-only addition on top of the s120 ship); the environment re-standing
+(bun install, `db:push` + `db:seed`, census MATCH, Playwright chromium
+reinstalled after the workspace reset).
+
+The baseline gate: lint 0/0 · tsc 0 · **109/1957 unit** · build ·
+**e2e 137/137** (3.4m, zero flakes).
+
+Both audits dispatched as subagents (the house pattern):
+- **121-a (the s120→2c3ceca ship-delta + the photo pre-walk)**: **9/9
+  shipped claims Verified, ZERO real findings** (the delta EXACTLY
+  docs/session_259.md +158, docs-only; the counts/captures/pins
+  coherent) + the photo-family pre-walk inventory (the unpinned residue:
+  the mobile-card photo branch, the table-row conditional, the live
+  computed faces, the 5MB hint, the in-flight faces, the uploads anchor
+  chain; the seed ships ZERO photoUrl).
+- **121-b (the standing layers, ~79th consecutive)**: **9/9 PASS** —
+  record-only N-121b1 (the drawer-battery's hardcoded REPO path, stale
+  after relocation), N-121b2/N-121b3.
+
+The live verification: **probe:ref the 92nd STABLE** · the four drift
+gates CLEAN (1440/390/768/1024) · scandihaven d4789c3 on-pattern.
+
+The rotation (121-c): the **photo-upload family** (the s30-era surfaces
+— the AAe contact-dialog photo section + the aCe profile flow + the
+upload seam + the negatives), walked in the s118-s120 idiom (the
+scripts OUTSIDE the repo, PORT 3141, the scratch walk db). The
+ZERO-DATA face walked TWO-APP: **byte-equal on every compared axis at
+BOTH widths — ZERO parity defects**, the seven v4 serialization genera
+adjudicated noise (L-121c1 the rounded-full radius genus CONFIRMED —
+ours calc-infinity vs the reference's 9999px, IDENTICAL 96×96 boxes,
+the same effective circle@48px; the oklab gradient + alpha forms; the
+shadow-composition zeros; the w-12 trio mechanism; the aria-label
+superset; the reference's own CDN upload latency). The POPULATED face
+walked OURS-ONLY: **65/65 checks** — every value seed-verified off the
+db + every mutation verified back onto it (the upload/remove
+round-trips with the in-flight faces LIVE via route-delayed uploads,
+the non-image alert + toast negatives, the create-with-photo
+persistence, the table-row + mobile-card photo branches, the W7
+no-photo + Pke initial-only negatives, the profile round-trip with the
+reload topbar pickup, the GET immutable/traversal probes).
+
+**ONE REAL DEFECT — F-121c1, found live and FIXED (D-121a0)**: the
+standalone server wrote uploads to `<repo>/.next/standalone/uploads`
+(the EPHEMERAL build output, wiped by every rebuild) — the bundle's
+VIRTUAL `import.meta.url`
+(`<repo>/.next/standalone/src/lib/uploads.ts`) validated
+`.next/standalone` as a repo root through its own traced
+`prisma/schema.prisma` copy, and uploads.ts consulted the module
+anchor FIRST (db-path's session-34 order already guards this trap).
+The fix: the standalone-cwd anchor FIRST (the db-path mirror) + the
+pure `repoRootFor(moduleUrl, cwd)` seam; pinned by the NEW
+tests/uploads-path.test.ts (the trap fixture — stash-proven: the order
+reverted alone REDs the trap pin alone); verified live by the PASS 2
+re-run (65/65, the uploads at `<repo>/uploads`, the standalone
+location EMPTY at every step).
+
+The remediation: D-121a0 [src/lib/uploads.ts + tests/uploads-path.test.ts
+(NEW, 4 its)] + D-121a1 the drawer-battery REPO derivation
+(scripts/drawer-battery-390.ts — the N-121b1 fix, verified live: the
+battery boots its own server, exit 0) + D-121a2 the both-avatar-carriers
+pin (+1 it — the table row AND the mobile card, the lg:hidden face
+pinned on NO axis before) + D-121a3 the profile 5MB-hint +
+Uploading-ternary pins (+2 its) + D-121a4 the docs realignment +
+session_260 + the captures 212-215.
+
+The count ladder: UNIT 1957→1964 (+7 — 4 in a NEW file + 1 + 2 in
+EXISTING files) · SUITES 109→110 (the NEW uploads-path suite) · E2E
+137 UNCHANGED · badge 2094→2101; the TDD: the seam-first RED (the trap
+pin RED on the module-first order) → the reorder GREEN → the
+stash-proof (the order reverted alone → the trap pin REDs alone);
+GREEN 110/1964; the audits 121-a [9/9] + 121-b [9/9, ~79th]; probe:ref
+the 92nd STABLE; the full gate; the closing drift sweep CLEAN on all
+four gates; census MATCH; src/ 2 files changed (uploads.ts +
+drawer-battery-390.ts — the fix session, the s96/s107/s108/s109/s119
+lineage).

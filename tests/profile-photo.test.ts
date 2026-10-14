@@ -166,3 +166,40 @@ describe("session-62: the unconditional profile save (N-62b)", () => {
     expect(code).toMatch(/updateUser\(\{\s*name,\s*photoUrl:\s*photoUrl\s*\|\|\s*null\s*\}\)/);
   });
 });
+
+describe("session-121 (D-121a3): the profile hint + the in-flight label", () => {
+  it("the 5MB hint literal (the reference's exact string — the ceiling the server enforces)", () => {
+    // Session-121 (the 121-a inventory's gap 4): the hint was pinned
+    // NOWHERE despite advertising the server-enforced MAX_UPLOAD_BYTES
+    // ceiling (src/lib/uploads.ts). The walk byte-verified it against
+    // the reference (PASS 1: text + 12px + #6b7280 — our text-muted
+    // token == the reference's text-gray-500).
+    const src = pageRaw();
+    expect(src).toContain('JPG, PNG or GIF. Max 5MB.');
+    // The mt-2 text-xs muted styling carrier (the reference: mt-2
+    // text-xs text-gray-500 — computed-equal through the token).
+    expect(src).toMatch(/mt-2 text-xs text-muted">JPG, PNG or GIF\. Max 5MB\.<\/p>/);
+  });
+
+  it("the in-flight label is the 'Uploading...' TEXT ONLY (the N-72c7 ternary — the Camera icon drops)", () => {
+    // Session-121 (the 121-a inventory's gap 5): the in-flight faces
+    // were source-only (the walk LIVE-verified them via the
+    // route-delayed upload — PASS 2 D2/D3: the button reads exactly
+    // "Uploading..." with NO svg child + disabled while uploading).
+    // The contact dialog's twin (the "Uploading photo..." hint) is
+    // pinned since s30 in contact-photo.test.ts; this is the profile
+    // arm's own form — the label swap, not a hint element.
+    const src = page();
+    expect(src).toMatch(
+      /\{uploading \? "Uploading\.\.\." : \(/,
+    );
+    // The Camera icon renders ONLY in the idle branch (the reference's
+    // own ternary — the icon drops mid-upload).
+    const btn = src.slice(src.indexOf('variant="outline"'));
+    const branch = btn.slice(0, 600);
+    expect(branch).toMatch(/<Camera[^>]*\/>\s*Upload Photo/);
+    expect(branch).not.toMatch(/<Camera[^>]*\/>[^<]*Uploading/);
+    // The disabled gate rides the same button.
+    expect(branch).toMatch(/disabled=\{uploading\}/);
+  });
+});

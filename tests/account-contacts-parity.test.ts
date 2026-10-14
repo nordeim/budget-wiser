@@ -289,4 +289,34 @@ describe("session-75: the contacts empty states + hygiene", () => {
     const hits = src.match(/priority === "Key"/g) ?? [];
     expect(hits.length).toBe(1);
   });
+
+  it("BOTH avatar surfaces carry the photoUrl conditional (the table row AND the mobile card — the img over the initial)", () => {
+    // Session-121 (D-121a2, the 121-c walk): the s30 photo family's two
+    // LIST carriers were pinned NOWHERE at the unit level (the table-row
+    // cell e2e-only via S30-P2; the mobile-card branch — the lg:hidden
+    // face the Desktop-Chrome e2e never rides — pinned on NO axis).
+    // The walk live-verified both (PASS 2: the Photo Walk row/card render
+    // the img; the 15 seeded rows/cards render the initials). Pinned as
+    // the source-shape contract: each carrier's gradient circle carries
+    // EXACTLY the photoUrl ternary.
+    const src = contactsPage();
+    // The TABLE ROW avatar (w-11 h-11 + ring): the img.object-cover branch
+    // over the charAt(0).toUpperCase() initial.
+    const rowAvatar = src.slice(src.indexOf('w-11 h-11 bg-gradient-to-br'));
+    expect(rowAvatar.slice(0, 400)).toMatch(
+      /c\.photoUrl \? \(\s*<img src=\{c\.photoUrl\} alt=\{c\.name\} className="w-full h-full object-cover" \/>\s*\) : \(/,
+    );
+    expect(rowAvatar.slice(0, 700)).toMatch(
+      /charAt\(0\)\.toUpperCase\(\)/,
+    );
+    // The MOBILE CARD avatar (w-12 h-12, no ring): the same ternary —
+    // the ONLY other photoUrl read in the page (exactly two, both
+    // carriers, no third branch).
+    const mobileAvatar = src.slice(src.indexOf("CONTACTS_LAYOUT.mobileCards"));
+    expect(mobileAvatar.slice(0, 900)).toMatch(
+      /c\.photoUrl \? \(\s*<img src=\{c\.photoUrl\} alt=\{c\.name\} className="w-full h-full object-cover" \/>\s*\) : \(/,
+    );
+    const photoReads = src.match(/c\.photoUrl \?/g) ?? [];
+    expect(photoReads.length).toBe(2);
+  });
 });

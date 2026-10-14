@@ -11,9 +11,27 @@
 // REOPENED drawer — the F-96a1 fix: the auto-close listener only
 // registers while open).
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 
-const REPO = "/home/z/my-project/neo-crm";
+// Session-121 (D-121a1, the 121-b audit's N-121b1): the REPO was a
+// hardcoded absolute path ("/home/z/my-project/neo-crm") that went STALE
+// the moment the workspace relocated — the spawn cwd ENOENT'd and the
+// battery only ran via its reuse path. Derived from the script's own
+// location now (<repo>/scripts -> <repo>), the validated-anchor idiom
+// the db/uploads path modules use (fallback: the process cwd).
+const REPO = (() => {
+  try {
+    const here = dirname(fileURLToPath(import.meta.url)); // <repo>/scripts
+    const root = resolve(here, "..");
+    if (existsSync(join(root, "package.json"))) return root;
+  } catch {
+    /* fall through to the cwd */
+  }
+  return process.cwd();
+})();
 const OUR_URL = "http://localhost:3000";
 const EMAIL = "sepnetflix2023@outlook.com";
 const PASSWORD = "$Abcd1234";

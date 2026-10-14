@@ -51,23 +51,44 @@ function validatedRoot(candidate: string): string | null {
   return existsSync(join(candidate, "prisma", "schema.prisma")) ? candidate : null;
 }
 
-function repoRoot(): string {
-  try {
-    // Anchor 1: this module's own repo root (<repo>/src/lib -> <repo>).
-    const here = dirname(fileURLToPath(import.meta.url));
-    const root = validatedRoot(resolve(here, "..", ".."));
-    if (root) return root;
-  } catch {
-    // import.meta.url unavailable — fall through.
-  }
-  // Anchor 2: the standalone server's chdir'd CWD
+/**
+ * The repo-root anchor chain, as a PURE seam (the db-path
+ * `resolveDatabaseUrl` pattern — pinnable by tests/uploads-path.test.ts
+ * with fixture layouts instead of a live standalone boot).
+ *
+ * Anchor order (F-121c1, session-121): the standalone-cwd anchor comes
+ * FIRST — the standalone bundle rewrites import.meta.url into a VIRTUAL
+ * path (<repo>/.next/standalone/src/lib/uploads.ts) whose ../..
+ * VALIDATES .next/standalone itself (the output-file trace puts
+ * prisma/schema.prisma INSIDE the build output), silently landing the
+ * uploads folder in the EPHEMERAL .next tree (wiped by every `next
+ * build`). The chdir'd cwd of the standalone server
+ * (<repo>/.next/standalone) resolves ../.. to the REAL repo root — the
+ * exact session-34 anchor order src/lib/db-path.ts already guards.
+ */
+export function repoRootFor(moduleUrl: string | undefined, cwd: string): string {
+  // Anchor 1: the standalone server's chdir'd CWD
   // (<repo>/.next/standalone -> <repo>).
-  const cwd = process.cwd();
   if (cwd.includes(".next")) {
     const root = validatedRoot(resolve(cwd, "..", ".."));
     if (root) return root;
   }
+  // Anchor 2: this module's own repo root (<repo>/src/lib -> <repo>) —
+  // dev / seed / vitest (their cwd is the repo, outside .next).
+  if (moduleUrl) {
+    try {
+      const here = dirname(fileURLToPath(moduleUrl));
+      const root = validatedRoot(resolve(here, "..", ".."));
+      if (root) return root;
+    } catch {
+      // a non-file:// or unavailable module URL — fall through.
+    }
+  }
   return cwd;
+}
+
+function repoRoot(): string {
+  return repoRootFor(import.meta.url, process.cwd());
 }
 
 /**

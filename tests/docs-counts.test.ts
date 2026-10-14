@@ -117,7 +117,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
 const E2E = 137;
-const SUITES = 109;
+const SUITES = 110;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -178,7 +178,20 @@ const SUITES = 109;
 // SUITES stays 109 (the it lands in an EXISTING file); the D-120a1
 // /leads Export e2e click is added expects INSIDE the existing
 // crm.spec round-trip test — E2E stays 137).
-const UNIT = 1957;
+// Session-121: 1957 → 1964 (+7 — the s121 photo-upload family walk's
+// fixes + freezes: the D-121a0 uploads-path pins [THE F-121c1 standalone
+// virtual-import.meta.url trap — the standalone server was writing
+// uploads into the EPHEMERAL .next/standalone/uploads; the cwd-first
+// anchor order + the pure repoRootFor seam, 4 its] [uploads-path.test.ts,
+// a NEW FILE]; the D-121a2 both-avatar-carriers pin [the table-row
+// photoUrl conditional + the mobile-card branch — the lg:hidden face
+// pinned on NO axis before, +1 it] [account-contacts-parity.test.ts];
+// the D-121a3 profile hint + in-flight pins [the "JPG, PNG or GIF. Max
+// 5MB." literal + the "Uploading..." text-only ternary, +2 its]
+// [profile-photo.test.ts]); SUITES 109 → 110 (the ONE new file); the
+// D-121a1 drawer-battery REPO derivation + the F-121c1 src fix ride the
+// src/scripts axis — E2E stays 137 (zero e2e additions this session).
+const UNIT = 1964;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -209,6 +222,8 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).toContain("calendar-grid");
     // the s110 extension — the dashboard KPI seam freeze joins the list
     expect(readme).toContain("seeded-dashboard-kpis");
+    // the s121 extension — the uploads-path trap pins join the list
+    expect(readme).toContain("uploads-path");
   });
 
   it("README Tested row carries the live counts (the headline live-tense row)", () => {
@@ -577,13 +592,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-120 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-121 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s119 layer now beneath the s120 head)",
     ).toContain(
-      "+ beneath it 1956 unit checks + 137 e2e checks green; the session-119 layer (the 119-c rotation — THE CONTACTS-LIST FAMILY WALK",
+      "+ beneath it 1957 unit checks + 137 e2e checks green; the session-120 layer (the 120-c rotation — THE LEADS INTERACTIVE-TABLE FAMILY WALK",
     );
   });
 
@@ -620,7 +635,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B wall-clock phrase must carry the live suite count (F-111a1)",
-    ).toContain("unit\n~15 s (109 suites, one worker per file)");
+    ).toContain(`unit\n~15 s (${SUITES} suites, one worker per file)`);
     expect(
       appendix,
       "the retired six-spec form never returns (the s109 re-anchor — the spec-family census grows activities-mobile)",
