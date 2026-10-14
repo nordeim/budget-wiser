@@ -710,12 +710,15 @@ export default function ContactsPage() {
       {/* Session-68 (N-68d): wired to CONTACTS_LAYOUT.mobileCards (was a
           reordered hand-inline of the same computed classes). */}
       <div className={CONTACTS_LAYOUT.mobileCards}>
-        {filtered.length === 0 ? (
-          /* Session-75 (L-75c2-9, bundle-decoded): the bare p — no
-             text-sm (the reference's `text-center text-gray-500 py-8`). */
-          <p className="text-center text-gray-500 py-8">No contacts found</p>
-        ) : (
-          filtered.map((c) => (
+        {/* Session-119 (D-119a0, the 119-c walk's F-119c1): the MAP
+            ONLY — the LIVE reference renders the EMPTY CONTAINER at
+            zero data (class "lg:hidden mt-6 space-y-4", display:block,
+            childN: 0 — no empty branch; probe-verified at both widths).
+            Our s75-era "bundle-decoded bare p" branch (L-75c2-9) was
+            an invention that rendered a SECOND zero-data message at
+            390; retired. The table's own rich empty stack is the only
+            zero-data face, exactly the reference's. */}
+        {filtered.map((c) => (
             <Card key={c.id} className="cursor-pointer" onClick={() => setDetailContact(c)}>
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
@@ -753,8 +756,7 @@ export default function ContactsPage() {
                 </div>
               </CardContent>
             </Card>
-          ))
-        )}
+          ))}
       </div>
 
       </div>

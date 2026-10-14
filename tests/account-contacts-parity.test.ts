@@ -251,10 +251,20 @@ describe("session-75: the contacts empty states + hygiene", () => {
     expect(src).toMatch(/font-medium/);
   });
 
-  it("the mobile empty p is BARE (no text-sm)", () => {
+  it("the mobile card list carries NO empty-state branch (the s119 retirement — the reference's empty container)", () => {
+    // Session-119 (D-119a0, the 119-c walk's F-119c1): the s75-era
+    // L-75c2-9 "bundle-decoded bare p" reading was an invention — the
+    // LIVE reference renders the EMPTY lg:hidden container at zero
+    // data (childN 0, probe-verified at both widths). The bare-p
+    // branch retired; the map is the container's only child. This
+    // it's s75-era form pinned the retired string — flipped to the
+    // retirement contract (the s119 walk's live evidence).
     const src = contactsPage();
     expect(src).not.toMatch(/py-8 text-center text-sm text-muted/);
-    expect(src).toMatch(/text-center text-gray-500 py-8/);
+    expect(src).not.toMatch(/text-center text-gray-500 py-8/);
+    const mobile = src.slice(src.indexOf("CONTACTS_LAYOUT.mobileCards"));
+    expect(mobile).not.toMatch(/length === 0 \?/);
+    expect(mobile).toMatch(/filtered\.map\(\(c\) =>/);
   });
 
   it("the search scope matches name/email/company only (position retired)", () => {

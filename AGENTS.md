@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1953 checks)       | `bun run test`                         |
+|  Unit tests (1956 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1953) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1956) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5208,3 +5208,61 @@ The count ladder: UNIT 1952→1953 (+1, an EXISTING file) · SUITES 109
 UNCHANGED · E2E 137 UNCHANGED · badge 2089→2090; RED-first
 13|1940(1953) stash-proven 49/49; GREEN 109/1953; RED-2 both faces
 by name; the captures 200-203 + the verification battery.
+
+### Session-119 (2026-10-14) — the contacts-list family walk + the primary-foreground re-pin + the mobile-list empty-state retirement
+
+The s118 close's named candidates (the s27/s31-era derivations' home
+surface — the contacts-list family, the s75-era decode 43+ sessions
+stale): both apps driven through /contacts at 1440×900 + 390×844 with
+computed-style + census extraction, login first on both, the zero-data
+tool on the scratch walk db (PORT 3141, the s115-s118 precedent). The
+walk scripts OUTSIDE the repo.
+
+The zero-data face walked TWO-APP — COMPLETE byte-equal parity on
+every compared axis at BOTH widths: the 4 statcards (labels, the zero
+values 0/0/0/0, the trend "+0" green on exactly New This Month, the
+chips bg-blue/green/amber/red-500 48px byte-equal, the gradient cards
+268×142 @1440 / 326×122 @390), the toolbar, the 8 heads byte-equal
+(the sort affordances + the default chevron on Last Activity), the
+rich empty state byte-equal (rowH 201 both), the kke filter panel
+byte-equal at BOTH widths (the 6 cards — Role 5 / Priority 3 /
+Activity Status 1 / Company Size 3 / Source 5 / Engagement Level 3),
+docScrollW contained. Noise adjudicated: the v4 oklab gradient
+serialization. THE TWO REAL DEFECTS: F-119c1 the mobile-list
+empty-state branch INVENTED (the LIVE reference renders the EMPTY
+container — childN 0, probe-verified at both widths; the L-75c2-9
+"bundle-decoded" reading wrong) + F-119c2 the primary-foreground
+token genus SYSTEMIC (every reference blue primary computes #fafafa —
+the shadcn stock hsl(0 0% 98%); ours #ffffff; sampled live on six
+buttons).
+
+The populated face walked OURS-ONLY (the reference's zero-data
+genus): healthy on every decoded contract, every value seed-verified
+off the db — the statcards 15/15(+15)/6/5 (the month-roller + the
+day-roller documented), the table 15 rows + the priority 4/7/4 +
+roles 3×5 + sources partner3/referral5/call2/website2/email3 + the
+Key amber 4 + the ≥30d opacity 5 + the engagement bars 3/2/1×5, the
+Pke slide-over (w500/full-bleed, the hero + tabs + info card), the
+W7 edit dialog (w672, 7 fields, mount-focus on Name). One walk
+lesson: at 390 the row-click center hits the stopPropagation
+role-select cell — the mobile CARD click is the phone trigger.
+
+The fixes + freezes: D-119a0 THE MOBILE-LIST EMPTY-STATE RETIREMENT
+[src: the invented bare-p branch retired — the map only] + D-119a1
+THE PRIMARY-FOREGROUND RE-PIN [src: #ffffff → #fafafa + the
+design-tokens pin (+1 it) — all blue primaries + the dialog submits +
+the emerald quick-log match the reference's own mechanism] + D-119a2
+THE POPULATED CONTACTS E2E BATTERY [INSIDE the existing thin test,
+the census stays 137: the statcards 15/15/6 + the bounded 5-7
+day-roller count + the priority census + the slide-over + the W7
+edit-dialog battery] + D-119a3 THE FOUR-LABEL + ADJACENCY CENSUS PIN
+[contacts-family-parity +2 its: the labels never pinned as a set +
+the icon/iconColor adjacency + the arm census + the retirement pin]
++ the F-119a1 EPOCH-GATE [the settings-debounce e2e's 9-session flake
+lineage retired — the 119-a audit's root-cause: the pending→resolved
+remount raced the fill].
+
+The count ladder: UNIT 1953→1956 (+3, EXISTING files) · SUITES 109
+UNCHANGED · E2E 137 UNCHANGED · badge 2090→2093; RED-first
+15|1941(1956) stash-proven 1953/1953; GREEN 109/1956; RED-2 three
+faces by name; the captures 204-207 + the verification battery.

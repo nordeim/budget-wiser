@@ -224,3 +224,67 @@ describe("session-88: the mobile badge + the aria superset note (N-88c8/c9)", ()
     expect(src).toMatch(/accessibility superset/);
   });
 });
+
+describe("session-119: the four-label + adjacency census pin (D-119a3) + the mobile-list empty-state retirement (D-119a0)", () => {
+  it("the four statcard labels as an ordered set + the per-card icon/iconColor adjacency + the trend on exactly New This Month", () => {
+    // The 119-c contacts-family walk's freeze find (the D-117a2/D-118a2
+    // genus): the labels were NEVER pinned as an ordered set —
+    // "Top Decision Makers" and "No Recent Activity" appear in ZERO
+    // unit label-set assertions before (grep-verified s119). The walk
+    // measured the live two-app byte-equal zero-data face: the 14px/500
+    // labels rgb(75,85,99), the 30px/700 values, the chips
+    // bg-blue-500/green-500/amber-500/red-500 48px, the trend "+0"
+    // green on exactly the second card.
+    const src = contactsSrc();
+    const grid = src.slice(src.indexOf('PAGE_KPI_GRIDS.contacts'));
+    // the label= PROP (never the search input's aria-label=)
+    const labels = [...grid.matchAll(/(?<!aria-)label="([^"]+)"/g)].map((m) => m[1]);
+    expect(labels).toEqual([
+      "Total Contacts",
+      "New This Month",
+      "Top Decision Makers",
+      "No Recent Activity",
+    ]);
+    // the per-card adjacency: icon identity + iconColor (the walk's
+    // Users-blue / TrendingUp-green / Award-amber / CircleAlert-red)
+    const icons = [...grid.matchAll(/icon=\{<(\w+) /g)].map((m) => m[1]);
+    expect(icons).toEqual(["Users", "TrendingUp", "Award", "CircleAlert"]);
+    const chipCls = [...grid.matchAll(/iconColor="([^"]+)"/g)].map((m) => m[1]);
+    expect(chipCls).toEqual(["bg-blue-500", "bg-green-500", "bg-amber-500", "bg-red-500"]);
+    // the trend row on EXACTLY the second card (New This Month) —
+    // trend={`+${newThisMonth}`} + trendDir="up", no other card
+    // carries a trend prop
+    const trendSites = [...grid.matchAll(/trend=\{/g)].length;
+    expect(trendSites).toBe(1);
+    expect(grid).toMatch(/trend=\{`\+\$\{newThisMonth\}`\}/);
+    expect(grid.match(/trendDir="up"/g)?.length).toBe(1);
+    // the gradient flag: all four cards (the walk's linear-gradient
+    // white->gray-50 cards, byte-equal modulo the documented oklab
+    // serialization genus) — the bare prop on its own line, never the
+    // bg-gradient-to-* utility classes
+    expect(grid.match(/^\s*gradient$/gm)?.length).toBe(4);
+    // the arm census: iconColor= appears EXACTLY four times on the raw
+    // source — a fifth site is a parity event, not a growth
+    expect(src.match(/iconColor=/g)?.length).toBe(4);
+  });
+
+  it("the mobile card list renders the MAP ONLY — no empty-state branch (the reference's empty container, live-verified s119)", () => {
+    // The 119-c walk's first real defect (F-119c1): our invented
+    // `filtered.length === 0 ? <p>No contacts found</p>` branch
+    // (the stale L-75c2-9 "bundle-decoded" reading) rendered a SECOND
+    // zero-data message at 390 where the LIVE reference renders the
+    // EMPTY CONTAINER (class "lg:hidden mt-6 space-y-4", display:block,
+    // childN: 0 — the map has no empty branch; probe-verified at both
+    // widths s119). The table's own rich empty stack is the ONLY
+    // zero-data message, exactly the reference's face.
+    const src = contactsSrc();
+    const mobile = src.slice(src.indexOf(CONTACTS_LAYOUT_ANCHOR));
+    // the container renders the map directly — no length ternary
+    expect(mobile).toMatch(/filtered\.map\(\(c\) =>/);
+    expect(mobile).not.toMatch(/length === 0 \?/);
+    expect(mobile).not.toMatch(/<p className="text-center text-gray-500 py-8">No contacts found<\/p>/);
+    // the table's rich empty stack STAYS (the only zero-data face)
+    expect(src).toMatch(/<span className="font-medium">No contacts found<\/span>/);
+    expect(src).toMatch(/Try adjusting your search or filters/);
+  });
+});

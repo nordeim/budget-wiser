@@ -188,6 +188,85 @@ test("contacts page renders seeded contacts", async ({ page }) => {
   await page.goto("/contacts");
   await expect(page.getByRole("heading", { name: "Contacts" })).toBeVisible();
   await expect(page.getByText("Khalid Al Mansoori").first()).toBeVisible();
+
+  // Session-119 (D-119a2 — the contacts-list family walk's populated
+  // battery, the D-116a1/D-117a1/D-118a1 genus: this test was heading +
+  // one name). Every value seed-verified independently off the db by
+  // the walk (verify-contacts-seed): the statcards 15/15(+15)/6/5 ·
+  // the priority census Key 4/Standard 7/At Risk 4 · 15 rows.
+  const statValue = (label: string) =>
+    page.locator("main div.grid").first().locator("div", { hasText: label }).locator("p.text-3xl").first();
+
+  // The four statcard values via the label→card→value ladder:
+  // Total Contacts 15 + Top Decision Makers 6 are STATIC (the seeded
+  // 15 contacts; DM 3 + KC 3). New This Month is the MONTH-ROLLER —
+  // every contact's createdAt IS the e2e seed moment (minutes before
+  // this test), so the value is 15 at every run date; the only drift
+  // window is the midnight month-straddle between the setup seed and
+  // this test (~minutes, the F-118a3 sub-minute genus — accepted, the
+  // standing container runs UTC). No Recent Activity is the DAY-ROLLER
+  // at day scale (the F-118a1 genus: the seeded lastActivityAt offsets
+  // 1,4,…,43 days age +1 daily — the 27-day row crosses 30 after +2
+  // days → the bounded 5-7 count, the D-118a0 idiom: toHaveText is
+  // exact-only).
+  await expect(statValue("Total Contacts")).toHaveText("15");
+  await expect(statValue("New This Month")).toHaveText("15");
+  await expect(statValue("Top Decision Makers")).toHaveText("6");
+  const noRecent = await statValue("No Recent Activity").textContent();
+  expect(Number(noRecent)).toBeGreaterThanOrEqual(5);
+  expect(Number(noRecent)).toBeLessThanOrEqual(7);
+
+  // The table census: 15 rows + the priority badge census (the walk's
+  // Key 4 / Standard 7 / At Risk 4, every badge seed-verified).
+  const rows = page.locator("main table tbody tr");
+  await expect(rows).toHaveCount(15);
+  await expect(rows.locator("td:nth-child(3)").filter({ hasText: "Key" })).toHaveCount(4);
+  await expect(rows.locator("td:nth-child(3)").filter({ hasText: "Standard" })).toHaveCount(7);
+  await expect(rows.locator("td:nth-child(3)").filter({ hasText: "At Risk" })).toHaveCount(4);
+
+  // The first-row contract: Khalid Al Mansoori + the Key amber tint
+  // (the border-l-4 + the gradient — the walk's firstRow census).
+  const firstRow = rows.first();
+  await expect(firstRow.getByText("Khalid Al Mansoori")).toBeVisible();
+  await expect(firstRow.locator("td:nth-child(3)")).toHaveText(/Key/);
+
+  // The Pke slide-over (the row-click): the ROW-CENTER click lands on a
+  // neutral cell (Last Activity/Engagement) — the Name/Role/Priority/
+  // Actions cells carry stopPropagation (the avatar, the role select,
+  // the badge + the action buttons must not ALSO open the panel — the
+  // walk's lesson: only the neutral cells bubble to the row's onClick).
+  // The panel is NOT a Radix dialog — it closes via its own X button.
+  await firstRow.click();
+  const panel = page.locator("div.fixed.top-0.right-0", { hasText: "Contact Details" });
+  await expect(panel).toBeVisible();
+  await expect(panel.getByRole("heading", { name: "Contact Details" })).toBeVisible();
+  await expect(panel.getByText("Khalid Al Mansoori")).toBeVisible();
+  for (const tabName of ["Activities", "Deals", "Notes"]) {
+    await expect(panel.getByRole("tab", { name: tabName })).toBeVisible();
+  }
+  await expect(panel.getByText("Contact Information")).toBeVisible();
+  await panel.getByRole("button", { name: "Close contact details" }).click();
+  await expect(panel).toHaveCount(0);
+
+  // The W7 EntityEditDialog (the ⋮ → Edit): max-w-2xl, the 7 fields
+  // (the bare <Label>{f.label}</Label> wiring — getByText, not
+  // getByLabel), the mount-focus on Name, the Active/Partner selects,
+  // the Cancel/Save Changes footer.
+  await firstRow.getByRole("button", { name: "Actions for Khalid Al Mansoori" }).click();
+  await page.getByRole("menuitem", { name: "Edit" }).click();
+  const editDialog = page.locator('[role="dialog"]', { hasText: "Edit Contact" });
+  await expect(editDialog).toBeVisible();
+  await expect(editDialog.getByText("Edit Contact")).toBeVisible();
+  for (const label of ["Name", "Email", "Phone", "Company", "Position", "Status", "Source"]) {
+    await expect(editDialog.getByText(label, { exact: false }).first()).toBeVisible();
+  }
+  await expect(editDialog.locator("input").first()).toBeFocused();
+  await expect(editDialog.getByRole("combobox").filter({ hasText: "Active" })).toBeVisible();
+  await expect(editDialog.getByRole("combobox").filter({ hasText: "Partner" })).toBeVisible();
+  await expect(editDialog.getByRole("button", { name: "Cancel" })).toBeVisible();
+  await expect(editDialog.getByRole("button", { name: "Save Changes" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(editDialog).toHaveCount(0);
 });
 
 test("calendar shows the current month and seeded events", async ({ page }) => {
@@ -2832,6 +2911,16 @@ test("the settings defaults persist via the debounce WITHOUT losing focus (S72-P
   await page.goto("/settings");
   await page.getByRole("tab", { name: "Defaults" }).click();
   const input = page.getByLabel("Default Currency");
+  // Session-119 (F-119a1, the 119-a audit's root-cause): the EPOCH
+  // GATE — the DefaultsEditor's pending→resolved remount (key=
+  // {settings ? "resolved" : "pending"}, the by-design M-72c4 epoch)
+  // races this fill whenever the settings GET's store-set lands after
+  // it (the hydrate() 9-fetch wave): the remount resets the input to
+  // the stored "AED" + drops focus, and the test flakes (reproduced
+  // 4/4 by the audit, incl. unloaded — NOT parallel workers, NOT
+  // wall-clock). Waiting for the RESOLVED value BEFORE the fill retires
+  // the 9-session flake lineage.
+  await expect(input).toHaveValue("AED");
   await input.fill("USD");
 
   // The M-72c1 contract: the input KEEPS FOCUS through the debounced

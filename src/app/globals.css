@@ -36,7 +36,14 @@
   --color-sidebar-active: #4d7ef5;
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
-  --color-primary-foreground: #ffffff;
+  /* Session-119 (D-119a1, the 119-c contacts-family walk's systemic
+     find F-119c2): the reference's --primary-foreground is the shadcn
+     stock hsl(0 0% 98%) = #fafafa — live-computed rgb(250,250,250) on
+     EVERY blue primary (New Contact/New Account/New Lead/New Event/
+     the Filter buttons, the dialog submits) while our scaffold-era
+     #ffffff pinned pure white. The s13 plan's badge record ("fg
+     #fafafa ✓") already carried the reference's value. */
+  --color-primary-foreground: #fafafa;
 
   /* Neutrals */
   --color-background: #f9fafb;

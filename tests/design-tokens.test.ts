@@ -169,3 +169,23 @@ describe("design tokens: Session 16 platform th/td reset (S16-P4)", () => {
     expect(noComments).toMatch(/th,\s*td\s*\{\s*padding:\s*1px;?\s*\}/);
   });
 });
+
+describe("design tokens: Session 119 primary-foreground re-pin (D-119a1)", () => {
+  it("the primary foreground re-pins to the reference's #fafafa (the shadcn stock hsl(0 0% 98%))", () => {
+    // The 119-c contacts-family walk's systemic find (F-119c2): every
+    // blue primary on the LIVE reference computes text rgb(250,250,250)
+    // — the shadcn stock --primary-foreground hsl(0 0% 98%) the
+    // reference kept while overriding --primary to blue-600. Our
+    // scaffold-era pin was pure #ffffff (globals.css:39). Sampled live
+    // on New Contact / New Account / New Lead / New Event / the
+    // accounts+activities Filter buttons — bg rgb(37,99,235) byte-equal
+    // on both apps, ONLY the foreground diverged. The s13 plan's badge
+    // record ("fg #fafafa ✓") already carried the reference's token
+    // value. Riders: the Button default variant (all blue primaries),
+    // the dialog submits, the emerald quick-log (the default-variant
+    // base) — all matching the reference's own mechanism; the badge
+    // (text-neutral-50) and the login submit (explicit text-white,
+    // live-verified white on BOTH apps) unaffected.
+    expect(themeToken("color-primary-foreground")).toBe("#fafafa");
+  });
+});
