@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1964 checks)       | `bun run test`                         |
+|  Unit tests (1972 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1964) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1972) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5390,3 +5390,74 @@ the 92nd STABLE; the full gate; the closing drift sweep CLEAN on all
 four gates; census MATCH; src/ 2 files changed (uploads.ts +
 drawer-battery-390.ts — the fix session, the s96/s107/s108/s109/s119
 lineage).
+
+### Session-122 (2026-10-15) — the settings-family walk (the Danger Zone + account-card arms, the pin-only session)
+
+The intake: the fresh clone at `b15522c` (the s121 ship + the two
+docs-only session logs); the environment re-standing (bun install,
+`db:push` + `db:seed`, census MATCH, Playwright chromium reinstalled
+after the workspace reset; scandihaven re-cloned at `d4789c3`
+on-pattern).
+
+The baseline gate: lint 0/0 · tsc 0 · **110/1964 unit** · build ·
+**e2e 137/137** (3.4m; one first-run S72-P2 flake, clean on the
+re-run — the known lineage).
+
+Both audits dispatched as subagents (the house pattern):
+- **122-a (the s121 ship-delta + the settings pre-walk inventory)**:
+  **9/9 shipped claims Verified, ZERO real findings** + the pre-walk
+  inventory (the unpinned residue enumerated: the AlertCircle icon,
+  the reset-confirm wiring, the "Export Data" title, CSV_TEMPLATE_MIME,
+  the zero-row EMPTY-export face, the chip label set, the h3/email
+  literals, the Add-button wiring; the reset contract mapped — the
+  POST /api/reset 7-table $transaction with users + settings
+  surviving).
+- **122-b (the standing layers, ~80th consecutive)**: **9/9 PASS** —
+  record-only N-122b1/N-122b2/N-122b3; the D-121a1 drawer-battery REPO
+  derivation verified working via its own spawn path.
+
+The live verification: **probe:ref the 94th STABLE** · the four drift
+gates CLEAN (1440/390/768/1024) · scandihaven `d4789c3` on-pattern.
+
+The rotation (122-c): the **settings family — the Danger Zone arm +
+the account-card arm** (the session_261 close's named candidate; the
+s26-era data-tab surfaces ~96 sessions + the s72-era picklists + the
+profile right-column cards), walked in the s115-s121 idiom with the
+walk db riding BOTH zeroes (the standing zero-data tool + the 5
+picklist arrays emptied — matching the reference's OWN settings state,
+live-diagnosed "No items yet" ×5).
+
+**PASS 1 (zero-data + zero-settings, two-app): ZERO PARITY DEFECTS —
+0 diffs @1440 + 0 @390.** The shell + tabs + the three Data cards +
+the Danger Zone census byte-equal; the config EMPTY face byte-equal
+("No items yet" ×5 on BOTH apps); the account-card arm byte-equal (the
+badge + the three chips); **the download contracts byte-equal** (the 3
+CSV templates at 107/138/112 bytes + the 4 EMPTY exports at 0 bytes
+with the singular_ISO filenames). The adjudicated noise: L-121c1
+(radius, standing) + **L-122c1 the disabled-button cursor genus** (ours
+pointer vs ref default on DISABLED buttons — both
+pointer-events-none, the computed cursor never renders; enabled
+buttons pointer on both).
+
+**PASS 2 (populated, ours-only): 51/51** — the picklist CRUD
+round-trips (db-verified), the populated exports (the raw-dump
+contract: unquoted first-row-keys header + double-quoted values +
+singular_ISO filenames), the account-card populated face, the Danger
+Zone flow (the decline no-op + the accepted 7-table wipe with users +
+settings surviving + the post-reset EMPTY export). **ZERO real parity
+defects — the pin-only session (the s120 lineage).**
+
+The remediation: D-122a0 the account-card arm pins [+3 its,
+profile-family-parity] + D-122a1 the Danger-Zone surface pins [+2 its,
+settings-data-tab] + D-122a2 the export title/MIME + EMPTY-face pins
+[+2 its, settings-data-tab + csv-contract] + D-122a3 the picklist
+Add-button pin [+1 it, settings-profile-parity] + D-122a4 the docs
+realignment + session_262 + the captures 216-219.
+
+The count ladder: UNIT 1964→1972 (+8, all in EXISTING files) · SUITES
+110 UNCHANGED · E2E 137 UNCHANGED · badge 2101→2109; the TDD:
+GREEN-first → the 5 stash-proofs (each pinned content reverted alone →
+its pin REDs alone) → GREEN 110/1972; the captures 216-219 (four
+unique md5s — 2e8ef6c7/ba31bd48/71677a69/dd2911e8, the tall-viewport
+re-take riding the s120 internal-main-scroll workaround) + the VLM
+battery 4/4 × 4 CLEAN.

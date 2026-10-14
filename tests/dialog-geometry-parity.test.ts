@@ -383,16 +383,27 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // + the both-avatar-carriers pin + the profile hint/in-flight
     // pins); the four sites re-anchored again, the retired 1957 forms
     // join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1964 checks)");
-    expect(claude).toContain("(currently 1964)");
-    expect(claude).toContain("Vitest unit suites (1964 checks)");
-    expect(claude).toContain("`bun run test` (1964)");
+    // session-122 lockstep carry-forward: 1964 -> 1972 (the s122 +8 —
+    // the settings-family walk's pin-only freezes: the D-122a0
+    // account-card arm pins + the D-122a1 Danger-Zone surface pins +
+    // the D-122a2 export title/MIME + EMPTY-face pins + the D-122a3
+    // picklist Add-button pin [all in EXISTING files, ZERO src
+    // changes]); the four sites re-anchored again, the retired 1964
+    // forms join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1972 checks)");
+    expect(claude).toContain("(currently 1972)");
+    expect(claude).toContain("Vitest unit suites (1972 checks)");
+    expect(claude).toContain("`bun run test` (1972)");
+    expect(claude).not.toContain("Unit (Vitest, 1964 checks)");
     expect(claude).not.toContain("Unit (Vitest, 1957 checks)");
     expect(claude).not.toContain("Unit (Vitest, 1956 checks)");
+    expect(claude).not.toContain("(currently 1964)");
     expect(claude).not.toContain("(currently 1957)");
     expect(claude).not.toContain("(currently 1956)");
+    expect(claude).not.toContain("Vitest unit suites (1964 checks)");
     expect(claude).not.toContain("Vitest unit suites (1957 checks)");
     expect(claude).not.toContain("Vitest unit suites (1956 checks)");
+    expect(claude).not.toContain("`bun run test` (1964)");
     expect(claude).not.toContain("`bun run test` (1957)");
     expect(claude).not.toContain("`bun run test` (1956)");
     expect(claude).not.toContain("Unit (Vitest, 1953 checks)");

@@ -121,3 +121,49 @@ describe("session-26: the destructive button's trash icon (S26-P2 chrome)", () =
     expect(block).toMatch(/Trash2\s+className="h-4 w-4 mr-2"/);
   });
 });
+
+describe("session-122: the Danger-Zone surface pins (the 122-c walk — D-122a1)", () => {
+  it("the title row carries the AlertCircle icon at the SETTINGS_DANGER.titleIcon class + aria-hidden (ZERO test hits before)", () => {
+    // Live-walked on BOTH apps @1440+390: the 20x20 circle-alert glyph
+    // leading the text-red-700 title — the s14 decode's icon, pinned on
+    // no axis before (the 122-a inventory's gap).
+    const code = read("src/app/(app)/settings/settings-page.tsx")!;
+    expect(code).toMatch(/<AlertCircle className=\{SETTINGS_DANGER\.titleIcon\} aria-hidden="true" \/>/);
+    // the import carries the icon identity (lucide AlertCircle)
+    expect(code).toMatch(/import \{[^}]*AlertCircle[^}]*\} from "lucide-react"/);
+  });
+
+  it("the reset-confirm wiring: the id/label pair + the RESET placeholder + the disabled gate AS THE BUTTON'S PROP", () => {
+    // The walk's D1-D3 live contract: the label wires htmlFor=reset-confirm
+    // (the SETTINGS_DANGER.label text), the input carries the RESET
+    // placeholder + the aria pairing, and the destructive button gates on
+    // disabled={resetText !== "RESET"} — the reset-flow suite used the
+    // string only as a region MARKER; the gate itself was e2e-behavioral
+    // only (the 122-a inventory's gap).
+    const code = read("src/app/(app)/settings/settings-page.tsx")!;
+    expect(code).toContain('<Label htmlFor="reset-confirm">{SETTINGS_DANGER.label}</Label>');
+    expect(code).toMatch(/id="reset-confirm"/);
+    expect(code).toMatch(/placeholder="RESET"/);
+    expect(code).toMatch(/aria-label=\{SETTINGS_DANGER\.label\}/);
+    expect(code).toMatch(/disabled=\{resetText !== "RESET"\}/);
+    // the input geometry family: max-w-xs + the controlMt compensator
+    expect(code).toMatch(/className=\{cn\(SETTINGS_DANGER\.inputCls, SETTINGS_DANGER\.controlMt\)\}/);
+  });
+});
+
+describe("session-122: the export title + the template MIME pin (the 122-c walk — D-122a2a)", () => {
+  it("the export card is titled 'Export Data' (the literal — only 'Import Templates' was pinned) + CSV_TEMPLATE_MIME wired at all three template call sites", () => {
+    // The walk's byte-equal axes: the card title literal + the three
+    // template downloads firing as text/csv Blobs (107/138/112 bytes —
+    // filenames AND content byte-exact on both apps). The 122-a
+    // inventory: the "Export Data" title literal + CSV_TEMPLATE_MIME
+    // pinned nowhere.
+    const code = read("src/app/(app)/settings/settings-page.tsx")!;
+    expect(code).toContain("<CardTitle>Export Data</CardTitle>");
+    expect(code).toContain("<CardTitle>{SETTINGS_DATA.importTitle}</CardTitle>");
+    const mimeUses = code.match(/CSV_TEMPLATE_MIME/g) ?? [];
+    // one import + three call sites
+    expect(mimeUses.length).toBe(4);
+    expect(code).toMatch(/import \{ CSV_TEMPLATES, CSV_TEMPLATE_MIME \} from "@\/lib\/csv-templates"/);
+  });
+});

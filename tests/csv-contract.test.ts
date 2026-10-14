@@ -125,3 +125,20 @@ describe("session-25: the reports CSV wiring (S25-P5)", () => {
     expect(code).toMatch(/revokeObjectURL/);
   });
 });
+
+describe("session-122: the zero-row EMPTY-export face (the 122-c walk — D-122a2b)", () => {
+  it("entityDumpCsv([]) === \"\" — no rows → no header → an EMPTY artifact (the walk's D6 live-verified genus)", async () => {
+    // Live-walked on BOTH apps (the 122-c PASS 1): at zero data all four
+    // export buttons download 0-BYTE artifacts — the header IS the first
+    // row's own keys, so no rows means no header. The post-reset face
+    // (the PASS 2 D6 check) rides the same contract. The reference's own
+    // bundle decode (s26): "at zero data — EMPTY blob bodies, because
+    // the header row is the FIRST ROW's own keys".
+    const { entityDumpCsv } = await import("@/lib/entity-export");
+    expect(entityDumpCsv([])).toBe("");
+    // and the populated shape: the unquoted first-row-keys header + the
+    // quoted values (the walk's B1-B4 live contract)
+    const csv = entityDumpCsv([{ id: "x1", name: "Ada" }]);
+    expect(csv).toBe('id,name\n"x1","Ada"');
+  });
+});

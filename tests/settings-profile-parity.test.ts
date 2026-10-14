@@ -287,3 +287,25 @@ describe("session-72: the profile parity sextet (S72-P7)", () => {
     expect(src).toMatch(/\{uploading \? "Uploading\.\.\." :/);
   });
 });
+
+describe("session-122: the picklist Add-button pin (the 122-c walk — D-122a3)", () => {
+  it("the Add button: icon-only Plus + aria-label='Add item' + the disabled={!value.trim()} gate (the e2e-only gap)", () => {
+    // The walk's A3 live contract: the add row's input gates the button
+    // (disabled until non-blank), the button carries NO text (the
+    // Plus icon alone at h-4 w-4) + the aria-label the e2e clicks by
+    // (crm.spec "Add item") — pinned on no unit axis before (the 122-a
+    // inventory: the Add-button wiring e2e-only).
+    const src = page();
+    const addBlock = src.slice(
+      Math.max(0, src.indexOf("Add item") - 500),
+      src.indexOf("Add item") + 200,
+    );
+    expect(addBlock).toMatch(/disabled=\{!value\.trim\(\)\}/);
+    expect(addBlock).toMatch(/aria-label="Add item"/);
+    expect(addBlock).toMatch(/<Plus className="h-4 w-4" \/>/);
+    // the SETTINGS_PICKLIST.addButton chrome (the dark neutral button)
+    expect(addBlock).toMatch(/className=\{SETTINGS_PICKLIST\.addButton\}/);
+    // the icon is the ONLY child (icon-only — no text node)
+    expect(addBlock).toMatch(/>\s*<Plus className="h-4 w-4" \/>\s*<\/Button>/);
+  });
+});

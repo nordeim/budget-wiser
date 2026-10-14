@@ -191,7 +191,20 @@ const SUITES = 110;
 // [profile-photo.test.ts]); SUITES 109 → 110 (the ONE new file); the
 // D-121a1 drawer-battery REPO derivation + the F-121c1 src fix ride the
 // src/scripts axis — E2E stays 137 (zero e2e additions this session).
-const UNIT = 1964;
+// Session-122: 1964 → 1972 (+8 — the s122 settings-family walk's pins:
+// the D-122a0 account-card arm pins [the chip label trio + the
+// Yes/Protected/capitalize values + the h3/email identity pair, +3 its]
+// [profile-family-parity.test.ts]; the D-122a1 Danger-Zone surface pins
+// [the AlertCircle title icon + the reset-confirm wiring incl. the
+// disabled gate AS the button's prop, +2 its] [settings-data-tab.test.ts];
+// the D-122a2 export title + MIME pin [+1 it, settings-data-tab] + the
+// zero-row EMPTY-export face pin [entityDumpCsv([]) === "", +1 it]
+// [csv-contract.test.ts]; the D-122a3 picklist Add-button pin [the
+// icon-only Plus + aria-label + the value.trim() gate, +1 it]
+// [settings-profile-parity.test.ts]); SUITES stays 110 (all pins in
+// EXISTING files); E2E stays 137 (the pin-only session, the s120
+// lineage — the walk found ZERO real parity defects).
+const UNIT = 1972;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -592,13 +605,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-121 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-122 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s119 layer now beneath the s120 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s121 layer now beneath the s122 head)",
     ).toContain(
-      "+ beneath it 1957 unit checks + 137 e2e checks green; the session-120 layer (the 120-c rotation — THE LEADS INTERACTIVE-TABLE FAMILY WALK",
+      "+ beneath it 1964 unit checks + 137 e2e checks green; the session-121 layer (the 121-c rotation — THE PHOTO-UPLOAD FAMILY WALK",
     );
   });
 

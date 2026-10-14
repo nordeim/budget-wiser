@@ -278,3 +278,41 @@ describe("session-114: the profile camera wiring census (D-114a3a)", () => {
     expect(src).not.toMatch(/disabled=\{!/);
   });
 });
+
+describe("session-122: the account-card arm pins (the 122-c walk — D-122a0)", () => {
+  it("the three info-card LABELS ride the text-sm text-muted p's (the 122-a gap: 'Account Type'/'Security' carried ZERO test hits)", () => {
+    // Live-walked on BOTH apps @1440+390 (the 122-c rotation): the three
+    // ProfileChip cards' labels byte-equal — "Account Type" / "Email
+    // Verified" / "Security" on the stock text-sm text-muted p's; only
+    // "Email Verified" was e2e-visible before (the S14-P4 /Profile
+    // battery), the label SET pinned nowhere.
+    const src = profileSrc();
+    expect(src).toContain('<p className="text-sm text-muted">Account Type</p>');
+    expect(src).toContain('<p className="text-sm text-muted">Email Verified</p>');
+    expect(src).toContain('<p className="text-sm text-muted">Security</p>');
+  });
+
+  it("the value literals Yes/Protected + the type value rides the capitalize-carried raw role (the walk's C1/C2 contract)", () => {
+    // The walk verified: the badge AND the Account Type value render the
+    // RAW db role ("user") with CSS capitalize doing the display work —
+    // textContent assertions must ride the raw role + the transform, not
+    // a pre-capitalized literal (the L-122c5 walk lesson).
+    const src = profileSrc();
+    expect(src).toContain('<p className="font-semibold text-foreground">Yes</p>');
+    expect(src).toContain('<p className="font-semibold text-foreground">Protected</p>');
+    // the type value: the capitalize class + {user.role}
+    expect(src).toMatch(/<p className="truncate font-semibold capitalize text-foreground">\{user\.role\}<\/p>/);
+    // the badge carries the same mechanism (PROFILE_LAYOUT.badge + capitalize)
+    expect(src).toMatch(/<div className=\{PROFILE_LAYOUT\.badge\}>\{user\.role\}<\/div>/);
+  });
+
+  it("the identity pair: the h3 name at text-lg font-semibold + the email p at text-sm text-muted (the literals pinned nowhere)", () => {
+    // The walk's byte-equal axes: the h3 (the db user's name) and the
+    // email p — both apps compute the same font stack. The literals
+    // themselves were pinned nowhere (only the N-80c5 gap-stack
+    // geometry).
+    const src = profileSrc();
+    expect(src).toMatch(/<h3 className="text-lg font-semibold">\{user\.name\}<\/h3>/);
+    expect(src).toMatch(/<p className="text-sm text-muted">\{user\.email\}<\/p>/);
+  });
+});
