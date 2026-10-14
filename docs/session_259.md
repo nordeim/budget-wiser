@@ -1,4 +1,39 @@
-我将从上一个会话中断的地方继续。让我先通过检查工作区、工作日志和待办事项列表的状态来确定当前的状态。
+I'll continue executing the multi-stage neo-crm workflow. Since the user explicitly instructed to continue without asking further questions, I'll proceed directly with the task. Let me set up the task tracking and begin Stage 1.
+The workspace has `scandihaven/` cloned already and previous session artifacts. Let me check for the neo-crm repo and read the worklog:
+之前的会话 (118, 119) 已在此工作区完成。`neo-crm` 仓库已存在。这是下一个会话迭代 —— 让我刷新工作区并开始阶段 1：
+The repo is on main, clean, and sessions 118/119 are complete. Now let me pull the latest and check for the new session docs (session_256, session_257, session119 plan):
+Pull brought in `docs/session_257.md` (new intake doc). Now Stage 1: reviewing core documentation. Let me read the newest session doc and key files:
+Environment is intact (`.env` ✓, `db/` at root ✓). Session 257 confirms session 119 shipped and suggests session 120 targets. Now let me review the session docs and repo worklog:
+Session 119 shipped at `109/1956/137/badge 2093`. The session_257 close names session 120's candidates: **s29-era leads interactive-table contracts** or **s30-era photo-upload surfaces**. Now let me review the core docs strategically:
+Now let me review the SKILL.md project state, rotation ledger, and recent session blocks in AGENTS.md:
+Let me review the AGENTS.md session-119 block and README key sections:
+Now let me validate the codebase structure and standing environment:
+Structure validated (badge 2093 ✓, 109 suites). Now let me verify the environment standing (census) and check the sitemap/SEO implementation:
+Census MATCH ✓, sitemap implemented as route handler. Now let me check the repo's skills catalog for audit-relevant skills (Stage 2 prep):
+Stage 1 complete — docs reviewed, environment verified. Now Stage 2: the baseline gate (house pattern). Let me run lint + typecheck first:
+Lint 0/0 · tsc 0 ✓. Now the unit test suite (109 suites / 1956 expected):
+109/1956 unit ✓. Now the production build:
+Build ✓. Now the e2e suite (137 checks, ~3.4 min):
+**BASELINE GATE GREEN: lint 0/0 · tsc 0 · 109/1956 unit · build · e2e 137/137** — zero flakes (the s119 epoch-gate holding). Now let me gather precise facts for the audit dispatch:
+Delta mapped: exactly 2 src files + tests + docs. Now dispatching both audits as parallel subagents (the house pattern). First let me verify the audit scripts exist:
+All standing. Dispatching both audit subagents in parallel:
+Both audits GREEN: **120-a 9/9 Verified** (zero real findings; the leads interactive-table inventory shows the s29-era layer ~fully pinned — the residue: SortHead `cursor-pointer` unpinned, the /leads Export e2e click, the live computed-style faces) + **120-b 9/9 PASS** (~78th standing). Now the live verification — probe:ref (the 91st):
+probe:ref the 91st STABLE ✓. Now the four drift gates (1440/390/768/1024):
+All four drift gates CLEAN ✓. Now the scandihaven pattern-repo check:
+Scandihaven d4789c3 on-pattern ✓. **Live verification complete.** Now the **120-c rotation walk** — the s29-era leads interactive-table contracts. Let me study the previous walk infrastructure and the leads surface:
+Now let me study the leads page surface in depth for the walk script:
+The leads page surface is fully mapped. Note: the leads page has NO mobile card list — the table hides columns progressively (Phone below md, Company below lg, Source below xl). Let me check the seed contract for the populated face:
+Seed contract mapped (24 leads: won 7/lost 4/qualified 3/contacted 2/new 4/negotiation 2/proposal 2; sources referral 6/partner 6/email 4/call 5/website 3). Let me check the existing e2e leads coverage and default sort:
+Let me check the layout constants for the walk probes:
+Now I have the full contract. Let me write the walk scripts (outside the repo, per the s118/s119 precedent). First the seed verification:
+Seed verified: 24 leads, overdue 0 today (all future dates), blank-trigger rows = 4 (negotiation/proposal). Let me check the export contract before writing the walks:
+Now writing the PASS 1 zero-data two-app walk script:
+Now let me run the zero-data walk (server + walk in one bash call, per the sandbox precedent):
+The click timed out — let me debug what's on the page with a quick probe:
+The debug probe shows the page is healthy and the Filters button exists. Let me check what's at the failing line numbers:
+The failure is on OURS with the exact locator. Let me test the locator directly against the live server:
+Found it: `hasText: /^Filters/` fails because the button's raw textContent has a leading space (JSX whitespace) — the anchored regex doesn't match. The string form (substring, normalized) works. Let me fix all anchored-regex locators:
+
 工作日志显示，会话 118/119 已交付（徽章 2093，109/1956/137）。上一个会话正在处理 **会话 120** —— 即 120-c 轮转遍历（s29 时代的销售线索交互式表格合约），并在遍历脚本中遇到了一个定位器（locator）bug（锚定正则表达式 `^Filters` 因 JSX 空格而失败）。让我检查一下当前的仓库和工作脚本状态。
 状态已确认：session 118/119 已交付，repo 处于 `b90368c`，审计 120-a/120-b 已在 repo 的 worklog 中完成（`M worklog.md`），且 120-c 的引导流程正处于 `walk6-leads-zero.ts` 的 locator-bug 修复阶段。让我来设置任务跟踪，并继续进行修复。
 现在让我读取 walk 脚本，以修复 anchored-regex locators：
