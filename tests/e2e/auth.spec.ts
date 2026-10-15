@@ -50,7 +50,7 @@ test("forgot password swaps the card to the reset view and back", async ({ page 
   await page.getByRole("button", { name: "Forgot password?" }).click();
   await expect(page.getByRole("heading", { name: "Reset your password" })).toBeVisible();
   await expect(
-    page.getByText("Enter your email and we’ll send you a link to reset your password"),
+    page.getByText("Enter your email and we'll send you a link to reset your password"),
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Send reset link" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Back to sign in" })).toBeVisible();
@@ -72,7 +72,7 @@ test("send reset link swaps to the check-your-email view", async ({ page }) => {
   await page.getByRole("button", { name: "Send reset link" }).click();
   await expect(page.getByRole("heading", { name: "Check your email" })).toBeVisible();
   await expect(
-    page.getByText("We’ve sent password reset instructions to"),
+    page.getByText("We've sent password reset instructions to"),
   ).toBeVisible();
   await expect(page.getByText("demo@example.com")).toBeVisible();
   await expect(
@@ -147,7 +147,7 @@ test("a fresh signup swaps to the verify-email view with its ladder", async ({ p
   // 2px ring rests on box 1 only, box 6 at none); ours made keyboard
   // users Tab to box 1 before the fix.
   await expect(page.locator('input[inputmode="numeric"]').first()).toBeFocused();
-  await expect(page.getByText("We’ve sent a 6-digit code to")).toBeVisible();
+  await expect(page.getByText("We've sent a 6-digit code to")).toBeVisible();
   await expect(page.getByText(signupEmail)).toBeVisible();
   for (let i = 1; i <= 6; i += 1) {
     await expect(page.getByLabel(`Digit ${i}`)).toBeVisible();

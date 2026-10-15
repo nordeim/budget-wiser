@@ -239,7 +239,15 @@ const SUITES = 110;
 // activities API order + the quick-log preset + the toggle arms + the
 // by-type vocabulary, activities-calendar-parity.test.ts]); SUITES
 // stays 110 (all pins in EXISTING files); E2E stays 137.
-const UNIT = 2000;
+// Session-126: 2000 → 2003 (+3 — the login-family second-cycle
+// re-check [the FIRST re-walk of the second rotation cycle, the
+// stalest family per the session_269 close]: the F-126c1 apostrophe
+// pin + the F-126c2 auth-input-ink pin + the F-126c3 code-input
+// bg-white pin [+3 its, login-family-parity.test.ts — the s79
+// code-arm pin re-anchored in place by the D-125a1 doctrine]); SUITES
+// stays 110 (all pins in EXISTING files); E2E stays 137 (the three
+// auth-spec assertions updated in place, the s123 BOM precedent).
+const UNIT = 2003;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -640,13 +648,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-125 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-126 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s124 layer now beneath the s125 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s125 layer now beneath the s126 head)",
     ).toContain(
-      "+ beneath it 1991 unit checks + 137 e2e checks green; the session-124 layer (the 124-c rotation — THE CALENDAR FAMILY WALK",
+      "+ beneath it 2000 unit checks + 137 e2e checks green; the session-125 layer (the 125-c rotation — THE ACTIVITIES FAMILY WALK",
     );
   });
 

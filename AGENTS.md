@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2000 checks)       | `bun run test`                         |
+|  Unit tests (2003 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2000) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2003) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5643,3 +5643,79 @@ gates CLEAN · scandihaven d4789c3 on-pattern.
 The final gate: lint 0/0 · tsc 0 · **110/2000** · build · **137/137
 e2e** · census MATCH. **src/ 2 files + tests/ 4 files changed** (the
 active-pill fix + the walk pins + the lockstep carriers).
+
+## Session-126 — the login-family second-cycle re-check (the first re-walk of the second rotation cycle)
+
+The 126-c rotation — the session_269 close's named direction: **the
+second rotation cycle begins — re-checks of the earlier walks (login
+s111, dialogs s112, menus s113 the stalest)**, login chosen (15
+sessions back; the source FROZEN since s111 but the LENSES sharpened
+since: the F-119c2/F-125c1 inverted-token genus, the L-123c6
+scrollHeight census, the live timings). Both apps driven at 1440×900
++ 390×844 through the FIVE-VIEW LADDER (signin → reset → sent →
+signup → verify) + the wrong-password callout (1 attempt) + the
+mismatch guard + the wrong-code rung (1 attempt) + THE AUTHED-VISITOR
+CARD SERVICE (the S23-P2 first two-app live confirmation) + PASS 2
+ours-only (the info-callout auto-dismiss ~3.4s + the db round-trip:
+4 seeded + 3 walk signups = 7 users), the walk db a SEEDED copy, the
+walk scripts OUTSIDE the repo. **330 axes, 24 raw diffs → THREE REAL
+PARITY DEFECTS**:
+
+1. **F-126c1 THE APOSTROPHE GENUS** — ours ships typographic
+   `&rsquo;` where the reference ships straight ASCII `'` (the reset
+   description, the sent view, the verify email line, the resend line
+   — 4 source sites; never text-pinned before, the e2e assertions had
+   ridden OUR curly forms).
+2. **F-126c2 THE AUTH-INPUT TEXT COLOR** — ours `text-slate-900`
+   `rgb(15,23,42)` vs the reference's `rgb(9,9,11)` ink on all 5
+   censured inputs (the signin/reset/signup family; never censused
+   before).
+3. **F-126c3 THE CODE-INPUT BG** — the **F-125c1 inverted-token genus
+   ON THE LOGIN SURFACE**: the verify code inputs' `bg-background`
+   resolving to our page-bg `#f9fafb` vs the reference's stock white —
+   invisible to every prior gate (the login surface is PRE-AUTH:
+   invisible to probe:ref's post-login bundle AND to the drift gates'
+   authenticated screenshots).
+
+The adjudicated noise (record-only): **L-126c4** the code inputs'
+aria-label superset (the L-124c1 a11y doctrine genus) · **L-126c5**
+the body-bg invisible axis (the F-119c2 token semantics under a
+full-cover gradient wrapper) · **L-126c6** the 1-unit ring/ink residue
+(ours `#0a0a0a` vs the reference's `#09090b`, within the standing
+fuzzy-2). **The byte-equal contracts: the s111 byte-matches ALL HOLD**
+(the card heights 470/422 · 488/412 at both widths) + the full
+five-view censuses + the error/sent callouts + the containment.
+
+The remediation (the three-fix session): **D-126a0** the apostrophe
+fix (4 sites + the 3 e2e assertions updated in place, the s123 BOM
+precedent) · **D-126a1** the auth-input text-color fix
+(`text-slate-900` retired from the 3 INPUT records — the typed ink
+inherits `--color-foreground` `#0a0a0a`; the TITLES keep slate-900,
+the reference's own) · **D-126a2** the code-input bg fix
+(`bg-background` → `bg-white`, the D-125a0 literal doctrine,
+byte-equal post-fix) · **D-126a3** the pins (+3 its,
+login-family-parity, RED-first; the s79 code-arm pin re-anchored in
+place, the D-125a1 doctrine) · **D-126a4** the docs + the captures
+232-235 + the VLM battery 4/4 × 4 CLEAN (233 reading the STRAIGHT
+apostrophes — the fix visibly confirmed).
+
+The TDD: RED-first → the fixes → GREEN → **the 3 stash-proofs** (each
+reverted alone → its pin REDs alone; the bg revert REDs both bg pins —
+the s79 re-anchor + the new pin, the expected pair) → **110/2003**
+(+3, all in EXISTING files). The audits: 126-a 9/9 Verified (zero
+code findings + the full login pre-walk inventory); 126-b 9/9 PASS
+(the ~84th standing — the drawer battery PLAIN 10/10, the SEO live
+verified, the space-y census 107 exact). probe:ref the 98th STABLE ·
+the four drift gates CLEAN · scandihaven `d4789c3` on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **110/2003** · build · **137/137
+e2e** (the S72-P2 first-run flake clean on the re-run, the s122
+lineage) · THE POST-FIX WALK RE-RUN 4 adjudicated diffs ONLY (body-bg
+×2 + aria-label ×2 — ZERO real defects) · the closing drift sweep
+CLEAN on all four gates · census MATCH. **src/ 3 files + tests/ 3
+files changed** (the three fixes + the walk pins + the lockstep
+carriers). The walk-harness lessons recorded: L-126c7 the pydantic
+reserved-TLD rejection (walk emails must use plausible domains) ·
+L-126c8 the oklab inverse (the cube goes AFTER the linear transform —
+cubing first produced phantom 5-unit diffs) · L-126c9 the via-stop
+50% serialization · L-126c10 the zero-extent shadow layers.

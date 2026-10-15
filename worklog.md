@@ -4595,3 +4595,47 @@ Work Log:
 
 Stage Summary:
 - Session 125 shipped: the activities family — the LAST never-two-app-walked interactive family — walked live (PASS 1 found ONE real parity defect F-125c1 the segmented active-pill bg, the F-119c2 inverted-token genus, fixed with the bg-white literal on both segmented surfaces and live-verified byte-equal post-fix; PASS 2 the populated face 49/49 db-verified incl. the filtered-basis cascade, the toggle round-trip, and the quick-log preset round-trip); the count ladder 110 files / 2000 unit / 137 e2e / badge 2137; the fix session + the walk pins (src/ 2 files, tests/ 4 files)
+
+---
+
+## Session 126 — the login-family second-cycle re-check + the three-fix session
+
+- The intake: the standing clone fast-forwarded to 23d3ada (session_269.md
+  the new intake; s125 confirmed shipped @ 8c20836); the rotation target:
+  THE LOGIN-FAMILY RE-CHECK (the session_269 close's named direction —
+  the second rotation cycle begins: login s111 / dialogs s112 / menus s113
+  the stalest; login chosen, 15 sessions back, the source frozen since
+  s111 but the lenses sharpened since).
+- The baseline gate: lint 0/0 · tsc 0 · 110/2000 · build · e2e 137/137
+  (3.3m) — exact match.
+- The audits: 126-a 9/9 Verified (the s125 ship-delta + the full login
+  pre-walk inventory — the F-119c2 token-ride census named the top axis);
+  126-b 9/9 PASS (the ~84th standing — the SEO live check through a
+  scratch standalone server, the drawer battery PLAIN, the space-y census
+  107 exact).
+- The live verification: probe:ref the 98th STABLE · the four drift gates
+  CLEAN (running PLAIN) · scandihaven d4789c3 on-pattern · census MATCH.
+- The rotation (126-c): walk17 — both apps at 1440×900 + 390×844 through
+  the five-view ladder (signin → reset → sent → signup → verify) + the
+  wrong-password callout + the mismatch guard + the wrong-code rung + the
+  authed-visitor card service (the S23-P2 first two-app live confirmation)
+  + PASS 2 ours-only (the info-callout auto-dismiss ~3.4s + the db
+  round-trip 7 users). 330 axes, 24 raw diffs → THREE REAL PARITY DEFECTS:
+  F-126c1 the apostrophe genus (ours &rsquo; vs the reference's straight
+  ', 4 source sites) + F-126c2 the auth-input text color (ours
+  text-slate-900 rgb(15,23,42) vs the reference's rgb(9,9,11)) + F-126c3
+  the code-input bg (the F-125c1 inverted-token genus on the PRE-AUTH
+  login surface — invisible to probe:ref AND the drift gates). The s111
+  byte-matches all hold (470/422 · 488/412). The walk-harness lessons:
+  the pydantic reserved-TLD rejection, the oklab-inverse converter bug,
+  the via-stop 50%, the zero-extent shadow layers.
+- The remediation (the three-fix session): D-126a0 the apostrophe fix (+
+  the 3 e2e assertions updated in place) · D-126a1 the input-record
+  retirement · D-126a2 the bg-white literal · D-126a3 the pins (+3 its
+  login-family-parity, RED-first; the s79 pin re-anchored) · D-126a4 the
+  docs + the captures 232-235 + the VLM battery 4/4 × 4 CLEAN.
+- The verification ladder: the 3 stash-proofs → 110/2003 · the POST-FIX
+  walk re-run 4 adjudicated diffs ONLY (ZERO real defects) · the final
+  gate lint 0/0 · tsc 0 · 110/2003 · build · 137/137 (the S72-P2
+  first-run flake clean on the re-run) · the closing drift sweep CLEAN ×4 ·
+  census MATCH.

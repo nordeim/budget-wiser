@@ -328,7 +328,7 @@ export const LOGIN_LAYOUT = {
   inputWrap: "relative",
   inputIcon: "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500",
   input:
-    "h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-3 text-slate-900 placeholder:text-slate-600 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-base md:text-sm sm:h-12",
+    "h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-3 placeholder:text-slate-600 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 text-base md:text-sm sm:h-12",
   // Session-79 (M-79c1/M-79c4, live-probed on the reference): the auth
   // inputs carry the stock text-base md:text-sm pair (16px <768, 14px at
   // desktop — LIVE: 14px at 1440) and focus to a SOLID slate-400 2px ring

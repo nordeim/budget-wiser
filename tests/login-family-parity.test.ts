@@ -295,7 +295,11 @@ describe("session-79: the code-input extras retired (L-79c11)", () => {
     expect(codeArm).not.toContain("ring-offset-2");
     expect(codeArm).not.toMatch(/className=\{`flex h-11/);
     expect(codeArm).toContain("focus-visible:ring-2 focus-visible:ring-ring");
-    expect(codeArm).toContain("rounded-lg border border-input bg-background");
+    // Session-126 (F-126c3, the D-125a1 re-anchor doctrine): the active
+    // arm rides the LITERAL bg-white — the reference's stock white, never
+    // our redefined bg-background token (the F-125c1 inverted-token genus)
+    expect(codeArm).toContain("rounded-lg border border-input bg-white");
+    expect(codeArm).not.toContain("bg-background");
   });
 });
 
@@ -451,5 +455,64 @@ describe("session-111: the login-family LIVE re-walk (the first since s79)", () 
     const branch = src.slice(start, end);
     expect(branch).toContain('<h2 className={LOGIN_SIGNUP_LAYOUT.title}>Create your account</h2>');
     expect(branch).not.toContain("text-center space-y-2");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-126 (the 126-c login-family re-walk — the second rotation
+// cycle's first re-check): the three-fix pins. The walk (both apps,
+// 1440+390, the five-view ladder) found THREE real parity defects the
+// s111-era lenses could not see:
+//   F-126c1 the apostrophe genus — ours ships typographic &rsquo; where
+//   the reference ships straight ASCII ' (live-confirmed on the reset
+//   description, the sent view, the verify email line);
+//   F-126c2 the auth-input text color — ours text-slate-900 rgb(15,23,42)
+//   vs the reference's rgb(9,9,11) ink (never censused before);
+//   F-126c3 the code-input bg — the F-125c1 inverted-token genus on the
+//   login surface (bg-background resolving to our page-bg #f9fafb vs
+//   the reference's stock white).
+// ---------------------------------------------------------------------------
+
+describe("session-126: the login re-walk's three fixes", () => {
+  it("F-126c1: the four auth texts ride the reference's STRAIGHT apostrophes (zero &rsquo;)", () => {
+    const src = loginCard();
+    const raw = loginCardRaw();
+    // the four live-confirmed sites (the reset description, the verify
+    // email line, the resend line, the sent view)
+    expect(src).toContain("we'll send you a link to reset your password");
+    expect(src).toContain("We've sent a 6-digit code to");
+    expect(src).toContain("Didn't receive the code?");
+    expect(src).toContain("We've sent password reset instructions to");
+    // the negative: the typographic entity is retired everywhere
+    expect(raw).not.toContain("&rsquo;");
+  });
+
+  it("F-126c2: the auth input records carry no text-slate-900 — the typed ink inherits the foreground", async () => {
+    const L = await loginLayout();
+    const R = await resetLayout();
+    const S = await signupLayout();
+    // the reference's inputs compute rgb(9,9,11) (its own ink); ours
+    // inherits --color-foreground #0a0a0a — within the standing
+    // fuzzy-2 tolerance. The s7-era slate-900 class retires from the
+    // three INPUT records (the TITLES keep it — the reference's own
+    // titles ARE slate-900, live-confirmed by the walk).
+    expect(L.input).not.toContain("text-slate-900");
+    expect(R.resetInput).not.toContain("text-slate-900");
+    expect(S.input).not.toContain("text-slate-900");
+    // the meaningful-chrome positives (the records stay otherwise intact)
+    expect(L.input).toContain("bg-slate-50/50");
+    expect(R.resetInput).toContain("bg-slate-50/50");
+    expect(S.input).toContain("bg-slate-50/50");
+  });
+
+  it("F-126c3: the verify code input rides the LITERAL bg-white — the F-125c1 doctrine", () => {
+    const src = loginCard();
+    const codeArm = src.slice(src.indexOf("codeDigits.map"), src.indexOf("codeDigits.map") + 1400);
+    // the reference's code inputs compute rgb(255,255,255); our
+    // bg-background resolves to the page-bg #f9fafb — the exact F-125c1
+    // inverted-token genus, fixed with the literal (the D-125a0 lineage)
+    expect(codeArm).toContain("rounded-lg border border-input bg-white");
+    expect(codeArm).not.toContain("bg-background");
+    expect(codeArm).toContain("focus-visible:ring-2 focus-visible:ring-ring");
   });
 });

@@ -290,7 +290,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                         <div className="text-center space-y-2">
                           <h2 className={LOGIN_RESET_LAYOUT.title}>Reset your password</h2>
                           <p className={LOGIN_RESET_LAYOUT.description}>
-                            Enter your email and we&rsquo;ll send you a link to reset your password
+                            Enter your email and we'll send you a link to reset your password
                           </p>
                         </div>
                         <form className="space-y-4 sm:space-y-5" onSubmit={onSendResetLink} noValidate>
@@ -431,7 +431,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                           <div className={LOGIN_VERIFY_LAYOUT.titleStack}>
                             <h2 className={LOGIN_VERIFY_LAYOUT.title}>Verify your email</h2>
                             <p className={LOGIN_VERIFY_LAYOUT.emailLine}>
-                              We&rsquo;ve sent a 6-digit code to
+                              We've sent a 6-digit code to
                               <br />
                               <span className={LOGIN_VERIFY_LAYOUT.emailSpan}>{email}</span>
                             </p>
@@ -465,7 +465,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                                   value={digit}
                                   onChange={(e) => onCodeDigit(idx, e.target.value)}
                                   onKeyDown={(e) => onCodeKeyDown(idx, e)}
-                                  className={`flex rounded-lg border border-input bg-background px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${LOGIN_VERIFY_LAYOUT.codeInput}`}
+                                  className={`flex rounded-lg border border-input bg-white px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${LOGIN_VERIFY_LAYOUT.codeInput}`}
                                 />
                               ))}
                             </div>
@@ -483,7 +483,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                             </button>
                             <div className={LOGIN_VERIFY_LAYOUT.resendWrap}>
                               <p className={LOGIN_VERIFY_LAYOUT.resendLine}>
-                                Didn&rsquo;t receive the code?{" "}
+                                Didn't receive the code?{" "}
                                 <button
                                   type="button"
                                   className={LOGIN_VERIFY_LAYOUT.resendButton}
@@ -506,7 +506,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                           <div className={LOGIN_RESET_LAYOUT.sentTitleStack}>
                             <h2 className={LOGIN_RESET_LAYOUT.title}>Check your email</h2>
                             <p className={LOGIN_RESET_LAYOUT.sentEmailLine}>
-                              We&rsquo;ve sent password reset instructions to
+                              We've sent password reset instructions to
                               <br />
                               <span className={LOGIN_RESET_LAYOUT.sentEmailSpan}>{email}</span>
                             </p>
