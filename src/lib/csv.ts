@@ -47,12 +47,12 @@ export function toCsv<T>(rows: readonly T[], columns: readonly CsvColumn<T>[]): 
   return [head, ...body].join("\r\n");
 }
 
-/** Coerce a CSV-ish string into a blob-safe download body. */
-export function csvWithBom(csv: string): string {
-  // BOM keeps Excel happy with UTF-8.
-  return `\uFEFF${csv}`;
-}
-
+// Session-124 (D-124a7, the N-124a2 find): the BOM-wrapping helper
+// retired as src-dead — the s123 D-123a1 BOM retirement removed the
+// route's import; the definition survived with zero callers until this
+// session (the s48/s49 retirement lineage). The reference's own
+// artifacts are BOM-less (the 123-c live walk); nothing wraps a BOM
+// anymore.
 export function csvFilename(prefix: string): string {
   // Session-25 (S25-P5): the reference's convention is
   // prefix_YYYY-MM-DD.csv (leads_2026-10-01.csv, captured from its

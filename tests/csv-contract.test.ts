@@ -162,3 +162,21 @@ describe("session-123: the reports CSV download face is BOM-less (the 123-c live
     expect(src).toMatch(/return new Response\(csv,/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-124 (D-124a7, the N-124a2 find): the dead definition retired
+// ---------------------------------------------------------------------------
+
+describe("session-124: the csvWithBom dead-code retirement", () => {
+  it("the definition is gone from src/lib/csv.ts — no BOM wrapper remains on the EXPORT side (the s48/s49 lineage)", () => {
+    const csvSrc = read("src/lib/csv.ts");
+    // The s123 D-123a1 retired the route's import; the definition
+    // survived as src-dead until this session (the 124-a audit's
+    // N-124a2). The IMPORT-side BOM stripper (parseCsv's leading-
+    // \uFEFF strip, :71) is legitimate and stays — only the export-side
+    // wrapper is retired (the reference's own artifacts are BOM-less,
+    // the 123-c live walk).
+    expect(csvSrc).not.toContain("csvWithBom");
+    expect(csvSrc).not.toMatch(/export function \w*[Bb]om/);
+  });
+});

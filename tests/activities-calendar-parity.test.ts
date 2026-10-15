@@ -437,3 +437,130 @@ describe("session-76: the hygiene pair", () => {
     expect(block).toMatch(/footerRow: "flex items-center gap-2"/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-124 (the 124-c two-app calendar family walk — the pin-only
+// session): the live-measured contracts of the never-walked interactive
+// arm. PASS 1 walked both apps at 1440×900 + 390×844 through the shell +
+// KPI row + month card + the filter rail (the radio semantics LIVE two-app
+// for the first time) + the New Event dialog + the month-nav round-trip —
+// ZERO parity defects (the single divergent axis adjudicated L-124c1 noise:
+// ours carries the aria-label superset over the reference's unnamed
+// icon-only nav buttons). PASS 2 walked ours-only populated 44/44 with
+// every value db-verified. These pins freeze the walk's findings.
+// ---------------------------------------------------------------------------
+
+describe("session-124: the calendar family walk pins (the 124-c two-app face)", () => {
+  it("the filter rail's TYPE vocabulary is the six pairs verbatim (124-c PASS 1: the 10 checkbox labels byte-equal two-app)", () => {
+    const src = calendarPage();
+    const block = src.slice(src.indexOf("TYPE_FILTERS"), src.indexOf("DATE_FILTERS"));
+    // The live census: Appointments/Calls/Meetings/Tasks/Reminders/Demos
+    // rendered identically on BOTH apps (16x16 boxes, unchecked).
+    expect(block).toContain('{ id: "appointment", label: "Appointments" }');
+    expect(block).toContain('{ id: "call", label: "Calls" }');
+    expect(block).toContain('{ id: "meeting", label: "Meetings" }');
+    expect(block).toContain('{ id: "task", label: "Tasks" }');
+    expect(block).toContain('{ id: "reminder", label: "Reminders" }');
+    expect(block).toContain('{ id: "demo", label: "Demos" }');
+    expect((block.match(/\{ id: "/g) ?? []).length).toBe(6);
+  });
+
+  it("the filter rail's DATE vocabulary is the four pairs verbatim (124-c: the wire ids today/tomorrow/this_week/next_week)", () => {
+    const src = calendarPage();
+    const block = src.slice(src.indexOf("DATE_FILTERS"), src.indexOf("DATE_FILTERS") + 500);
+    expect(block).toContain('{ id: "today", label: "Today" }');
+    expect(block).toContain('{ id: "tomorrow", label: "Tomorrow" }');
+    expect(block).toContain('{ id: "this_week", label: "This Week" }');
+    expect(block).toContain('{ id: "next_week", label: "Next Week" }');
+    expect((block.match(/\{ id: "/g) ?? []).length).toBe(4);
+  });
+
+  it("Clear All is the blue TEXT LINK resetting BOTH rails (124-c: the reset census false|false two-app)", () => {
+    const src = calendarPage();
+    // The walk: the link computes #2563eb/12px on both apps; the reset
+    // clears the type record AND the single-valued dateRange.
+    expect(src).toContain("className={FILTER_RAIL.clearAllLink}");
+    expect(src).toMatch(/setFilters\(\{\}\);\s*setDateRange\(null\);/);
+    expect(src).toMatch(/>\s*Clear All\s*<\/button>/);
+    const layout = pageLayoutSrc();
+    expect(layout).toMatch(/clearAllLink: "text-xs text-blue-600 hover:text-blue-700 font-normal"/);
+  });
+
+  it("the empty-state pair reads No upcoming events / No events found in the centered py-8 construction (124-c: byte-equal two-app)", () => {
+    const src = calendarPage();
+    expect(src).toContain("No upcoming events");
+    expect(src).toContain("No events found");
+    expect(src).toMatch(/text-center text-gray-500 py-8/);
+    expect(src).not.toContain("No events upcoming");
+  });
+
+  it("the header search is the pl-9 h-9 construction with the Search events... placeholder + aria-label (124-c: the shell census)", () => {
+    const src = calendarPage();
+    expect(src).toContain('placeholder="Search events..."');
+    expect(src).toContain('aria-label="Search events"');
+    expect(src).toMatch(/className="h-9 pl-9"/);
+    expect(src).toMatch(/relative flex-1 sm:flex-none sm:w-64/);
+  });
+
+  it("the KPI week windows are the typed [weekStart, weekEnd) counts off the RAW array (124-c PASS 2: 3 meetings / 1 call db-verified)", () => {
+    const src = calendarPage();
+    const meetings = src.slice(src.indexOf("const meetingsThisWeek"), src.indexOf("const meetingsThisWeek") + 400);
+    const calls = src.slice(src.indexOf("const callsThisWeek"), src.indexOf("const callsThisWeek") + 400);
+    // The walk verified the rendered 3/1 == the db's window counts: the
+    // type equality + the [weekStart, weekEnd) bounds are the contract.
+    expect(meetings).toContain('e.type === "meeting"');
+    expect(meetings).toContain("weekStart");
+    expect(meetings).toContain("weekEnd");
+    expect(calls).toContain('e.type === "call"');
+    expect(calls).toContain("weekStart");
+    expect(calls).toContain("weekEnd");
+    expect(meetings).not.toContain("visible");
+    expect(calls).not.toContain("visible");
+  });
+
+  it("the nav trio: the outline icon pair + the Today hidden-below-sm + OUR aria-label superset (the L-124c1 adjudication made standing)", () => {
+    const src = calendarPage();
+    // The walk: the reference's icon-only nav buttons compute EMPTY
+    // accessible names; ours carry the aria-label pair — the a11y
+    // superset (the mobile-nav doctrine: the reference's own defect,
+    // fixed in ours, never copied). Geometry byte-equal: 36x36 outline
+    // icons; Today 75x36 at 1440 and display:none below sm.
+    expect(src).toContain('aria-label="Previous month"');
+    expect(src).toContain('aria-label="Next month"');
+    const todayBtn = src.slice(src.indexOf("Previous month"), src.indexOf("Next month"));
+    expect(todayBtn).toMatch(/hidden sm:flex/);
+    expect(src).toMatch(/variant="outline" size="icon"/);
+  });
+
+  it("the upcoming related line is the ACCOUNT-first chain with the Contact prefix (124-c PASS 2: 'Contact: Oasis Healthcare' db-verified)", () => {
+    const src = calendarPage();
+    const block = src.slice(src.indexOf("Upcoming Events"), src.indexOf("Upcoming Events") + 3000);
+    // The walk's FAIL-then-decode: the rendered line reads the ACCOUNT
+    // name first (the source's own ?? chain), the relatedType default
+    // "Contact" as the prefix.
+    expect(block).toMatch(/e\.account\?\.name \?\? e\.contact\?\.name/);
+    expect(block).toContain('e.relatedType ?? "Contact"');
+  });
+
+  it("the Phone ghost renders ONLY on call type (124-c PASS 2: the ghost trio db-verified)", () => {
+    const src = calendarPage();
+    const block = src.slice(src.indexOf("Upcoming Events"), src.indexOf("Upcoming Events") + 3000);
+    // Pen (Edit) + MessageCircle always; the Phone icon gated on the
+    // call type — the walk verified hasPhone true on the call row and
+    // the conditional absent otherwise.
+    expect(block).toMatch(/\{e\.type === "call" && \(/);
+    expect(block).toContain('aria-label="Call contact"');
+    expect(block).toContain('aria-label="Message contact"');
+    expect(block).toContain('aria-label="Edit event"');
+  });
+
+  it("the chip onClick opens the EDIT dialog with the event prefilled (124-c PASS 2: the unpinned edit arm — setEditing + null defaultStart)", () => {
+    const src = calendarPage();
+    const region = src.slice(src.indexOf("monthGrid"), src.indexOf("monthGrid") + 3600);
+    // The walk: clicking a day-cell chip opens the Edit Event dialog
+    // with the event's title prefilled — the full trio, the
+    // defaultStart null distinguishing it from the day-cell
+    // double-click create arm.
+    expect(region).toMatch(/setEditing\(e\);\s*setDefaultStart\(null\);\s*setDialogOpen\(true\);/);
+  });
+});

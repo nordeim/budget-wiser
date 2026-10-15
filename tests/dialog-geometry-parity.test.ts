@@ -401,14 +401,20 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // D-123a3/4/5 reports-page pins [all in EXISTING files]); the four
     // sites re-anchored again, the retired 1972 forms join the
     // negatives below.
-    expect(claude).toContain("Unit (Vitest, 1980 checks)");
-    expect(claude).toContain("(currently 1980)");
-    expect(claude).toContain("Vitest unit suites (1980 checks)");
-    expect(claude).toContain("`bun run test` (1980)");
-    expect(claude).not.toContain("Unit (Vitest, 1972 checks)");
-    expect(claude).not.toContain("(currently 1972)");
-    expect(claude).not.toContain("Vitest unit suites (1972 checks)");
-    expect(claude).not.toContain("`bun run test` (1972)");
+    // session-124 lockstep carry-forward: 1980 -> 1991 (the s124 +11 —
+    // the calendar family walk's pin-only session pins: the
+    // D-124a0..a6 walk pins [+10 its, activities-calendar-parity] +
+    // the D-124a7 csvWithBom dead-code retirement pin [+1 it,
+    // csv-contract]); the four sites re-anchored again, the retired
+    // 1980 forms join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 1991 checks)");
+    expect(claude).toContain("(currently 1991)");
+    expect(claude).toContain("Vitest unit suites (1991 checks)");
+    expect(claude).toContain("`bun run test` (1991)");
+    expect(claude).not.toContain("Unit (Vitest, 1980 checks)");
+    expect(claude).not.toContain("(currently 1980)");
+    expect(claude).not.toContain("Vitest unit suites (1980 checks)");
+    expect(claude).not.toContain("`bun run test` (1980)");
     expect(claude).not.toContain("Unit (Vitest, 1964 checks)");
     expect(claude).not.toContain("Unit (Vitest, 1957 checks)");
     expect(claude).not.toContain("Unit (Vitest, 1956 checks)");

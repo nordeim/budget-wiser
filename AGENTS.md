@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1980 checks)       | `bun run test`                         |
+|  Unit tests (1991 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1980) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1991) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5538,3 +5538,50 @@ e2e** · the closing drift sweep CLEAN on all four gates · census
 MATCH. **src/ 5 files + scripts/ 2 files changed** (the six-fix
 session — the sweeps now run WITHOUT the env -u prefix, the guard is
 the tools' own).
+
+## Session-124 — the calendar family walk (the pin-only session)
+
+The 124-c rotation — the session_265 close's named candidate: the
+calendar surfaces (never two-app-walked; s108 was the ours-only seeded
+390 e2e; the drift gates cover zero-data pixels only). Both apps
+driven at 1440×900 + 390×844 through the shell + the KPI row + the
+month card (the complete-weeks grid + the today pill) + the
+never-walked filter rail (**the radio semantics LIVE-verified two-app
+for the first time** — tomorrow checked → This Week checked → Tomorrow
+CLEARS, both apps) + the New Event dialog + the month-nav round-trip,
+the walk scripts OUTSIDE the repo, the walk db riding the standing
+zero-data tool.
+
+**PASS 1: ZERO REAL PARITY DEFECTS** (the third consecutive pin-only
+lineage). The single divergent axis adjudicated L-124c1 noise: our
+aria-label superset over the reference's unnamed icon-only nav
+buttons. The byte-equal contracts: the KPI row, the month card (35
+complete-weeks cells == the in-test expectation on both apps), the
+rail (all 10 checkboxes), the radio/type-multi/Clear-All semantics,
+the New Event dialog, the containment (mainScrollH 1182@1440 +
+1750@390 — the L-123c5 axis). **PASS 2 populated ours-only: 44/44**,
+every value db-verified (the KPI windows 2/12/3/1, the 12 chips, the
+chip→Edit dialog, the Upcoming window slice(0,5), the Agenda
+desc slice(0,10), the filter interactions, the create/delete
+db-verified round-trip, the month-nav with data).
+
+The remediation: **D-124a0..a6** the walk pins (+10 its,
+activities-calendar-parity — the rail vocabularies, the Clear All
+dual reset, the empty states, the header search, the KPI week
+windows, the nav-trio a11y superset, the account-first related line,
+the Phone ghost, the chip edit trio) · **D-124a7** the csvWithBom
+dead-code retirement (the N-124a2 find — one src file) · **D-124a8**
+the docs realignment + the captures 224-227.
+
+The TDD: GREEN-first → the 10 stash-proofs (each reverted alone →
+its pin REDs alone: 1|50 ×9 + 1|10) → **110/1991** (+11, all in
+EXISTING files). The audits: 124-a 9/9 Verified (ZERO real findings)
++ the calendar pre-walk inventory; 124-b 9/9 PASS (the ~82nd
+standing; the F-123a1 live-guard proof — the battery ran PLAIN,
+EXIT=0). probe:ref the 96th STABLE · the four drift gates CLEAN ·
+scandihaven d4789c3 on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **110/1991** · build · **137/137
+e2e** · the closing drift sweep CLEAN on all four gates WITHOUT the
+prefix · census MATCH. **src/ 1 file + tests/ 3 files changed** (the
+pin-only session + the dead-code retirement).
