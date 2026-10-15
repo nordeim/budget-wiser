@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { ERR, asString, isGuarded, requireSession } from "@/lib/api";
-import { toCsv, csvWithBom, csvFilename, type CsvColumn } from "@/lib/csv";
+import { toCsv, csvFilename, type CsvColumn } from "@/lib/csv";
 import { startOfDay, startOfMonth, startOfWeek, startOfYear, subMonthsClamped } from "@/lib/format";
 import { OPPORTUNITY_STAGES, REPORT_PERIODS, REPORT_STATUSES } from "@/lib/constants";
 
@@ -118,7 +118,15 @@ export async function GET(req: Request) {
     filename = csvFilename("crm_report");
   }
 
-  return new Response(download ? csvWithBom(csv) : csv, {
+  // Session-123 (F-123a2, D-123a1): the artifact serves VERBATIM on both
+  // faces — the BOM retired. Live-walked on BOTH apps (the 123-c PASS
+  // 1): the reference's own client-side crm_report_ artifact is
+  // BOM-less (54 bytes at zero rows vs our 57 — the 3-byte \uFEFF was
+  // the only divergence; the content otherwise byte-identical). The s25
+  // "BOM keeps Excel happy" convention was OUR route's choice, never a
+  // decoded reference fact. The download face keeps its own headers
+  // (Content-Disposition) but the SAME body as the preview face.
+  return new Response(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
       ...(download ? { "Content-Disposition": `attachment; filename="${filename}"` } : {}),

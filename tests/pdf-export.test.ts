@@ -131,3 +131,45 @@ describe("session-25: the three-button wiring (S25-P2)", () => {
     expect(code).not.toMatch(/exportTablePdf\("deals_at_risk/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-123 (F-123a3, D-123a2): the per-table PDF geometry — the 123-c
+// live-walked mm-anchored constants (the reference's zero-row artifact
+// stream-decoded, then byte-equal-verified through the jsPDF mm probe)
+// ---------------------------------------------------------------------------
+
+describe("session-123: the per-table PDF geometry (the 123-c live walk)", () => {
+  it("the constructor rides unit mm — the reference's stream floats are mm conversions (39.685039… = 14mm)", () => {
+    const code = stripComments(read("src/lib/pdf-export.ts")!);
+    // The reference's artifact: margin x 39.6850393700787407 (= 14mm),
+    // title baseline y 42.5197 (= 15mm), generated 62.362 (= 22mm),
+    // headers 90.708 (= 32mm), columns at 14/74/134mm (flat 60mm),
+    // line width 0.567 (the unit-mm DEFAULT flush — never setLineWidth).
+    // VERIFIED: the mm-unit candidate's content stream is BYTE-EQUAL to
+    // the reference's zero-row artifact modulo the same-day date.
+    expect(code).toMatch(/unit:\s*"mm"/);
+    // and NO setLineWidth anywhere in the table export (the default flush
+    // emits the reference's exact 0.5670000000000001 operator)
+    expect(code).not.toMatch(/setLineWidth/);
+  });
+
+  it("the text ladder: title NORMAL 16 at (14,15) · Generated NORMAL 10 at (14,22) · headers BOLD 9 at 14+i*60, y 32 · the rule gated on rows", () => {
+    const code = stripComments(read("src/lib/pdf-export.ts")!);
+    // the title is Helvetica-NORMAL (the reference's /F1 16 Tf — F1 is
+    // Helvetica, F2 Helvetica-Bold in BOTH apps' resource dicts)
+    expect(code).toMatch(/const margin = 14/);
+    expect(code).toMatch(/pdf\.setFont\("helvetica", "normal"\);\s*pdf\.text\(title, margin, 15\)/);
+    // the Generated line — normal 10pt at (14, 22)
+    expect(code).toMatch(/pdf\.text\(`Generated: \$\{generatedDate\(\)\}`, margin, 22\)/);
+    // the column headers — bold 9pt at x = margin + i * 60, y = 32 (the
+    // flat 60mm column spacing, NOT span-derived)
+    expect(code).toMatch(/pdf\.setFont\("helvetica", "bold"\);\s*pdf\.setFontSize\(9\)/);
+    expect(code).toMatch(/pdf\.text\(c, margin \+ i \* 60, 32\)/);
+    // the header rule is GATED on rows existing — the reference's zero-row
+    // artifact carries NO line operators at all
+    expect(code).toMatch(/drawHeader\(rows\.length > 0\)/);
+    // the row ladder carries the mm frame (rowHeight 8) + the 27-char clip
+    expect(code).toMatch(/const rowHeight = 8/);
+    expect(code).toMatch(/text\.length > 28 \? `\$\{text\.slice\(0, 27\)\}…` : text/);
+  });
+});

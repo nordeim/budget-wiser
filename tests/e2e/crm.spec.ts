@@ -1784,9 +1784,11 @@ test("the reports header Export CSV downloads the route's artifact (S48-P4)", as
   const path = await download.path();
   const { readFileSync } = await import("node:fs");
   const body = readFileSync(path!, "utf8");
-  // The route's artifact verbatim: the download=1 BOM + the CRLF-joined
-  // 7-column header (the s25-pinned convention).
-  expect(body.startsWith("\uFEFFDeal Name,Account,Amount,Stage,Source,Owner,Close Date")).toBe(true);
+  // The route's artifact VERBATIM: the BOM-LESS 7-column header + the
+  // CRLF-joined rows (Session-123 F-123a2: the reference's own client-side
+  // artifact is BOM-less — live-walked on both apps, the 3-byte \uFEFF
+  // was the only divergence; the s25 BOM convention retired).
+  expect(body.startsWith("Deal Name,Account,Amount,Stage,Source,Owner,Close Date")).toBe(true);
   // A seeded data row follows (the default quarter window's filtered
   // opportunities — escapeCell quotes only when needed).
   const lines = body.split("\r\n");

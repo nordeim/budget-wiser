@@ -215,7 +215,15 @@ export default function ReportsPage() {
                 wired to before. */}
             <Button
               size="sm"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
               onClick={() => {
+                // Session-123 (F-123a5, D-123a4): the reference's bar
+                // button rides the LITERAL pair (its class string is
+                // bg-blue-600 hover:bg-blue-700 text-white — bg byte-equal,
+                // the text computing #ffffff vs our token #fafafa;
+                // live-walked 123-c). The reference's own mixed usage: its
+                // toolbars ride the s119 token pair, this bar rides
+                // literals — mirrored per-surface.
                 // Session-48 (S48-P4, N-48g): the F-47a mechanism's LAST
                 // instance retired — downloadFile set window.location.href,
                 // so a non-200 (an expired session's 401 envelope, an
@@ -225,9 +233,10 @@ export default function ReportsPage() {
                 // fail-navigate); our s25 architecture keeps the route as
                 // the single-source filter/artifact seam, so this is the
                 // fetch->blob flow: the artifact bytes stay EXACTLY the
-                // route's (BOM + CRLF + escapeCell quoting), and failures
-                // surface through the s46 convention instead of stranding
-                // the user on a JSON page.
+                // route's (CRLF + escapeCell quoting — the BOM retired at
+                // s123/F-123a2: the reference's own artifact is BOM-less),
+                // and failures surface through the s46 convention instead
+                // of stranding the user on a JSON page.
                 void (async () => {
                   try {
                     const res = await fetch(
@@ -245,10 +254,12 @@ export default function ReportsPage() {
                       );
                       return;
                     }
-                    // res.text() alone would STRIP the route's BOM
+                    // res.text() alone would STRIP any leading BOM
                     // (TextDecoder skips it by default) — decode with
                     // ignoreBOM so the artifact bytes round-trip EXACTLY
-                    // (the s25-pinned download=1 convention).
+                    // whatever the route serves (byte-preserving either
+                    // way since the s123 BOM retirement; the decode stays
+                    // the s25-pinned download=1 convention).
                     const csv = new TextDecoder("utf-8", { ignoreBOM: true }).decode(
                       await res.arrayBuffer(),
                     );
@@ -349,28 +360,29 @@ export default function ReportsPage() {
           </div>
 
           {/* Session-11 (S11-P5): the reference's tabs are NOT card-wrapped —
-              the pill tab bar + panels render bare in the page (a space-y-6
-              container directly under the KPI row; content spans the full
-              1192px). The session-3 "white card" reading only described the
-              sticky filter bar above. The Tabs' own space-y-6 puts 24px
-              between the bar and the panel (the reference's TabsContent
-              mt-2 is dead CSS under its space-y-6 — same computed gap). */}
-          {/* Session-23 (S23-P1): the reference's Tabs region — a space-y-6
-              wrapper holding the tablist + the N wired panel shells (each
-              with the stock Radix focus-ring family + mt-2, which collapses
-              against the wrapper's space-y margin — the s11 24px
-              bar-to-panel gap, live-measured). The old built-in panel
-              wrapper retired with its space-y-6 className, which moved
-              here onto the region wrapper. */}
-          <Tabs variant="pill" cols={5} className="space-y-6" value={tab} onValueChange={setTab} tabs={REPORT_TABS.map((t) => ({ id: t.id, label: t.label }))}>
-            <TabsPanel tab="sales" className="mt-2">{tab === "sales" && <SalesTab data={data} />}</TabsPanel>
-            <TabsPanel tab="pipeline" className="mt-2">{tab === "pipeline" && <PipelineTab data={data} />}</TabsPanel>
-            <TabsPanel tab="activity" className="mt-2">{tab === "activity" && <ActivityTab data={data} />}</TabsPanel>
-            <TabsPanel tab="sources" className="mt-2">{tab === "sources" && <SourcesTab data={data} />}</TabsPanel>
+              the pill tab bar + panels render bare in the page (content
+              spans the full 1192px). The session-3 "white card" reading
+              only described the sticky filter bar above. */}
+          {/* Session-23 (S23-P1): the reference's Tabs region — the wrapper
+              holding the tablist + the N wired panel shells (each with the
+              stock Radix focus-ring family). */}
+          {/* Session-123 (F-123a6, D-123a5): the wrapper's space-y-6 RETIRED.
+              Tailwind v4's space-y emits margin-BOTTOM (all-but-last) where
+              the reference's v3-style emits margin-TOP — visually identical
+              (collapse), but our trailing mb=24 extended main's
+              scrollHeight to 1545 vs the reference's 1521 at zero-data
+              (live-walked 123-c; the PDF capture height + the scroll
+              extent). The panels' mt-2 → mt-6 — the reference's computed
+              mt=24 geometry, no trailing margin. */}
+          <Tabs variant="pill" cols={5} value={tab} onValueChange={setTab} tabs={REPORT_TABS.map((t) => ({ id: t.id, label: t.label }))}>
+            <TabsPanel tab="sales" className="mt-6">{tab === "sales" && <SalesTab data={data} />}</TabsPanel>
+            <TabsPanel tab="pipeline" className="mt-6">{tab === "pipeline" && <PipelineTab data={data} />}</TabsPanel>
+            <TabsPanel tab="activity" className="mt-6">{tab === "activity" && <ActivityTab data={data} />}</TabsPanel>
+            <TabsPanel tab="sources" className="mt-6">{tab === "sources" && <SourcesTab data={data} />}</TabsPanel>
             {/* Session-83 (N-83c6): the reference's fifth tab id is
                 "accounts" (its value:"accounts" — an invisible internal
                 id; no URL state, the s24 census). */}
-            <TabsPanel tab="accounts" className="mt-2">{tab === "accounts" && <HealthTab data={data} />}</TabsPanel>
+            <TabsPanel tab="accounts" className="mt-6">{tab === "accounts" && <HealthTab data={data} />}</TabsPanel>
           </Tabs>
 
           {/* Session-25 (S25-P4): the Save Custom Report View dialog —

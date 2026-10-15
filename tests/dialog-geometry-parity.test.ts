@@ -222,7 +222,11 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
     // space-y-2] + the verify headingStack's `space-y-3 sm:space-y-4`
     // re-pinned to the reference's flat `space-y-2` — the sm: arm's
     // second occurrence retired; net −2)
-    expect(total).toBe(108);
+    // session-123 re-anchor: 108 -> 107 (the F-123a6 reports Tabs fix:
+    // the wrapper's `space-y-6` retired for the panels' `mt-6` — the v4
+    // mb-model's trailing margin extended the scroll extent; the s96/s98
+    // v3-semantics lineage, now at the reports wrapper)
+    expect(total).toBe(107);
   });
 
   it("the s91 header's unstable '99' claim is re-derived (spacey-hazard-parity no longer asserts an un-derivable count)", () => {
@@ -390,10 +394,21 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // picklist Add-button pin [all in EXISTING files, ZERO src
     // changes]); the four sites re-anchored again, the retired 1964
     // forms join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 1972 checks)");
-    expect(claude).toContain("(currently 1972)");
-    expect(claude).toContain("Vitest unit suites (1972 checks)");
-    expect(claude).toContain("`bun run test` (1972)");
+    // session-123 lockstep carry-forward: 1972 -> 1980 (the s123 +8 —
+    // the reports export/PDF walk's six-fix session pins: the
+    // D-123a0 sweep/battery dev-spawn guards + the D-123a1 BOM
+    // retirement pin + the D-123a2 PDF mm-geometry pins + the
+    // D-123a3/4/5 reports-page pins [all in EXISTING files]); the four
+    // sites re-anchored again, the retired 1972 forms join the
+    // negatives below.
+    expect(claude).toContain("Unit (Vitest, 1980 checks)");
+    expect(claude).toContain("(currently 1980)");
+    expect(claude).toContain("Vitest unit suites (1980 checks)");
+    expect(claude).toContain("`bun run test` (1980)");
+    expect(claude).not.toContain("Unit (Vitest, 1972 checks)");
+    expect(claude).not.toContain("(currently 1972)");
+    expect(claude).not.toContain("Vitest unit suites (1972 checks)");
+    expect(claude).not.toContain("`bun run test` (1972)");
     expect(claude).not.toContain("Unit (Vitest, 1964 checks)");
     expect(claude).not.toContain("Unit (Vitest, 1957 checks)");
     expect(claude).not.toContain("Unit (Vitest, 1956 checks)");

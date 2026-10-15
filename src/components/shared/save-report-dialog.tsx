@@ -54,7 +54,7 @@ import {
   type SavedReportColumns,
   type SavedReportFilters,
 } from "@/lib/saved-reports";
-import { DIALOG_CONTENT } from "@/lib/page-layout";
+import { DIALOG_CONTENT, DIALOG_SUBMIT } from "@/lib/page-layout";
 
 interface SaveReportDialogProps {
   open: boolean;
@@ -174,7 +174,13 @@ export function SaveReportDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
+          {/* Session-123 (F-123a4, D-123a3): the reference's dialog Save
+              rides the BLACK pair (bg rgb(23,23,23) + #fafafa — live-walked
+              123-c), the same DIALOG_SUBMIT family its entity dialogs ride
+              (its "Create Contact" verified byte-equal to ours). Ours rode
+              the default blue variant — a visible divergence. */}
           <Button
+            className={DIALOG_SUBMIT.button}
             disabled={name.trim().length === 0}
             onClick={() => {
               onSave(name.trim(), columns);

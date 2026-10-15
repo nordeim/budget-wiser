@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1972 checks)       | `bun run test`                         |
+|  Unit tests (1980 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1972) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (1980) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5461,3 +5461,80 @@ its pin REDs alone) → GREEN 110/1972; the captures 216-219 (four
 unique md5s — 2e8ef6c7/ba31bd48/71677a69/dd2911e8, the tall-viewport
 re-take riding the s120 internal-main-scroll workaround) + the VLM
 battery 4/4 × 4 CLEAN.
+
+### Session-123 (2026-10-15) — the reports export/PDF family walk (the six-fix session)
+
+The intake: the standing clone refreshed at `b804b3d` (the s122 ship
+`dd29078` + its session logs; `docs/session_263.md` the new intake —
+its close naming the reports export/PDF flow, the calendar surfaces,
+or a re-check; the export arm chosen: the first-named candidate AND
+the staler — ~98 sessions since the s25 single-app live probe, never
+two-app-walked).
+
+The baseline gate: lint 0/0 · tsc 0 · **110/1972 unit** · build ·
+**e2e 137/137** (3.3m, zero flakes).
+
+Both audits dispatched as subagents (the house pattern):
+- **123-a (the s122 ship-delta + the export pre-walk inventory)**:
+  **9/9 shipped claims Verified, ZERO real findings** (the delta
+  exactly the pin-only s122 ship: 19 files +739/−28, ZERO src; the
+  +8 pins live in their suites; the counts/badge/md5s coherent) + the
+  full export/PDF inventory (the two export mechanisms, the
+  savedReport localStorage seam, the PDF nondeterminism mapping, the
+  walk-harness notes).
+- **123-b (the standing layers, ~81st consecutive)**: **9/9 PASS** —
+  census MATCH, the drawer battery exit 0, design-tokens 16/16,
+  vocabulary 6/6, config zero drift, the Tailwind v4 layer, metadata
+  37/37, SEO live 6/6, the defect ledger intact; record-only
+  N-123b1/b2/b3/b4.
+
+The live verification: **probe:ref the 95th STABLE** (bundle md5
+exact; demo data ZERO; the TRUE-390 defect STANDS) · the four drift
+gates CLEAN (1440/390/768/1024, all 0.5% margin) — under the operator
+`env -u DATABASE_URL` discipline after **F-123a1 surfaced** (the
+platform's stale absolute DATABASE_URL override poisoning the
+unguarded dev-server spawns; live-diagnosed at the sweep's OUR-login
+timeout, root-caused to the Prisma CANTOPEN on the nonexistent
+platform path, then guarded permanently in the remediation) ·
+scandihaven `d4789c3` on-pattern (via git ls-remote — the API
+rate-limited).
+
+The rotation (123-c): **the reports export/PDF family** — the shell +
+the filter-bar export duo + the Pipeline tab's per-table quartet + the
+Save Custom Report View dialog, both apps at 1440×900 + 390×844, the
+walk db riding the standing zero-data tool.
+
+**PASS 1 (zero-data, two-app): SIX REAL PARITY DEFECTS** — F-123a1
+the unguarded dev-server spawns · F-123a2 the reports CSV BOM (ours
+57 bytes vs the reference's 54 — the s25 convention retired) · F-123a3
+the per-table PDF geometry family (the reference's mm-anchored
+constants decoded from its artifact stream and BYTE-EQUAL-verified
+through the jsPDF mm probe: unit mm, margin 14mm, the title
+Helvetica-NORMAL 16pt at (14,15), headers bold 9pt at 14+i×60 y32,
+the line width = the default flush, NO rule at zero rows) · F-123a4
+the dialog Save button's BLACK pair (#171717 — the DIALOG_SUBMIT
+family) · F-123a5 the bar Export CSV's literal white pair · F-123a6
+the v4 space-y trailing-margin genus (main scrollHeight 1545 vs 1521
+— the PDF capture height axis the viewport gates cannot see).
+
+**The POST-FIX re-run: 0 diffs @1440 + 0 @390** — the download
+contracts BYTE-EQUAL (the barCsv 54/54 BOM-less, the per-table CSVs
+byte-exact, the text PDFs SIZE-EXACT 3563/3559). **PASS 2 (populated,
+ours-only): 42/42** — the export contracts db/API-verified + the
+saved-reports round-trip on the localStorage seam.
+
+The remediation: **D-123a0** the sweep + battery dev-spawn guards ·
+**D-123a1** the BOM retirement (+ the e2e assertion in place) ·
+**D-123a2** the PDF mm geometry · **D-123a3** the Save button's
+DIALOG_SUBMIT pair · **D-123a4** the Export CSV literal pair ·
+**D-123a5** the Tabs-wrapper mt-model (the space-y census re-anchored
+108 → 107) · **D-123a6** the docs realignment + the captures 220-223.
+The TDD ladder: RED-first (8 pins) → the six fixes → GREEN → the 6
+stash-proofs (each reverted alone → its pin REDs alone) → **110/1980**
+(+8, all in EXISTING files).
+
+The final gate: lint 0/0 · tsc 0 · **110/1980** · build · **137/137
+e2e** · the closing drift sweep CLEAN on all four gates · census
+MATCH. **src/ 5 files + scripts/ 2 files changed** (the six-fix
+session — the sweeps now run WITHOUT the env -u prefix, the guard is
+the tools' own).

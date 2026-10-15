@@ -97,50 +97,67 @@ export async function exportReportsPdf(): Promise<void> {
  * (b) The per-table PDF — the TEXT layout the reference's 3.5KB
  * artifacts carry: title, "Generated: M/D/YYYY", the column headers,
  * and the rows as a simple ruled table.
+ *
+ * Session-123 (F-123a3, D-123a2): the geometry re-anchored on the
+ * reference's OWN artifact — stream-decoded from its live zero-row PDF
+ * and byte-equal-verified through the jsPDF mm probe. The constants are
+ * MM-anchored (the constructor rides unit "mm"; the reference's stream
+ * floats are mm conversions — 39.685039… = 14mm etc.): margin 14mm,
+ * the title Helvetica-NORMAL 16pt at (14, 15) [/F1 16 Tf — F1 is
+ * Helvetica, F2 Helvetica-Bold in both apps' resource dicts; ours was
+ * bold], the Generated line normal 10pt at (14, 22), the column headers
+ * BOLD 9pt at x = 14 + i*60, y = 32 (the FLAT 60mm column spacing, not
+ * span-derived), the line width = jsPDF's unit-mm DEFAULT flush
+ * (0.567pt — never setLineWidth; an explicit call emits a SECOND,
+ * differently-rounded operator), and NO header rule at zero rows (the
+ * reference's zero-row artifact carries no line operators — the rule is
+ * gated on rows existing; its populated-rule geometry stays ours, the
+ * unknowable face). The row ladder keeps our structure in the mm frame:
+ * rowHeight 8mm, the 27-char clip, the page-break redraw.
  */
 export function exportTablePdf(title: string, columns: string[], rows: string[][]): void {
-  const pdf = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
+  const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-  const margin = 40;
-  let y = margin;
+  const margin = 14;
+  const rowHeight = 8;
+  let y = 32; // the headers' baseline (title 15 + generated 22 above)
 
   pdf.setFontSize(16);
-  pdf.setFont("helvetica", "bold");
-  pdf.text(title, margin, y);
-  y += 22;
-  pdf.setFontSize(10);
   pdf.setFont("helvetica", "normal");
-  pdf.text(`Generated: ${generatedDate()}`, margin, y);
-  y += 28;
+  pdf.text(title, margin, 15);
+  pdf.setFontSize(10);
+  pdf.text(`Generated: ${generatedDate()}`, margin, 22);
 
-  // Column geometry: equal widths across the printable span.
-  const span = pageWidth - margin * 2;
-  const colWidth = span / columns.length;
-  const rowHeight = 22;
-
-  const drawHeader = () => {
+  const drawHeader = (withRule: boolean) => {
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(10);
-    columns.forEach((c, i) => pdf.text(c, margin + i * colWidth, y));
-    y += 6;
-    pdf.setDrawColor(200);
-    pdf.line(margin, y, pageWidth - margin, y);
-    y += rowHeight - 6;
+    pdf.setFontSize(9);
+    columns.forEach((c, i) => pdf.text(c, margin + i * 60, 32));
+    y = 32;
+    if (withRule) {
+      // the reference draws NO rule at zero rows — the rule is a
+      // populated-face affordance (its populated geometry unknowable;
+      // ours: 2mm under the headers, the 200-gray stroke)
+      y += 2;
+      pdf.setDrawColor(200);
+      pdf.line(margin, y, pageWidth - margin, y);
+      y += rowHeight - 2;
+    } else {
+      y += rowHeight;
+    }
     pdf.setFont("helvetica", "normal");
   };
-  drawHeader();
+  drawHeader(rows.length > 0);
 
   for (const row of rows) {
     if (y > pageHeight - margin) {
       pdf.addPage();
-      y = margin;
-      drawHeader();
+      drawHeader(true);
     }
     row.forEach((cell, i) => {
       const text = String(cell ?? "");
       // Clip long cells to their column span (single-line rows).
-      pdf.text(text.length > 28 ? `${text.slice(0, 27)}…` : text, margin + i * colWidth, y);
+      pdf.text(text.length > 28 ? `${text.slice(0, 27)}…` : text, margin + i * 60, y);
     });
     y += rowHeight;
   }

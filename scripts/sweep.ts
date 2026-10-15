@@ -798,7 +798,22 @@ async function main() {
     log(`reusing the dev server on ${OUR_URL}`);
   } else {
     log("booting the dev server (bun run dev)…");
-    spawned = spawn("bun", ["run", "dev"], { cwd: REPO, stdio: "ignore", detached: true });
+    // Session-123 (F-123a1, D-123a0): the dev-server spawn guards the
+    // platform DATABASE_URL override — the Session-93 F-A rule, extended
+    // from the zero-data spawn to the boot site. The platform shell
+    // exports a STALE absolute DATABASE_URL (the relocated-workspace
+    // path); an absolute URL matches neither bun-absolutization
+    // signature, so the db-path seam treats it as an intentional
+    // override and every db route 500s (login included). Live-
+    // reproduced 123-c: the sweep died at OUR login until the guard.
+    const devEnv: NodeJS.ProcessEnv = { ...process.env };
+    delete devEnv.DATABASE_URL;
+    spawned = spawn("bun", ["run", "dev"], {
+      cwd: REPO,
+      env: devEnv,
+      stdio: "ignore",
+      detached: true,
+    });
     if (!(await waitOnUrl(`${OUR_URL}/login`, 90000))) {
       console.error("[sweep] the dev server never came up on :3000");
       process.exit(1);

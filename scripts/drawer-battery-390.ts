@@ -4,7 +4,10 @@
 // `[role="dialog"]`, never the root; exact aria-labels; a REAL user
 // click; the URL-based wait — the /Leads route is the s24 CAPITAL-route
 // construction and the dev server compiles it on first visit).
-// Run: env -u DATABASE_URL bun scripts/drawer-battery-390.ts
+// Run: bun scripts/drawer-battery-390.ts
+// (Session-123: the platform DATABASE_URL override is now guarded at the
+// boot site — the `env -u` prefix is no longer required, though it stays
+// harmless.)
 // Verifies: trigger geometry · panel 288px @ x0 · 8 links · focus
 // inside · dual body+main lock · navigate-close -> /Leads with the full
 // release · Escape-close · the resize-past-md lock release (against a
@@ -55,7 +58,17 @@ async function main() {
   if (await waitOnUrl(`${OUR_URL}/login`, 3000)) {
     console.log("[battery] reusing the dev server on :3000");
   } else {
-    spawned = spawn("bun", ["run", "dev"], { cwd: REPO, stdio: "ignore", detached: true });
+    // Session-123 (F-123a1, D-123a0): the platform DATABASE_URL override
+    // guarded at the boot site — the runbook's `env -u` is now the
+    // script's own (the sweep's Session-93 F-A rule, extended here).
+    const devEnv: NodeJS.ProcessEnv = { ...process.env };
+    delete devEnv.DATABASE_URL;
+    spawned = spawn("bun", ["run", "dev"], {
+      cwd: REPO,
+      env: devEnv,
+      stdio: "ignore",
+      detached: true,
+    });
     if (!(await waitOnUrl(`${OUR_URL}/login`, 90000))) process.exit(1);
   }
 

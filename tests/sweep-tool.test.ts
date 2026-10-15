@@ -691,3 +691,31 @@ describe("session-101 (F-101a1/S101-P0): the clusterDiff edge-wrap fix", () => {
     expect(src).toContain("never wrap");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-123 (F-123a1, D-123a0): the dev-server spawn's platform-env guard
+// ---------------------------------------------------------------------------
+
+describe("session-123: the dev-server spawn guards the platform DATABASE_URL override (F-123a1)", () => {
+  it("the sweep's `bun run dev` spawn deletes DATABASE_URL from the child env (the Session-93 F-A rule, extended to the boot site)", () => {
+    const src = read("scripts/sweep.ts");
+    // The platform shell exports a STALE absolute DATABASE_URL (the
+    // relocated-workspace path); an absolute URL matches neither
+    // bun-absolutization signature, so the db-path seam treats it as an
+    // intentional override and every db route 500s (login included).
+    // Live-reproduced 123-c: the sweep died at OUR login until
+    // `env -u DATABASE_URL`. The boot site now self-guards — the same
+    // `delete env.DATABASE_URL` the zero-data spawn has carried since
+    // session-93.
+    expect(src).toMatch(
+      /delete devEnv\.DATABASE_URL;[\s\S]*?spawned = spawn\("bun", \["run", "dev"\],[\s\S]*?env: devEnv/,
+    );
+  });
+
+  it("the drawer battery's `bun run dev` spawn carries the same guard (the battery's runbook env -u is now the script's own)", () => {
+    const src = read("scripts/drawer-battery-390.ts");
+    expect(src).toMatch(
+      /delete devEnv\.DATABASE_URL;[\s\S]*?spawned = spawn\("bun", \["run", "dev"\],[\s\S]*?env: devEnv/,
+    );
+  });
+});

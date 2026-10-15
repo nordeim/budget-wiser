@@ -254,7 +254,12 @@ describe("session-74: the Reset button is the selects cluster's last child (L-74
   it("the actions cluster carries ONLY the exports", () => {
     const src = page();
     const actionsAt = src.indexOf("REPORTS_FILTER_BAR.actions");
-    const region = src.slice(actionsAt, actionsAt + 2400);
+    // Session-123: the window widened 2400 → 3200 — the F-123a5 className
+    // addition on the Export CSV button pushed the button texts past the
+    // old span (the N-46c position-fragility genus; the Reset guard stays
+    // sound: no "Reset" occurs anywhere after the anchor in the stripped
+    // source).
+    const region = src.slice(actionsAt, actionsAt + 3200);
     expect(region).toContain("Export CSV");
     expect(region).toContain("PDF");
     expect(region).not.toContain("Reset");
@@ -420,5 +425,44 @@ describe("session-74: the export CSV's Close Date is the RAW value (N-74c5)", ()
     const region = src.slice(at, at + 200);
     expect(region).toMatch(/toISOString/);
     expect(region).not.toMatch(/formatDate/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-123 (the 123-c live walk): the export-arm button pairs + the
+// Tabs wrapper's mt-model — three live-measured reference facts
+// ---------------------------------------------------------------------------
+
+describe("session-123: the export-arm button pairs + the wrapper margin model (the 123-c walk)", () => {
+  it("the bar Export CSV carries the reference's LITERAL pair — bg-blue-600 hover:bg-blue-700 text-white (F-123a5)", () => {
+    // Live-walked: the reference's filter-bar Export CSV computes
+    // bg rgb(37,99,235) + text rgb(255,255,255) — its class string is the
+    // literal bg-blue-600 hover:bg-blue-700 text-white (NOT the token
+    // pair: its toolbars ride the s119 #fafafa primary-foreground, this
+    // bar rides literals — the reference's own mixed usage).
+    expect(page()).toMatch(/bg-blue-600 hover:bg-blue-700 text-white/);
+  });
+
+  it("the Save Report button carries DIALOG_SUBMIT.button — the reference's black pair, bg rgb(23,23,23) (F-123a4)", () => {
+    // Live-walked: the reference's dialog Save computes bg rgb(23,23,23) +
+    // #fafafa — the SAME black pair its entity dialogs ride (its
+    // "Create Contact" verified byte-equal to our DIALOG_SUBMIT family).
+    // Ours rode the default blue variant — a visible divergence.
+    expect(dialog()).toMatch(/DIALOG_SUBMIT\.button/);
+  });
+
+  it("the Tabs wrapper carries NO space-y — the panels ride mt-6 (the v4 mb-model's trailing margin retired, F-123a6)", () => {
+    // Live-walked: Tailwind v4's space-y emits margin-BOTTOM (all-but-last)
+    // where the reference's v3-style emits margin-TOP. Visually identical
+    // (collapse), but our trailing mb=24 extended main's scrollHeight to
+    // 1545 vs the reference's 1521 at zero-data (the PDF capture height +
+    // the scroll extent). The wrapper drops space-y-6; the panels' mt-2
+    // becomes mt-6 — the reference's computed mt=24 geometry, no trailing
+    // margin. (The tab-content wrappers' own space-y-6 are interior —
+    // their trailing margins never reach the scroll edge.)
+    expect(page()).toMatch(/<Tabs variant="pill" cols=\{5\} value=\{tab\}/);
+    expect(page()).not.toMatch(/<Tabs variant="pill"[^>]*className="space-y-6"/);
+    expect(page()).toMatch(/TabsPanel tab="sales" className="mt-6"/);
+    expect(page()).toMatch(/TabsPanel tab="accounts" className="mt-6"/);
   });
 });

@@ -142,3 +142,23 @@ describe("session-122: the zero-row EMPTY-export face (the 122-c walk — D-122a
     expect(csv).toBe('id,name\n"x1","Ada"');
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-123 (F-123a2, D-123a1): the reports CSV artifact serves VERBATIM
+// ---------------------------------------------------------------------------
+
+describe("session-123: the reports CSV download face is BOM-less (the 123-c live walk)", () => {
+  it("the export route serves the SAME csv body on both faces — csvWithBom retired (the reference's own artifact is BOM-less)", () => {
+    const src = read("src/app/api/export/route.ts");
+    // Live-walked on BOTH apps (the 123-c PASS 1): the reference's own
+    // client-side crm_report_ artifact at zero rows is 54 bytes — the
+    // 7-column header, NO BOM (ours: 57 = the 3-byte \uFEFF prefix; the
+    // content otherwise byte-identical). The s25 "BOM keeps Excel happy"
+    // convention was OUR route's choice, never a decoded reference fact.
+    // The route now serves the artifact verbatim on both the download and
+    // the preview face.
+    expect(src).not.toContain("csvWithBom");
+    // the single verbatim body — no download-branch body construction
+    expect(src).toMatch(/return new Response\(csv,/);
+  });
+});
