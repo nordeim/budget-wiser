@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2003 checks)       | `bun run test`                         |
+|  Unit tests (2004 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2003) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2004) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5719,3 +5719,92 @@ reserved-TLD rejection (walk emails must use plausible domains) ·
 L-126c8 the oklab inverse (the cube goes AFTER the linear transform —
 cubing first produced phantom 5-unit diffs) · L-126c9 the via-stop
 50% serialization · L-126c10 the zero-extent shadow layers.
+
+## Session-127 — the dialog-family second-cycle re-check (the two-fix session)
+
+The 127-c rotation — the session_270/271 close's named direction: **the
+second rotation cycle continues — dialogs s112 and menus s113 the
+stalest re-checks**, dialogs taken (15 sessions back; the create-dialog
+core FROZEN since s92 — entity-dialogs.tsx untouched, entity-edit-dialog
+since s91, ui/dialog.tsx since s71 — but the LENSES sharpened since:
+the F-126c1 TEXT-CONTENT census, the F-119c2/F-125c1 token-ride census
+on every input surface, the L-123c6 scrollHeight census). **The PHASED
+walk** (L-127c5: the sandbox reaps background processes at command end
+AND the 10-min tool cap bounds one invocation — one app×viewport per
+invocation, the censuses persisted to /tmp JSON, the reference's
+storageState persisted + reused: ONE login total): both apps at
+1440×900 + 390×844 through the s112 CREATE-dialog ladder (New Lead ·
+New Account · New Contact · Import Contacts · New Event · Log Activity
+[the Log Call quick-log preset] · Save Custom Report View), the
+JS-click fallback for the reference's own contacts-header 390 overflow
+(L-127c6: its action row nowrap — Import at x=407, New Contact at
+x=477 in a 390px frame, its phone-defect family; our header wraps —
+the e2e zero-overflow superset). **1154 axes, 8 raw diffs → TWO REAL
+PARITY DEFECTS**:
+
+1. **F-127c1 THE CONTACT-DIALOG PLACEHOLDER FAMILY** — the reference's
+   Create New Contact ships placeholders on Email/Phone/Company/
+   Position (`john@company.com` · `+1 (555) 000-0000` · `Acme Inc.` ·
+   `Sales Manager`) where ours shipped none (the Name field's
+   `John Doe` matched on both); the s76 bundle decode missed them, the
+   live DOM census found them — **the F-126c1 genus: the DOM text
+   verbatim, not the decoded bundle, is the ground truth**.
+2. **F-127c2 THE IMPORT-SUBMIT COLOR** — the Import Contacts dialog's
+   submit computing rgb(37,99,235) on ours (the bare default Button,
+   blue-600) vs the reference's rgb(23,23,23) (the bg-neutral-900
+   DIALOG_SUBMIT family its entity siblings ride); never censused
+   before — the s26 footer pin covered copy + gating, not the color
+   class.
+
+The adjudicated noise (record-only): **L-127c3** the contact dialog's
+absolute-button radius `3.35544e+07px` vs `9999px` (the L-121c1
+rounded-full genus — the walk's own normRadius misses the scientific
+notation) · **L-127c4** the camera `aria-label="Upload photo"`
+superset (the D-112a2 doctrine). **The byte-equal contracts: the s112
+byte-matches ALL HOLD** — the content rects on all 7 dialogs × 2
+viewports · the overlay · the titles · the close X · **THE FULL TEXT
+CENSUS on 6/7 dialogs** · every input's computed bg/border/color (the
+F-125c1 lens — the dialog inputs ride bg-transparent, CLEAN) · the
+combobox triggers · the footer buttons on 6/7 · the tinted boxes ·
+**THE SCROLL CENSUS** (the L-123c6 genus CLEAN on the dialog family) ·
+the MOUNT-FOCUS tags (the D-112a3 freezes hold) · **THE TRIGGER
+CENSUS** (the blue CREATE primaries' text color — the F-119c2 #fafafa
+carrier computes EQUAL live, the s119 fix live-confirmed on the dialog
+surface).
+
+The remediation (the two-fix session): **D-127a0** THE CONTACT
+PLACEHOLDER FIX (entity-dialogs.tsx ×4) · **D-127a1** THE
+IMPORT-SUBMIT NEUTRAL FIX (contacts-page.tsx — the Import button gains
+`className={DIALOG_SUBMIT.button}`) · **D-127a2** THE PINS (RED-first:
+the page-layout placeholder pin re-anchored six → TEN in place + the
+import-dialog +1 it — the DARK-NEUTRAL family pin with the bg-primary
+negative) · **D-127a3** the POST-FIX walk re-run + the captures 236-239
++ the VLM battery 4/4 × 4 CLEAN (236 reading the four placeholders
+verbatim — the F-127c1 fix visibly confirmed; 237 reading the Import
+button dark charcoal, not blue — the F-127c2 fix visibly confirmed) ·
+**D-127a4** the docs realignment.
+
+The TDD: RED-first (the 2 pins failed at the standing source, the 194
+neighbors green) → the two fixes → GREEN (196/196) → **the 2
+stash-proofs** (each fix reverted alone → its pin REDs alone) →
+**110/2004** (+1 it; the placeholder pin an in-place re-anchor). The
+audits: 127-a 9/9 Verified (zero real findings + the full dialog
+pre-walk inventory — the recommended walk axes all executed); 127-b
+9/9 PASS (the ~85th standing — the drawer battery PLAIN 10/10, the SEO
+live verified, the space-y census 107 exact). probe:ref the 99th
+STABLE + the four drift gates CLEAN · scandihaven `d4789c3` on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **110/2004** · build · **137/137
+e2e** (the S72-P2 first-run flake clean on the re-run, the s122
+lineage) · **THE POST-FIX WALK RE-RUN 4 adjudicated diffs ONLY (the
+radius pair + the aria pair — ZERO real defects; the two fixes
+live-verified byte-equal)** · the closing drift sweep CLEAN on all
+four gates · census MATCH. **src/ 2 files + tests/ 4 files changed**
+(the two fixes + the two pins + the lockstep carriers). The captures
+236-239 (four unique md5s f2a28c2f/c62033de/2174cd93/6f1255a6).
+
+**The next-session suggestion**: the second rotation continues —
+**menus s113 is now the stalest re-check**. The s127 lens additions to
+carry: the TEXT-CONTENT census (now proven twice — the apostrophe
+genus + the placeholder genus) and the SUBMIT-COLOR census on every
+dialog footer (the F-127c2 genus).

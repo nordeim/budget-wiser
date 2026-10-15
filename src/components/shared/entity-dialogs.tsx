@@ -541,6 +541,7 @@ function ContactForm({
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="john@company.com"
               required
             />
           </div>
@@ -556,6 +557,7 @@ function ContactForm({
               type="tel"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              placeholder="+1 (555) 000-0000"
             />
           </div>
         </div>
@@ -570,6 +572,7 @@ function ContactForm({
               className={DIALOG_GROUP.controlMt}
               value={form.company}
               onChange={(e) => setForm({ ...form, company: e.target.value })}
+              placeholder="Acme Inc."
             />
           </div>
           <div className={DIALOG_GROUP.group}>
@@ -579,6 +582,7 @@ function ContactForm({
               className={DIALOG_GROUP.controlMt}
               value={form.position}
               onChange={(e) => setForm({ ...form, position: e.target.value })}
+              placeholder="Sales Manager"
             />
           </div>
         </div>

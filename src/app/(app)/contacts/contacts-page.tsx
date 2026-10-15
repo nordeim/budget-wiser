@@ -58,7 +58,7 @@ import {
 // Menu* primitives (the reference's own construction — bundle-decoded).
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/dropdown";
 import { IconStatCard, PageHeader } from "@/components/shared/page-parts";
-import { CONTACTS_LAYOUT, PAGE_KPI_GRIDS, TABLE_CARD } from "@/lib/page-layout";
+import { CONTACTS_LAYOUT, DIALOG_SUBMIT, PAGE_KPI_GRIDS, TABLE_CARD } from "@/lib/page-layout";
 import { cn } from "@/lib/utils";
 import { ContactDialog } from "@/components/shared/entity-dialogs";
 import { useCrmStore } from "@/stores/crm-store";
@@ -932,8 +932,12 @@ export default function ContactsPage() {
             >
               {importResult?.success ? "Close" : "Cancel"}
             </Button>
+            {/* Session-127 (F-127c2, the dialog-family re-walk): the
+                reference's Import submit is the DARK NEUTRAL family
+                (rgb 23,23,23 = bg-neutral-900) its entity-dialog
+                siblings ride — the bare default Button (blue) retired. */}
             {!importResult && (
-              <Button onClick={() => void runImport()} disabled={!importFile || importBusy}>
+              <Button className={DIALOG_SUBMIT.button} onClick={() => void runImport()} disabled={!importFile || importBusy}>
                 {importBusy ? "Processing..." : "Import"}
               </Button>
             )}

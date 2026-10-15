@@ -118,6 +118,28 @@ describe("session-26: the Import Contacts dialog structure (S26-P6)", () => {
     expect(region).toMatch(/disabled=\{!importFile \|\| importBusy\}/);
   });
 
+  it("the Import submit carries the reference's DARK NEUTRAL family (F-127c2, session-127)", () => {
+    // The 127-c dialog-family re-walk's live two-app census: the
+    // reference's Import submit computes rgb(23,23,23) — the
+    // bg-neutral-900 DIALOG_SUBMIT family its entity-dialog siblings
+    // ride — where ours shipped the bare default Button (bg-primary
+    // blue-600, rgb(37,99,235)). Never censused before (the s26 footer
+    // pin covered copy + gating, not the color class; the s123
+    // BLACK-pair fix covered the Save-report dialog, not the import).
+    // The pin: the Import button rides DIALOG_SUBMIT.button verbatim.
+    const code = stripComments(read("src/app/(app)/contacts/contacts-page.tsx")!);
+    const i = code.indexOf("Import Contacts");
+    const region = code.slice(i, i + 4200);
+    expect(region).toMatch(/<Button[^>]*className=\{DIALOG_SUBMIT\.button\}[^>]*onClick=\{\(\) => void runImport\(\)\}/);
+    // and the negative: the Import button must NOT ride the bare
+    // default variant (the blue primary) — the family doctrine.
+    const m = /<Button([^>]*)onClick=\{\(\) => void runImport\(\)\}([^>]*)>/.exec(region);
+    expect(m, "the Import button found").not.toBeNull();
+    const btnClass = `${m?.[1] ?? ""} ${m?.[2] ?? ""}`;
+    expect(btnClass).not.toMatch(/bg-primary\b/);
+    expect(btnClass).toContain("DIALOG_SUBMIT.button");
+  });
+
   it("the result box carries the green/red family", () => {
     const code = stripComments(read("src/app/(app)/contacts/contacts-page.tsx")!);
     expect(code).toContain("bg-green-50 border border-green-200");

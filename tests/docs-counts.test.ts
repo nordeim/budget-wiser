@@ -247,7 +247,11 @@ const SUITES = 110;
 // code-arm pin re-anchored in place by the D-125a1 doctrine]); SUITES
 // stays 110 (all pins in EXISTING files); E2E stays 137 (the three
 // auth-spec assertions updated in place, the s123 BOM precedent).
-const UNIT = 2003;
+// Session-127: 2003 → 2004 (+1 — the dialog-family second-cycle
+// re-check: the F-127c2 import-submit DARK-NEUTRAL pin [+1 it,
+// import-dialog.test.ts]; the F-127c1 placeholder pin re-anchored
+// six → ten IN PLACE, no new it]); SUITES stays 110; E2E stays 137.
+const UNIT = 2004;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -648,13 +652,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-126 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-127 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s125 layer now beneath the s126 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s126 layer now beneath the s127 head)",
     ).toContain(
-      "+ beneath it 2000 unit checks + 137 e2e checks green; the session-125 layer (the 125-c rotation — THE ACTIVITIES FAMILY WALK",
+      "+ beneath it 2003 unit checks + 137 e2e checks green; the session-126 layer (the 126-c rotation — THE LOGIN-FAMILY SECOND-CYCLE RE-CHECK",
     );
   });
 

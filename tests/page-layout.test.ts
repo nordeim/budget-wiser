@@ -1841,27 +1841,37 @@ describe("session-15: no description, no invented placeholders (S15-P4/P14)", ()
     expect(src).not.toMatch(/<DialogDescription/);
   });
 
-  it("the create dialogs carry the reference's placeholder set — John Doe (S30-P2) + the five S76 additions", () => {
+  it("the create dialogs carry the reference's placeholder set — John Doe (S30-P2) + the five S76 additions + the four S127 contact fields", () => {
     // s15: `placeholder="` count = 0 across all five reference dialog
     // dumps. Session-30 (S30-P2): the AAe contact Name field DOES carry
     // placeholder="John Doe" (bundle-extracted + live-verified — the
     // s15 dump missed it). Session-76 (M-76c14): the fresh bundle decode
     // found FIVE more the s15 dump missed (the Event Location / Event
     // Related SelectValue / Activity Description / Activity Related Type
-    // SelectValue / Activity Related Name) — the pin now allows exactly
-    // the six, and nothing else.
+    // SelectValue / Activity Related Name) — ten allowed. Session-127
+    // (F-127c1, the dialog-family re-walk's TEXT-CONTENT census): the
+    // LIVE reference's Create New Contact ships FOUR MORE the bundle
+    // decode missed — the Email `john@company.com`, the Phone
+    // `+1 (555) 000-0000`, the Company `Acme Inc.`, the Position
+    // `Sales Manager` (live-DOM-censused on both viewports; the DOM text
+    // verbatim, not the decoded bundle, is the ground truth — the
+    // F-126c1 genus lesson).
     const src = readFileSync(
       path.resolve(import.meta.dirname, "../src/components/shared/entity-dialogs.tsx"),
       "utf8",
     );
     const placeholders = [...src.matchAll(/placeholder="([^"]*)"/g)].map((m) => m[1]);
-    expect([...placeholders].sort(), "exactly the reference's six dialog placeholders").toEqual([
+    expect([...placeholders].sort(), "exactly the reference's ten dialog placeholders").toEqual([
+      "+1 (555) 000-0000",
+      "Acme Inc.",
       "Enter activity details...",
       "Enter location or meeting link",
       "John Doe",
+      "Sales Manager",
       "Select type",
       "Select type",
       "e.g., John Doe",
+      "john@company.com",
     ]);
   });
 });

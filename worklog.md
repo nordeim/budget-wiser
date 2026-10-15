@@ -4639,3 +4639,36 @@ Stage Summary:
   gate lint 0/0 · tsc 0 · 110/2003 · build · 137/137 (the S72-P2
   first-run flake clean on the re-run) · the closing drift sweep CLEAN ×4 ·
   census MATCH.
+
+---
+
+## Session 127 — the dialog-family second-cycle re-check + the two-fix session
+
+- Stage 1: the workspace RESET — re-cloned at e7943ad (the s126 ship
+  a390add + 1f4a0b8 + session_271 the intake); the 5 core docs read;
+  census MATCH at the repo path; the walks node_modules symlink
+  re-pointed
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 110/2003 ·
+  build · e2e 137/137 (3.4m)
+- Stage 3: the parallel audits — 127-a 9/9 Verified (zero real
+  findings + THE FULL DIALOG PRE-WALK INVENTORY — the recommended
+  walk axes) + 127-b 9/9 PASS (~85th standing)
+- Stage 4: probe:ref the 99th STABLE · the four drift gates CLEAN ·
+  scandihaven d4789c3 on-pattern · census MATCH
+- Stage 5: THE PHASED walk18 (the L-127c5 lesson live-learned) — both
+  apps at 1440 + 390 through the s112 CREATE-dialog ladder with the
+  JS-click fallback (L-127c6): 1154 axes, 8 raw diffs → TWO REAL
+  PARITY DEFECTS (F-127c1 the contact placeholders · F-127c2 the
+  import-submit color) + 2 adjudicated noise genera; the s112
+  byte-matches ALL HOLD; the F-119c2 #fafafa carrier live-confirmed
+- Stage 6: the remediation — D-127a0 the placeholder fix (×4) +
+  D-127a1 the import-submit neutral fix + D-127a2 the pins (RED-first
+  → GREEN 196/196 → the 2 stash-proofs) + the docs-counts/dialog-
+  geometry/layer-axis lockstep realignment → 110/2004
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 110/2004 · build ·
+  137/137 (the S72-P2 flake clean on re-run) · the POST-FIX walk
+  re-run 4 adjudicated diffs ONLY (ZERO real defects) · the closing
+  drift sweep CLEAN ×4 · census MATCH; the captures 236-239 + the VLM
+  battery 4/4 × 4 CLEAN; the docs realignment (SKILL v1.124.0 + badge
+  2141 + AGENTS/CLAUDE/PAD + session_272.md + the plan); the
+  two-commit ship + the SSH-wrapper push (below)

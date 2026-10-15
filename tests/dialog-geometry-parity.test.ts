@@ -418,10 +418,21 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // auth-input-ink pin + the F-126c3 code-input bg-white pin [+3 its,
     // login-family-parity]); the four sites re-anchored again, the
     // retired 2000 forms join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2003 checks)");
-    expect(claude).toContain("(currently 2003)");
-    expect(claude).toContain("Vitest unit suites (2003 checks)");
-    expect(claude).toContain("`bun run test` (2003)");
+    // session-127 lockstep carry-forward: 2003 -> 2004 (the s127 +1 —
+    // the dialog-family second-cycle re-check [the SECOND re-walk of
+    // the second rotation cycle]: the F-127c2 import-submit
+    // DARK-NEUTRAL pin [+1 it, import-dialog.test.ts]; the F-127c1
+    // placeholder pin re-anchored six -> ten IN PLACE, no new it); the
+    // four sites re-anchored again, the retired 2003 forms join the
+    // negatives below.
+    expect(claude).toContain("Unit (Vitest, 2004 checks)");
+    expect(claude).toContain("(currently 2004)");
+    expect(claude).toContain("Vitest unit suites (2004 checks)");
+    expect(claude).toContain("`bun run test` (2004)");
+    expect(claude).not.toContain("Unit (Vitest, 2003 checks)");
+    expect(claude).not.toContain("(currently 2003)");
+    expect(claude).not.toContain("Vitest unit suites (2003 checks)");
+    expect(claude).not.toContain("`bun run test` (2003)");
     expect(claude).not.toContain("Unit (Vitest, 2000 checks)");
     expect(claude).not.toContain("(currently 2000)");
     expect(claude).not.toContain("Vitest unit suites (2000 checks)");
