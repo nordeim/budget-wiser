@@ -564,3 +564,119 @@ describe("session-124: the calendar family walk pins (the 124-c two-app face)", 
     expect(region).toMatch(/setEditing\(e\);\s*setDefaultStart\(null\);\s*setDialogOpen\(true\);/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-125 — the 125-c walk pins (the activities family walk, the
+// LAST never-two-app-walked interactive family: PASS 1 zero-data
+// two-app 176+142 axes — the F-125c1 active-pill find fixed at
+// TABS_SEGMENTED [pinned in page-layout] + the L-125c2 expander
+// superset adjudicated; PASS 2 populated ours-only 49/49 db-verified).
+// The unpinned residue the walk surfaced: the tab-label + empty-state
+// quartets, the KPI label sextet + the FILTERED-basis doctrine, the
+// API render order, the quick-log preset + toggle arms, the by-type
+// vocabulary — none ever pinned as sets.
+// ---------------------------------------------------------------------------
+
+describe("session-125: the activities family walk pins (the 125-c two-app face)", () => {
+  it("the tab strip is the ordered quartet Overdue/Due Today/Upcoming/Completed (the walk's live census)", () => {
+    const src = activitiesPage();
+    // The PASS 1 census: the four tabs byte-equal on both apps — the
+    // labels in ORDER, the segmented construction, the count badge on
+    // Overdue only. The labels were never pinned as an ordered set.
+    const tabsBlock = src.slice(src.indexOf("tabs={["), src.indexOf("tabs={[") + 420);
+    expect(tabsBlock.indexOf('"Overdue"')).toBeGreaterThanOrEqual(0);
+    expect(tabsBlock.indexOf('"Due Today"')).toBeGreaterThan(tabsBlock.indexOf('"Overdue"'));
+    expect(tabsBlock.indexOf('"Upcoming"')).toBeGreaterThan(tabsBlock.indexOf('"Due Today"'));
+    expect(tabsBlock.indexOf('"Completed"')).toBeGreaterThan(tabsBlock.indexOf('"Upcoming"'));
+    expect(src).toContain('variant="segmented"');
+    expect(src).toContain("cols={4}");
+  });
+
+  it("the four empty-state literals ship as the ordered quartet (the walk's tab-switch LIVE)", () => {
+    const src = activitiesPage();
+    // The PASS 1 tab-switch semantics: all four panels swap to their
+    // own empty state — each literal pinned exactly once, in the tab
+    // order; only "No activities due today" was pinned before (s76).
+    expect((src.match(/"No overdue activities"/g) ?? []).length).toBe(1);
+    expect((src.match(/"No activities due today"/g) ?? []).length).toBe(1);
+    expect((src.match(/"No upcoming activities"/g) ?? []).length).toBe(1);
+    expect((src.match(/"No completed activities"/g) ?? []).length).toBe(1);
+    expect(src).not.toContain("Nothing due today");
+    expect(src).not.toContain("No overdue items");
+  });
+
+  it("the KPI row is the ordered label sextet (the D-117a2/D-118a1 genus — never pinned as a set)", () => {
+    const src = activitiesPage();
+    // The PASS 1 census: all six BarStatCards byte-equal on both apps —
+    // the labels in ORDER. The D-117a2/D-118a1 genus: the statcard
+    // labels were never pinned as a set anywhere.
+    const labels = [
+      "Activities Today", "Overdue Activities", "Emails Sent",
+      "Calls Logged", "Meetings Scheduled", "WhatsApp",
+    ];
+    let prev = -1;
+    for (const l of labels) {
+      const i = src.indexOf(`label="${l}"`);
+      expect(i, `label="${l}" must exist`).toBeGreaterThan(0);
+      expect(i).toBeGreaterThan(prev);
+      prev = i;
+    }
+    expect((src.match(/<BarStatCard/g) ?? []).length).toBe(6);
+  });
+
+  it("the KPI values read the FILTERED basis — the filters MOVE the KPI values (the OPPOSITE of the calendar's RAW doctrine)", () => {
+    const src = activitiesPage();
+    // The PASS 2 filtered-basis cascade: checking the Call type moved
+    // the whole KPI sextet (1/0/0/0/5 + the badge) — every derivation
+    // reads baseFiltered, never the raw activities array. The calendar
+    // keeps its KPIs RAW under filters; the activities page is the
+    // reference's OWN opposite doctrine (the L-76c2 A/O/P memos).
+    expect(src).toMatch(/const baseFiltered = React\.useMemo\(\(\) => \{\s*const activeTypes/);
+    expect(src).toMatch(/activitiesToday = baseFiltered\.filter/);
+    expect(src).toMatch(/emailsSent = baseFiltered\.filter/);
+    expect(src).toMatch(/callsLogged = baseFiltered\.filter/);
+    expect(src).toMatch(/meetingsScheduled = baseFiltered\.filter/);
+    expect(src).toMatch(/whatsappInteractions = baseFiltered\.filter/);
+    expect(src).toMatch(/const overdue = baseFiltered\.filter/);
+    // the range fold-in (our functional superset over the reference's
+    // dead Status select — the s8 precedent): createdAt within rangeDays
+    expect(src).toMatch(/new Date\(a\.createdAt\) < rangeStart/);
+  });
+
+  it("the activities API orders dueAt asc then createdAt desc — the render order the walk's rows verified against", () => {
+    const route = stripComments(read("src/app/api/activities/route.ts") ?? "");
+    // The PASS 2 row order: the Overdue tab rendered the OLDEST due
+    // first (Tomas Novak, due -4) — the API's compound order, never
+    // pinned (only the events route's startAt desc was).
+    expect(route).toContain('orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }]');
+  });
+
+  it("the quick-log preset rides the SUBMIT — the visible form always starts at Call (the L-76c6 quirk, walk-verified)", () => {
+    const src = entityDialogs();
+    // The PASS 2 create round-trip: Log WhatsApp opened the dialog with
+    // the type select STILL reading "Call"; the submitted record landed
+    // type=whatsapp — the preset wins at submit time in create mode.
+    expect(src).toMatch(/type: activity \? form\.type : \(defaultType \|\| form\.type\)/);
+    expect(src).toMatch(/type: activity\?\.type \?\? "call"/);
+  });
+
+  it("the toggle flips scheduled↔completed with the un-complete arm relabeled (the walk's round-trip)", () => {
+    const src = activitiesPage();
+    // The PASS 2 toggle round-trip: Check as completed flipped the db
+    // status (overdue 3→2, completed 5→6) and the Completed tab's row
+    // carried the "Mark as scheduled" un-complete arm — the flip is
+    // BIDIRECTIONAL, the label keyed on the current status.
+    expect(src).toMatch(/status: a\.status === "completed" \? "scheduled" : "completed"/);
+    expect(src).toMatch(/a\.status === "completed" \? "Mark as scheduled" : "Check as completed"/);
+  });
+
+  it("the by-type chart is the FIVE-series vocabulary — WhatsApp is NEVER a chart series", () => {
+    const src = activitiesPage();
+    // The PASS 1 census: the by-type card's five chips "Call 0"...
+    // byte-equal on both apps — the quintet vocabulary (the
+    // BY_TYPE_CATEGORIES constant), WhatsApp a quick-log type but
+    // never a series.
+    expect(src).toContain('const BY_TYPE_CATEGORIES = ["call", "email", "meeting", "task", "note"] as const;');
+    expect(src).not.toMatch(/BY_TYPE_CATEGORIES[^;]*whatsapp/);
+  });
+});

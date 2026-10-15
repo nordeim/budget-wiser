@@ -972,11 +972,25 @@ describe("session-12: tabs anatomy (S12-P4)", () => {
     expect(TABS_SEGMENTED.trigger).toContain("ring-offset-background");
     expect(TABS_SEGMENTED.trigger).toContain("transition-all");
     expect(TABS_SEGMENTED.trigger).toContain("data-[state=active]:shadow");
-    expect(TABS_SEGMENTED.trigger).toContain("data-[state=active]:bg-background");
     expect(TABS_SEGMENTED.trigger).not.toContain("h-7");
     expect(TABS_SEGMENTED.trigger).not.toContain("hover:");
     // the active shadow must be the BARE scale, not shadow-sm (one step light)
     expect(TABS_SEGMENTED.trigger).not.toContain("data-[state=active]:shadow-sm");
+  });
+
+  it("session-125 (F-125c1): the active pill rides the LITERAL bg-white — the reference's token resolves to ITS stock white, ours to the page bg", () => {
+    // The 125-c two-app walk's live finding: the active segmented tab
+    // computed rgb(249,250,251) on ours vs rgb(255,255,255) on the
+    // reference — on BOTH surfaces (/activities + /settings), both
+    // widths, the tracks/inactive/geometry all byte-equal. The root
+    // cause: the reference's own construction rides
+    // data-[state=active]:bg-background, which resolves to ITS stock
+    // shadcn zinc background #ffffff; OUR theme deliberately redefined
+    // --color-background to #f9fafb (the app's page bg, the F-119c2
+    // inverted-token-mapping genus) — the token ride silently drifted
+    // 6 rgb units. The fix: the LITERAL, never the divergent token.
+    expect(TABS_SEGMENTED.trigger).toContain("data-[state=active]:bg-white");
+    expect(TABS_SEGMENTED.trigger).not.toContain("data-[state=active]:bg-background");
   });
 });
 

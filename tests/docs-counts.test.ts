@@ -229,7 +229,17 @@ const SUITES = 110;
 // [csv-contract.test.ts — the N-124a2 find, the definition retired the
 // s48/s49 way, ONE src file touched]); SUITES stays 110 (all pins in
 // EXISTING files); E2E stays 137.
-const UNIT = 1991;
+// Session-125: 1991 → 2000 (+9 — the s125 activities family walk [the
+// LAST never-two-app-walked interactive family]: the F-125c1 segmented
+// active-pill pin [+1 it — the bg-white literal fix re-anchoring the
+// s12 trigger pin's token ride, page-layout.test.ts] + the D-125a2..a6
+// walk pins [+8 its — the tab-label quartet + the empty-state quartet
+// + the KPI label sextet + the FILTERED-basis doctrine (the
+// OPPOSITE-of-calendar genus: the filters MOVE the KPI values) + the
+// activities API order + the quick-log preset + the toggle arms + the
+// by-type vocabulary, activities-calendar-parity.test.ts]); SUITES
+// stays 110 (all pins in EXISTING files); E2E stays 137.
+const UNIT = 2000;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -630,13 +640,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-124 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-125 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s122 layer now beneath the s123 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s124 layer now beneath the s125 head)",
     ).toContain(
-      "+ beneath it 1980 unit checks + 137 e2e checks green; the session-123 layer (the 123-c rotation — THE REPORTS EXPORT/PDF FAMILY WALK",
+      "+ beneath it 1991 unit checks + 137 e2e checks green; the session-124 layer (the 124-c rotation — THE CALENDAR FAMILY WALK",
     );
   });
 

@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (1991 checks)       | `bun run test`                         |
+|  Unit tests (2000 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (1991) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2000) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5585,3 +5585,61 @@ The final gate: lint 0/0 · tsc 0 · **110/1991** · build · **137/137
 e2e** · the closing drift sweep CLEAN on all four gates WITHOUT the
 prefix · census MATCH. **src/ 1 file + tests/ 3 files changed** (the
 pin-only session + the dead-code retirement).
+
+## Session-125 — the activities family walk (the LAST never-two-app-walked interactive family)
+
+The 125-c rotation — the session_267 close's open decision resolved by
+the staleness map: the **activities-list family** (the s124-calendar
+genus: s109 was the ours-only seeded 390 mobile walk; the drift gates
+screenshot /activities at four viewports every session but zero-data
+PIXELS only; the reference last live-probed at the s6-s13-era DOM
+audits ~116 sessions back). Both apps driven at 1440×900 + 390×844
+through the shell + the quick-log quartet + the KPI sextet + the
+segmented tab strip + the four empty states + **the never-walked
+filter rail** (the Filters card + Save All + the 4 type checkboxes +
+the Owner/Status selects + the More Filters (1) expander + the Filter
+button) + the by-type card + the Log Activity dialog, the walk scripts
+OUTSIDE the repo, the walk db riding the standing zero-data tool.
+
+**PASS 1: ONE REAL PARITY DEFECT found and fixed — F-125c1 THE
+SEGMENTED ACTIVE-PILL BG**: the active tab computed
+`rgb(249,250,251)` on ours vs `rgb(255,255,255)` on the reference —
+live-scoped four-way (ours + reference × /activities + /settings), the
+tracks/inactive/geometry all byte-equal, ONLY the pill diverging. The
+root cause: the reference's own construction rides
+`data-[state=active]:bg-background` (resolving to ITS stock shadcn
+white); our theme redefined `--colorbackground` to the page-bg
+`#f9fafb` — the **F-119c2 inverted-token-mapping genus** — fixed with
+the LITERAL `bg-white` (both segmented surfaces, live-verified
+byte-equal post-fix). Plus L-125c2 the More Filters (1) expander
+adjudicated noise (ours the functional superset over the reference's
+dead stub). **PASS 2 populated ours-only: 49/49**, every value
+db-verified (the KPI sextet == the db windows through the 7d range ·
+the Overdue tab in the API order · the tab caps · the Timeline groups
+· the by-type chips · **the FILTERED-BASIS cascade — the filters MOVE
+the KPI values, the OPPOSITE of the calendar's RAW doctrine** · the
+Save All restore · the toggle round-trip · the quick-log preset-rides-
+the-submit create round-trip).
+
+The remediation: **D-125a0** the active-pill fix (TABS_SEGMENTED,
+src/lib/page-layout.ts) · **D-125a1** the pin (+1 it, page-layout,
+RED-first) · **D-125a2..a6** the walk pins (+8 its,
+activities-calendar-parity — the tab quartet + the empty quartet + the
+KPI label sextet + the filtered-basis doctrine + the API order + the
+quick-log preset + the toggle arms + the by-type vocabulary) ·
+**D-125a7** the docs + the captures 228-231 + the VLM battery 4/4 × 4
+CLEAN (231's badge-overlap flag ADJUDICATED a VLM misread — the
+geometry probe: 8px gaps everywhere, docScrollW/mainScrollW 390/390).
+
+The TDD: RED-first → the fix → GREEN → **the 9 stash-proofs** (each
+reverted alone → its pin REDs alone) → **110/2000** (+9, all in
+EXISTING files). The audits: 125-a 9/9 Verified (zero code findings) +
+the full activities pre-walk inventory; 125-b 8/9 PASS — **F-125b1**
+the platform DATABASE_URL poisoning the stand-up db:push/db:seed onto
+the sandbox-root mirror (remediated by the env -u reseed; the walk-
+harness lesson recorded). probe:ref the 97th STABLE · the four drift
+gates CLEAN · scandihaven d4789c3 on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **110/2000** · build · **137/137
+e2e** · census MATCH. **src/ 2 files + tests/ 4 files changed** (the
+active-pill fix + the walk pins + the lockstep carriers).

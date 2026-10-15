@@ -1388,8 +1388,16 @@ export const TABS_PILL = {
 
 export const TABS_SEGMENTED = {
   track: "h-9 items-center justify-center rounded-lg bg-line-soft p-1 text-muted-ink grid w-full",
+  // Session-125 (F-125c1): the active pill rides the LITERAL bg-white —
+  // the reference's own construction rides data-[state=active]:bg-background,
+  // which resolves to ITS stock shadcn zinc white #ffffff; OUR theme
+  // deliberately redefined --color-background to #f9fafb (the app's page
+  // bg — the F-119c2 inverted-token-mapping genus), so the token ride
+  // computed rgb(249,250,251) vs the reference's rgb(255,255,255) on
+  // BOTH segmented surfaces (/activities + /settings), live-walked
+  // two-app at s125. The literal restores the computed parity.
   trigger:
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow data-[state=active]:bg-background data-[state=active]:text-foreground",
+    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow data-[state=active]:bg-white data-[state=active]:text-foreground",
 } as const;
 
 /** Session-12 (S12-P5): the dashboard KPI card de-hover — the reference
