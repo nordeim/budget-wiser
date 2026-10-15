@@ -1463,6 +1463,22 @@ describe("session-13: stock account menu (S13-P4)", () => {
     expect(MENU_ITEM).toContain("outline-none");
   });
 
+  it("the menu item's focus wash carries the TEXT arm — focus:text-neutral-900 (F-128c1, session-128)", () => {
+    // The s128 menu-family re-walk (both apps, 1440×900 + 390×844): the
+    // keyboard-highlighted item computes rgb(23,23,23) ink on the
+    // reference (its accent-foreground #171717) where ours computed
+    // rgb(10,10,10) — the M-81c2 genus on the DropdownMenu family: the
+    // Select family's items were live-walked and fixed to the pair at
+    // s81 (select.tsx:113 — the s80 badge precedent: the reference's
+    // accent-foreground expressed as our neutral-900 literal); the menu
+    // family's HIGHLIGHTED ink was never censused before (the s113
+    // keyboard census measured only the #f5f5f5 wash bg — which
+    // byte-matches still). The resting ink inherits #0a0a0a on both
+    // apps; only the focus wash's TEXT arm diverged.
+    expect(MENU_ITEM).toContain("focus:text-neutral-900");
+    expect(MENU_ITEM).not.toContain("focus:text-foreground");
+  });
+
   it("the topbar account menu renders a real role=menu (e2e-pinned)", () => {
     // Source-level pin: the topbar must use the Menu primitives (not the
     // Popover-based Dropdown) for the account menu.

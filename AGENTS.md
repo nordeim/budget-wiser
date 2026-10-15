@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2004 checks)       | `bun run test`                         |
+|  Unit tests (2005 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2004) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2005) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5808,3 +5808,92 @@ four gates · census MATCH. **src/ 2 files + tests/ 4 files changed**
 carry: the TEXT-CONTENT census (now proven twice — the apostrophe
 genus + the placeholder genus) and the SUBMIT-COLOR census on every
 dialog footer (the F-127c2 genus).
+
+## Session-128 — the menu/popover-family second-cycle re-check (the one-fix session)
+
+The 128-c rotation — the session_273 close's named direction: **menus s113
+now the stalest re-check** (15 sessions back; the family source FROZEN
+since s113 — topbar.tsx since s93, dropdown.tsx since s73, leads-page.tsx
+since s113 itself — but the LENSES sharpened since: the F-126c1
+TEXT-CONTENT census, the F-127c2 SUBMIT-COLOR census, the F-119c2/F-125c1
+token-ride census). **The PHASED walk** (walk19, the L-127c5 doctrine:
+one app×viewport per invocation, the censuses persisted to /tmp JSON, the
+reference's storageState persisted + reused — ONE login total): both apps
+at 1440×900 + 390×844 through the s113 menu ladder — **THE ACCOUNT MENU**
+(the trigger census + the open content geometry + computed family + the
+ITEM census + the mount-focus + the KEYBOARD MODEL + the text census +
+Escape) + **THE LEADS FILTERS POPOVER** (the trigger + the panel geometry
+incl. the @390 collision FLIP-UP + the four LABELs + the two selects +
+the two inputs + the four buttons + THE FULL TEXT-CONTENT census + the
+scroll census + Escape) + **THE ROW MENUS ours-only** (leads/contacts/
+accounts — the `row.` namespace, 90 axes, the s73 bundle decode the
+contract). **298 two-app axes, 4 raw diffs → ONE REAL PARITY DEFECT**:
+
+1. **F-128c1 THE MENU-ITEM HIGHLIGHT INK** — the keyboard-highlighted
+   item computing rgb(10,10,10) on ours (`focus:text-foreground`) where
+   the reference computes rgb(23,23,23) (its accent-foreground #171717) —
+   **the M-81c2 genus on the DropdownMenu family**: the Select family's
+   items were live-walked at s81 and fixed to the pair
+   `focus:bg-line-soft focus:text-neutral-900` (select.tsx:113, the s80
+   badge precedent); the menu family's HIGHLIGHTED ink was never censused
+   before (the s113 keyboard census measured only the #f5f5f5 wash bg —
+   which byte-matches STILL). The resting ink inherits #0a0a0a on both
+   apps; only the focus wash's TEXT arm diverged.
+
+The adjudicated noise (record-only): **L-128c2 the s93 standing genus**
+(the @390 account trigger x=290 ours RIGHT — beside our deliberate
+hamburger — vs the reference's x=16 LEFT: its search wrapper
+`display:none` at 390 leaves its right group the SOLE flex item →
+flex-START, an accident of its own construction; "do NOT restructure to
+chase the accidental left-placement"; both triggers 84×36, both menus
+128×74 at y=56). **The byte-equal contracts: the s113 byte-matches ALL
+HOLD** — the account-menu content geometry @1440 + the content computed
+family + the item census ([A/Profile href="/Profile", DIV/Logout]) + the
+mount-focus + the #f5f5f5 wash + **THE FILTERS POPOVER FAMILY COMPLETE**
+(the panel + the four LABEL tags + the two select token-rides + the two
+input placeholders [All Status/All Sources/0/none] + the four buttons'
+colors — the F-127c2 lens CLEAN + THE FULL TEXT-CONTENT census — the
+F-126c1 lens CLEAN) + the row-menu ours-only contract (the three trios).
+
+The remediation (the one-fix session): **D-128a0** THE HIGHLIGHT-INK FIX
+(page-layout.ts:986 — MENU_ITEM `focus:text-foreground` → the literal
+`focus:text-neutral-900`) · **D-128a1** THE PIN (RED-first: +1 it
+page-layout — the neutral-900 positive + the focus:text-foreground
+negative) · **D-128a2** the POST-FIX walk re-run + the captures 240-243 +
+the VLM battery 4/4 × 4 CLEAN (240 reading the highlighted Profile item;
+241 the Filters popover labels verbatim; 242 the red Delete; 243 the 390
+right-aligned arrangement) · **D-128a3** the docs realignment (SKILL
+v1.125.0 + the README badge 2142 + AGENTS/CLAUDE/PAD + the line-census
+1583 — the pre-existing s125/s126 drift corrected in the same stroke +
+the Appendix B + the layer-axis pin advanced to the s128/s127 pair).
+
+The TDD: RED (the pin failed alone at the standing source, the 2004
+neighbors green) → the one-line fix → GREEN (187/187) → **the stash-proof
+(the fix reverted alone → its pin REDs alone)** → **110/2005** (+1 it).
+The audits: 128-a 9/9 Verified (zero real findings + the full menus
+pre-walk inventory — the family source static since s113, the drift risk
+entirely the theme layer) + 128-b 11/11 PASS (the ~86th standing — the
+drawer battery PLAIN, the SEO live verified, the space-y census 107
+exact, zero findings; the L-128b1 hygiene note: sweep stray servers by
+the `next-server` comm). probe:ref the 100th STABLE + the four drift
+gates CLEAN · scandihaven `d4789c3` on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **110/2005** · build · **137/137
+e2e** · **THE POST-FIX WALK RE-RUN 2 adjudicated diffs ONLY (the
+L-128c2 s93-genus position pair — ZERO real defects; the highlight-ink
+axis byte-equal rgb(23,23,23) on both apps at both viewports)** · the
+closing drift sweep CLEAN on all four gates · census MATCH. **src/ 1
+file + tests/ 2 files changed** (the fix + the pin + the lockstep
+carriers). The captures 240-243 (four unique md5s
+c840bff6/37990eaf/46756d0d/6907665c). The walk-harness lesson: **L-128c3
+the Playwright hasText regex whitespace genus** (the regex form matches
+the RAW textContent — icon-bearing buttons carry leading whitespace and
+the regex never matches; STRING hasText substring matching is the
+cross-app idiom).
+
+**The next-session suggestion**: the second rotation cycle's stalest
+re-checks now — the s114 profile + settings Data-tab family (14 sessions
+back) or the s115 defaults + insights family; carry the F-128c1 lens
+addition: **the HIGHLIGHTED-STATE computed census on every interactive
+surface** (the focus/active/data-highlighted states, not just the
+resting computed family).
