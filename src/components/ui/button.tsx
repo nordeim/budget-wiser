@@ -46,9 +46,24 @@ const buttonVariants = cva(
         // text-bearing ghost ("Save All") renders the inherited #0a0a0a.
         // Our old text-muted rendered it gray.
         ghost: "hover:bg-line-soft hover:text-foreground",
-        destructive: "bg-danger text-white shadow-sm hover:bg-red-600",
+        // Session-129 (F-129c2): the destructive hover is the ALPHA form —
+        // live-walked on the Danger Zone reset (both viewports): ours
+        // computed the SOLID darker step rgb(220,38,38) (the old
+        // hover:bg-red-600) where the reference computes
+        // rgba(239,68,68,0.9) — its destructive at 90% ALPHA. The M-80c1
+        // genus (the s80 Save precedent: the reference's hovers are the
+        // /90 alpha form, never the solid darker step).
+        destructive: "bg-danger text-white shadow-sm hover:bg-danger/90",
         sidebar: "bg-white/10 text-white hover:bg-white/20",
-        outline: "border border-line bg-surface text-foreground shadow-sm hover:bg-line-soft",
+        // Session-129 (F-129c3): the outline variant gains the hover TEXT
+        // arm — live-walked on BOTH censused outline surfaces (the
+        // Data-tab template button + the profile Upload Photo, both
+        // viewports): our hover text stayed rgb(10,10,10) (text-foreground,
+        // no hover arm) where the reference computes rgb(23,23,23) — its
+        // stock outline's hover:text-accent-foreground #171717. The
+        // F-128c1 value pair; the s80 badge precedent expresses its
+        // accent-foreground as our neutral-900 literal.
+        outline: "border border-line bg-surface text-foreground shadow-sm hover:bg-line-soft hover:text-neutral-900",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

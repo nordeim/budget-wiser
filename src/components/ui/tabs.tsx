@@ -77,8 +77,14 @@ const GRID_COLS: Record<number, string> = {
 // panel shell; the per-page mt-*/space-y-* classes are appended by the
 // pages (mt-4 space-y-2 on activities, mt-2 space-y-4 on settings, mt-2 on
 // reports — the mt-* collapses against the wrapper's space-y margin).
+// Session-129 (F-129c1): the extracted string's ring-offset-background is
+// the COMPUTED-CONTRACT EXCEPTION, retired per the s11 DIALOG_CLOSE
+// precedent — the reference's ride computes hsl(0 0% 100%) = #ffffff; OUR
+// --color-background is the page bg #f9fafb (the F-119c2 inverted-token
+// genus), so the class drifts the panel's 2px focus-visible halo; the v4
+// DEFAULT offset color is #fff — byte-equal with the class absent.
 const PANEL_BASE =
-  "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
 function Tabs({ tabs, value, onValueChange, className, variant = "underline", cols, children }: TabsProps) {
   const uid = React.useId();

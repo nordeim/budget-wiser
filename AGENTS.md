@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2005 checks)       | `bun run test`                         |
+|  Unit tests (2008 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2005) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2008) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5897,3 +5897,84 @@ back) or the s115 defaults + insights family; carry the F-128c1 lens
 addition: **the HIGHLIGHTED-STATE computed census on every interactive
 surface** (the focus/active/data-highlighted states, not just the
 resting computed family).
+
+## Session-129 — the profile/Settings-Data family second-cycle re-check (the three-fix session)
+
+The 129-c rotation — the session_275 close's named direction: **the s114
+profile + settings Data-tab family the stalest re-check** (15 sessions back;
+the family source FROZEN since s114), carrying the NEW **F-128c1
+HIGHLIGHTED-STATE computed census** (the focus/active/data-highlighted
+states — the state axis every prior walk under-measured). **The PHASED
+walk** (walk20, the L-127c5 doctrine): both apps at 1440×900 + 390×844
+through the s114 ladder — **THE /PROFILE FAMILY** (the geometry + the
+personal card family + the form fields + the side cards + the badge + THE
+FULL TEXT-CONTENT census + THE HIGHLIGHTED-STATE census + the interaction
+battery) + **THE SETTINGS DATA-TAB FAMILY** (the segmented tablist + THE
+ACTIVE PILL + **THE FOCUS-VISIBLE RING CENSUS** + the Import/Export cards +
+the seven buttons + the Danger Zone trio + THE FULL TEXT-CONTENT census +
+THE DOWNLOAD CONTRACTS). **700 two-app axes, 30 raw diffs → THREE REAL
+PARITY DEFECTS — the highlighted-state lens's maiden run found all three:**
+
+1. **F-129c1 THE SEGMENTED RING-OFFSET INK** — `ring-offset-background`
+   resolving to OUR page-bg `#f9fafb` where the reference's resolves to
+   its stock white `#ffffff`; live-confirmed TWICE (the resting
+   `--tw-ring-offset-color` AND the real focus-visible halo
+   `rgba(249,250,251,1)` vs `rgb(255,255,255)`, both viewports). **The
+   F-119c2 inverted-token genus's THIRD arm** (s119 primary-foreground ·
+   s125 active-pill bg · s129 the offset arm). Fix: the class RETIRED at
+   the three visible-offset rides (TABS_PILL.trigger + TABS_SEGMENTED.
+   trigger + the tabs PANEL_BASE) — the s11 DIALOG_CLOSE
+   computed-contract precedent (the v4 default offset color #fff is
+   byte-equal with the class absent; the SELECT_TRIGGER's offset-0 ride
+   is the zero-extent no-op, untouched).
+2. **F-129c2 THE DESTRUCTIVE HOVER** — ours the SOLID `rgb(220,38,38)`
+   (`hover:bg-red-600`) vs the reference's `rgba(239,68,68,0.9)` ALPHA —
+   the M-80c1 genus on the destructive variant. Fix:
+   `hover:bg-danger/90`.
+3. **F-129c3 THE OUTLINE HOVER TEXT** — ours `rgb(10,10,10)` (no
+   hover:text arm) vs the reference's `rgb(23,23,23)` (its stock
+   `hover:text-accent-foreground` #171717) — the F-128c1 value pair.
+   Fix: `hover:text-neutral-900` (the s80 badge precedent).
+
+The adjudicated noise: L-129c4 the invisible outline axis (both
+non-rendering) · L-129c5 the disabled-cursor axis (pointer-events-none) ·
+L-129c6 the s73 span-vs-div chip genus. **The s114 byte-matches ALL HOLD**
+— the geometry family, the D-114a2 ids, the placeholder set, the s125
+active pill, the panelGap 24, the Data cards, the seven buttons, the
+D-114a1 desc, the Danger chrome, BOTH text censuses, the template
+downloads md5-IDENTICAL, the complete interaction battery.
+
+The remediation: **D-129a0** the ring-offset retirement · **D-129a1** the
+destructive alpha · **D-129a2** the outline hover-text · **D-129a3** THE
+PINS (RED-first: the 2 TABS re-anchors + 3 new its; the 3 stash-proofs) ·
+**D-129a4** the POST-FIX walk re-run (698 axes, 21 adjudicated diffs ONLY
+— ZERO real defects; the halo byte-equal `rgb(255,255,255)` both apps
+both viewports) + the captures 244-247 (four unique md5s
+619ae301/43c2d540/b0ce2cec/807d7535) + the VLM battery 4/4 × 4 CLEAN
+(246 reading the PURE-WHITE halo) · **D-129a5** the docs realignment (SKILL
+v1.126.0 + the README badge 2145 + AGENTS/CLAUDE/PAD + the line-census
+1600/190 + the layer-axis pin advanced to the s129/s128 pair + the repo
+worklog's Session-128 gap repair + session_276.md + the plan).
+
+The TDD: RED (the 5 pins failed alone at the standing source) → the three
+fixes → GREEN (293/293) → **the 3 stash-proofs** → **110/2008** (+3 its).
+The audits: 129-a 9/9 Verified (zero real findings + the full profile
+pre-walk inventory — the named latent ring-offset risk live-confirmed) +
+129-b 11/11 PASS (the ~87th standing). probe:ref the 101st STABLE + the
+four drift gates CLEAN · scandihaven `d4789c3` on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **110/2008** · build · **137/137 e2e**
+· the closing drift sweep CLEAN on all four gates · census MATCH. **src/ 3
+files + tests/ 3 files changed** (page-layout.ts + button.tsx + tabs.tsx;
+page-layout.test.ts + docs-counts.test.ts + dialog-geometry-parity.test.ts).
+The walk-harness lessons: **L-129c7 the evaluate-closure trap** (the
+serialized callback cannot reference outer-scope helpers) · **L-129c8 the
+hidden-panel locator** (filter `[data-state="active"]`) · **L-129c9 the
+ancestor-climb bounds** (terminal conditions or the climb escapes to the
+page root).
+
+**The next-session suggestion**: the second rotation cycle's stalest
+re-checks now — the s115 defaults + insights family (14 sessions back);
+carry the highlighted-state lens standing (the ghost/secondary/default
+variants' hover arms are the unaudited remainder; the pill-tab surfaces'
+focus states never live-censused).

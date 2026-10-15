@@ -937,12 +937,21 @@ describe("session-12: tabs anatomy (S12-P4)", () => {
 
   it("the pill trigger matches the reference's stock Radix tab classes", () => {
     // DOM: `inline-flex items-center justify-center whitespace-nowrap
-    // rounded-md px-3 py-1 font-medium ring-offset-background
-    // transition-all … text-xs sm:text-sm data-[state=active]:shadow
-    // data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700`.
-    // No h-7 (natural 28px), no hover: (the reference ships NO hover on
-    // any tab variant), transition-all (not colors-only).
-    expect(TABS_PILL.trigger).toContain("ring-offset-background");
+    // rounded-md px-3 py-1 font-medium … transition-all … text-xs sm:text-sm
+    // data-[state=active]:shadow data-[state=active]:bg-blue-50
+    // data-[state=active]:text-blue-700`. No h-7 (natural 28px), no
+    // hover: (the reference ships NO hover on any tab variant),
+    // transition-all (not colors-only).
+    // Session-129 (F-129c1): ring-offset-background RETIRED at the
+    // visible-offset rides — the DIALOG_CLOSE s11 computed-contract
+    // precedent. The reference's own class computes hsl(0 0% 100%) =
+    // #ffffff; OUR --color-background is the page bg #f9fafb (the
+    // F-119c2 inverted-token genus), so the ride drifts the 2px
+    // focus-visible offset halo. The v4 DEFAULT offset color is #fff —
+    // byte-equal with the class absent. Live-walked on the segmented
+    // trigger at s129 (the resting custom property + the focus halo
+    // both live-confirmed); the pill rides the identical class family.
+    expect(TABS_PILL.trigger).not.toContain("ring-offset-background");
     expect(TABS_PILL.trigger).toContain("transition-all");
     expect(TABS_PILL.trigger).toContain("text-xs sm:text-sm");
     expect(TABS_PILL.trigger).toContain("data-[state=active]:shadow");
@@ -963,13 +972,20 @@ describe("session-12: tabs anatomy (S12-P4)", () => {
 
   it("the segmented trigger matches the reference's stock classes", () => {
     // DOM: `inline-flex items-center justify-center whitespace-nowrap
-    // rounded-md px-3 py-1 text-sm font-medium ring-offset-background
-    // transition-all … data-[state=active]:shadow
-    // data-[state=active]:bg-background data-[state=active]:text-foreground`.
+    // rounded-md px-3 py-1 text-sm font-medium … transition-all …
+    // data-[state=active]:shadow data-[state=active]:bg-background
+    // data-[state=active]:text-foreground`.
     // The ACTIVE pill computes the v3 `shadow` scale (0 1px 3px .1 +
     // 0 1px 2px -1px .1) — the s6 shadow-sm pin was one step light.
+    // Session-129 (F-129c1): ring-offset-background RETIRED — the walk's
+    // resting --tw-ring-offset-color read #f9fafb on ours vs the
+    // reference's hsl(0 0% 100%), and the real focus-visible halo layer
+    // rgba(249,250,251,1) 0px 0px 0px 2px vs rgb(255,255,255) — at BOTH
+    // viewports. The DIALOG_CLOSE s11 computed-contract precedent: the
+    // v4 default offset color #fff computes byte-equal with the class
+    // absent (the class itself sets the drifting page-bg token).
     expect(TABS_SEGMENTED.trigger).toContain("text-sm");
-    expect(TABS_SEGMENTED.trigger).toContain("ring-offset-background");
+    expect(TABS_SEGMENTED.trigger).not.toContain("ring-offset-background");
     expect(TABS_SEGMENTED.trigger).toContain("transition-all");
     expect(TABS_SEGMENTED.trigger).toContain("data-[state=active]:shadow");
     expect(TABS_SEGMENTED.trigger).not.toContain("h-7");
@@ -2290,6 +2306,67 @@ describe("session-17: the Button variant corrections (S17-P4/P5)", () => {
     );
     expect(src).toMatch(/ghost: "hover:bg-line-soft hover:text-foreground"/);
     expect(src).not.toMatch(/ghost: "text-muted/);
+  });
+});
+
+describe("session-129 parity pins (the highlighted-state lens — F-129c1/c2/c3)", () => {
+  it("F-129c1: the tabs PANEL_BASE retires ring-offset-background (the s11 computed-contract precedent)", () => {
+    // The 129-c walk's genus: the reference's PANEL_BASE rides
+    // ring-offset-background + focus-visible:ring-offset-2, its offset
+    // halo computing hsl(0 0% 100%) = #ffffff; OUR --color-background is
+    // the page bg #f9fafb, so the ride drifts the panel's 2px
+    // focus-visible halo — the same F-119c2 inverted-token genus the
+    // trigger census live-confirmed at both viewports. The DIALOG_CLOSE
+    // s11 precedent: the v4 DEFAULT offset color is #fff — byte-equal
+    // with the class absent, "the class would set var(--color-background)
+    // = #f9fafb, introducing the very divergence it would pin away."
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/components/ui/tabs.tsx"),
+      "utf8",
+    );
+    const panel = /PANEL_BASE =\s*\n?\s*"([^"]+)"/.exec(src);
+    expect(panel).not.toBeNull();
+    expect(panel?.[1] ?? "").not.toContain("ring-offset-background");
+    expect(panel?.[1] ?? "").toContain("focus-visible:ring-offset-2");
+    expect(panel?.[1] ?? "").toContain("focus-visible:ring-2");
+  });
+
+  it("F-129c2: the destructive hover is the ALPHA form — hover:bg-danger/90 (the M-80c1 genus)", () => {
+    // The 129-c walk's live finding on the Danger Zone reset (both
+    // viewports): our hover computed the SOLID darker step
+    // rgb(220,38,38) (hover:bg-red-600) where the reference computes
+    // rgba(239,68,68,0.9) — its destructive at 90% ALPHA. The M-80c1
+    // genus (the s80 Save precedent: the reference's hovers are the
+    // /90 alpha form, never the solid darker step). The resting bg
+    // byte-matches (#ef4444 both apps); only the hover arm diverged —
+    // never censused before the F-128c1 highlighted-state lens.
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/components/ui/button.tsx"),
+      "utf8",
+    );
+    expect(src).toMatch(/destructive: "bg-danger text-white shadow-sm hover:bg-danger\/90"/);
+    expect(src).not.toMatch(/destructive: "[^"]*hover:bg-red-600/);
+  });
+
+  it("F-129c3: the outline variant gains hover:text-neutral-900 — the reference's hover:text-accent-foreground", () => {
+    // The 129-c walk's live finding on BOTH censused outline surfaces
+    // (the Data-tab Download Contacts Template button + the profile
+    // Upload Photo, both viewports): our hover text stayed
+    // rgb(10,10,10) (text-foreground, no hover arm) where the
+    // reference computes rgb(23,23,23) — its stock outline variant's
+    // hover:text-accent-foreground #171717. The F-128c1 value pair
+    // (shipped REAL for the menu-item ink at s128); the s80 badge
+    // precedent expresses its accent-foreground as our neutral-900
+    // literal. The s82-era bundle decode missed the hover:text arm —
+    // the F-127c1 doctrine: the live DOM is the ground truth.
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/components/ui/button.tsx"),
+      "utf8",
+    );
+    expect(src).toMatch(
+      /outline: "border border-line bg-surface text-foreground shadow-sm hover:bg-line-soft hover:text-neutral-900"/,
+    );
+    expect(src).not.toMatch(/outline: "[^"]*hover:text-foreground/);
   });
 });
 

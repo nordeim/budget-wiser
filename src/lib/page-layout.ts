@@ -1391,8 +1391,15 @@ export const NOT_FOUND_LAYOUT = {
  *  defect) — our roving tabindex stays the accessible fix. */
 export const TABS_PILL = {
   track: "items-center justify-center rounded-lg p-1 text-muted-ink grid w-full grid-cols-2 lg:grid-cols-5 h-auto bg-white border border-line",
+  // Session-129 (F-129c1): ring-offset-background RETIRED — the s11
+  // DIALOG_CLOSE computed-contract precedent. Our --color-background is
+  // the page bg #f9fafb (the F-119c2 inverted-token genus), so the ride
+  // drifts the 2px focus-visible offset halo off the reference's stock
+  // white; the v4 DEFAULT offset color is #fff — byte-equal with the
+  // class absent. Live-walked on the segmented sibling at s129 (both
+  // viewports); the pill rides the identical class family.
   trigger:
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow text-xs sm:text-sm data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700",
+    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow text-xs sm:text-sm data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700",
 } as const;
 
 export const TABS_SEGMENTED = {
@@ -1405,8 +1412,18 @@ export const TABS_SEGMENTED = {
   // computed rgb(249,250,251) vs the reference's rgb(255,255,255) on
   // BOTH segmented surfaces (/activities + /settings), live-walked
   // two-app at s125. The literal restores the computed parity.
+  //
+  // Session-129 (F-129c1): ring-offset-background RETIRED in the same
+  // stroke — the SAME inverted-token genus on the focus-visible OFFSET
+  // arm (the s125 walk found the bg arm; the s129 highlighted-state
+  // lens found the offset arm): the resting --tw-ring-offset-color
+  // read #f9fafb on ours vs the reference's hsl(0 0% 100%), and the
+  // real focus halo layer rgba(249,250,251,1) 0px 0px 0px 2px vs
+  // rgb(255,255,255) — both viewports, both apps. The s11 DIALOG_CLOSE
+  // precedent: the v4 default offset color #fff computes byte-equal
+  // with the class absent.
   trigger:
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow data-[state=active]:bg-white data-[state=active]:text-foreground",
+    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow data-[state=active]:bg-white data-[state=active]:text-foreground",
 } as const;
 
 /** Session-12 (S12-P5): the dashboard KPI card de-hover — the reference

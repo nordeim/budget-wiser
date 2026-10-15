@@ -4672,3 +4672,88 @@ Stage Summary:
   battery 4/4 × 4 CLEAN; the docs realignment (SKILL v1.124.0 + badge
   2141 + AGENTS/CLAUDE/PAD + session_272.md + the plan); the
   two-commit ship + the SSH-wrapper push (below)
+
+---
+
+## Session 128 — the menu/popover-family second-cycle re-check + the one-fix session
+
+*(The gap repair, s129: the s128 ship recorded its worklog entry in the
+WORKSPACE worklog only — this repo-side record appended one session
+late, the contents unchanged from the shipped record.)*
+
+- Stage 1: the workspace RESET — re-cloned at bf27286 (the s127 ship
+  8504588 + 29209cc + the session_273 intake); the 5 core docs read;
+  the environment re-stood (bun install 533 pkgs, .env, env -u
+  db:push/db:seed, census MATCH, Playwright chromium reinstalled)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 110/2004 ·
+  build · e2e 137/137 (3.4m)
+- Stage 3: the parallel audits — 128-a 9/9 Verified (zero real
+  findings + THE FULL MENUS PRE-WALK INVENTORY: the family source
+  static since s113, the drift risk entirely the theme layer) + 128-b
+  11/11 PASS (the ~86th standing)
+- Stage 4: probe:ref the 100th STABLE · the four drift gates CLEAN ·
+  scandihaven d4789c3 on-pattern · census MATCH
+- Stage 5: THE PHASED walk19 — both apps at 1440 + 390 through the
+  s113 menu ladder: 298 two-app axes, 4 raw diffs → ONE REAL PARITY
+  DEFECT (F-128c1 the menu-item highlight ink — the M-81c2 genus, the
+  highlighted state never censused before) + the L-128c2 s93 standing
+  genus adjudicated; the s113 byte-matches ALL HOLD; the L-128c3
+  hasText-regex walk-harness lesson recorded
+- Stage 6: the remediation — D-128a0 the highlight-ink fix
+  (focus:text-neutral-900) + D-128a1 the pin (RED-first, the
+  stash-proof) + D-128a2 the POST-FIX walk re-run (2 adjudicated diffs
+  ONLY — ZERO real defects) + the captures 240-243 + the VLM battery
+  4/4 × 4 CLEAN + D-128a3 the docs realignment → 110/2005
+- Stage 7: the final gate GREEN — lint 0/0 · tsc 0 · 110/2005 ·
+  build · 137/137 · the closing drift sweep CLEAN ×4 · census MATCH;
+  the two-commit ship 3707e2b + 6ce9a66 pushed via the SSH wrapper to
+  git@github.com:nordeim/neo-crm.git main — remote-verified @
+  6ce9a66 == local HEAD
+
+---
+
+## Session 129 — the profile/Settings-Data family second-cycle re-check + the three-fix session
+
+- Stage 1: the workspace INTACT (no reset — the s128 clone at 3d7c96c
+  pulled + the session_275 intake read); the 5 core docs read; the
+  environment verified in place (census MATCH at the repo path, the
+  walks symlink live)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 110/2005 ·
+  build · e2e 137/137 (3.4m) — exact match to the s128 ship
+- Stage 3: the parallel audits — 129-a 9/9 Verified (ONE prose-only
+  finding: the s128 "tests/ 2 files" claim was actually 3 — the
+  s125-precedent prose-only genus; + THE FULL PROFILE/SETTINGS-DATA
+  PRE-WALK INVENTORY with the NAMED LATENT RISK: the TABS triggers'
+  ring-offset-background, computed only in the focus-visible state) +
+  129-b 11/11 PASS (the ~87th standing, zero findings)
+- Stage 4: probe:ref the 101st STABLE · the four drift gates CLEAN ·
+  scandihaven d4789c3 on-pattern · census MATCH
+- Stage 5: THE PHASED walk20 — both apps at 1440 + 390 through the
+  s114 profile + Data-tab ladder: 700 two-app axes, 30 raw diffs →
+  THREE REAL PARITY DEFECTS (F-129c1 the segmented ring-offset ink —
+  the F-119c2 genus's THIRD arm, the 129-a named risk live-confirmed ·
+  F-129c2 the destructive hover — the M-80c1 alpha genus · F-129c3 the
+  outline hover text — the F-128c1 value pair) + 3 noise genera
+  adjudicated; the s114 byte-matches ALL HOLD (the geometry family +
+  the ids + the placeholders + the s125 active pill + the cards + the
+  text censuses + the template downloads md5-IDENTICAL + the
+  interaction battery); the highlighted-state lens's maiden run found
+  all three defects
+- Stage 6: the remediation — D-129a0 the ring-offset retirement (the
+  s11 DIALOG_CLOSE computed-contract precedent, 3 visible-offset
+  rides) + D-129a1 the destructive alpha (hover:bg-danger/90) +
+  D-129a2 the outline hover text (hover:text-neutral-900) + D-129a3
+  the pins (RED-first: the 2 TABS re-anchors + 3 new its; the 3
+  stash-proofs) + D-129a4 the POST-FIX walk re-run (698 axes, 21
+  adjudicated diffs ONLY — ZERO real defects; the halo byte-equal
+  rgb(255,255,255) both apps both viewports) + the captures 244-247 +
+  the VLM battery 4/4 × 4 CLEAN + D-129a5 the docs realignment (SKILL
+  v1.126.0 + the README badge 2145 + the line-census 1600/190 + the
+  layer-axis pin advanced to the s129/s128 pair + the Session-128
+  worklog gap repair) → 110/2008
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 110/2008 · build ·
+  137/137 · the closing drift sweep CLEAN ×4 · census MATCH; the
+  two-commit ship + the SSH-wrapper push (below)
+
+**The count ladder**: UNIT 2005 → 2008 (+3 its) · SUITES 110 · E2E 137
+· badge 2142 → 2145.

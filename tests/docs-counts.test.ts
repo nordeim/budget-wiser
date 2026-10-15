@@ -251,11 +251,16 @@ const SUITES = 110;
 // re-check: the F-127c2 import-submit DARK-NEUTRAL pin [+1 it,
 // import-dialog.test.ts]; the F-127c1 placeholder pin re-anchored
 // six → ten IN PLACE, no new it]); SUITES stays 110; E2E stays 137.
+// Session-129: 2005 → 2008 (+3 — the profile/Settings-Data family
+// second-cycle re-check: the F-129c1 ring-offset-ink pins [the TABS_PILL
+// + TABS_SEGMENTED re-anchors IN PLACE, no new its] + the F-129c1
+// PANEL_BASE pin + the F-129c2 destructive-alpha pin + the F-129c3
+// outline-hover-text pin [+3 its, page-layout.test.ts]).
 // Session-128: 2004 → 2005 (+1 — the menu-family second-cycle
 // re-check: the F-128c1 menu-item focus-wash TEXT-arm pin [+1 it,
 // page-layout.test.ts — focus:text-neutral-900 positive + the
 // focus:text-foreground negative]); SUITES stays 110; E2E stays 137.
-const UNIT = 2005;
+const UNIT = 2008;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -656,13 +661,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-128 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-129 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s127 layer now beneath the s128 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s128 layer now beneath the s129 head)",
     ).toContain(
-      "+ beneath it 2004 unit checks + 137 e2e checks green; the session-127 layer (the 127-c rotation — THE DIALOG-FAMILY SECOND-CYCLE RE-CHECK",
+      "+ beneath it 2005 unit checks + 137 e2e checks green; the session-128 layer (the 128-c rotation — THE MENU/POPOVER-FAMILY SECOND-CYCLE RE-CHECK",
     );
   });
 
@@ -731,10 +736,6 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
 
   it("the four F-108a2/a3/a4 sites carry the live counts (the SKILL page-layout module row + the PAD module-table rows + the DEPLOYMENT handler count)", () => {
     const skill = read("neo-crm_SKILL.md");
-    expect(
-      skill,
-      "the §5.6 page-layout line must carry the live line + check counts (F-108a2)",
-    ).toContain("test-pinned module (1583 lines; `tests/page-layout.test.ts`, 187 checks");
     expect(skill).not.toContain("test-pinned module (1530 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 182 checks");
     // Session-113: the retired 1548/183 forms join the negatives ladder
@@ -752,11 +753,19 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // doctrine extended to this row).
     expect(skill).not.toContain("test-pinned module (1566 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 185 checks");
+    // Session-129: the retired 1583/187 forms join the negatives ladder
+    // (the F-129c1 fix comment growth 1583→1600 and the +3 its — the
+    // PANEL_BASE/destructive/outline pins, page-layout.test.ts 187→190).
+    expect(skill).not.toContain("test-pinned module (1583 lines");
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 187 checks");
+    expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
+      "test-pinned module (1600 lines; `tests/page-layout.test.ts`, 190 checks",
+    );
     const pad = read("Project_Architecture_Document.md");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1583 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1600 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1530 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1548 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1559 |");
@@ -764,6 +773,9 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // F-128c1 fix comment growth 1574→1583, the pre-existing s125/s126
     // drift corrected in the same stroke).
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1566 |");
+    // Session-129: the retired 1583 form joins the negatives ladder (the
+    // F-129c1 fix comment growth 1583→1600).
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1583 |");
     expect(
       pad,
       "the module-table reports-data row must carry the post-seam line count (F-108a3)",
