@@ -452,23 +452,37 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // freeze pins +2 its, the 8-heads set + the toolbar construction]);
     // the four sites re-anchored again, the retired 2018+2021 forms
     // join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2023 checks)");
-    expect(claude).toContain("(currently 2023)");
-    expect(claude).toContain("Vitest unit suites (2023 checks)");
-    expect(claude).toContain("`bun run test` (2023)");
+    // session-134 lockstep carry-forward: 2023 -> 2026 (the s134 +3 —
+    // the dashboard-charts family third-cycle re-check: the ZERO-FIX/
+    // FREEZE-PIN session [D-134a0 the freeze pins +3 its — the 6 KPI
+    // labels ordered set + the quick-create menu set + the filter-bar
+    // construction order, dashboard-kpi-parity.test.ts; ZERO src
+    // changes]); the four sites re-anchored again, the retired
+    // 2018+2021+2023 forms join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 2026 checks)");
+    expect(claude).toContain("(currently 2026)");
+    expect(claude).toContain("Vitest unit suites (2026 checks)");
+    expect(claude).toContain("`bun run test` (2026)");
+    expect(claude).not.toContain("Unit (Vitest, 2023 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2021 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2018 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2009 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2008 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2005 checks)")
     expect(claude).not.toContain("Unit (Vitest, 2004 checks)");
+    expect(claude).not.toContain("(currently 2023)")
+    expect(claude).not.toContain("(currently 2021)")
     expect(claude).not.toContain("(currently 2009)")
     expect(claude).not.toContain("(currently 2008)")
     expect(claude).not.toContain("(currently 2005)")
     expect(claude).not.toContain("(currently 2004)");
+    expect(claude).not.toContain("Vitest unit suites (2023 checks)")
+    expect(claude).not.toContain("Vitest unit suites (2021 checks)")
     expect(claude).not.toContain("Vitest unit suites (2009 checks)")
     expect(claude).not.toContain("Vitest unit suites (2005 checks)")
     expect(claude).not.toContain("Vitest unit suites (2004 checks)");
+    expect(claude).not.toContain("`bun run test` (2023)")
+    expect(claude).not.toContain("`bun run test` (2021)")
     expect(claude).not.toContain("`bun run test` (2009)")
     expect(claude).not.toContain("`bun run test` (2005)")
     expect(claude).not.toContain("`bun run test` (2004)");

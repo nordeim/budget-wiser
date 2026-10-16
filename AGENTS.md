@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2023 checks)       | `bun run test`                         |
+|  Unit tests (2026 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2023) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2026) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6318,3 +6318,82 @@ computed-ink census on an empty select must account for the asymmetry).
 s116+ candidates (dashboard-charts s118 · contacts-list s119 · leads-table s120); the
 highlighted-state + text-content + select-OPEN lenses stay standing; the empty-select
 ink genus is now pinned at the source (the placeholderState retirement).
+
+## Session-134 — the dashboard-charts family third-cycle re-check (the zero-fix / freeze-pin session)
+
+The 134-c rotation — the session_285 close's named direction: **the s116+ third-cycle
+candidates' next member — dashboard-charts (s118)**, 16 sessions back. The 134-a pre-walk
+inventory: the family source FROZEN (page.tsx since s87 — 46 sessions; charts.tsx since
+s98; page-parts.tsx since s90; dashboard-data.ts since s110) but the shared primitives
+moved under it — the s129 button outline hover-text, the s130 ghost hover-text, the s128
+MENU_ITEM focus arm, the s119 primary-foreground #fafafa re-pin — and the s133
+placeholderState retirement CHANGED THIS SURFACE'S PAINT (the view-switcher value=""
+select — the audit's L-134a1 record-only finding: the s133 fix's "exactly ONE
+placeholder-state call site" undercounted; the dashboard's view-switcher is a SECOND
+placeholder-state site, repainted with zero dashboard-side census). The named latent
+risks L-134a1..a9 (the TOP three: the s133 fix's never-censused dashboard arm · the
+s119 primary-foreground re-pin's dashboard arm · the hover arms never censused on /).
+
+**THE WALK (walk25, the phased idiom — one app×viewport per invocation, the censuses
+persisted to /tmp JSON, the reference's storageState persisted + reused, ONE reference
+login total, PORT 3141, the walk db zero-data for PASS 1 / SEEDED for PASS 2; both apps
+at 1440×900 + 390×844) + the decisive adjudication probe (walk25b — the Filter-button
+resting state two-app + the menu/dialog lenses ours-only): 398 two-app axes, 7 raw
+diffs, ZERO REAL PARITY DEFECTS.** The adjudication: the fb.filterBtn rect/color ×4
+both viewports — the HARNESS ARTIFACT defused by the walk25b decisive probe (the Filter
+button BYTE-EQUAL at both viewports: 88x32 / 12px-500 / rgb(10,10,10) / white /
+rgb(229,229,229) / 6px / icon-16 @1440; 326x32 @390 — the flex-col stretch); the
+text.content ×2 — the TEXT-NODE-GRANULARITY genus (the reference's platform splits its
+currency template values into separate DOM text nodes "$"/"0.0"/"k" where ours renders
+single nodes "$0.0k"; the RENDERED values byte-equal per the per-axis value censuses —
+the harness lesson L-134c1: text censuses must compare normalized joined textContent);
+the ch1.gridlineCount @390 (12 vs 11) — the documented s91 chart-noise genus (the s118
+precedent 26 vs 25; the drift gate's phone floor authoritative, CLEAN this session).
+
+**The lenses on their maiden run here — ALL CLEAN**: L-134a1 the s133 fix's dashboard
+arm (the view-switcher trigger ink rgb(10,10,10) BYTE-EQUAL at both viewports + the
+chevron rgb(10,10,10) — the placeholderState retirement live-verified on the
+dashboard's placeholder-state select; the L-133c2 asymmetry stands: ours IN Radix's
+data-placeholder state [true] where the reference avoids it [false], the ink equal
+anyway — exactly the fix's intent) · L-134a2 the s119 primary-foreground re-pin's
+dashboard arm (the primary Export rgb(250,250,250) on rgb(37,99,235) + both ghost Add
+buttons rgb(37,99,235) — byte-equal) · L-134a3 the hover arms (ALL FIVE byte-equal:
+the s129 outline pair rgb(23,23,23)/rgb(245,245,245) on the Add + the outline Export +
+the Filter; the primary Export hover rgb(250,250,250)/rgb(29,78,216); the s130 ghost
+pair on the More... button) · L-134a4 the MENU_ITEM wash rgb(245,245,245)/rgb(10,10,10)
+· L-134a5 the select OPEN states (the Stage listbox 6 options + the highlight wash; the
+view-switcher listbox Table/Cards) · L-134a6 the text-content census modulo the
+granularity genus · L-134a7 the Lead quick-create dialog (the 512x640 chrome, radius 8,
+"Create New Lead" 18px/600, the SEVEN field labels, the Cancel outline hover pair) ·
+L-134a8 the @390 genera (the s95 containment re-confirmed — the filter bar stacks
+column both apps, the kids byte-equal 326-wide; the L-121c1 rounded-full infinity genus
+on the populated boxes).
+
+**PASS 2 populated ours-only — every seeded contract holds**: the KPI values
+24 / $337.0k / $126.0k / $0k / 29.2% / 82 (the Avg-Cycle day-scale drift from the s118
+record's 83 — the wall-clock derivation, expected) · the pipeline 5 bars
+(145,84,73,99,258) + the legend values (Prospecting $190.0k / Qualification $110.0k /
+Proposal $95.0k / Negotiation $130.0k / Won $337.0k — the swatches byte-equal the
+PIPELINE_LEGEND map incl. the Won gray fallback rgb(156,163,175)) · the Top Reps 3
+rows + the header row · the Lead Sources 4 rows (the slice(0,4) contract) · the
+Upcoming Activities 3 rows · the Recent Deals 5 rows (the slice-5 contract: the LMS
+migration row + the dual Status badges + the owner box + the close date) · the Add
+menu 5 items (Lead,Contact,Account,Event,Activity — 160x170, radius 8) · the
+rounded-full census 13 boxes.
+
+**The remediation (the zero-fix session — freeze pins only)**: **D-134a0 THE FREEZE
+PINS** (+3 its, tests/dashboard-kpi-parity.test.ts — the 6 KPI labels as an ORDERED
+SET ("Deals Closed"/"Avg. Sales Cycle" in ZERO ordered-set assertions — the s118
+D-118a2 pinned the /leads statcards, never the dashboard KpiCards) + the five
+quick-create menu items as an ordered set + the five dialog mounts + the icon
+adjacency (in ZERO test assertions anywhere) + the filter-bar construction order
+freeze; all three stash-proven: the label rename → 1 RED alone; the menu item
+dropped → 1 RED alone; the More... ghost moved before the search → 1 RED alone) +
+**D-134a1 the docs realignment** (the count ladder UNIT 2023 → 2026 (+3 its) ·
+SUITES 111 UNCHANGED · E2E 137 UNCHANGED · badge 2160 → 2163).
+
+**The next-session suggestion**: the rotation's third cycle continues — the remaining
+s116+ candidates (contacts-list s119 · leads-table s120); the computed-ink +
+hover-arm + text-content + select-OPEN lenses stay standing; the text-node-granularity
+harness lesson (L-134c1) rides the next text census.
+

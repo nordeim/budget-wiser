@@ -300,7 +300,12 @@ const SUITES = 111;
 // "Account Name" appeared in ZERO test assertions before]; the
 // re-anchored placeholderState pin rides in place; SUITES + E2E
 // unchanged (111 · 137).
-const UNIT = 2023;
+// Session-134: 2023 → 2026 (+3 — the dashboard-charts family
+// third-cycle re-check: the ZERO-FIX/FREEZE-PIN session [D-134a0 the
+// freeze pins +3 its, dashboard-kpi-parity.test.ts — the 6 KPI labels
+// ordered set + the quick-create menu set + the filter-bar construction
+// order; ZERO src changes]; SUITES + E2E unchanged (111 · 137).
+const UNIT = 2026;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -703,13 +708,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-133 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-134 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s132 layer now beneath the s133 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s133 layer now beneath the s134 head)",
     ).toContain(
-      "+ beneath it 2021 unit checks + 137 e2e checks green; the session-132 layer (the 132-c rotation — THE REPORTS-TABLES FAMILY THIRD-CYCLE RE-CHECK",
+      "+ beneath it 2023 unit checks + 137 e2e checks green; the session-133 layer (the 133-c rotation — THE ACCOUNTS-LIST FAMILY THIRD-CYCLE RE-CHECK",
     );
   });
 

@@ -293,6 +293,120 @@ describe("session-87: the filter bar chrome (N-87c4/c5/c6, bundle-decoded)", () 
 });
 
 // ---------------------------------------------------------------------------
+// Session-134 (D-134a0): the dashboard freeze pins (the L-134a9 gap — the
+// D-133a2/D-118a2 genus). The s134 walk censused the dashboard family
+// third-cycle re-check BYTE-EQUAL on all 398 two-app axes (walk25 + the
+// walk25b decisive probe) — but three ordered sets were never PINNED:
+// the six KPI labels ("Deals Closed"/"Avg. Sales Cycle" in ZERO
+// ordered-set assertions — the s118 D-118a2 pin covered the /leads
+// statcards, never the dashboard KpiCards), the five quick-create menu
+// items (in ZERO test assertions anywhere), and the filter-bar
+// construction order. The runtime rects/fonts/inks stay walk-verified
+// per re-check cycle; these source censuses pin the SET + the ORDER +
+// the COUNT — a seventh KPI, a reorder, a new filter-bar control, or a
+// dropped menu item is a parity event, not a growth.
+// ---------------------------------------------------------------------------
+
+describe("session-134: the dashboard KPI row + quick-create + filter-bar freeze", () => {
+  it("the six KPI labels as an ordered set (the s118/s134 walk census)", () => {
+    const src = dashPage();
+    const labels = [
+      "Total Leads",
+      "Deals Closed",
+      "Revenue This Month",
+      "Sales Target",
+      "Conversion Rate",
+      "Avg. Sales Cycle",
+    ];
+    let prev = -1;
+    for (const label of labels) {
+      const i = src.indexOf(`label="${label}"`);
+      expect(i, `the ${label} KPI must exist as a KpiCard label`).toBeGreaterThan(-1);
+      expect(i, `the ${label} KPI must keep the census order`).toBeGreaterThan(prev);
+      prev = i;
+    }
+    // exactly SIX KpiCards in the row (the PAGE_KPI_GRIDS.dashboard row)
+    expect(src.match(/<KpiCard/g) ?? []).toHaveLength(6);
+    // the sixth card carries the days suffix (the S13-P10 no-delta quirk)
+    const avg = src.slice(src.indexOf('label="Avg. Sales Cycle"'));
+    expect(avg.slice(0, 400)).toMatch(/suffix="days"/);
+    // the fourth card carries the NEUTRAL valueNote (the S27-P7 quirk)
+    const target = src.slice(src.indexOf('label="Sales Target"'));
+    expect(target.slice(0, 400)).toMatch(/valueNote=/);
+  });
+
+  it("the five quick-create menu items as an ordered set + the five dialog mounts (the s134 walk census)", () => {
+    const src = dashPage();
+    // The Add dropdown's five items in the census order (walk25b:
+    // Lead,Contact,Account,Event,Activity — 160x170 popover, 14px/400).
+    const items = ["lead", "contact", "account", "event", "activity"];
+    let prev = -1;
+    for (const item of items) {
+      const marker = `setQuickCreate("${item}")`;
+      const i = src.indexOf(marker);
+      expect(i, `the ${item} quick-create item must exist`).toBeGreaterThan(-1);
+      expect(i, `the ${item} item must keep the menu order`).toBeGreaterThan(prev);
+      prev = i;
+    }
+    // exactly FIVE menu items (the DropdownItem-wrapped call sites) + the
+    // TWO card Add-ghost rides (the Lead Sources + Upcoming Activities
+    // addBtn onClick arms — the walk25 ls1/ls2 censuses)
+    expect(src.match(/<DropdownItem onClick=\{\(\) => setQuickCreate\("/g) ?? []).toHaveLength(5);
+    expect(src.match(/setQuickCreate\("/g) ?? []).toHaveLength(7);
+    // the five dialog mounts (the L-134a7 battery — the LeadDialog walked
+    // 512x640 with the 7-label set + the Cancel hover pair at s134)
+    const mounts = [
+      "<LeadDialog open={quickCreate === \"lead\"}",
+      "<ContactDialog open={quickCreate === \"contact\"}",
+      "<AccountDialog open={quickCreate === \"account\"}",
+      "<EventDialog open={quickCreate === \"event\"}",
+      "<ActivityDialog open={quickCreate === \"activity\"}",
+    ];
+    for (const m of mounts) {
+      expect(src).toContain(m);
+    }
+    // the icons ride the icon-adjacency census (Target/Users/TrendingUp/
+    // Phone/Zap — the s134 Add-menu item texts byte-equal the walk25b)
+    const iconSeq = ["Target", "Users", "TrendingUp", "Phone", "Zap"];
+    prev = -1;
+    for (const icon of iconSeq) {
+      const i = src.indexOf(`<${icon} className="h-4 w-4 text-muted" />`);
+      expect(i, `the ${icon} menu icon must exist`).toBeGreaterThan(-1);
+      expect(i, `the ${icon} icon must keep the menu order`).toBeGreaterThan(prev);
+      prev = i;
+    }
+  });
+
+  it("the filter-bar construction order freeze (the s6/s8 stack + the s134 walk census)", () => {
+    const src = dashPage();
+    // The reference's stack: [Filter outline][Stage select][the dead
+    // Table/Cards view-switcher][Source select][search][the dead More...
+    // ghost] — walk-verified byte-equal at BOTH viewports (the walk25b
+    // decisive probe: the Filter 88x32 @1440 / 326x32 @390; the selects
+    // ink rgb(10,10,10) incl. the s133 placeholderState retirement on
+    // the view-switcher — the L-134a1 maiden census).
+    const order = [
+      '<FilterPolygon className="w-4 h-4 mr-2" />', // the Filter outline icon
+      '<SelectValue placeholder="Stage" />', // the Stage select
+      'aria-label="Recent deals view"', // the view-switcher trigger
+      '<SelectValue placeholder="Source" />', // the Source select
+      'aria-label="Filter deals"', // the search input
+      "More...", // the dead ghost
+    ];
+    let prev = -1;
+    for (const marker of order) {
+      const i = src.indexOf(marker);
+      expect(i, `the ${marker} control must exist`).toBeGreaterThan(-1);
+      expect(i, `the ${marker} control must keep the stack order`).toBeGreaterThan(prev);
+      prev = i;
+    }
+    // exactly ONE More... ghost + exactly THREE filter-bar selects
+    expect(src.match(/More\.\.\./g) ?? []).toHaveLength(1);
+    expect(src.match(/aria-label="Recent deals view"/g) ?? []).toHaveLength(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
 // S87-P5 (N-87a1): the api-robustness lockstep.
 // ---------------------------------------------------------------------------
 
