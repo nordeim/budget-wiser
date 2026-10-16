@@ -333,3 +333,71 @@ describe("session-85: the tab-content foundations re-held (green by design)", ()
     ).toBe(1);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-132 (D-132a0 — the reports-tables family third-cycle re-check):
+// THE CHART-CARD FAMILY FREEZE. The walk23 census (461 two-app axes, ZERO
+// real parity defects — the s116 byte-matches ALL HOLD under the sharpened
+// lenses) re-verified the chart-card geometry byte-stable across 16
+// sessions: @1440 the half-cards 548x390, the pipeline/sources chart trios
+// 357x390, the Forecasting Accuracy WIDE row 1120x434, the plain table
+// cards 548x167, the export-button headers 548x189; @390 the phone face
+// 358x390 + 358x434 + the pipeline title-wraps 358x215/358x247. The
+// chart-card TITLES were never pinned as a set (the s85 pins cover the
+// grid split; the s116 pins the ten TABLE titles) — the L-132a4 named
+// gap, closed here at the source level (the runtime rects stay
+// walk-verified per re-check cycle; the drift gates own the pixel layer).
+// ---------------------------------------------------------------------------
+
+describe("session-132: the chart-card family freeze (the s132 walk census)", () => {
+  it("the sixteen chart-card titles ship as a set (15 unique — Pipeline by Stage twice)", () => {
+    const raw = read("src/app/(app)/reports/reports-page.tsx");
+    const titles = [
+      "Revenue Over Time",
+      "Won vs Lost Over Time",
+      "Pipeline by Stage",
+      "Conversion Funnel",
+      "Forecasting Accuracy",
+      "Forecast by Probability",
+      "Aging Pipeline",
+      "Activities by Type",
+      "Activities Over Time",
+      "Activities vs Wins",
+      "Leads by Source",
+      "Win Rate by Source (%)",
+      "Avg Deal Value by Source",
+      "Account Health Distribution",
+      "Top 10 Accounts by Revenue",
+    ];
+    for (const t of titles) {
+      expect(raw, `the ChartCard title "${t}" must ship verbatim`).toContain(
+        `title="${t}"`,
+      );
+    }
+    expect(
+      (raw.match(/ChartCard title=/g) ?? []).length,
+      "the ChartCard census must stay at exactly 16 sites (no chart added/removed)",
+    ).toBe(16);
+  });
+
+  it("the geometry bearers: the 8-site grid family + the wide escape + the 300px chart containers", () => {
+    const raw = read("src/app/(app)/reports/reports-page.tsx");
+    // the 8-site grid family (the s85 two-grid-split decode re-held):
+    // tab-1's TWO chart grids + the tab-2 chart trio + the tab-2 table
+    // pair + the tab-3 chart trio + the tab-4 chart trio + the tab-5
+    // chart pair + the tab-5 table pair = 8 (the 548/357 width split's
+    // source bearer).
+    expect(
+      (raw.match(/grid grid-cols-1 gap-6 lg:grid-cols-2/g) ?? []).length,
+      "the chart/table grid census must stay at exactly 8 sites",
+    ).toBe(8);
+    // the Forecasting Accuracy wide escape (the 1120x434 row's bearer)
+    expect(raw).toContain(`wide ? "lg:col-span-3" : undefined`);
+    // the 300px chart containers (the 390 card height's bearer: header
+    // 73 + content padding 12 + chart 300 = 390, live-walked s116+s132)
+    expect(
+      (raw.match(/height=\{300\}/g) ?? []).length,
+      "the 300px chart-container census must stay at exactly 10 sites",
+    ).toBe(10);
+  });
+});

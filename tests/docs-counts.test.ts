@@ -277,7 +277,18 @@ const SUITES = 111;
 // cap + the aria family + the title/description classes + the icon family
 // + the hover-pause seam]; SUITES 110 → 111 (the ONE new file); E2E stays
 // 137.
-const UNIT = 2018;
+// Session-132: 2018 → 2021 (+3 — the reports-tables family third-cycle
+// re-check [walk23 — the session_281 close's named direction, the s116+
+// stalest never-re-walked two-app surface]: ZERO real parity defects, the
+// freeze-pin session — D-132a0 the chart-card family freeze [+2 its,
+// reports-tabcontent-parity.test.ts: the sixteen chart-card titles as a
+// set + the geometry bearers (the 8-site grid family + the wide
+// lg:col-span-3 escape + the 10-site height={300} census)] + D-132a1 the
+// bar-trio label freeze [+1 it, reports-page-parity.test.ts: the sticky
+// bar's SHORT "PDF" label vs the per-table quartet's full "Export
+// CSV"/"Export PDF" pair — the walk's barprobe7 two-app byte-equal
+// contract]; SUITES + E2E unchanged (111 · 137).
+const UNIT = 2021;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -680,13 +691,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-131 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-132 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s130 layer now beneath the s131 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s131 layer now beneath the s132 head)",
     ).toContain(
-      "+ beneath it 2009 unit checks + 137 e2e checks green; the session-130 layer (the 130-c rotation — THE DEFAULTS + INSIGHTS FAMILY SECOND-CYCLE RE-CHECK",
+      "+ beneath it 2018 unit checks + 137 e2e checks green; the session-131 layer (the 131-c rotation — THE TOAST FAMILY WALK",
     );
   });
 

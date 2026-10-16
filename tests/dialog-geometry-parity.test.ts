@@ -440,10 +440,17 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // fix pins + 7 walk-censused freeze pins]); the four sites
     // re-anchored again, the retired 2009 forms join the negatives
     // below.
-    expect(claude).toContain("Unit (Vitest, 2018 checks)");
-    expect(claude).toContain("(currently 2018)");
-    expect(claude).toContain("Vitest unit suites (2018 checks)");
-    expect(claude).toContain("`bun run test` (2018)");
+    // session-132 lockstep carry-forward: 2018 -> 2021 (the s132 +3 —
+    // the reports-tables family third-cycle re-check: the freeze-pin
+    // session [D-132a0 the chart-card family freeze +2 its +
+    // D-132a1 the bar-trio label freeze +1 it, ZERO src changes]);
+    // the four sites re-anchored again, the retired 2018 forms join
+    // the negatives below.
+    expect(claude).toContain("Unit (Vitest, 2021 checks)");
+    expect(claude).toContain("(currently 2021)");
+    expect(claude).toContain("Vitest unit suites (2021 checks)");
+    expect(claude).toContain("`bun run test` (2021)");
+    expect(claude).not.toContain("Unit (Vitest, 2018 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2009 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2008 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2005 checks)")

@@ -4849,3 +4849,55 @@ badge 2145 → 2146.
 
 **The count ladder**: UNIT 2009 → 2018 (+9) · SUITES 110 → 111 · E2E 137 ·
 badge 2146 → 2155.
+
+---
+
+## Session 132 — the reports-tables family third-cycle re-check + the freeze-pin session
+
+- Stage 1: the workspace RESET again — re-cloned at 2da6b87 (the s131 ship c3890cf
+  + the session_281 intake); the environment re-stood at /home/z/neo-crm (bun
+  install, .env, env -u db:push/db:seed, census MATCH, Playwright chromium 1243
+  installed to match the lockfile build, the platform DATABASE_URL hazard
+  neutralized throughout)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 111/2018 · build · e2e
+  137/137 (3.4m, zero flakes — after the chromium build fix)
+- Stage 3: the parallel audits — 132-a 9/9 Verified (zero discrepancies + THE
+  COMPLETE REPORTS-TABLES PRE-WALK INVENTORY: the source freeze map [the tables
+  arm since s98, the export arm since s123], the shared-primitive drift table, the
+  named latent risks L-132a1..a9 — the TOP: the highlighted-state lens never
+  applied to /reports' nine outline rides) + 132-b 9/9 PASS (the ~90th standing —
+  the drawer battery 11 PLAIN + the 4/4 destination click-throughs, the SEO 13
+  metadata-bearing files, the space-y census 107 exact, zero findings, strays
+  cleaned)
+- Stage 4: probe:ref the 104th STABLE · the four drift gates CLEAN · scandihaven
+  d4789c3 on-pattern · census MATCH
+- Stage 5: THE REPORTS-TABLES FAMILY THIRD-CYCLE RE-CHECK (walk23, the phased
+  idiom — one orchestration bug [the cd-before-boot path break] fixed, the phases
+  then clean) — 461 two-app axes, 11 raw diffs, ZERO REAL PARITY DEFECTS: every
+  diff adjudicated decisively (the ringOffset format-only residual · the ringColor
+  non-painting eagerness artifact SETTLED BY THE KEYBOARD PROBE [the reference's
+  painted ring = hsl(0 0% 3.9%) = ours #0a0a0a, the identical white-disk +
+  dark-ring halo both apps] · the L-129c4 invisible-outline genus · the
+  programmatic-focus heuristic + the L-132c1 discovery [the reference's tabs
+  ACTIVATE on programmatic focus, theirs tabIndex=-1 — ours the roving-tabindex
+  superset] · the v4 dead-layer genus); the lenses on their maiden run here ALL
+  CLEAN (the nine outline hover rides byte-equal · the pill focus halo
+  keyboard-probed byte-equal · the text-content census byte-equal both viewports ·
+  the geometry family byte-stable [the chartprobe census: 548×390/357×390 + the
+  Forecasting 1120×434 + the phone wraps 358×215/247 + the cards 167/189] · the
+  select OPEN state); the bar-PDF harness artifact (the focus-activation side
+  effect) resolved by the targeted barprobe7 (the REAL bar PDF button — text
+  "PDF", 81×32, byte-equal both apps); PASS 2 populated ours-only — the ten row
+  contracts + the badge census + the red-tint rows + the pattern texts ALL HOLD
+- Stage 6: the remediation — the freeze-pin session, ZERO src changes (the s116
+  pattern): D-132a0 THE CHART-CARD FAMILY FREEZE (+2 its: the sixteen titles as a
+  set + the geometry bearers) + D-132a1 THE BAR-TRIO LABEL FREEZE (+1 it: the
+  bar's SHORT "PDF" vs the quartet's full labels) + D-132a2 the docs realignment;
+  the stash-proof (each source mutation → its pin REDs alone); the docs-counts
+  lockstep RED (13) → the realignment → GREEN → 111/2021
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 111/2021 · build · 137/137 · the
+  closing drift sweep CLEAN ×4 · census MATCH; the two-commit ship + the
+  SSH-wrapper push (below)
+
+**The count ladder**: UNIT 2018 → 2021 (+3 its) · SUITES 111 · E2E 137 · badge
+2155 → 2158.

@@ -466,3 +466,46 @@ describe("session-123: the export-arm button pairs + the wrapper margin model (t
     expect(page()).toMatch(/TabsPanel tab="accounts" className="mt-6"/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-132 (D-132a1 — the reports-tables family third-cycle re-check):
+// THE BAR-TRIO LABEL FREEZE. The walk23 bar-PDF investigation (the
+// focus-activation artifact L-132c1 chased to ground) surfaced the exact
+// per-surface label contract, live-verified BOTH apps: the reference's
+// sticky-bar PDF button is the SHORT "PDF" (an 81x32 outline-sm button —
+// NOT "Export PDF") with its Export CSV sibling; the PER-TABLE quartet
+// (the pipeline tables' headers) carries the FULL "Export CSV"/"Export
+// PDF" labels. The bar trio's hover arms are byte-equal two-app (the
+// s129 outline hover-text rgb(23,23,23) + hover bg rgb(245,245,245) +
+// the bar CSV's literal blue pair hoverBg rgb(29,78,216) — the F-123a5
+// contract). The existing S74 pin is the weak substring form
+// (toContain("PDF")); this pin freezes the EXACT label set.
+// ---------------------------------------------------------------------------
+
+describe("session-132: the bar-trio vs per-table export label contract (the s132 walk census)", () => {
+  it("the sticky bar's PDF button carries the SHORT label — the quartet the FULL pair", () => {
+    const raw = page();
+    // the BAR's PDF button: the barBtnIcon family + the bare "PDF" text
+    expect(raw).toContain(`barBtnIcon} /> PDF`);
+    // the BAR trio's actions cluster carries NO full "Export PDF" label
+    // (the short form is the reference's own 81x32 button)
+    const actionsAt = raw.indexOf("REPORTS_FILTER_BAR.actions");
+    expect(actionsAt).toBeGreaterThanOrEqual(0);
+    const region = raw.slice(actionsAt, actionsAt + 3200);
+    expect(region).toContain("Export CSV");
+    expect(region).toContain("PDF");
+    expect(region, "the BAR's PDF button must stay the SHORT label").not.toContain(
+      "Export PDF",
+    );
+    // the PER-TABLE quartet: the full labels (2 CSV + 2 PDF, the
+    // h-4-w-4 mr-2 icon family — the 548x189 export-button headers)
+    expect(
+      (raw.match(/h-4 w-4 mr-2" \/> Export CSV/g) ?? []).length,
+      "the per-table Export CSV census must stay at exactly 2 sites",
+    ).toBe(2);
+    expect(
+      (raw.match(/h-4 w-4 mr-2" \/> Export PDF/g) ?? []).length,
+      "the per-table Export PDF census must stay at exactly 2 sites",
+    ).toBe(2);
+  });
+});

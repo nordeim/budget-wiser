@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2018 checks)       | `bun run test`                         |
+|  Unit tests (2021 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2018) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2021) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6157,3 +6157,87 @@ s118 · contacts-list s119 · leads-table s120 the stalest never-re-walked two-a
 surfaces); the highlighted-state + text-content lenses stay standing; any future
 reference-side toast census must first re-verify the F-131c1 DOM-dead state (the
 platform may revive it).
+
+## Session-132 — the reports-tables family third-cycle re-check (the freeze-pin session)
+
+The 132-c rotation — the session_281 close's named direction: **the s116+ third-cycle
+candidates, reports-tables FIRST** (the stalest never-re-walked two-app surface, 16
+sessions back). The 132-a pre-walk inventory: the family source FROZEN (the tables arm
+since s98, the export arm since s123) but the shared primitives moved under it — the
+s129 button outline hover-text + the TABS_PILL ring-offset retirement, the s130 ghost
+hover-text, the s125 active-pill bg-white — and the lenses sharpened since s116 (the
+F-126c1 text-content · the F-127c2 submit-color · the F-128c1 highlighted-state
+censuses). The named latent risks L-132a1..a9 (the TOP: the nine outline-button hover
+rides never censused on this surface; a2: the pill focus halo never live-verified;
+a3: the text-content census never run here; a4: the unpinned geometry family).
+
+**THE WALK (walk23, the phased idiom — one app×viewport per invocation, the censuses
+persisted to /tmp JSON, the reference's storageState persisted + reused, ONE reference
+login total, PORT 3141, the walk db zero-data for PASS 1 / SEEDED for PASS 2; both
+apps at 1440×900 + 390×844 through the five-tab ladder): 461 two-app axes, 11 raw
+diffs, ZERO REAL PARITY DEFECTS.** Every diff adjudicated decisively: the ringOffset
+pair the standing #fff-vs-hsl(0 0% 100%) FORMAT-ONLY residual · the ringColor pair a
+NON-PAINTING custom-prop eagerness artifact (**the decisive keyboard probe**: under
+real Tab focus the reference's ring resolves hsl(0 0% 3.9%) = ours #0a0a0a — both
+apps paint the identical white-disk + dark-ring halo; the resting blue
+rgb(59,130,246,.5) never paints) · the focusOutline pair the L-129c4 invisible-outline
+genus · the focusVisible pair the programmatic-focus heuristic + the deliberate a11y
+superset (**the L-132c1 discovery**: the reference's tabs ACTIVATE on programmatic
+focus, theirs tabIndex=-1) · the selOpen.shadow the v4 dead-layer genus (trimmed
+byte-equal).
+
+**The lenses on their maiden run on this surface — ALL CLEAN**: L-132a1 the NINE
+outline-button hover rides byte-equal every one (the bar CSV's literal blue pair + the
+bar PDF + Reset + Saved Reports + the per-table quartet — hover text rgb(23,23,23) +
+hover bg rgb(245,245,245), the s129 fix verified on the surface it never touched) ·
+L-132a2 the pill focus halo keyboard-probed byte-equal · L-132a3 the text-content
+census byte-equal both viewports · L-132a4 the geometry family byte-stable across 16
+sessions (the chart cards 548×390/357×390 + the Forecasting 1120×434 wide row + the
+phone wraps 358×215/247 + the table cards 167/189 — the chartprobe census) · L-132a6
+the select OPEN state byte-equal modulo the dead-layer noise.
+
+**The bar-PDF harness artifact (L-132c1, resolved to ground)**: the ref-side
+btn.barPdf census recorded a 124×32 "Export PDF" where ours recorded absent — the
+walk's focus probe ACTIVATED the reference's pipeline tab, so the locator censused the
+per-table button. **The targeted barprobe7 census**: the REAL bar PDF button — text
+"PDF" (the reference's own 81×32 outline-sm button), resting + hover BYTE-EQUAL both
+apps.
+
+**PASS 2 (populated, ours-only — the reference's zero-data genus)**: the ten row
+contracts byte-exact the s116 records (4/10 · 6/5 · 13/4 · 10/5 · 2/10) · the first
+cells 14px/500 rgb(10,10,10) · the outline Badge 5-site census (12px/600, #e5e5e5
+border, radius 6px, transparent bg) · the red-tint rows on exactly 3 tables · the red
+At Risk badge rgb(254,226,226)/rgb(153,27,27) · "18d ago" + the "Oct 14, 2026" MMM d,
+yyyy dates ALL HOLD.
+
+**The remediation (ZERO src changes — the s116 freeze-find pattern)**: D-132a0 THE
+CHART-CARD FAMILY FREEZE (+2 its, reports-tabcontent-parity.test.ts — the sixteen
+chart-card titles as a set + the geometry bearers: the 8-site grid family + the wide
+lg:col-span-3 escape + the 10-site height={300} census) · D-132a1 THE BAR-TRIO LABEL
+FREEZE (+1 it, reports-page-parity.test.ts — the sticky bar's SHORT "PDF" label vs
+the per-table quartet's full "Export CSV"/"Export PDF" pair) · D-132a2 the docs
+realignment. The TDD ladder: the pins GREEN at the standing source → the stash-proof
+(the title mutation → 3 REDs alone; the bar-label mutation → the pin REDs alone) →
+the docs-counts lockstep RED (13) at the stale docs → the realignment → GREEN.
+
+The audits: 132-a 9/9 Verified (the complete reports-tables pre-walk inventory — the
+named latent risks L-132a1..a9, the TOP risks walked and confirmed clean) + 132-b 9/9
+PASS (the ~90th standing — the drawer battery 11 PLAIN + the 4/4 destination
+click-throughs, the SEO 13 metadata-bearing files zero gaps, the space-y census 107
+exact). probe:ref the 104th STABLE + the four drift gates CLEAN + scandihaven
+d4789c3 on-pattern.
+
+The count ladder: UNIT 2018 → 2021 (+3 its) · SUITES 111 UNCHANGED · E2E 137
+UNCHANGED · badge 2155 → 2158. **src/ ZERO files · tests/ 4 files changed (the two
+pin files + the docs-counts + dialog-geometry lockstep carriers).**
+
+The walk-harness lessons: L-132c1 the focus-activation side effect (census every
+panel-dependent axis BEFORE any focus probe; :has-text() is case-insensitive substring
+— text-is() is the exact form) · L-132c2 the evaluate-arg discipline · L-132c3 the
+bar-PDF label census discipline.
+
+**The next-session suggestion**: the rotation's third cycle continues — the remaining
+s116+ candidates (accounts-list s117 · dashboard-charts s118 · contacts-list s119 ·
+leads-table s120); the highlighted-state + text-content lenses stay standing; the
+chart-card runtime rects stay walk-verified per re-check cycle (the drift gates own
+the pixel layer).
