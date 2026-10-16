@@ -45,7 +45,15 @@ const buttonVariants = cva(
         // reference's ghost carries only the hover pair; its one
         // text-bearing ghost ("Save All") renders the inherited #0a0a0a.
         // Our old text-muted rendered it gray.
-        ghost: "hover:bg-line-soft hover:text-foreground",
+        // Session-130 (F-130c1): the hover TEXT arm is the neutral-900
+        // literal — live-walked two-app on the accounts rail's Save All
+        // ghost (@1440): our hover computed rgb(10,10,10)
+        // (hover:text-foreground) where the reference computes
+        // rgb(23,23,23) — its stock ghost's hover:text-accent-foreground
+        // #171717. The F-128c1/F-129c3 value pair on the ghost variant
+        // (s128 the menu-item ink · s129 the outline hover text · s130
+        // the ghost hover text); the s80 badge precedent.
+        ghost: "hover:bg-line-soft hover:text-neutral-900",
         // Session-129 (F-129c2): the destructive hover is the ALPHA form —
         // live-walked on the Danger Zone reset (both viewports): ours
         // computed the SOLID darker step rgb(220,38,38) (the old

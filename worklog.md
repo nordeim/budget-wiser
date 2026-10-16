@@ -4757,3 +4757,48 @@ late, the contents unchanged from the shipped record.)*
 
 **The count ladder**: UNIT 2005 → 2008 (+3 its) · SUITES 110 · E2E 137
 · badge 2142 → 2145.
+
+---
+
+## Session 130 — the defaults + insights family second-cycle re-check + the one-fix session
+
+- Stage 1: the workspace RESET again — re-cloned at def7a53 (the s129 ship
+  ef8f53e + f24b1cb + the session_277 intake); the 5 core docs read; the
+  environment re-stood (bun install, .env, env -u db:push/db:seed, census
+  MATCH, Playwright chromium, the walks symlink)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 110/2008 · build ·
+  e2e 137/137 (one first-run S72-P2 pair flake clean on the re-run)
+- Stage 3: the parallel audits — 130-a 9/9 Verified (zero real findings + THE
+  FULL DEFAULTS/INSIGHTS PRE-WALK INVENTORY: the family source FROZEN since
+  s82/s84/s90, the drift flowing through the shared rides; the named latent
+  risks L-130a1 the ghost hover text [TOP] · L-130a2 the default solid hover ·
+  L-130a3 the select resting offset · L-130a4 the insights post-s129 halo ·
+  L-130a5 the secondary/row washes) + 130-b 9/9 PASS (the ~88th standing, zero
+  findings)
+- Stage 4: probe:ref the 102nd STABLE · the four drift gates CLEAN ·
+  scandihaven d4789c3 on-pattern · census MATCH
+- Stage 5: THE PHASED walk21 — both apps at 1440 + 390 through the s115
+  defaults + insights ladder (+ the accounts opener surfaces): 439 two-app
+  axes, 31 raw diffs → ONE REAL PARITY DEFECT (F-130c1 the ghost hover text —
+  the 130-a named TOP risk live-confirmed two-app on the Save All ghost; the
+  F-128c1/F-129c3 value pair's third consecutive session) + 30 adjudicated
+  noise axes (incl. the tabHalo.outline axes VISUALLY DISPROVEN — the
+  focused-trigger screenshots of both apps md5-IDENTICAL); the s115
+  byte-matches ALL HOLD; L-130a2 CLEAN (the reference's default hover IS the
+  solid step); L-130a4 CLEAN (the insights tabs carry the s129 pure-white
+  halo); PASS 2 ours-only: the insights family + row menus + the Week
+  round-trip PUT 200 all green
+- Stage 6: the remediation — D-130a0 the ghost hover-text fix
+  (hover:text-neutral-900) + D-130a1 the pins (RED-first: +1 it + the s17
+  re-anchor; the stash-proof — the fix reverted alone → BOTH ghost pins RED
+  alone) + D-130a2 the POST-FIX walk re-run (30 adjudicated diffs ONLY — ZERO
+  real defects; the ghost hover byte-equal rgb(23,23,23)) + the captures
+  248-251 + the VLM battery 4/4 × 4 CLEAN + D-130a3 the docs realignment
+  (SKILL v1.127.0 + the README badge 2146 + AGENTS/CLAUDE/PAD + the lockstep
+  family + session_278.md + the plan) → 110/2009
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 110/2009 · build · 137/137 ·
+  the closing drift sweep CLEAN ×4 · census MATCH; the two-commit ship + the
+  SSH-wrapper push (below)
+
+**The count ladder**: UNIT 2008 → 2009 (+1 it) · SUITES 110 · E2E 137 ·
+badge 2145 → 2146.

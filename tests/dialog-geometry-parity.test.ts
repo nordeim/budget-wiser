@@ -430,12 +430,19 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // second rotation cycle]: the F-128c1 menu-item focus-wash TEXT-arm
     // pin [+1 it, page-layout.test.ts]); the four sites re-anchored
     // again, the retired 2004 forms join the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2008 checks)");
-    expect(claude).toContain("(currently 2008)");
-    expect(claude).toContain("Vitest unit suites (2008 checks)");
-    expect(claude).toContain("`bun run test` (2008)");
+    // session-130 lockstep carry-forward: 2008 -> 2009 (the s130 +1 —
+    // the defaults + insights family second-cycle re-check: the F-130c1
+    // ghost-hover-text pin [+1 it, page-layout.test.ts]); the four
+    // sites re-anchored again, the retired 2008 forms join the
+    // negatives below.
+    expect(claude).toContain("Unit (Vitest, 2009 checks)");
+    expect(claude).toContain("(currently 2009)");
+    expect(claude).toContain("Vitest unit suites (2009 checks)");
+    expect(claude).toContain("`bun run test` (2009)");
+    expect(claude).not.toContain("Unit (Vitest, 2008 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2005 checks)")
     expect(claude).not.toContain("Unit (Vitest, 2004 checks)");
+    expect(claude).not.toContain("(currently 2008)")
     expect(claude).not.toContain("(currently 2005)")
     expect(claude).not.toContain("(currently 2004)");
     expect(claude).not.toContain("Vitest unit suites (2005 checks)")

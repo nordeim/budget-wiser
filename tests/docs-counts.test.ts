@@ -256,11 +256,16 @@ const SUITES = 110;
 // + TABS_SEGMENTED re-anchors IN PLACE, no new its] + the F-129c1
 // PANEL_BASE pin + the F-129c2 destructive-alpha pin + the F-129c3
 // outline-hover-text pin [+3 its, page-layout.test.ts]).
+// Session-130: 2008 → 2009 (+1 — the defaults + insights family
+// second-cycle re-check: the F-130c1 ghost-hover-text pin [+1 it,
+// page-layout.test.ts — the neutral-900 positive + the
+// hover:text-foreground negative]; the s17 ghost pin re-anchored IN
+// PLACE, no new it]); SUITES stays 110; E2E stays 137.
 // Session-128: 2004 → 2005 (+1 — the menu-family second-cycle
 // re-check: the F-128c1 menu-item focus-wash TEXT-arm pin [+1 it,
 // page-layout.test.ts — focus:text-neutral-900 positive + the
 // focus:text-foreground negative]); SUITES stays 110; E2E stays 137.
-const UNIT = 2008;
+const UNIT = 2009;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -661,13 +666,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-129 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-130 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s128 layer now beneath the s129 head)",
     ).toContain(
-      "+ beneath it 2005 unit checks + 137 e2e checks green; the session-128 layer (the 128-c rotation — THE MENU/POPOVER-FAMILY SECOND-CYCLE RE-CHECK",
+      "+ beneath it 2008 unit checks + 137 e2e checks green; the session-129 layer (the 129-c rotation — THE PROFILE + SETTINGS DATA-TAB FAMILY SECOND-CYCLE RE-CHECK",
     );
   });
 
@@ -758,8 +763,11 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // PANEL_BASE/destructive/outline pins, page-layout.test.ts 187→190).
     expect(skill).not.toContain("test-pinned module (1583 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 187 checks");
+    // Session-130: the retired 190 form joins the negatives ladder (the
+    // F-130c1 ghost-hover-text pin, page-layout.test.ts 190→191).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 190 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1600 lines; `tests/page-layout.test.ts`, 190 checks",
+      "test-pinned module (1600 lines; `tests/page-layout.test.ts`, 191 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(

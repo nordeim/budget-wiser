@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2008 checks)       | `bun run test`                         |
+|  Unit tests (2009 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2008) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2009) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -5978,3 +5978,94 @@ re-checks now — the s115 defaults + insights family (14 sessions back);
 carry the highlighted-state lens standing (the ghost/secondary/default
 variants' hover arms are the unaudited remainder; the pill-tab surfaces'
 focus states never live-censused).
+
+## Session-130 — the defaults + insights family second-cycle re-check (the one-fix session)
+
+The 130-c rotation — the session_277 close's named direction: **the s115 defaults +
+insights family the stalest re-check** (15 sessions back; the family source FROZEN
+since — settings-page.tsx since s82, account-insights-dialog.tsx since s84,
+accounts-page.tsx since s90), carrying the standing lenses + the session_277 close's
+named remainder: **the ghost/secondary/default variants' hover arms never audited**
+(the 130-a inventory's named latent risks L-130a1/a2, the ghost the TOP).
+
+**The walk** (walk21, the phased idiom — one app×viewport per invocation, the
+censuses to /tmp JSON, the reference's storageState persisted + reused, ONE
+reference login, PORT 3141, the walk db zero-data for PASS 1 / SEEDED for PASS 2):
+both apps at 1440×900 + 390×844 through the s115 ladder — **THE SETTINGS
+DEFAULTS-TAB FAMILY** (the segmented strip + the ACTIVE pill + the card + the six
+groups + the values AED/new/B/3 + the placeholder census + **THE
+HIGHLIGHTED-STATE CENSUS** + **THE SELECT DROPDOWN CENSUS** incl. the
+data-highlighted wash + the full text-content census) + **THE ACCOUNTS-PAGE OPENER
+SURFACES** (the toolbar + **New Account default resting+HOVER** + **the rail's
+Save All ghost resting+HOVER** + the empty state) + **PASS 2 OURS-ONLY SEEDED**
+(**THE INSIGHTS-DIALOG FAMILY** with the post-s129 halo + the row-menu surfaces +
+the Defaults interaction battery with the PUT 200 asserted). **439 two-app axes, 31
+raw diffs → ONE REAL PARITY DEFECT:**
+
+1. **F-130c1 THE GHOST HOVER TEXT** — ours rgb(10,10,10)
+   (`hover:text-foreground`) vs the reference's rgb(23,23,23) (its stock ghost's
+   `hover:text-accent-foreground` #171717). Live-walked TWO-APP on the accounts
+   rail's **Save All** ghost @1440 (the hover bg byte-equal rgb(245,245,245) both
+   apps — only the TEXT arm diverged); corroborated ours-side on the ⋮ row-menu
+   ghost. **The F-128c1/F-129c3 value pair on the GHOST variant — the genus's
+   third consecutive session** (s128 the menu-item ink · s129 the outline hover
+   text · s130 the ghost hover text); the 130-a named TOP risk L-130a1,
+   live-confirmed exactly where named. Fix: `hover:text-foreground` →
+   `hover:text-neutral-900` (the s80 badge precedent).
+2. **L-130a2 THE DEFAULT-VARIANT SOLID HOVER — CLEAN**: `newAccHover.bg`
+   rgb(29,78,216) BOTH apps byte-equal — the reference's own default hover IS the
+   solid darker step; the M-80c1 alpha genus does NOT ride its blue primaries.
+3. **L-130a4 THE INSIGHTS TABS POST-s129 HALO — CLEAN**: the insights dialog's
+   active trigger boxShadow carries `rgb(255,255,255) 0px 0px 0px 2px` — the s129
+   ring-offset retirement live-verified on this never-re-walked surface.
+
+**The adjudicated noise (30 axes)**: the 6 `labelFor` pairs (the D-115a1 frozen
+a11y superset) · the 6 tab `ringOffset` (#fff vs hsl(0 0% 100%) — the s129
+FORMAT-ONLY residual) · the 5 select `ringOffset` (the L-130a3 offset-0 invisible
+genus, named up front) · the 2 `tabHalo.outline` (the L-129c4 invisible-outline
+genus — **VISUALLY DISPROVEN: the focused-trigger screenshots of both apps are
+md5-IDENTICAL** 1b10ec4a…; the platform's globally-authored outline-color
+serializes solid/medium under :focus-visible but paints NOTHING) · the 2
+`export.cursor` (the L-129c5 disabled-cursor genus). **The s115 byte-matches ALL
+HOLD** — the Defaults family complete + the accounts openers + the insights
+dialog family + the select dropdown with the highlighted wash byte-equal + the
+interaction battery (the Week round-trip PUT 200 + the restore).
+
+The remediation: **D-130a0** the ghost hover-text fix (button.tsx) · **D-130a1**
+the pin (RED-first: +1 it page-layout — the session-130 describe; the s17 ghost
+pin re-anchored IN PLACE with the base-color negative; the stash-proof — the fix
+reverted alone → BOTH ghost pins RED alone) · **D-130a2** the POST-FIX walk
+re-run (439 axes, 30 adjudicated diffs ONLY — ZERO real defects; the ghost hover
+byte-equal rgb(23,23,23) both apps) + the captures 248-251 (four unique md5s
+c31a92f5/d02b144e/f637c507/51deafca) + the VLM battery 4/4 × 4 CLEAN · **D-130a3**
+the docs realignment (SKILL v1.127.0 + the README badge 2146 + AGENTS/CLAUDE/PAD +
+session_278.md + the plan + the repo worklog).
+
+The TDD: RED (the pin failed alone at the standing source, the 2008 neighbors
+green) → the one-line-class fix → GREEN (191/191 the file battery) → **the
+stash-proof** → **110/2009** (+1 it; the docs-counts lockstep realigned across
+its sites + the dialog-geometry CLAUDE carry-forward + the F-106a1 session-130
+layer pin). The audits: 130-a 9/9 Verified (zero real findings + the full
+defaults/insights pre-walk inventory — the named latent risks walked and
+confirmed) + 130-b 9/9 PASS (the ~88th standing). probe:ref the 102nd STABLE +
+the four drift gates CLEAN · scandihaven d4789c3 on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **110/2009** · build · **137/137 e2e** · the
+closing drift sweep CLEAN on all four gates · census MATCH. **src/ 1 file +
+tests/ 3 files changed** (button.tsx; page-layout.test.ts + docs-counts.test.ts +
+dialog-geometry-parity.test.ts). The walk-harness lessons: **L-130c2 the
+hidden-rail hover guard** (count()>0 can still be display:none — isVisible()
+before hover()) · **L-130c3 the dual-dialog strict violation** (the mobile-nav
+drawer carries role=dialog INERT at every width — scope to [data-state=open]) ·
+**L-130c4 the programmatic-focus halo wash** (Tab+focus() matches :focus-visible
+per matches() but did not paint the ring layers this run — pair the property read
+with the shadow read). The residual genus arms (record-only, no reference
+surface): the toast close X · the Tabs underline variant (dead code) · the
+mobile-nav trigger.
+
+**The next-session suggestion**: the second rotation cycle's stalest re-checks —
+the toast close X is the F-128c1 genus's named residual arm (a future walk that
+live-censuses the reference's toast X settles it); the highlighted-state lens
+stays standing; the genus is three-for-three on the interactive variants — any
+remaining `hover:text-foreground`/`focus:text-foreground` ride is suspect until
+proven otherwise.

@@ -2300,12 +2300,18 @@ describe("session-17: the Button variant corrections (S17-P4/P5)", () => {
     // text-bearing ghost ("Save All") renders the inherited #0a0a0a.
     // Ours added text-muted → gray. Computed-equal expression keeps our
     // hover tokens.
+    // Session-130 (F-130c1) re-anchor: the hover TEXT arm flipped to
+    // the neutral-900 literal (the reference's accent-foreground
+    // #171717 — the F-128c1/F-129c3 value pair live-walked on the
+    // Save All ghost); the BASE-color rule unchanged (no leading
+    // text-* arm).
     const src = readFileSync(
       path.resolve(import.meta.dirname, "../src/components/ui/button.tsx"),
       "utf8",
     );
-    expect(src).toMatch(/ghost: "hover:bg-line-soft hover:text-foreground"/);
+    expect(src).toMatch(/ghost: "hover:bg-line-soft hover:text-neutral-900"/);
     expect(src).not.toMatch(/ghost: "text-muted/);
+    expect(src).not.toMatch(/ghost: "text-foreground/);
   });
 });
 
@@ -2367,6 +2373,35 @@ describe("session-129 parity pins (the highlighted-state lens — F-129c1/c2/c3)
       /outline: "border border-line bg-surface text-foreground shadow-sm hover:bg-line-soft hover:text-neutral-900"/,
     );
     expect(src).not.toMatch(/outline: "[^"]*hover:text-foreground/);
+  });
+});
+
+describe("session-130 parity pins (the highlighted-state lens — F-130c1)", () => {
+  it("F-130c1: the ghost hover text is neutral-900 — the reference's hover:text-accent-foreground", () => {
+    // The 130-c walk's live finding on the accounts filter rail's Save
+    // All ghost (two-app at 1440, the reference's own a dead button —
+    // the Oce decode): our ghost's hover text computed rgb(10,10,10)
+    // (hover:text-foreground) where the reference computes rgb(23,23,23)
+    // — its stock ghost's hover:text-accent-foreground #171717. The
+    // hover BG byte-equal rgb(245,245,245) both apps; only the TEXT arm
+    // diverged. The F-128c1/F-129c3 value pair on the GHOST variant —
+    // the third consecutive session to ship the genus (s128 the
+    // menu-item ink · s129 the outline hover text · s130 the ghost
+    // hover text); the 130-a inventory's named TOP latent risk
+    // (L-130a1), live-confirmed exactly where named, corroborated
+    // ours-side on the row-menu ghost trigger. The s80 badge precedent
+    // expresses the reference's accent-foreground as our neutral-900
+    // literal. The residual genus arms (record-only, no reference
+    // surface): the toast close X (our own construction, never
+    // live-censused on the reference), the Tabs underline variant
+    // (dead code — no app surface mounts it), the mobile-nav trigger
+    // (our fix-over-defect superset).
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/components/ui/button.tsx"),
+      "utf8",
+    );
+    expect(src).toMatch(/ghost: "hover:bg-line-soft hover:text-neutral-900"/);
+    expect(src).not.toMatch(/ghost: "[^"]*hover:text-foreground/);
   });
 });
 
