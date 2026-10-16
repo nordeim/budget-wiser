@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2036 checks)      | `bun run test`                         |
+|  Unit tests (2041 checks)      | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2036) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2041) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6412,3 +6412,11 @@ The 136-c rotation (the session_288 close's named direction: the rotation's last
 - The remediation: D-136a0 THE FREEZE PINS (+4 its, leads-family-parity.test.ts — the 9 table heads ordered set + the Gke 4 field labels + the row-menu trio + the edit dialog's 7 labels; all stash-proven: each mutation → exactly 1 RED alone) + D-136a1 the docs realignment (the PAD duplicate-row cleanup rode it). ZERO src changes.
 - Count ladder: 111 suites / 2036 unit / 137 e2e / badge 2173.
 - The harness lessons: L-136c1 the locator re-resolution trap · L-136c2 the menuitem existence window · L-136c3 the accessible-name trap; the session-level lesson — our side never round-trips an http storageState (the Secure-flagged session cookie replay).
+
+### Session-137 (2026-10-17) — the settings picklist-editor family fresh-eyes walk (the pin-only session)
+
+The 137-c rotation (the session_290 close's named direction: the fresh-eyes sweep of the never-walked seams — the settings picklist editors FIRST, the stalest candidate: settings-page.tsx frozen since s82, 55 sessions, while the shared primitives moved under it). The walk (walk28, the phased idiom, the walk db ZERO-CONFIG PASS 1 [the both-zeroes idiom — the 5 picklist arrays emptied to mirror the reference's wiped config] / re-seeded PASS 2): PASS 1's 27 raw diffs @1440 + 6 @390 ALL adjudicated to documented genera — the v4 shadow dead-layers, the L-122c1 disabled-cursor, the F-119c2 bodyBg (occluded), the inner-container scroll artifact (the decisive geo probe: BOTH apps' cards at doc-y 249, panelToCard 0), **the space-y margin-direction genus' maiden line-box face** (the reference's v3-style mt-8 on later inline buttons extends the line box's ascent where ours' v4 mb-8 extends it downward — the same 160px cards, the 8px on opposite sides), the L-134c1 whitespace — **ZERO REAL PARITY DEFECTS**. PASS 2: every seeded contract holds — the maiden lenses ALL CLEAN: the L-137a1 TOP (the s130 ghost hover-text live-verified on the picklist rows: the Pencil/Save/X trio rgb(245,245,245)/rgb(23,23,23), the Trash2 red pair rgb(220,38,38)→rgb(185,28,28), the row's gray-50) · the L-137a2 (the Defaults selects' resting ink — the s133 retirement's settings arm, a code-verified no-op) · the L-137a3 rename state + the Enter-save round-trip · the L-137a4 add round-trip (the hover alpha oklab 0.9 = the reference's rgba(23,23,23,0.9)) · the Defaults select round-trips (Week → Month restored). THE REFERENCE INTERACTIVE DRIVE (the maiden, restored): the add-button family censused TWO-APP BYTE-EQUAL (48×36 · rgb(23,23,23) · rgb(250,250,250) · radius 6px · the hover alpha 0.9) — then their Add click fired NO NETWORK CALL: **THE REFERENCE'S ADD FLOW IS A NO-OP TODAY** (their wiped config un-repopulatable from their own UI — the reference-side genus, ours the working superset; the reference restored to wiped, ZERO residue).
+
+- The remediation: D-137a0 THE FREEZE PINS (+5 its, settings-family-parity.test.ts — the 5 panel titles + the 3 tab labels + the 5 add-input placeholders [incl. the Industries typo] + the Defaults 6-label ordered set + the picklist interactive chrome; all five stash-proven: each mutation → exactly 1 RED alone) + D-137a1 the docs realignment (the lockstep RED 12 → GREEN 21/21; the dialog-geometry CLAUDE carrier re-anchored). ZERO src changes — the freeze-pin genus closed on its LAST family (accounts s133 · dashboard s134 · contacts s135 · leads s136 · settings s137).
+- Count ladder: 112 suites / 2041 unit / 137 e2e / badge 2178.
+- The harness lessons: L-137c1 the inner-container scroll (main.overflow-auto — window.scrollY stays 0; reset before geometry censuses) · L-137c2 the synthetic-hover trap (CSS :hover needs REAL pointer moves — locator.hover() only) · L-137c3 the React controlled-input trap (locator.fill() only — direct .value + synthetic events never reach React state) · L-137c4 the quote-collapse selector trap.

@@ -117,7 +117,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
 const E2E = 137;
-const SUITES = 111;
+const SUITES = 112;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -312,12 +312,21 @@ const SUITES = 111;
 // Input-component ride) + the 4 freeze pins (the 8 heads ordered set +
 // the 6 panel cards + the row-menu trio + the W7 labels)]; SUITES + E2E
 // unchanged (111 · 137).
+// Session-137: 2036 → 2041 (+5 — the settings picklist-editor family
+// fresh-eyes walk [walk28: PASS 1 both-zeroes byte-equal modulo the
+// documented genera; PASS 2 every seeded contract holding incl. the
+// maiden hover arms; the reference's add flow a documented no-op — the
+// pin-only session]: the NEW settings-family-parity suite [the freeze
+// pins — the 5 panel titles + the 3 tab labels + the 5 add-input
+// placeholders + the Defaults 6-label ordered set + the picklist
+// interactive chrome; the freeze-pin genus closed on its LAST family —
+// settings s137]; SUITES 111 → 112 (the ONE new file); E2E stays 137).
 // Session-136: 2032 → 2036 (+4 — the leads-table family third-cycle
 // re-check: the ZERO-FIX/FREEZE-PIN session [D-136a0 the freeze pins +4
 // its, leads-family-parity.test.ts — the 9 table heads ordered set +
 // the Gke 4 field labels + the row-menu trio + the edit dialog's 7
 // labels; ZERO src changes]; SUITES + E2E unchanged (111 · 137).
-const UNIT = 2036;
+const UNIT = 2041;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -720,7 +729,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-136 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-137 layer`,
     );
     expect(
       skill,

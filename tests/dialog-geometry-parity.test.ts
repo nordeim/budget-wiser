@@ -472,10 +472,18 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // the edit dialog's 7 labels, leads-family-parity.test.ts; ZERO src
     // changes]); the four sites re-anchored again, the retired 2032
     // form joins the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2036 checks)");
-    expect(claude).toContain("(currently 2036)");
-    expect(claude).toContain("Vitest unit suites (2036 checks)");
-    expect(claude).toContain("`bun run test` (2036)");
+    // session-137 lockstep carry-forward: 2036 -> 2041 (the s137 +5 —
+    // the settings picklist-editor family fresh-eyes walk: the PIN-ONLY
+    // session [D-137a0 the freeze pins +5 its, settings-family-parity
+    // .test.ts — the 5 panel titles + the 3 tab labels + the 5 add-input
+    // placeholders + the Defaults 6-label ordered set + the picklist
+    // interactive chrome; ZERO src changes]); the four sites re-anchored
+    // again, the retired 2036 form joins the negatives below.
+    expect(claude).toContain("Unit (Vitest, 2041 checks)");
+    expect(claude).toContain("(currently 2041)");
+    expect(claude).toContain("Vitest unit suites (2041 checks)");
+    expect(claude).toContain("`bun run test` (2041)");
+    expect(claude).not.toContain("Unit (Vitest, 2036 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2032 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2026 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2023 checks)");
