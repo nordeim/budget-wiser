@@ -5015,3 +5015,79 @@ badge 2146 → 2155.
 
 **The count ladder**: UNIT 2023 → 2026 (+3 its) · SUITES 111 · E2E 137 · badge
 2160 → 2163.
+
+## Session-135 — the contacts-list family third-cycle re-check (the one-fix + freeze-pin session)
+
+- Stage 1: the workspace pulled to 0713527 (the session_287 chat-log record
+  atop the s134 ship a01ee92); the docs re-anchored at the s134 ship state
+  (SKILL v1.131.0, 111/2026/137, badge 2163); census MATCH 15/24/10/23/12 +
+  4 users; the direction confirmed from the session_287 close: contacts-list
+  (s119), 16 sessions back
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 111/2026 · build ·
+  137/137 (3.4m) — exact match
+- Stage 3: the audits — 135-a 9/9 Verified (two precision footnotes: the
+  "40/40" combined-pair scope + the focused-file stash-proof scope; + THE
+  COMPLETE CONTACTS-LIST PRE-WALK INVENTORY: the freeze map
+  [contacts-page.tsx + entity-dialogs.tsx moved at s127 — NOT blanket-frozen;
+  the panel since s82, the W7 since s91, the entry since s19], the drift
+  carriers, the lens census gaps, the named risks L-135a1..a9 with the TOP =
+  the per-row role select's placeholder state; the pointer correction: the
+  s119 record is docs/session_256.md) + 135-b 9/9 PASS (the ~93rd standing
+  battery, zero findings, zero strays)
+- Stage 4: the live verification — probe:ref the 107th STABLE (bundle md5
+  a70a637f exact; demo data ZERO; the TRUE-390 defect STANDS) · the four
+  drift gates CLEAN (1440/390/768/1024 each --fail-on-drift) · scandihaven
+  d4789c3 on-pattern · census MATCH
+- Stage 5 (the 135-c rotation): THE CONTACTS-LIST FAMILY THIRD-CYCLE
+  RE-CHECK — walk26 (the phased idiom + the James Whitfield NULL-ROLE
+  walk-db seed) + the walk26b decisive scan-dialog anatomy probe: 12 raw
+  PASS 1 diffs → THREE REAL PARITY DEFECTS, all in the Scan Business Card
+  dialog [F-135c1 the submit's color — ours the bare blue primary vs the
+  reference's rgb(23,23,23) DIALOG_SUBMIT family (the F-127c2 genus' missed
+  sibling) · F-135c2 the file input's typography (the browser-default stack
+  vs the reference's stock 14px + 4px/12px md-responsive input stack) ·
+  F-135c3 the file input's non-fluid width (the intrinsic 320 min-content
+  escaping the dialog's p-6 padding at 390)]; the adjudicated noise [the v4
+  dead-layer shadow genus ×4 · the L-134c1 text-node-granularity genus ×2 ·
+  the space-y v4 margin-direction genus]; THE LENSES ON THEIR MAIDEN RUN
+  ALL CLEAN [L-135a1 the s133 retirement's contacts arm — the null-role
+  select IN the data-placeholder state computing the neutral rgb(10,10,10)
+  trigger + chevron ink (the L-133c2 asymmetry standing; the 134-a record's
+  deferred edge CLOSED) · L-135a2 the hover arms (the quintet + the custom
+  ghost-trio pairs + the partial ⋮ ride + the Clear All ghost + the
+  slide-over trio pair) · L-135a3 the row-menu wash on the REAL Radix
+  [role=menu] (the L-134c2 inverse) · L-135a4 the select OPEN states ·
+  L-135a5 the s125 active-pill's third segmented ride (the slide-over tabs)
+  · L-135a6 the text census modulo the genus · L-135a7 the W7's post-s127
+  state (672 + the 7 labels + the dark Save) · L-135a8 the @390 genera (the
+  L-127c6 pre-classification MOOT — the reference's contacts header
+  BYTE-EQUAL ours today)]; PASS 2 populated ours-only — every seeded
+  contract holds [the KPIs 15/15/+15/6/5 · the 15 rows + 15 mobile cards ·
+  the row anatomy · the Key-row genus]
+- Stage 6: the remediation — D-135a0 THE SCAN-DIALOG FIX [contacts-page.tsx:
+  the submit rides DIALOG_SUBMIT.button (the s127 idiom) + the file input
+  rides the Input component + max-w-xs mx-auto (the stock stack)] +
+  D-135a1 THE PINS [+6 its, contacts-family-parity.test.ts: the 2 fix pins
+  (stash-proven — the fix reverted alone → exactly the 2 RED alone) + the 4
+  freeze pins (the 8 heads word-boundary ordered set + the 6 panel cards +
+  the row-menu trio + the W7 labels — each mutation → exactly 1 RED alone)]
+  + D-135a2 the docs realignment [the lockstep RED (13) at the stale docs →
+  the realignment → GREEN 40/40]; THE POST-FIX WALK RE-RUN: 6 raw diffs,
+  ZERO REAL PARITY DEFECTS — the scan-dialog axes ALL byte-equal
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 111/2032 · build · 137/137 ·
+  the closing drift sweep CLEAN on all four gates · census MATCH; the
+  captures 268-271 (four unique md5s) + THE VLM BATTERY 4/4 CLEAN (269
+  reads the DARK/GREY submit — the fix visually verified); the two-commit
+  ship + the SSH-wrapper push
+
+**The count ladder**: UNIT 2026 → 2032 (+6 its) · SUITES 111 · E2E 137 ·
+badge 2163 → 2169.
+
+**The walk-harness lessons**: L-135c1 the stopPropagation cell map (the
+contacts row's Name/Role/Priority/Actions cells stop propagation — the
+slide-over opens only from the Last-Activity/Engagement/Company/Source
+cells) · L-135c2 the stripComments string-literal trap (the
+accept="image/*" literal's `/*` eats to the next `*/` — raw-anchored
+extraction for pins whose region carries it) · L-135c3 the word-boundary pin
+discipline (ordered-set pins must match whole words — toContain alone lets
+"Engagements" pass for "Engagement").

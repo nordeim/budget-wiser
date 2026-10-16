@@ -790,7 +790,23 @@ export default function ContactsPage() {
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
               <Scan className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-sm text-gray-600 mb-4">Upload a photo or image of the business card</p>
-              <input
+              {/* Session-135 (F-135c2/c3, the 135-c walk + the walk26b
+                  decisive anatomy probe): the reference's VISIBLE file
+                  input carries the platform's STOCK INPUT STACK — h-9
+                  (36px), rounded-md, 1px border-line, px-3 py-1
+                  (4px/12px), text-base md:text-sm (16px on phones /
+                  14px at md — the S9-12 contract), shadow-sm, and a
+                  FLUID width capped at 320 (272 at 390 — it shrinks
+                  inside the dropzone). Ours shipped the bare max-w-xs
+                  mx-auto — the browser-default 16px/24px zero-padding
+                  stack AND the intrinsic 320 min-content that forced
+                  the dropzone to 388 at phone width, escaping the
+                  dialog's p-6 padding (the reference's dz 340x224 vs
+                  ours 388x192 @390). The fix rides the Input component
+                  (the byte-parity-verified stock stack the search +
+                  create-dialog fields ride) + the max-w-xs mx-auto
+                  append. */}
+              <Input
                 type="file"
                 accept="image/*"
                 className="max-w-xs mx-auto"
@@ -806,6 +822,13 @@ export default function ContactsPage() {
             <div className="flex justify-end gap-3">
               <Button variant="outline" onClick={() => setScanOpen(false)}>Cancel</Button>
               <Button
+                /* Session-135 (F-135c1, the 135-c walk): the reference's
+                   Scan submit computes rgb(23,23,23) — the bg-neutral-900
+                   DIALOG_SUBMIT family its Import sibling rides (the s127
+                   F-127c2 fix) — where ours shipped the bare default
+                   Button (bg-primary blue-600). The genus' missed
+                   sibling, closed by the same idiom. */
+                className={DIALOG_SUBMIT.button}
                 disabled={!scanFile || scanBusy}
                 onClick={() => {
                   setScanBusy(true);

@@ -288,3 +288,192 @@ describe("session-119: the four-label + adjacency census pin (D-119a3) + the mob
     expect(src).toMatch(/Try adjusting your search or filters/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-135 pins: the contacts-list third-cycle re-check (the 135-c
+// rotation — walk26 + the walk26b decisive anatomy probe). The rotation's
+// three real defects ALL live in the Scan Business Card dialog (the NAe
+// contract, one site); the freeze pins close the L-135a9 ordered-set gaps
+// the walk surfaced (the 8 heads / the 6 panel cards / the row-menu trio /
+// the W7 labels — individually pinned since their ships, never ORDERED).
+// ---------------------------------------------------------------------------
+
+describe("session-135: the scan-dialog fix (F-135c1/c2/c3, the 135-c walk)", () => {
+  // the house idiom (import-dialog.test.ts): comments stripped so the
+  // pins assert CODE, never prose — the fix's own explanatory comments
+  // must not false-trigger the negatives.
+  const stripComments = (src: string) =>
+    src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
+  const scanRegion = () => {
+    const src = contactsSrc();
+    const i = src.indexOf("Scan Business Card");
+    return stripComments(src.slice(i, i + 5000));
+  };
+
+  it("the Scan submit carries the reference's DARK NEUTRAL family (F-135c1)", () => {
+    // The walk26b decisive two-app anatomy probe: the reference's Scan
+    // submit computes rgb(23,23,23) — the bg-neutral-900 DIALOG_SUBMIT
+    // family its Import sibling rides (the s127 F-127c2 fix) — where
+    // ours shipped the bare default Button (bg-primary blue-600,
+    // rgb(37,99,235)), both viewports. The F-127c2 genus' missed
+    // sibling: the s127 re-ink covered the Import submit, never
+    // censused the Scan dialog's own footer.
+    // The RAW region anchored on the submit's own label (the
+    // comment-stripper cannot be used here: the accept="image/*"
+    // string literal's `/*` would eat to the fix comment's `*/`).
+    const raw = contactsSrc().slice(
+      contactsSrc().indexOf("Scan Business Card"),
+      contactsSrc().indexOf("Scan Business Card") + 5000,
+    );
+    const iScan = raw.indexOf("Scanning...");
+    expect(iScan, "the Scan submit label found").toBeGreaterThan(-1);
+    const btnStart = raw.lastIndexOf("<Button", iScan);
+    expect(btnStart, "the Scan submit button found").toBeGreaterThan(-1);
+    const btn = raw.slice(btnStart, iScan);
+    expect(btn).toContain('className={DIALOG_SUBMIT.button}');
+    expect(btn).toContain("disabled={!scanFile || scanBusy}");
+    // the exact-className form: the submit rides DIALOG_SUBMIT.button
+    // ALONE (any bg-primary/blue variant appended would break this) —
+    // the family doctrine's negative without reading the comments.
+    const cls = /className=\{([^}]+)\}/.exec(btn)?.[1] ?? "";
+    expect(cls).toBe("DIALOG_SUBMIT.button");
+  });
+
+  it("the Scan file input rides the Input component's stock stack + the max-w-xs cap (F-135c2/c3)", () => {
+    // The walk26b anatomy: the reference's VISIBLE file input carries
+    // the platform's STOCK INPUT STACK — h-9 36px, rounded-md, 1px
+    // border-line, px-3 py-1 (4px/12px), text-base md:text-sm (16px on
+    // phones / 14px at md), shadow-sm, and a FLUID width capped at 320
+    // (272 at 390 — it shrinks inside the dropzone) — where ours
+    // shipped the bare `max-w-xs mx-auto` two-class form: the
+    // browser-default 16px/24px zero-padding stack AND the intrinsic
+    // 320 min-content that forced the dropzone to 388 at phone width,
+    // ESCAPING the dialog's p-6 padding (the reference's dz 340x224 vs
+    // ours 388x192 @390). The fix rides the Input component (the
+    // byte-parity-verified stock stack the search + create-dialog
+    // fields ride — its className stack pinned in ui/input.tsx) with
+    // the max-w-xs mx-auto append: the component supplies h-9 +
+    // w-full + px-3 py-1 + text-base md:text-sm + shadow-sm, the
+    // append supplies the 320 cap + the centering.
+    // The RAW region (never comment-stripped — the accept string
+    // literal itself carries `/*`): anchor on the accept attr (the
+    // scan dialog's ONE file input; the import dialog's accepts
+    // .csv,.xls,.xlsx), then read the COMPONENT tag + its className.
+    const src = contactsSrc();
+    const i0 = src.indexOf("Scan Business Card");
+    const raw = src.slice(i0, i0 + 5000);
+    const i = raw.indexOf('accept="image/*"');
+    expect(i, "the Scan file input found").toBeGreaterThan(-1);
+    // the tag is the INPUT COMPONENT (the stock-stack carrier), never
+    // the bare <input element
+    const before = raw.slice(Math.max(0, i - 300), i);
+    expect(before).toMatch(/<Input\b/);
+    expect(before).not.toMatch(/<input\b/);
+    // the component's className: the max-w-xs cap + the mx-auto
+    // centering (the fluid w-full rides the component's own base)
+    const attrs = raw.slice(i, i + 600);
+    const cls = /className="([^"]+)"/.exec(attrs)?.[1] ?? "";
+    expect(cls).toContain("max-w-xs");
+    expect(cls).toContain("mx-auto");
+    // the negative: the full bare-element form retired (the defect's
+    // own signature — the bare <input with ONLY the two classes)
+    expect(raw).not.toMatch(/<input\s+type="file"\s+accept="image\/\*"\s+className="max-w-xs mx-auto"/);
+  });
+});
+
+describe("session-135: the freeze pins (L-135a9 — the never-ordered sets)", () => {
+  it("the 8 table heads as an ORDERED SET (the walk's table.heads census)", () => {
+    // The walk's two-app census: table.heads = the pipe-joined ordered
+    // set "Name|Role|Priority|Last Activity|Engagement|Company|Source|
+    // Actions" — byte-equal both apps, but in ZERO ordered-set
+    // assertions before (the D-133a2/D-134a0 genus: the accounts
+    // 8-heads + the dashboard 6-KPI sets got their pins; contacts'
+    // never did). The sortable heads wrap their text in the inner div —
+    // so the ORDER is asserted per-TableHead chunk, never per `>text<`.
+    const src = contactsSrc();
+    const hdr = src.slice(src.indexOf("<TableHeader>"), src.indexOf("</TableHeader>"));
+    // split on the space/newline-terminated forms so the <TableHeader>
+    // wrapper itself (the `er>` suffix) never counts as a head chunk —
+    // the heads ship BOTH the multi-line (sortable) and single-line forms
+    const chunks = hdr.split(/<TableHead[ \n]/).slice(1).map((c) => c.slice(0, 400));
+    expect(chunks.length, "exactly 8 TableHeads").toBe(8);
+    const heads = [
+      "Name",
+      "Role",
+      "Priority",
+      "Last Activity",
+      "Engagement",
+      "Company",
+      "Source",
+      "Actions",
+    ];
+    chunks.forEach((c, i) => {
+      // WORD-BOUNDARY match — the head text must appear as a whole
+      // word, never as a substring of a mutated longer word (the
+      // stash-proof discipline: "Engagements" must RED this pin)
+      const re = new RegExp(`(^|[^a-zA-Z])${heads[i]}([^a-zA-Z]|$)`);
+      expect(re.test(c), `the TableHead #${i + 1} = "${heads[i]}" (whole word)`).toBe(true);
+    });
+  });
+
+  it("the 6 filter-panel card groups as an ordered set (the kke rail)", () => {
+    // The walk's kke.cards census: Role|Priority|Activity Status|
+    // Company Size|Source|Engagement Level — the panel's construction
+    // order, never ordered-pinned (s28 pinned the structure, s88 the
+    // chrome family).
+    const src = contactsSrc();
+    const panel = src.slice(src.indexOf('showFilters && ('));
+    const groups = [
+      "Role",
+      "Priority",
+      "Activity Status",
+      "Company Size",
+      "Source",
+      "Engagement Level",
+    ];
+    let prev = -1;
+    for (const g of groups) {
+      const i = panel.indexOf(`>${g}<`, prev + 1);
+      expect(i, `the panel card "${g}" after position ${prev}`).toBeGreaterThan(prev);
+      prev = i;
+    }
+  });
+
+  it("the row-menu items as an ordered set (Edit|Log Activity|Delete)", () => {
+    // The walk's rmenu.items census: the real-Radix row menu renders
+    // exactly Edit|Log Activity|Delete in order — the Delete the bare
+    // text-red-600 literal (the M-73c9 decode), the Log Activity OUR
+    // wired superset (the reference's own item dead, S73-P1). Never
+    // ordered-pinned (the topbar-rowmenu suite covers the topbar
+    // menus, not the contacts row menu).
+    const src = contactsSrc();
+    const menu = src.slice(src.indexOf("<MenuContent>"), src.indexOf("</MenuContent>"));
+    expect(menu.length).toBeGreaterThan(0);
+    const items = ["Edit", "Log Activity", "Delete"];
+    let prev = -1;
+    for (const item of items) {
+      const m = new RegExp(`>\\s*${item}\\s*<`).exec(menu.slice(prev + 1));
+      expect(m, `the row-menu item "${item}" in order`).not.toBeNull();
+      prev = (prev + 1) + (m?.index ?? 0);
+    }
+    // the Delete literal + exactly 3 items
+    expect(menu).toMatch(/className="text-red-600"/);
+    expect(menu.split("<MenuItem").length - 1).toBe(3);
+  });
+
+  it("the W7's 7 field labels as an ordered set (the EntityEditDialog config)", () => {
+    // The walk's w7.labels census: Name *|Email *|Phone|Company|
+    // Position|Status|Source — the CONTACT_EDIT_FIELDS construction
+    // order (individually pinned since s91 in entity-edit-dialog.test,
+    // never ORDERED — the D-134a0 genus).
+    const src = read("src/components/shared/entity-edit-dialog.tsx");
+    const cfg = src.slice(src.indexOf("CONTACT_EDIT_FIELDS"), src.indexOf("ACCOUNT_EDIT_FIELDS"));
+    const labels = ["Name *", "Email *", "Phone", "Company", "Position", "Status", "Source"];
+    let prev = -1;
+    for (const l of labels) {
+      const i = cfg.indexOf(`label: "${l}"`, prev + 1);
+      expect(i, `the W7 label "${l}" after position ${prev}`).toBeGreaterThan(prev);
+      prev = i;
+    }
+  });
+});

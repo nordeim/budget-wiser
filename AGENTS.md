@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2026 checks)       | `bun run test`                         |
+|  Unit tests (2032 checks)      | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2026) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2032) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6397,3 +6397,9 @@ s116+ candidates (contacts-list s119 · leads-table s120); the computed-ink +
 hover-arm + text-content + select-OPEN lenses stay standing; the text-node-granularity
 harness lesson (L-134c1) rides the next text census.
 
+
+### Session-135 (2026-10-16) — the contacts-list family third-cycle re-check (the one-fix + freeze-pin session)
+
+- The 135-c rotation (the session_287 close's named direction — the s116+ third-cycle candidates' next member, contacts-list [s119], 16 sessions back): walk26 (the phased idiom) + the walk26b decisive scan-dialog anatomy probe — 12 raw PASS 1 diffs adjudicated to THREE real defects, all in the Scan Business Card dialog: F-135c1 the submit's color (ours the bare blue primary vs the reference's rgb(23,23,23) DIALOG_SUBMIT family — the F-127c2 genus' missed sibling) · F-135c2 the file input's typography (the browser-default 16px/24px zero-padding stack vs the reference's stock 14px + 4px/12px md-responsive stack) · F-135c3 the file input's non-fluid width (the intrinsic 320 min-content escaping the dialog's p-6 padding at 390).
+- The maiden lenses ALL CLEAN, incl. the L-135a1 TOP risk — the s133 placeholderState retirement's never-censused contacts arm: the null-role seed's per-row select (the walk db's James Whitfield) sits IN Radix's data-placeholder state and computes the neutral rgb(10,10,10) trigger + chevron ink, exactly the fix's intent; the row-menu wash on the REAL Radix [role=menu] (the L-134c2 inverse); the select OPEN states; the s125 active-pill's third segmented ride (the slide-over tabs); the W7's 672/7-labels/dark-Save contract.
+- The remediation: D-135a0 THE SCAN-DIALOG FIX (contacts-page.tsx — the submit rides DIALOG_SUBMIT.button [the s127 idiom]; the file input rides the Input component + max-w-xs mx-auto [the byte-parity-verified stock stack]) + D-135a1 THE PINS (+6 its, contacts-family-parity.test.ts — the 2 fix pins + the 4 freeze pins; all stash-proven) + D-135a2 the docs realignment. The post-fix walk re-run: 6 raw diffs, ZERO real parity defects (the v4 dead-layer shadow genus + the text-node-granularity genus only). Count ladder: 111 suites / 2032 unit / 137 e2e / badge 2169.
