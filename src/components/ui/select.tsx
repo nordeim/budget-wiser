@@ -32,8 +32,12 @@ function SelectTrigger({
       // reference's [&>span]:line-clamp-1 — its trigger span computes
       // display flow-root / overflow hidden / text-overflow clip /
       // line-clamp 1 where our truncate computed block/ellipsis/none.
+      // Session-133 (D-133a0, F-133c1): the placeholderState
+      // interpolation RETIRED — the reference's trigger construction
+      // carries NO data-[placeholder] arm (its empty density select
+      // inherits the foreground ink; ours dimmed the chevron).
       className={cn(
-        `${SELECT_TRIGGER.base} ${SELECT_TRIGGER.placeholderState} ${SELECT_TRIGGER.focusRing} disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1`,
+        `${SELECT_TRIGGER.base} ${SELECT_TRIGGER.focusRing} disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1`,
         className,
       )}
       {...props}

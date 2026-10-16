@@ -4901,3 +4901,56 @@ badge 2146 → 2155.
 
 **The count ladder**: UNIT 2018 → 2021 (+3 its) · SUITES 111 · E2E 137 · badge
 2155 → 2158.
+
+## Session 133 — the accounts-list family third-cycle re-check + the one-fix session
+
+- Stage 1: the workspace RESET again — re-cloned at 4cb2d5e (the s132 ship be1db76
+  + the session log 312ee84 + the session_283 intake); the environment re-stood at
+  /home/z/neo-crm (bun install, .env, env -u db:push/db:seed, census MATCH at the
+  REPO path after the F-123a1 platform-override re-confirmation, Playwright
+  chromium-headless-shell 1243 installed to match the 1.63.0 lockfile)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 111/2021 · build · e2e
+  137/137 (3.4m, zero flakes)
+- Stage 3: the parallel audits — 133-a 9/9 Verified (one prose-only footnote: the
+  s132 ship carried 4 test files, not 2 — the two count-lockstep carriers + THE
+  COMPLETE ACCOUNTS-LIST PRE-WALK INVENTORY: the freeze map [accounts-page.tsx
+  since s90 — 43 sessions], the drift census since s117, the named latent risks
+  L-133a1..a9 — the TOP the outline hover arms never censused on /accounts) +
+  133-b 9/9 PASS (the ~91st standing — the drawer battery 11 PLAIN + the 4/4
+  click-throughs, the SEO 13 metadata-bearing files, the space-y census 107 exact,
+  the focused ladder 294 its GREEN, zero findings, strays cleaned)
+- Stage 4: probe:ref the 105th STABLE · the four drift gates CLEAN (each
+  --fail-on-drift) · scandihaven d4789c3 on-pattern · census MATCH
+- Stage 5: THE ACCOUNTS-LIST FAMILY THIRD-CYCLE RE-CHECK (walk24, the phased
+  idiom; one script-bug fixed pre-run) — 274 two-app axes, 10 raw diffs, ONE REAL
+  PARITY DEFECT F-133c1 THE EMPTY-SELECT PLACEHOLDER INK [the dead density
+  select's trigger rgb(115,115,115) ours vs rgb(10,10,10) the reference's — our
+  value="" enters Radix's data-placeholder state where the placeholderState arm
+  dims the trigger + the chevron paints at the trigger color; the reference's
+  platform avoids the state via the N-87c4 fixed no-match "format" value; the s81
+  M-81c3 "NO placeholder arm" doctrine live-confirmed on the only
+  placeholder-state select on either app]; the adjudicated noise: the v4
+  dead-layer shadow genus · the s95 containment cascade @390 (both toolbars stack
+  identically, the rows exactly 220px both apps — the decisive probe) · the
+  climb-guard harness artifact (the fixed shadow-only probe: the card chrome
+  byte-equal); the lenses on their maiden run ALL CLEAN (the outline hover arms ·
+  the text-content census byte-equal both viewports · the select OPEN state · the
+  rail); PASS 2 populated ours-only — every seeded contract holds (the KPI values
+  10/8/9/$77.5M/3 · the tier census 9 Key + 1 A · the star census 9 · the overdue
+  3 × "1 Overdue" + 3 red-border rows · the healths 5/3/2 · the Key tint · THE
+  EDIT ACCOUNT DIALOG's FIRST WALK — the 672×516 chrome + the 8 field labels + the
+  Cancel hover pair + the dark Save Changes · the Insights tabs · the Cards view ·
+  the row menu + the select OPEN washes)
+- Stage 6: the remediation — D-133a0 THE PLACEHOLDER-INK FIX [page-layout.ts
+  SELECT_TRIGGER.placeholderState retired + the select.tsx composition] +
+  D-133a1 the pin re-anchor (RED-first + the stash-proof) + D-133a2 THE FREEZE
+  PINS (+2 its: the 8-heads ordered set + the toolbar construction freeze, both
+  stash-proven) + D-133a3 the docs realignment; the POST-FIX walk re-run 274 axes,
+  8 adjudicated diffs ONLY — the density ink byte-equal both apps; the docs-counts
+  lockstep RED (12) → the realignment → GREEN (21/21) → 111/2023
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 111/2023 · build · 137/137 · the
+  closing drift sweep CLEAN on all four gates · census MATCH; the two-commit ship +
+  the SSH-wrapper push (below)
+
+**The count ladder**: UNIT 2021 → 2023 (+2 its) · SUITES 111 · E2E 137 · badge
+2158 → 2160.

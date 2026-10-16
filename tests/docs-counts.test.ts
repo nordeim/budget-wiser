@@ -288,7 +288,19 @@ const SUITES = 111;
 // bar's SHORT "PDF" label vs the per-table quartet's full "Export
 // CSV"/"Export PDF" pair — the walk's barprobe7 two-app byte-equal
 // contract]; SUITES + E2E unchanged (111 · 137).
-const UNIT = 2021;
+// Session-133: 2021 → 2023 (+2 — the accounts-list family third-cycle
+// re-check [walk24 — the session_283 close's named direction, the next
+// s116+ candidate, 16 sessions back]: ONE real parity defect F-133c1 the
+// empty-select placeholder ink [the dead density select's trigger
+// dimming to muted-ink #737373 where the reference inherits the
+// foreground ink — its platform avoids Radix's data-placeholder state
+// via the N-87c4 fixed no-match value; our arm painted the chevron a
+// lighter gray, both viewports] + the freeze pins D-133a2 [the 8-heads
+// set + the toolbar construction, account-contacts-parity.test.ts —
+// "Account Name" appeared in ZERO test assertions before]; the
+// re-anchored placeholderState pin rides in place; SUITES + E2E
+// unchanged (111 · 137).
+const UNIT = 2023;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -691,13 +703,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-132 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-133 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s131 layer now beneath the s132 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s132 layer now beneath the s133 head)",
     ).toContain(
-      "+ beneath it 2018 unit checks + 137 e2e checks green; the session-131 layer (the 131-c rotation — THE TOAST FAMILY WALK",
+      "+ beneath it 2021 unit checks + 137 e2e checks green; the session-132 layer (the 132-c rotation — THE REPORTS-TABLES FAMILY THIRD-CYCLE RE-CHECK",
     );
   });
 

@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2021 checks)       | `bun run test`                         |
+|  Unit tests (2023 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2021) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2023) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6241,3 +6241,80 @@ s116+ candidates (accounts-list s117 · dashboard-charts s118 · contacts-list s
 leads-table s120); the highlighted-state + text-content lenses stay standing; the
 chart-card runtime rects stay walk-verified per re-check cycle (the drift gates own
 the pixel layer).
+
+## Session-133 — the accounts-list family third-cycle re-check (the one-fix session)
+
+The 133-c rotation — the session_283 close's named direction: **the s116+ third-cycle
+candidates' next member — accounts-list (s117)**, 16 sessions back. The 133-a pre-walk
+inventory: the family source FROZEN (accounts-page.tsx since s90 — 43 sessions; the
+Insights dialog since s84; the Edit dialog since s91) but the shared primitives moved
+under it — the s129 button outline hover-text, the s130 ghost hover-text, the s129
+TABS_PILL/PANEL_BASE ring-offset retirement, the s125 active-pill bg-white, the s131
+toast close-X — and the lenses sharpened since s117 (the F-126c1 text-content · the
+F-127c2 submit-color · the F-128c1 highlighted-state · the s132 select OPEN-state).
+The named latent risks L-133a1..a9 (the TOP: the outline hover arms never censused on
+/accounts; a2: the Edit Account dialog NEVER in a walk ladder; a3: the text-content
+census never run here; a4: the select OPEN state; a5: the unpinned heads set).
+
+**THE WALK (walk24, the phased idiom — one app×viewport per invocation, the censuses
+persisted to /tmp JSON, the reference's storageState persisted + reused, ONE reference
+login total, PORT 3141, the walk db zero-data for PASS 1 / SEEDED for PASS 2; both
+apps at 1440×900 + 390×844): 274 two-app axes, 10 raw diffs, ONE REAL PARITY DEFECT.**
+
+**F-133c1 THE EMPTY-SELECT PLACEHOLDER INK** — the dead density select's trigger
+computing `rgb(115,115,115)` on ours vs the reference's `rgb(10,10,10)`. The decisive
+probe (walk24b): both apps render the identical empty span + chevron structure, but
+OUR `value=""` enters Radix's `data-placeholder` state where our
+`SELECT_TRIGGER.placeholderState` (`data-[placeholder]:text-muted-ink`) dims the
+trigger — and the chevron (`stroke=currentColor` at `opacity-50`) PAINTS at the
+trigger color. The reference's platform avoids the state entirely (its density select
+carries the fixed no-match `"format"` value — the N-87c4 decode). The s81 M-81c3
+bundle re-derivation already established the reference's verbatim construction
+carries NO placeholder arm — confirmed then on five value-carrying selects, never on
+a placeholder-STATE one; the density select is the only one on either app. The
+adjudicated noise: the v4 dead-layer shadow genus · the s95 containment cascade @390
+(both toolbars stack identically — the rows exactly 220px both apps, ours 326
+contained vs the ref's 440 poke) · the climb-guard harness artifact (the fixed probe:
+the card chrome byte-equal — radius 8 + the shadow family).
+
+**The lenses on their maiden run here — ALL CLEAN**: L-133a1 the outline hover arms
+(the toolbar More + both Export CSVs + the Edit Cancel — every one the s129
+hover-text pair rgb(23,23,23)/rgb(245,245,245)) · L-133a3 the text-content census
+byte-equal both viewports (the entire visible text of the zero-data page) · L-133a4
+the select OPEN state (the washes byte-equal) · L-133a7 the rail CLEAN · L-133a8 the
+s95 genus re-confirmed.
+
+**PASS 2 populated ours-only — every seeded contract holds**: the KPI values
+10/8/9/$77.5M/3 · the tier census 9 Key + 1 A · the star census 9 · the overdue 3 ×
+"1 Overdue" + exactly 3 red-left-border rows · the healths 5/3/2 · the Key tint
+rgb(254,252,232,0.3) · **THE EDIT ACCOUNT DIALOG's first walk (L-133a2)**: the
+672×516 max-w-2xl chrome, the EIGHT field labels, the Cancel outline hover pair, the
+dark Save Changes rgb(23,23,23)/rgb(250,250,250) · the Insights tabs · the Cards view
+(10 cards) · the row menu + the select OPEN washes.
+
+**The remediation**: D-133a0 THE PLACEHOLDER-INK FIX (`SELECT_TRIGGER.placeholderState`
+retired + the select.tsx composition — exactly ONE call site sits in the placeholder
+state; the INPUT placeholder family untouched) · D-133a1 the pin re-anchor (RED-first
++ the stash-proof: the fix reverted alone → the pin REDs alone) · D-133a2 THE FREEZE
+PINS (+2 its: the 8-heads ordered set + the toolbar construction freeze) · D-133a3
+the docs realignment. **The POST-FIX walk re-run: 274 axes, 8 adjudicated diffs ONLY —
+the density ink byte-equal both apps.**
+
+The count ladder: UNIT 2021 → 2023 (+2 its) · SUITES 111 UNCHANGED · E2E 137
+UNCHANGED · badge 2158 → 2160. The captures 260-263 (four unique md5s) + the VLM
+battery 4/4 CLEAN. The audits 133-a [9/9 shipped claims Verified, one prose-only
+footnote (the s132 "tests/ 2 files" claim was actually 4 — the two lockstep carriers
+ride along) + THE COMPLETE ACCOUNTS-LIST PRE-WALK INVENTORY] + 133-b [9/9 PASS, the
+~91st standing — the drawer battery 11 PLAIN + the 4/4 click-throughs, the SEO 13
+metadata-bearing files, the space-y census 107 exact, zero findings].
+
+The walk-harness lessons: L-133c1 the climb-guard width fallback (the
+borderless-card climb's width>400 guard fails at phone widths — the shadow-only climb
+is the phone-safe form) · L-133c2 the data-placeholder state asymmetry (the reference
+avoids the state via fixed no-match values; our supersets enter it via value="" — any
+computed-ink census on an empty select must account for the asymmetry).
+
+**The next-session suggestion**: the rotation's third cycle continues — the remaining
+s116+ candidates (dashboard-charts s118 · contacts-list s119 · leads-table s120); the
+highlighted-state + text-content + select-OPEN lenses stay standing; the empty-select
+ink genus is now pinned at the source (the placeholderState retirement).

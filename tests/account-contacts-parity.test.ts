@@ -320,3 +320,66 @@ describe("session-75: the contacts empty states + hygiene", () => {
     expect(photoReads.length).toBe(2);
   });
 });
+
+// Session-133 (D-133a2 — the accounts-list family third-cycle re-check's
+// freeze pins, the L-133a5 gap): the walk censused the 8-heads set + the
+// toolbar construction byte-equal both apps at both viewports (s117 + the
+// s133 re-check) but neither was ever PINNED — "Account Name" appeared in
+// ZERO test assertions before this block (the exact D-116a2/D-132a0
+// genus). The runtime rects/fonts/inks stay walk-verified per re-check
+// cycle; these source censuses pin the SET + the ORDER + the COUNT — a
+// ninth head, a reorder, or a new toolbar control is a parity event, not
+// a growth.
+describe("session-133: the accounts table + toolbar freeze", () => {
+  it("the eight table heads as an ordered set (the s117/s133 walk census)", () => {
+    const src = accountsPage();
+    const heads = [
+      "Account Name",
+      "Industry",
+      "Revenue",
+      "Tier",
+      "Owner",
+      "Last Activity",
+      "Status",
+    ];
+    let prev = -1;
+    for (const h of heads) {
+      const i = src.indexOf(`<TableHead>${h}</TableHead>`);
+      expect(i, `the ${h} head must exist as a bare TableHead`).toBeGreaterThan(-1);
+      expect(i, `the ${h} head must keep the census order`).toBeGreaterThan(prev);
+      prev = i;
+    }
+    // exactly SEVEN bare text heads + exactly ONE w-12 trailing head
+    expect(src.match(/<TableHead>[A-Z][^<]*<\/TableHead>/g) ?? []).toHaveLength(7);
+    expect(src.match(/<TableHead className="w-12" \/>/g) ?? []).toHaveLength(1);
+  });
+
+  it("the toolbar construction freeze (the s8 stack + the s133 walk census)", () => {
+    const src = accountsPage();
+    // The reference's stack: [Table/Cards switcher][density (empty label,
+    // dead)][More outline h-8 dead] BEFORE the search, then Export CSV —
+    // the s8-3 re-pin, walk-verified s117 + s133 (both apps stack the
+    // children flex-col below sm, the rows exactly 220px @390).
+    const order = [
+      'aria-label="Accounts view"', // the Table/Cards switcher trigger
+      "VIEW_SWITCHER.options.map", // the Table/Cards options ride
+      'aria-label="Row density"', // the dead density select
+      "TABLE_TOOLBAR.densityOptions.map", // the Standard/Detailed pair
+      'aria-label="More"', // the dead More outline
+      'placeholder="Search accounts..."', // the search input
+    ];
+    let prev = -1;
+    for (const marker of order) {
+      const i = src.indexOf(marker);
+      expect(i, `the ${marker} control must exist`).toBeGreaterThan(-1);
+      expect(i, `the ${marker} control must keep the stack order`).toBeGreaterThan(prev);
+      prev = i;
+    }
+    // the export pair: the header's icon+hidden-span button + the
+    // toolbar's text-only button — both ride onClick={exportAccounts}
+    // (exactly TWO sites; the header label is the hidden sm:inline span,
+    // icon-only @390 — the L-132c3 discipline).
+    expect(src.match(/onClick=\{exportAccounts\}/g) ?? []).toHaveLength(2);
+    expect(src).toContain('<span className="hidden sm:inline">Export CSV</span>');
+  });
+});

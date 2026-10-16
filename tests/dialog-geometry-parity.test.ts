@@ -446,10 +446,17 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // D-132a1 the bar-trio label freeze +1 it, ZERO src changes]);
     // the four sites re-anchored again, the retired 2018 forms join
     // the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2021 checks)");
-    expect(claude).toContain("(currently 2021)");
-    expect(claude).toContain("Vitest unit suites (2021 checks)");
-    expect(claude).toContain("`bun run test` (2021)");
+    // session-133 lockstep carry-forward: 2021 -> 2023 (the s133 +2 —
+    // the accounts-list family third-cycle re-check: the one-fix
+    // session [D-133a0 the placeholderState retirement + D-133a2 the
+    // freeze pins +2 its, the 8-heads set + the toolbar construction]);
+    // the four sites re-anchored again, the retired 2018+2021 forms
+    // join the negatives below.
+    expect(claude).toContain("Unit (Vitest, 2023 checks)");
+    expect(claude).toContain("(currently 2023)");
+    expect(claude).toContain("Vitest unit suites (2023 checks)");
+    expect(claude).toContain("`bun run test` (2023)");
+    expect(claude).not.toContain("Unit (Vitest, 2021 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2018 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2009 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2008 checks)");

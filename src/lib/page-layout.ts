@@ -681,7 +681,20 @@ export const INPUT_BASE = {
  *  w-full) — the s77 documented decision. */
 export const SELECT_TRIGGER = {
   base: "flex h-9 items-center justify-between whitespace-nowrap rounded-md border border-line bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background",
-  placeholderState: "data-[placeholder]:text-muted-ink",
+  // Session-133 (D-133a0, F-133c1): the placeholderState arm RETIRED
+  // ("data-[placeholder]:text-muted-ink" deleted) — the s81 M-81c3
+  // bundle decode already established the reference's verbatim trigger
+  // construction carries NO placeholder arm; the s133 walk live-confirmed
+  // it on the DENSITY axis (the only placeholder-state select on either
+  // app): the reference's platform avoids Radix's data-placeholder state
+  // entirely (its density select carries the fixed no-match "format"
+  // value — the N-87c4 decode), so its EMPTY trigger inherits the
+  // foreground ink rgb(10,10,10). Ours entered the state via value=""
+  // and the arm dimmed the trigger (and the chevron at opacity-50) to
+  // #737373 — a real painted divergence on the dead control, both
+  // viewports. The empty string keeps the field for the type shape; the
+  // composition no longer interpolates it.
+  placeholderState: "",
   // Session-77 (N-77c11, bundle-falsified S10-2 model): the reference's
   // stock trigger ring is PLAIN focus: — the ring FIRES on mouse click
   // (unlike the Input/Button bases, which are focus-visible on BOTH

@@ -815,7 +815,19 @@ describe("session-10 stock-primitive pins (DOM-verified 2026-09-30)", () => {
     );
     expect(SELECT_TRIGGER.base).not.toContain("w-full");
     expect(SELECT_TRIGGER.base).not.toContain("gap-2");
-    expect(SELECT_TRIGGER.placeholderState).toBe("data-[placeholder]:text-muted-ink");
+    // Session-133 (D-133a1, F-133c1): the placeholderState arm RETIRED —
+    // the reference's verbatim trigger construction carries NO
+    // data-[placeholder] arm (the s81 M-81c3 bundle decode, live-confirmed
+    // on the density axis both viewports by the s133 walk): its platform
+    // avoids Radix's placeholder state entirely (the N-87c4 fixed
+    // no-match "format" value), so its empty select inherits the
+    // foreground ink rgb(10,10,10) — our dimming arm painted the chevron
+    // a lighter gray. The trigger now inherits the ink in every state.
+    expect(SELECT_TRIGGER.placeholderState).toBe("");
+    expect(
+      read("src/components/ui/select.tsx"),
+      "the trigger composition must not interpolate a placeholder arm",
+    ).not.toContain("${SELECT_TRIGGER.placeholderState}");
     // Session-77 (N-77c11): the ring fires on mouse click — plain
     // focus:, NOT the keyboard-only focus-visible: the S10-2 comment
     // claimed.
