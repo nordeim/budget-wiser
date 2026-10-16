@@ -357,3 +357,114 @@ describe("session-77: hygiene (N-77c12 partial + N-77c14)", () => {
     expect(raw).toContain("invalidate-on-success");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-136 (the 136-c rotation — THE LEADS-TABLE FAMILY THIRD-CYCLE
+// RE-CHECK): the freeze pins. The walk27 verdict — ZERO REAL PARITY DEFECTS,
+// PASS 1 byte-equal on all 191/208 axes two-app at 1440+390, PASS 2 every
+// seeded contract holding — means the remediation is PIN-ONLY: the four
+// never-ordered sets (the L-136a9 gaps, the D-133a2/D-134a0/D-135c genus —
+// accounts pinned s133, dashboard s134, contacts s135, leads never) get
+// their ordered-unit pins so any future drift REDs exactly one assertion.
+// ---------------------------------------------------------------------------
+
+describe("session-136: the freeze pins (L-136a9 — the never-ordered sets)", () => {
+  it("the 9 table heads as an ORDERED SET (the walk's thead census)", () => {
+    // The walk's two-app census: the interleaved SortHead/TableHead
+    // sequence renders Lead Name|Email|Phone|Company|Value|Status|Source|
+    // Next Follow-up|the w-12 actions head — byte-equal both apps, but in
+    // ZERO ordered-set assertions before. The split regex takes BOTH the
+    // <SortHead (label prop) and the <TableHead (child text) forms in
+    // document order; each chunk is word-boundary matched so a mutated
+    // longer word ("Engagements"-genus) REDs rather than passing.
+    const src = leadsPage();
+    const i = src.indexOf("<TableHeader");
+    const j = src.indexOf("</TableHeader>");
+    expect(i).toBeGreaterThan(-1);
+    expect(j).toBeGreaterThan(i);
+    const hdr = src.slice(i, j);
+    const chunks = hdr.split(/<SortHead |<TableHead[ \n/>]/).slice(1).map((c) => c.slice(0, 400));
+    expect(chunks.length, "exactly 9 heads (3 SortHead + 6 TableHead)").toBe(9);
+    const heads = [
+      "Lead Name",
+      "Email",
+      "Phone",
+      "Company",
+      "Value",
+      "Status",
+      "Source",
+      "Next Follow-up",
+    ];
+    chunks.forEach((c, idx) => {
+      if (idx < 8) {
+        const re = new RegExp(`(^|[^a-zA-Z])${heads[idx]}([^a-zA-Z]|$)`);
+        expect(re.test(c), `the head #${idx + 1} = "${heads[idx]}" (whole word)`).toBe(true);
+      }
+    });
+    // the 9th head is the EMPTY w-12 actions head
+    expect(chunks[8], "the 9th head is the bare w-12").toContain("w-12");
+  });
+
+  it("the Gke filter panel's 4 field labels as an ORDERED SET", () => {
+    // The walk's popover census: gke.label0..3 = Status|Source|Min Deal
+    // Value|Follow-up Date, byte-equal both apps. The s113 D-113a1 re-tag
+    // pinned the <label> MECHANISM; the ordered set never.
+    const src = leadsPage();
+    const i = src.indexOf('className={LEADS_FILTERS_POPOVER.stack}');
+    expect(i).toBeGreaterThan(-1);
+    const panel = src.slice(i, i + 4200);
+    const labels = ["Status", "Source", "Min Deal Value", "Follow-up Date"];
+    let prev = -1;
+    labels.forEach((label) => {
+      const m = new RegExp(`>${label}<`).exec(panel.slice(prev + 1));
+      expect(m, `the label "${label}" appears in order after the previous`).not.toBeNull();
+      prev = (m?.index ?? 0) + prev + 1;
+    });
+  });
+
+  it("the row-menu items as an ORDERED SET + the Delete red (the walk's [role=menu] census)", () => {
+    // The walk's census: Edit|Convert to Opportunity|Delete, 178x32 each,
+    // the Delete text-red-600 rgb(220,38,38). The s120 e2e census holds
+    // the item texts individually; the ordered unit pin never existed.
+    const src = leadsPage();
+    const i = src.indexOf("<MenuContent>");
+    const j = src.indexOf("</MenuContent>", i);
+    expect(i).toBeGreaterThan(-1);
+    const menu = src.slice(i, j);
+    const items = ["Edit", "Convert to Opportunity", "Delete"];
+    let prev = -1;
+    items.forEach((item) => {
+      const m = new RegExp(`>\\s*${item}\\s*<`).exec(menu.slice(prev + 1));
+      expect(m, `the item "${item}" appears in order after the previous`).not.toBeNull();
+      prev = (m?.index ?? 0) + prev + 1;
+    });
+    // the Delete item's OWN chunk carries the red (the multi-line onClick
+    // sits between the className and the child — chunk-scope the assert)
+    const del = menu.split("<MenuItem").find((c) => /(^|\s)Delete\s*</.test(c));
+    expect(del, "the Delete MenuItem chunk exists").toBeDefined();
+    expect(del ?? "").toContain('className="text-red-600"');
+  });
+
+  it("the edit dialog's 7 field labels as an ORDERED SET (the W7 genus)", () => {
+    // The walk's dialog census: Name *|Email|Phone|Company|Status|Source|
+    // Estimated Value — the LEAD_EDIT_FIELDS labels present-only since
+    // s77 (the s91-era entity-edit-dialog.test pins the fields
+    // individually), never ordered. The "Name *" carries the required
+    // marker, so the first label matches the ^-anchored form.
+    const raw = read("src/components/shared/entity-edit-dialog.tsx") ?? "";
+    const i = raw.indexOf("LEAD_EDIT_FIELDS");
+    expect(i).toBeGreaterThan(-1);
+    const fields = raw.slice(i, i + 900);
+    // the first label is the literal "Name *" (the required marker)
+    const labels = ["Name", "Email", "Phone", "Company", "Status", "Source", "Estimated Value"];
+    let prev = -1;
+    labels.forEach((label) => {
+      const m = new RegExp(`label:\\s*"${label}\\s*\\*?"`).exec(fields.slice(prev + 1));
+      expect(m, `the field label "${label}" appears in order after the previous`).not.toBeNull();
+      prev = (m?.index ?? 0) + prev + 1;
+    });
+    // the Name label carries the required marker (the dialog census's
+    // "Name *")
+    expect(fields).toMatch(/label:\s*"Name\s*\*"/);
+  });
+});

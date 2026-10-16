@@ -312,7 +312,12 @@ const SUITES = 111;
 // Input-component ride) + the 4 freeze pins (the 8 heads ordered set +
 // the 6 panel cards + the row-menu trio + the W7 labels)]; SUITES + E2E
 // unchanged (111 · 137).
-const UNIT = 2032;
+// Session-136: 2032 → 2036 (+4 — the leads-table family third-cycle
+// re-check: the ZERO-FIX/FREEZE-PIN session [D-136a0 the freeze pins +4
+// its, leads-family-parity.test.ts — the 9 table heads ordered set +
+// the Gke 4 field labels + the row-menu trio + the edit dialog's 7
+// labels; ZERO src changes]; SUITES + E2E unchanged (111 · 137).
+const UNIT = 2036;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -715,13 +720,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-135 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-136 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s134 layer now beneath the s135 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s135 layer now beneath the s136 head)",
     ).toContain(
-      "+ beneath it 2026 unit checks + 137 e2e checks green; the session-134 layer (the 134-c rotation — THE DASHBOARD-CHARTS FAMILY THIRD-CYCLE RE-CHECK",
+      "+ beneath it 2032 unit checks + 137 e2e checks green; the session-135 layer (the 135-c rotation — THE CONTACTS-LIST FAMILY THIRD-CYCLE RE-CHECK",
     );
   });
 

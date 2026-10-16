@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2032 checks)      | `bun run test`                         |
+|  Unit tests (2036 checks)      | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2032) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2036) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6403,3 +6403,12 @@ harness lesson (L-134c1) rides the next text census.
 - The 135-c rotation (the session_287 close's named direction — the s116+ third-cycle candidates' next member, contacts-list [s119], 16 sessions back): walk26 (the phased idiom) + the walk26b decisive scan-dialog anatomy probe — 12 raw PASS 1 diffs adjudicated to THREE real defects, all in the Scan Business Card dialog: F-135c1 the submit's color (ours the bare blue primary vs the reference's rgb(23,23,23) DIALOG_SUBMIT family — the F-127c2 genus' missed sibling) · F-135c2 the file input's typography (the browser-default 16px/24px zero-padding stack vs the reference's stock 14px + 4px/12px md-responsive stack) · F-135c3 the file input's non-fluid width (the intrinsic 320 min-content escaping the dialog's p-6 padding at 390).
 - The maiden lenses ALL CLEAN, incl. the L-135a1 TOP risk — the s133 placeholderState retirement's never-censused contacts arm: the null-role seed's per-row select (the walk db's James Whitfield) sits IN Radix's data-placeholder state and computes the neutral rgb(10,10,10) trigger + chevron ink, exactly the fix's intent; the row-menu wash on the REAL Radix [role=menu] (the L-134c2 inverse); the select OPEN states; the s125 active-pill's third segmented ride (the slide-over tabs); the W7's 672/7-labels/dark-Save contract.
 - The remediation: D-135a0 THE SCAN-DIALOG FIX (contacts-page.tsx — the submit rides DIALOG_SUBMIT.button [the s127 idiom]; the file input rides the Input component + max-w-xs mx-auto [the byte-parity-verified stock stack]) + D-135a1 THE PINS (+6 its, contacts-family-parity.test.ts — the 2 fix pins + the 4 freeze pins; all stash-proven) + D-135a2 the docs realignment. The post-fix walk re-run: 6 raw diffs, ZERO real parity defects (the v4 dead-layer shadow genus + the text-node-granularity genus only). Count ladder: 111 suites / 2032 unit / 137 e2e / badge 2169.
+
+
+### Session-136 (2026-10-17) — the leads-table family third-cycle re-check (the zero-fix + freeze-pin session)
+
+The 136-c rotation (the session_288 close's named direction: the rotation's last s116+ third-cycle candidate — leads-table (s120), 15 sessions back). The walk (walk27, the phased idiom, the walk db zero-data PASS 1 / seeded PASS 2): PASS 1 **byte-equal on every compared axis** (0 raw diffs @1440, 191 axes · 0 @390, 208 axes) — **ZERO REAL PARITY DEFECTS**. The maiden lenses all clean: the L-136a1 TOP risk (the s133 placeholderState retirement's never-censused leads arm — the saved-views select's placeholder ink rgb(10,10,10) + the 4 blank unmatched-value inline triggers) · the L-136a2 hover arms (the s129 outline hover-text live-verified) · the L-136a3 row-menu wash (the s128 fix re-verified, 188×106) · the L-136a4 select OPEN states · the L-136a7 edit dialog (672 + the 7 labels + the dark Save) · the L-136a8 @390 genera (the scrollArea 358/903 — the exact s120 numbers). PASS 2: every seeded contract holds (the KPIs 24/9/7+$687,000/4+$226,000/29.2%/83 days · the sort arms · the filters · the inline round-trips + the overdue face · the export).
+
+- The remediation: D-136a0 THE FREEZE PINS (+4 its, leads-family-parity.test.ts — the 9 table heads ordered set + the Gke 4 field labels + the row-menu trio + the edit dialog's 7 labels; all stash-proven: each mutation → exactly 1 RED alone) + D-136a1 the docs realignment (the PAD duplicate-row cleanup rode it). ZERO src changes.
+- Count ladder: 111 suites / 2036 unit / 137 e2e / badge 2173.
+- The harness lessons: L-136c1 the locator re-resolution trap · L-136c2 the menuitem existence window · L-136c3 the accessible-name trap; the session-level lesson — our side never round-trips an http storageState (the Secure-flagged session cookie replay).

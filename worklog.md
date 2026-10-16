@@ -5091,3 +5091,76 @@ accept="image/*" literal's `/*` eats to the next `*/` — raw-anchored
 extraction for pins whose region carries it) · L-135c3 the word-boundary pin
 discipline (ordered-set pins must match whole words — toContain alone lets
 "Engagements" pass for "Engagement").
+
+---
+
+## Session-136 — the leads-table family third-cycle re-check (the zero-fix/freeze-pin session)
+
+- Stage 1: the workspace cloned fresh at 57e5493 (the session_289 intake
+  record atop the s135 ship 73f2918); the five core docs re-anchored at the
+  s135 ship (SKILL v1.132.0, 111/2032/137, badge 2169); census MATCH
+  15/24/10/23/12 + 4 users; the direction confirmed from the session_288
+  close: leads-table (s120), 15 sessions back — the rotation's last s116+
+  candidate
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 111/2032 · build ·
+  e2e 137/137 (3.3m) — exact match (the Playwright chromium installed
+  fresh on the fresh clone)
+- Stage 3: the audits dispatched as subagents — 136-a 9/9 Verified (THE
+  COMPLETE LEADS-TABLE PRE-WALK INVENTORY: the freeze map [leads-page.tsx
+  since s113, lead-filters.ts since s77, the LeadDialog region since s77,
+  the LeadEditDialog since s91], the drift carriers [the s129/s130
+  hover-text arms, the s128 MENU_ITEM, the s133 placeholderState
+  retirement], the pin coverage map [the 9 heads / the Gke 4 labels / the
+  row-menu trio / the W7 7 labels — the unpinned ordered sets], the named
+  risks L-136a1..a9 with the TOP = the saved-views select's placeholder
+  ink; the refinement: the Gke + inline selects do NOT sit in the
+  data-placeholder state; ONE Low finding: the PAD Session-135 row
+  duplicated) + 136-b 9/9 PASS (the ~94th standing battery, zero findings)
+- Stage 4: probe:ref #108 **THE REFERENCE MOVED** (the build re-chunked —
+  67 chunks / 3,484,837 bytes, the Rolldown migration; no single
+  1,631,071 bundle) — **the rendering UNCHANGED**: demo data ZERO · the
+  TRUE-390 defect STANDS · the four drift gates CLEAN modulo two
+  documented genera (settings@390 7.03 the picklist genus amplified;
+  accounts@1024 3.01 the s99 landscape genus — the KPI cards byte-equal,
+  the 1440 face 0.09%) · scandihaven d4789c3 on-pattern · census MATCH
+- Stage 5 (the 136-c rotation): THE LEADS-TABLE FAMILY THIRD-CYCLE
+  RE-CHECK — walk27 (the phased idiom): PASS 1 **0 raw diffs @1440 (191
+  axes) · 0 @390 (208 axes) — byte-equal on every compared axis**; the
+  maiden lenses ALL CLEAN [L-136a1 the s133 retirement's leads arm — the
+  saved-views select's placeholder ink rgb(10,10,10) + the 4 blank
+  unmatched-value inline triggers · L-136a2 the hover arms (the s129
+  outline hover-text live-verified on the reference side) · L-136a3 the
+  row-menu wash on the real Radix (188×106, the s128 wash, the Delete
+  red) · L-136a4 the select OPEN state (the 5-option listbox + the wash)
+  · L-136a7 the edit dialog (672×440 + the 7 labels + the dark Save +
+  the documented unmatched-status blank trigger) · L-136a8 the @390
+  genera (the scrollArea 358/903 — the exact s120 numbers)]; PASS 2
+  populated ours-only — every seeded contract holds [the KPIs
+  24/9/7+$687,000/4+$226,000/29.2%/83 days · the sort arms · the filters
+  · the inline round-trips + the overdue face · the export 25 lines];
+  ZERO REAL PARITY DEFECTS
+- Stage 6: the remediation — D-136a0 THE FREEZE PINS [+4 its,
+  leads-family-parity.test.ts: the 9 table heads ordered set (the
+  D-133a2/D-134a0/D-135c genus closed on the last family) + the Gke 4
+  field labels + the row-menu trio + the edit dialog's 7 labels; all four
+  stash-proven — each mutation → exactly 1 RED alone] + D-136a1 the docs
+  realignment [the lockstep RED (12) at the stale docs → the realignment
+  (the mechanical sites + the PAD duplicate-row cleanup + the SKILL
+  v1.133.0 layers + the AGENTS/PAD sections) → GREEN 21/21; the CLAUDE
+  carrier re-anchored]
+- Stage 7: the captures 272-275 (four unique md5s) + THE VLM BATTERY 4/4
+  CLEAN; the final gate; the two-commit ship + the SSH-wrapper push
+
+**The count ladder**: UNIT 2032 → 2036 (+4 its) · SUITES 111 · E2E 137 ·
+badge 2169 → 2173.
+
+**The walk-harness lessons**: L-136c1 the locator re-resolution trap (the
+row RE-SORTS after the value mutation — re-find the row BY NAME, never by
+position) · L-136c2 the menuitem existence window (the Edit item exists
+only INSIDE the open menu — count it after opening) · L-136c3 the
+accessible-name trap (our Filters trigger's aria-label superset breaks
+getByRole name matching cross-app — the has-text DOM locator is the
+cross-app idiom) · the session-level lesson: OUR side never round-trips an
+http storageState (the Secure-flagged session cookie replays unreliably
+outside the test-runner fixtures — every ours phase logs in fresh
+in-context).

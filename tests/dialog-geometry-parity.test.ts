@@ -465,10 +465,18 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // pins +6 its, contacts-family-parity.test.ts — the 2 fix pins +
     // the 4 freeze pins]); the four sites re-anchored again, the
     // retired 2026 form joins the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2032 checks)");
-    expect(claude).toContain("(currently 2032)");
-    expect(claude).toContain("Vitest unit suites (2032 checks)");
-    expect(claude).toContain("`bun run test` (2032)");
+    // session-136 lockstep carry-forward: 2032 -> 2036 (the s136 +4 —
+    // the leads-table family third-cycle re-check: the ZERO-FIX/
+    // FREEZE-PIN session [D-136a0 the freeze pins +4 its — the 9 table
+    // heads ordered set + the Gke 4 field labels + the row-menu trio +
+    // the edit dialog's 7 labels, leads-family-parity.test.ts; ZERO src
+    // changes]); the four sites re-anchored again, the retired 2032
+    // form joins the negatives below.
+    expect(claude).toContain("Unit (Vitest, 2036 checks)");
+    expect(claude).toContain("(currently 2036)");
+    expect(claude).toContain("Vitest unit suites (2036 checks)");
+    expect(claude).toContain("`bun run test` (2036)");
+    expect(claude).not.toContain("Unit (Vitest, 2032 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2026 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2023 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2021 checks)");
@@ -477,6 +485,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("Unit (Vitest, 2008 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2005 checks)")
     expect(claude).not.toContain("Unit (Vitest, 2004 checks)");
+    expect(claude).not.toContain("(currently 2032)")
     expect(claude).not.toContain("(currently 2026)")
     expect(claude).not.toContain("(currently 2023)")
     expect(claude).not.toContain("(currently 2021)")
