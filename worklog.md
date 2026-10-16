@@ -4802,3 +4802,50 @@ late, the contents unchanged from the shipped record.)*
 
 **The count ladder**: UNIT 2008 → 2009 (+1 it) · SUITES 110 · E2E 137 ·
 badge 2145 → 2146.
+
+---
+
+## Session 131 — the toast family walk + the two-fix session
+
+- Stage 1: the workspace RESET again — re-cloned at 42f7140 (the s130 ship
+  69ba62d + 810f5c4 + the session_279 intake); the environment re-stood at
+  the NEW post-reset path /home/z/my-project/neo-crm (bun install, .env, env
+  -u db:push/db:seed, census MATCH, Playwright chromium, the platform
+  DATABASE_URL hazard neutralized throughout)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 110/2009 · build ·
+  e2e 137/137 (3.5m, zero flakes)
+- Stage 3: the parallel audits — 131-a 9/9 Verified (zero discrepancies + THE
+  COMPLETE TOAST PRE-WALK INVENTORY: the source FROZEN since the s7 scaffold,
+  41 firing sites / 10 files, ZERO anatomy/close-X pins; the named latent
+  risks L-131a1..a8) + 131-b 9/9 PASS (the ~89th standing — the drawer
+  battery PLAIN, the SEO live verified, the space-y census 107 exact)
+- Stage 4: probe:ref the 103rd STABLE · the four drift gates CLEAN ·
+  scandihaven d4789c3 on-pattern · census MATCH
+- Stage 5: THE TOAST FAMILY WALK (walk22, the phased idiom, three harness
+  iterations: the storageState token race, the needsLogin SPA-boot race, the
+  border-signal currentColor trap) — THE HEADLINE: F-131c1 THE REFERENCE'S
+  TOAST SYSTEM IS DOM-DEAD (four Ix.* calls in the bundle, ZERO rendered
+  elements on any trigger path — the 402 quota-exhausted upload, the
+  successful save-with-reload, the empty create, the Google click; the
+  document-wide hunt + the MutationObserver both empty); OUR toast system a
+  DELIBERATE SUPERSET construction (the mobile-nav doctrine); the ours-side
+  census: the viewport + the card chrome + the variants + the timing + the
+  hover-pause + the max-4 cap + the X round-trip + the animation axes
+  (animName=none — the L-131a5 finding live-confirmed)
+- Stage 6: the remediation — D-131a0 the toast-X hover-text fix
+  (hover:text-neutral-900 — the genus's FOURTH arm, ours-only by the trio
+  precedent + internal consistency, the LAST live ride) + D-131a1 the
+  dead-animation retirement (the D-124a7 doctrine) + D-131a2 the pins (the
+  NEW toast-anatomy suite: 2 RED-first fix pins + 7 walk-censused freeze
+  pins; the stash-proof — the file reverted alone → both fix pins RED alone)
+  + the POST-FIX walk re-run (the X hover byte-exact rgb(23,23,23) both
+  viewports) + the captures 252-255 + the VLM battery 4/4 CLEAN + the docs
+  realignment (SKILL v1.128.0 + the README badge 2155 + AGENTS/CLAUDE/PAD +
+  the lockstep family + the layer-axis pin advanced to the s131/s130 pair +
+  session_280.md + the plan) → 111/2018
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 111/2018 · build · 137/137 ·
+  the closing drift sweep CLEAN ×4 · census MATCH; the two-commit ship + the
+  SSH-wrapper push (below)
+
+**The count ladder**: UNIT 2009 → 2018 (+9) · SUITES 110 → 111 · E2E 137 ·
+badge 2146 → 2155.

@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2009 checks)       | `bun run test`                         |
+|  Unit tests (2018 checks)       | `bun run test`                         |
 |  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2009) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2018) → `bun run build` → `bun run test:e2e` (137) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6069,3 +6069,91 @@ live-censuses the reference's toast X settles it); the highlighted-state lens
 stays standing; the genus is three-for-three on the interactive variants — any
 remaining `hover:text-foreground`/`focus:text-foreground` ride is suspect until
 proven otherwise.
+
+## Session-131 — the toast family walk (the two-fix session)
+
+The 131-c rotation — the session_278/279 close's named direction: **the toast close
+X, the F-128c1 genus's named residual arm** (a walk that live-censuses the reference's
+toast X settles it). The 131-a pre-walk inventory: the family source FROZEN since the
+s7 scaffold (123 sessions), the close X's `hover:text-foreground` at :123 the named
+TOP risk L-131a1, the inert animation family at :107 a REAL finding L-131a5.
+
+**THE HEADLINE — F-131c1 THE REFERENCE'S TOAST SYSTEM IS DOM-DEAD**: the bundle (md5
+`a70a637f…`, stable across 103 probes) carries exactly FOUR toast calls — all
+profile-page ("Photo uploaded successfully" / "Failed to upload photo" / "Profile
+updated successfully" / "Failed to update profile") — but ZERO toast elements render.
+The systematic hunt (all live, authed, the JWT-verified storageState): the upload
+path's `rt.integrations.Core.UploadFile` now returns **402 (Payment Required)** — the
+platform's metered integration quota exhausted — and even the decoded
+`catch { Ix.error(...) }` path renders nothing; the Save round-trip PATCHes
+successfully (the reload fires — the success path confirmed) and its toast renders
+nothing; the document-wide `querySelectorAll("*")` hunt for
+sonner/toast/live/status/notification markers found ZERO elements; the
+MutationObserver across the save window logged ZERO added nodes. The historical
+"sonner toasts" records (s30/s35) were bundle-decode conclusions; no prior walk ever
+sighted the reference's toast DOM. **Our toast system is a DELIBERATE SUPERSET
+construction** (the mobile-nav doctrine) — there is no reference face to parity
+against, and the F-128c1 close-X axis cannot be settled two-app. The genus stands
+three-for-three on real surfaces (s128 menu-item · s129 outline · s130 ghost).
+
+**The ours-side census (walk22, the phased idiom — the profile photo upload trigger,
+NO Save click ⇒ no mutation; both apps at 1440×900 + 390×844)**: the viewport `fixed
+top-0 z-[100] … sm:bottom-0 sm:right-0 md:max-w-[420px] p-4 gap-2` (live-censused
+bottom-right @1440 — the card 388×52 anchored 16px from both edges — and
+top-full-width @390) · the card `rounded-xl border p-3.5 shadow-lg` (radius 12px,
+padding 14px, the two-layer lg shadow) with the success border rgb(167,243,208) ·
+the icon 18×18 rgb(16,185,129) · the title 14px/500 rgb(10,10,10) · **the X 22×22
+resting rgb(156,163,175) → HOVER rgb(10,10,10) + rgb(245,245,245)** · the timing
+4126/4118ms (the 4000ms contract) · the hover-pause holds at 6.5s + dismisses ~4.1s
+after the unpause · the max-4 cap (4 cards after 5 pushes, the stack gap 8px) · the
+error variant border rgb(254,205,211) + icon rgb(239,68,68) + the X-dismiss
+round-trip · the info variant border rgb(229,229,229) + the description 12px
+rgb(107,114,128) mt 2px · **the animation axes animName=none** (the L-131a5 finding
+live-confirmed).
+
+The remediation: **D-131a0** THE TOAST-X HOVER-TEXT FIX (`hover:text-foreground` →
+`hover:text-neutral-900` — the genus's FOURTH arm: the reference surface is DOM-dead,
+so the fix rides OUR superset by the trio precedent [the reference's stock
+interactive-hover ink #171717, our literal family since the s80 badge] + internal
+consistency — the toast X was the LAST live `hover:text-foreground` ride in src/) ·
+**D-131a1** THE DEAD-ANIMATION RETIREMENT (the scaffold-era `data-[state]` arms never
+applied — the ToastCard never sets data-state; retired per the D-124a7 doctrine; the
+tw-animate.css vendor import stays — the Radix dialog family rides it) · **D-131a2**
+THE PINS (the NEW `tests/toast-anatomy.test.ts`: 2 RED-first fix pins —
+comment-stripped for the negatives, the fix comments themselves name the retired
+strings — + 7 walk-censused freeze pins: the viewport geometry family, the card
+chrome + the three variant borders, the 4000ms duration + the slice(-4) cap, the
+aria family, the title/description classes, the icon family, the hover-pause seam).
+The stash-proof: the file reverted alone → both fix pins RED alone.
+
+The audits: 131-a 9/9 Verified (the complete toast inventory: 41 firing sites / 10
+files, ZERO anatomy/close-X pins — the gap confirmed; the recommended trigger
+verified) + 131-b 9/9 PASS (the ~89th standing — the drawer battery PLAIN, the SEO
+live verified, the space-y census 107 exact). probe:ref the 103rd STABLE + the four
+drift gates CLEAN + scandihaven d4789c3 on-pattern.
+
+The final gate: lint 0/0 · tsc 0 · **111/2018** · build · **137/137 e2e** · the
+closing drift sweep CLEAN on all four gates · census MATCH. **src/ 1 file + tests/ 3
+files** (toast.tsx; the NEW toast-anatomy.test.ts + the docs-counts.test.ts +
+dialog-geometry-parity.test.ts lockstep carriers). The POST-FIX walk re-run: the X
+hover byte-exact **rgb(23,23,23)** at both viewports; every other axis unchanged.
+The captures 252-255 (four unique md5s 0fc39d2a/dd4d5ee2/9fc63c9c/3bf25761) + the
+VLM battery 4/4 CLEAN. The count ladder: UNIT 2009 → 2018 (+9) · SUITES 110 → 111 ·
+E2E 137 · badge 2146 → 2155.
+
+The walk-harness lessons: **L-131c1 the storageState token race** (the reference's
+JWT lands in localStorage ~1s after submit, slower cold — POLL for the token, never
+a fixed wait) · **L-131c2 the needsLogin SPA-boot race** (a DOM probe 1200ms after
+goto reads a half-booted page — use a DETERMINISTIC gate: no state file ⇒ login,
+state file ⇒ the /profile upload-input canary) · **L-131c3 the border-signal
+currentColor trap** (ancestor-climb card detectors must key on borderWidth > 0, not
+border-color — border-color defaults to currentColor) · **L-131c4 the toast-window
+census discipline** (a toast lives ~4s — hunt from t=0 with an eager poll or a
+MutationObserver).
+
+**The next-session suggestion**: the rotation's second cycle continues — the s116+
+third-cycle candidates (reports-tables s116 · accounts-list s117 · dashboard-charts
+s118 · contacts-list s119 · leads-table s120 the stalest never-re-walked two-app
+surfaces); the highlighted-state + text-content lenses stay standing; any future
+reference-side toast census must first re-verify the F-131c1 DOM-dead state (the
+platform may revive it).

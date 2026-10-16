@@ -117,7 +117,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
 const E2E = 137;
-const SUITES = 110;
+const SUITES = 111;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -265,7 +265,19 @@ const SUITES = 110;
 // re-check: the F-128c1 menu-item focus-wash TEXT-arm pin [+1 it,
 // page-layout.test.ts — focus:text-neutral-900 positive + the
 // focus:text-foreground negative]); SUITES stays 110; E2E stays 137.
-const UNIT = 2009;
+// Session-131: 2009 → 2018 (+9 — the toast family walk [walk22 — the
+// session_278/279 close's named direction, the F-128c1 genus's residual
+// arm]: THE NEW tests/toast-anatomy.test.ts — 2 RED-first fix pins [the
+// F-131c1-carrying D-131a0 close-X hover-text pin (hover:text-neutral-900
+// positive + the hover:text-foreground negative, comment-stripped — the
+// fix comments themselves name the retired string) + the D-131a1
+// dead-animation retirement pin (NO data-[state] animation arms)] + 7
+// walk-censused freeze pins [the viewport geometry family + the card
+// chrome + the three variant borders + the 4000ms duration + the slice(-4)
+// cap + the aria family + the title/description classes + the icon family
+// + the hover-pause seam]; SUITES 110 → 111 (the ONE new file); E2E stays
+// 137.
+const UNIT = 2018;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -298,6 +310,8 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).toContain("seeded-dashboard-kpis");
     // the s121 extension — the uploads-path trap pins join the list
     expect(readme).toContain("uploads-path");
+    // the s131 extension — the toast-anatomy family pins join the list
+    expect(readme).toContain("toast-anatomy");
   });
 
   it("README Tested row carries the live counts (the headline live-tense row)", () => {
@@ -666,13 +680,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-130 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-131 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s128 layer now beneath the s129 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s130 layer now beneath the s131 head)",
     ).toContain(
-      "+ beneath it 2008 unit checks + 137 e2e checks green; the session-129 layer (the 129-c rotation — THE PROFILE + SETTINGS DATA-TAB FAMILY SECOND-CYCLE RE-CHECK",
+      "+ beneath it 2009 unit checks + 137 e2e checks green; the session-130 layer (the 130-c rotation — THE DEFAULTS + INSIGHTS FAMILY SECOND-CYCLE RE-CHECK",
     );
   });
 

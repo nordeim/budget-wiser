@@ -104,7 +104,16 @@ function ToastCard({ item }: { item: ToastItem }) {
       role="status"
       className={cn(
         "pointer-events-auto flex items-start gap-3 rounded-xl border p-3.5 shadow-lg outline-none",
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-4",
+        // Session-131 (D-131a1): the scaffold-era data-[state] animation
+        // family RETIRED — the ToastCard never set data-state, so
+        // data-[state=open]:animate-in / animate-out / fade-* /
+        // slide-in-from-bottom-4 NEVER applied (zero animation since the
+        // scaffold — live-censused tc.animName=none at walk22). The
+        // F-131c1 record: the reference's toast system is DOM-DEAD (four
+        // Ix.* calls in its bundle, ZERO rendered elements on any trigger
+        // path) — no reference surface contracts an animation; retired per
+        // the D-124a7 dead-code doctrine. The tw-animate.css vendor import
+        // stays (the Radix dialog family rides it).
         item.variant === "success" && "border-emerald-200 bg-white",
         item.variant === "error" && "border-rose-200 bg-white",
         item.variant === "info" && "border-line bg-white",
@@ -120,7 +129,15 @@ function ToastCard({ item }: { item: ToastItem }) {
       <button
         type="button"
         onClick={() => dismiss(item.id)}
-        className="shrink-0 rounded-md p-1 text-subtle transition-colors hover:bg-line-soft hover:text-foreground"
+        // Session-131 (D-131a0): the hover TEXT arm is the neutral-900
+        // literal (hover:text-foreground #0a0a0a → hover:text-neutral-900
+        // #171717) — the F-128c1 genus's FOURTH arm (s128 menu-item ink ·
+        // s129 outline hover text · s130 ghost hover text; the reference's
+        // stock interactive-hover ink #171717). The reference's toast
+        // surface is DOM-DEAD (F-131c1 — no live face to parity), so the
+        // fix rides OUR superset by the trio precedent + internal
+        // consistency: the LAST live hover:text-foreground ride in src/.
+        className="shrink-0 rounded-md p-1 text-subtle transition-colors hover:bg-line-soft hover:text-neutral-900"
         aria-label="Dismiss notification"
       >
         <X className="h-3.5 w-3.5" />
