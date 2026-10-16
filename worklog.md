@@ -5164,3 +5164,83 @@ cross-app idiom) · the session-level lesson: OUR side never round-trips an
 http storageState (the Secure-flagged session cookie replays unreliably
 outside the test-runner fixtures — every ours phase logs in fresh
 in-context).
+
+---
+
+## Session 137 — the settings picklist-editor family fresh-eyes walk (the pin-only session)
+
+- Stage 1: the fresh clone at a59f300 (the session_291 intake atop the s136
+  ship 842c041); the environment rebuilt (.env + db/ + seed + census MATCH
+  15/24/10/23/12 + 4 users); the five core docs + session_290/291 + the
+  session136 plan re-read — the s136 ship verified against the codebase
+  (2036/137, SKILL v1.133.0, the 4 leads pins)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 111/2032 · build ·
+  e2e 137/137 (3.5m) — the exact s136 ship match
+- Stage 3: the audits — 137-a 9/9 Verified (THE COMPLETE SETTINGS
+  PICKLIST-EDITOR PRE-WALK INVENTORY: the freeze map [settings-page.tsx
+  since s82 — 55 sessions; button.tsx s130 / select.tsx s133 / tabs.tsx
+  s129 / toast.tsx s131 moved under], the drift carriers [the s130 ghost
+  hover-text the ONLY never-censused carrier], the pin coverage map
+  [settings the freeze-pin genus's LAST unpinned family], the named risks
+  L-137a1..a9) + 137-b 10/10 PASS (the ~95th standing battery, zero
+  findings)
+- Stage 4: probe:ref #109 — THE REFERENCE REVERTED to the 81-session
+  standing fingerprint (index-DZ-xbrIm.js · 1,631,071 bytes · a70a637f…
+  STABLE — the s136 Rolldown re-chunk was transient); the four drift gates
+  CLEAN modulo the documented genera (settings 4.73-7.34% picklist-data ·
+  accounts@1024 2.43% landscape); scandihaven d4789c3 on-pattern; census
+  MATCH
+- Stage 5 (the 137-c rotation): THE SETTINGS PICKLIST-EDITOR FAMILY
+  FRESH-EYES WALK — walk28 (the phased idiom, the walk db ZERO-CONFIG for
+  PASS 1 [the both-zeroes idiom — the 5 picklist arrays emptied] /
+  re-seeded for PASS 2): PASS 1's 27 raw diffs @1440 + 6 @390 ALL
+  adjudicated to documented genera — the v4 shadow dead-layers ×15 · the
+  L-122c1 disabled-cursor ×5 · the F-119c2 bodyBg (occluded) · the
+  inner-container scroll artifact (the decisive geo probe: BOTH apps'
+  cards at doc-y 249) + THE SPACE-Y MARGIN-DIRECTION GENUS' MAIDEN
+  LINE-BOX FACE (the +8 gapDescToBtn — the reference's v3-style mt-8
+  extends the line box's ascent where ours' v4 mb-8 extends it downward;
+  the same 160px cards) · the L-134c1 whitespace ×2 — ZERO REAL PARITY
+  DEFECTS; PASS 2 populated ours-only — every seeded contract holds
+  [L-137a1 TOP the ghost hover arms live-verified (the Pencil/Save/X trio
+  rgb(245,245,245)/rgb(23,23,23) · the Trash2 red pair
+  rgb(220,38,38)→rgb(185,28,28) · the row's gray-50) · L-137a2 the
+  Defaults selects' resting ink (the s133 settings arm — a code-verified
+  no-op confirmed live) · L-137a3 the rename state + the Enter-save
+  round-trip · L-137a4 the add round-trip (the hover alpha oklab 0.9 =
+  the reference's rgba(23,23,23,0.9)) · the Defaults Week→Month
+  round-trips]; THE REFERENCE INTERACTIVE DRIVE (the maiden, restored):
+  the add-button family censused TWO-APP BYTE-EQUAL (48×36 ·
+  rgb(23,23,23) · rgb(250,250,250) · radius 6px · the hover alpha 0.9)
+  — then their Add click fired NO NETWORK CALL AT ALL: THE REFERENCE'S
+  ADD FLOW IS A NO-OP TODAY (their wiped config un-repopulatable from
+  their own UI — the reference-side genus, ours the working superset;
+  the reference restored to wiped, ZERO residue)
+- Stage 6: the remediation — D-137a0 THE FREEZE PINS [+5 its,
+  settings-family-parity.test.ts: the 5 panel titles + the 3 tab labels +
+  the 5 add-input placeholders (incl. the Industries typo) + the Defaults
+  6-label ordered set + the picklist interactive chrome; all five
+  stash-proven — each mutation → exactly 1 RED alone] + D-137a1 the docs
+  realignment [the lockstep RED (12) at the stale docs → the realignment
+  (the mechanical sites + the suite-list insertions + the SKILL v1.134.0
+  content layers + the AGENTS Session-137 section + the PAD Session-137
+  row + the dialog-geometry CLAUDE carrier re-anchored) → GREEN 21/21]
+- Stage 7: the captures 276-279 (four unique files) + THE VLM BATTERY 4/4
+  CLEAN (276 the seeded config tab — the hover face below the VLM's
+  luminance resolution, the computed census the authority; 277 the
+  Defaults 6-group face; 278 the Data tab trio + the red Danger Zone;
+  279 the contained @390 phone face with the hamburger nav); the final
+  gate lint 0/0 · tsc 0 · 112/2041 · build · 137/137; the closing drift
+  sweep IDENTICAL to the opening (the two documented genera only, src/
+  unchanged); census MATCH
+
+**The count ladder**: UNIT 2036 → 2041 (+5 its) · SUITES 111 → 112 (the
+new settings-family-parity file) · E2E 137 · badge 2173 → 2178.
+
+**The walk-harness lessons**: L-137c1 the inner-container scroll
+(main.overflow-auto — window.scrollY stays 0; reset before geometry
+censuses) · L-137c2 the synthetic-hover trap (CSS :hover needs REAL
+pointer moves — locator.hover() only) · L-137c3 the React controlled-input
+trap (locator.fill() only — direct .value + synthetic events never reach
+React state) · L-137c4 the quote-collapse selector trap (string-replacing
+" → ' collapses querySelector quoting).
