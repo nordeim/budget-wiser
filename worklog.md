@@ -4954,3 +4954,64 @@ badge 2146 → 2155.
 
 **The count ladder**: UNIT 2021 → 2023 (+2 its) · SUITES 111 · E2E 137 · badge
 2158 → 2160.
+
+## Session-134 — the dashboard-charts family third-cycle re-check (the zero-fix / freeze-pin session)
+
+- Stage 1: the workspace pulled to 0d898ab (the session_285 intake atop the s133 ship
+  39aac73); the docs re-anchored at the s133 ship state (SKILL v1.130.0, 111/2023/137,
+  badge 2160); census MATCH 15/24/10/23/12 + 4 users; the direction confirmed from the
+  session_285 close: dashboard-charts (s118), 16 sessions back
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 111/2023 · build · 137/137
+  (3.4m) — exact match
+- Stage 3: the audits — 134-a 9/9 Verified (the substantive record-only finding: the
+  s133 "exactly ONE placeholder-state call site" undercounted — the dashboard's
+  view-switcher page.tsx:378 value="" is a SECOND site, repainted by the s133 fix
+  with zero dashboard-side census → the L-134a1 TOP risk; + THE COMPLETE
+  DASHBOARD-CHARTS PRE-WALK INVENTORY: the freeze map [page.tsx since s87 — 46
+  sessions; charts.tsx s98; page-parts.tsx s90; dashboard-data.ts s110], the drift
+  carriers since the s118 ship caaf121 [button.tsx s129/s130, select.tsx s133,
+  page-layout.ts s128, globals.css s119 — NONE dashboard-family], the ride census,
+  the named risks L-134a1..a9) + 134-b 9/9 PASS (the ~92nd standing battery — the
+  drawer battery 11 passed, the SEO 13 metadata-bearing files zero gaps, the space-y
+  census 107 exact/18 files, the v4 hazard sweep zero oklab classes in src/, the
+  db-path 20/20 + census MATCH post-run, the rate-limit/auth/envelope/gate-chain
+  stacks standing, the focused ladder 294 its GREEN, zero findings, zero strays)
+- Stage 4: the live verification — probe:ref the 106th STABLE (bundle md5 a70a637f
+  exact; demo data ZERO; the TRUE-390 defect STANDS) · the four drift gates CLEAN
+  (1440/390/768/1024 each --fail-on-drift) · scandihaven d4789c3 on-pattern ·
+  census MATCH
+- Stage 5 (the 134-c rotation): THE DASHBOARD-CHARTS FAMILY THIRD-CYCLE RE-CHECK —
+  walk25 (the phased idiom) + the walk25b decisive adjudication probe: 398 two-app
+  axes, 7 raw diffs, ZERO REAL PARITY DEFECTS [the adjudication: the fb.filterBtn
+  rect/color ×4 the HARNESS ARTIFACT defused by walk25b (the Filter button
+  BYTE-EQUAL 88x32 @1440 / 326x32 @390, rgb(10,10,10), white, rgb(229,229,229),
+  6px, icon-16) · the text.content ×2 the TEXT-NODE-GRANULARITY genus (the reference
+  splits its currency template values into separate DOM text nodes; the rendered
+  values byte-equal per-axis — the L-134c1 harness lesson) · the ch1.gridlineCount
+  @390 12-vs-11 the documented s91 chart-noise genus]; THE LENSES ON THEIR MAIDEN
+  RUN ALL CLEAN [L-134a1 the s133 fix's dashboard arm — the view-switcher trigger
+  ink + chevron rgb(10,10,10) byte-equal BOTH viewports (the L-133c2 asymmetry
+  standing: ours IN the state, the ref avoiding it, the ink equal anyway) ·
+  L-134a2 the primary Export rgb(250,250,250) on rgb(37,99,235) + both ghost Adds
+  rgb(37,99,235) · L-134a3 ALL FIVE hover arms byte-equal · L-134a4 the MENU_ITEM
+  wash rgb(245,245,245) · L-134a5 the Stage + view-switcher OPEN states · L-134a6
+  the text-content census modulo the genus · L-134a7 the Lead dialog 512x640 + the
+  7 labels + the Cancel hover pair · L-134a8 the @390 genera (the s95 containment
+  re-confirmed + the L-121c1 rounded-full infinity genus)]; PASS 2 populated
+  ours-only — every seeded contract holds [the KPIs 24/$337.0k/$126.0k/$0k/29.2%/82
+  (the Avg-Cycle day-scale drift — the wall-clock derivation) · the pipeline 5 bars
+  + the legend values (the swatches byte-equal incl. the Won gray fallback) · the
+  Top Reps 3 · the Lead Sources 4 (slice(0,4)) · the Upcoming 3 · the Recent Deals
+  5 (the slice-5 contract) · the Add menu 5 items · the rounded-full census 13]
+- Stage 6: the remediation (the zero-fix session) — D-134a0 THE FREEZE PINS [+3 its,
+  dashboard-kpi-parity.test.ts: the 6 KPI labels ORDERED SET + the quick-create menu
+  items/dialog mounts/icon adjacency + the filter-bar construction order; all three
+  stash-proven (each mutation → exactly 1 RED alone; restored → 28/28)] + D-134a1
+  the docs realignment [the docs-counts lockstep RED (13) at the stale docs → the
+  realignment → GREEN 40/40]
+- Stage 7: the final gate — lint 0/0 · tsc 0 · 111/2026 · build · 137/137 · the
+  closing drift sweep CLEAN on all four gates · census MATCH; the captures 264-267
+  + the VLM battery 4/4 CLEAN; the two-commit ship + the SSH-wrapper push
+
+**The count ladder**: UNIT 2023 → 2026 (+3 its) · SUITES 111 · E2E 137 · badge
+2160 → 2163.
