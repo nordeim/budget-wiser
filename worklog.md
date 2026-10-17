@@ -5384,3 +5384,71 @@ chart's card) · L-139c3 the random-mask discipline (number-masking hides the
 value-form distinction the raw record exposes — record BOTH) · L-139c4 the
 trailing-zero trim (toLocaleString's 3-fraction-digit default trims zeros —
 characterize random faces across N samples before concluding quantization).
+
+---
+
+## Session 140 — the leads chart-interiors post-fix walk (the pin-only session)
+
+- Stage 1: the workspace RESET again — re-cloned at f59e3ce (the s139 ship
+  7ce4de6/ce5122d + the session_297 transcript commit); the environment
+  re-stood (.env + db/ + census MATCH 15/24/10/23/12 + 4 users; the
+  Playwright chromium-headless-shell 1243 present in the platform cache);
+  the four intake docs read (session_296 + the s139 plan + the worklog +
+  session_297) — the s139 ship verified; the rotation decided per the
+  blast-radius doctrine (charts.tsx moved at s38; reports #1 re-walked;
+  the dashboard #2 re-walked s139; THE LEADS PAGE — consumer #3, frozen
+  since s113 — never re-walked post-fix; the named alternatives
+  accounts/calendar/activities all strictly lower-yield)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 113/2053 · build ·
+  e2e 138/138 (3.4m) — the exact s139-ship match
+- Stage 3: the audits — 140-a 9/9 Verified (+ THE COMPLETE LEADS
+  CHART-INTERIORS PRE-WALK INVENTORY: the freeze map [leads-page s113 ·
+  charts.tsx s38 THE only functional carrier since s136], the chart
+  anatomy [the pipeline's raw-dataKey construction + the wonlost's
+  raw-number face + the funnel's STATUS-CUMULATIVE vocabulary], the
+  maiden lens census, the named risks L-140a1..a9) + 140-b 11/11 PASS
+  (the ~98th standing battery, zero findings)
+- Stage 4: probe:ref #112 — the reference STABLE at the 81-session
+  standing fingerprint; the four drift gates CLEAN ×4; scandihaven
+  d4789c3 on-pattern; census MATCH
+- Stage 5 (the 140-c rotation): THE LEADS CHART-INTERIORS POST-FIX WALK —
+  walk31 (the phased idiom; the walk dbs at the repo db/ folder with the
+  absolute-override standalone boots; the maiden tooltip lens on all
+  three charts + the H/V grid geometry lens + the statcard re-verify +
+  the @390 containment + the PASS 2 round-trips + the API cross-check +
+  the export): PASS 1 two-app zero-data — **245 axes, ZERO diffs**
+  (the grids H/V byte-equal on both grid-bearing charts at both viewports
+  — the s38 fix's consumer #3 verified, NO residual; the statcards
+  byte-equal; the Contacted-elision byte-equal; the funnel zero-face
+  byte-equal — both apps render 4 degenerate 0x0 trapezoids, the
+  "renders NOTHING" note re-characterized; the wonlost empty face + the
+  2-item stock Legend byte-equal); PASS 2 populated ours-only — every
+  seeded contract holds (the statcards + the API cross-check exact; the
+  pipeline bars; the wonlost 10 bars; THE THREE MAIDEN TOOLTIP FACES
+  DECODED: "New value : $319,000" + "Sep 2026 / Won : 2 / Lost : 0" +
+  "0 : 4"; the round-trips restored byte-identical; the export fired);
+  ZERO REAL PARITY DEFECTS — a clean walk
+- Stage 6: the remediation — D-140a0 the freeze pins (+4 its: +3 in
+  leads-family-parity + the ConversionFunnel family pin in
+  charts-internals; mutation-proven exactly 2 RED alone per construction
+  drift) + D-140a1 the docs realignment [SUITES 113 · UNIT 2053 → 2057
+  (+4) · E2E 138 · badge 2191 → 2195; SKILL v1.137.0 + the session-140
+  layer + the AGENTS Session-140 section + the PAD Session-140 row + the
+  two CLAUDE carriers re-anchored] + D-140a2 the captures 288-291 (four
+  unique md5s) + THE VLM BATTERY 4/4 CLEAN + D-140a3 the final gate
+  [lint 0/0 · tsc 0 · 113/2057 · build · 138/138 · the closing drift
+  sweep CLEAN ×4 · census MATCH]
+- The walk-harness lessons: L-140c1 the dead raw mouse.move (the raw
+  page.mouse.move does NOT activate recharts' tooltip in this
+  chromium-headless-shell 1243 build — the locator hover scoped to the
+  marked card is the working mechanism) · L-140c2 the wrapper-kill trap
+  (a nohup'd server dies with the bash call; kill $SPID kills the wrapper
+  NOT the bun child — the child survives, EADDRINUSE-blocks the re-boot,
+  and silently serves the STALE db; pkill -f server.js + a port-dead
+  confirmation is the reliable cleanup)
+
+**The count ladder**: UNIT 2053 → 2057 (+4 its) · SUITES 113 UNCHANGED ·
+E2E 138 UNCHANGED · badge 2191 → 2195.
+
+**The ship**: the two-commit pattern (the feat + the session log) pushed
+to git@github.com:nordeim/neo-crm.git main via the SSH wrapper.
