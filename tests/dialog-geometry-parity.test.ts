@@ -507,10 +507,10 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // construction — the maiden funnel face), mutation-proven exactly
     // 2 RED alone per drift]; the four sites re-anchored again, the
     // retired 2053 form joins the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2057 checks)");
-    expect(claude).toContain("(currently 2057)");
-    expect(claude).toContain("Vitest unit suites (2057 checks)");
-    expect(claude).toContain("`bun run test` (2057)");
+    expect(claude).toContain("Unit (Vitest, 2060 checks)");
+    expect(claude).toContain("(currently 2060)");
+    expect(claude).toContain("Vitest unit suites (2060 checks)");
+    expect(claude).toContain("`bun run test` (2060)");
     expect(claude).not.toContain("Unit (Vitest, 2053 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2051 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2041 checks)");

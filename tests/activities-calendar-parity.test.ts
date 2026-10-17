@@ -680,3 +680,41 @@ describe("session-125: the activities family walk pins (the 125-c two-app face)"
     expect(src).not.toMatch(/BY_TYPE_CATEGORIES[^;]*whatsapp/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-141 (the activities walk, walk32): the by-type chips palette +
+// the STATIC subtitle — the walk's chip census verified the five swatches
+// byte-equal two-app (the per-type colors live ONLY in the chips row; the
+// bars are single-fill #3b82f6). The chips read the FILTERED set: at the
+// 7days default the windowed counts "Call 5|Email 3|Meeting 4|Task 3|
+// Note 0"; the Call-only filter round-trip moved them to "Call 5|rest 0"
+// then restored byte-identically.
+// ---------------------------------------------------------------------------
+
+describe("session-141: the by-type chips palette + the static subtitle (the walk's chip census)", () => {
+  it("the chips palette is the five-hex BY_TYPE_CARD.colors map + the w-3 h-3 inline-backgroundColor swatch + the STATIC Last 2 days subtitle", () => {
+    const layout = read("src/lib/page-layout.ts") ?? "";
+    expect(layout).not.toBe("");
+    // THE FIVE-HEX MAP (the S13-P5 palette, DOM-extracted from the
+    // reference's chip inline-colors — the walk's swatch census:
+    // rgb(59,130,246) | rgb(139,92,246) | rgb(245,158,11) |
+    // rgb(16,185,129) | rgb(20,184,166), byte-equal two-app)
+    expect(layout).toContain('call: "#3b82f6",');
+    expect(layout).toContain('email: "#8b5cf6",');
+    expect(layout).toContain('meeting: "#f59e0b",');
+    expect(layout).toContain('task: "#10b981",');
+    expect(layout).toContain('note: "#14b8a6",');
+    // THE STATIC SUBTITLE (S13-P5, live-verified again at s141: the
+    // range filter does not change it — the windowed chips ride, the
+    // subtitle never moves)
+    expect(layout).toContain('subtitleText: "Last 2 days"');
+    // THE SWATCH CONSTRUCTION: the w-3 h-3 rounded square carrying the
+    // INLINE backgroundColor (never a Tailwind bg-class — the hex map
+    // is the single color source)
+    const page = activitiesPage();
+    expect(page).toMatch(/style=\{\{ backgroundColor: t\.color \}\}/);
+    // the chips render the windowed counts: "{t.label} {t.count}" off
+    // the FILTERED baseFiltered set
+    expect(page).toMatch(/\{t\.label\} \{t\.count\}/);
+  });
+});

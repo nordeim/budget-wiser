@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2057 checks)      | `bun run test`                         |
+|  Unit tests (2060 checks)      | `bun run test`                         |
 |  Browser E2E (138 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2057) → `bun run build` → `bun run test:e2e` (138) — or the
+`bun run test` (2060) → `bun run build` → `bun run test:e2e` (138) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6474,8 +6474,8 @@ frozen since s133 with zero moved-under carriers):
 
 ### Session-140 (2026-10-17) — the leads chart-interiors post-fix walk (the pin-only session)
 
-The blast-radius doctrine (the s139 precedent): charts.tsx moved at s38 —
-consumer #1 (reports) re-walked s38, consumer #2 (the dashboard) re-walked
+The blast-radius doctrine (the s139 precedent): charts.tsx moved at s138 —
+consumer #1 (reports) re-walked s138, consumer #2 (the dashboard) re-walked
 s139, **consumer #3 (the leads page — the grid-bearing SingleBarChart
 "Pipeline Value by Stage" + GroupedBarsChart "Won vs Lost Over Time" + the
 ConversionFunnel) never re-walked post-fix**; the maiden lenses (the tooltip
@@ -6489,7 +6489,7 @@ with the per-file freeze map (leads-page frozen since s113 — 26 sessions).
 repo db/ folder; the absolute-override standalone boots; PASS 1 two-app
 zero-data + PASS 2 populated ours-only; both viewports). **PASS 1: 245
 axes, ZERO diffs** — the grids H/V byte-equal on both grid-bearing charts
-at both viewports (the s38 fix's third consumer verified, NO residual), the
+at both viewports (the s138 fix's third consumer verified, NO residual), the
 zero-state y-tick quirk byte-equal, the statcards byte-equal (the s118
 contracts hold), the Contacted-elision byte-equal (4-of-5 ticks at the
 331px card), **the funnel zero-face byte-equal — BOTH apps render 4
@@ -6521,3 +6521,56 @@ sweep x4 · census MATCH).
   chromium-headless-shell build) · L-140c2 the wrapper-kill trap (the
   nohup'd server dies with the bash call; pkill -f server.js, else the
   child survives EADDRINUSE-blocked re-boots serving the STALE db).
+
+### Session-141 (2026-10-17) — the activities family walk (the charts.tsx consumer #4 sweep-close + the pin-only session)
+
+The blast-radius doctrine (the consumer sweep): charts.tsx moved at s138 —
+consumer #1 (reports) re-walked s138, consumer #2 (the dashboard) s139,
+consumer #3 (the leads) s140 — **consumer #4 (THE ACTIVITIES BY-TYPE CHART)
+never re-walked post-fix** (the s125 walk 16 sessions back; the page source
+frozen since s109 — 32 sessions; ~6 rendering-relevant carriers moved since
+the walk: entity-dialogs s127, tabs/TABS_PILL s129, button s129/s130, toast
+s131, select s133, charts.tsx s138 — the richest carrier stack of the
+rotation candidates). The 141-a freeze map CONFIRMED the call site
+grid={false} tickFontSize 10 — **s138-fix-inert at source** (no
+CartesianGrid surface; the tick spread a no-op when tick is defined) — the
+walk's yield: the maiden chart-interiors census + the tooltip face + the
+carrier-stack re-verify. The named alternatives (accounts +7 zero-carrier
+re-adjudicated a THIRD time / calendar +16 zero-charts) strictly
+lower-yield.
+
+**walk32** (the phased idiom; the walk dbs walk32-zero/walk32-seed at the
+repo db/ folder; the absolute-override standalone boots; the reference's
+storageState persisted + reused, ONE reference login; PORT 3141; both apps
+at 1440×900 + 390×844). **PASS 1 two-app zero-data: 327 axes, 1 diff = the
+DOCUMENTED More-Filters superset** (the s125 fix-over-defect genus: ours
+EXPANDED, the reference's dead stub) — **ZERO REAL PARITY DEFECTS**: the
+by-type chart-interiors maiden census byte-equal (the bars 0-count on both
+apps — the all-zero elision genus; the xTicks the 5 labels; the yTicks the
+"0,1,2,3,4" quirk; the NO-GRID verification — zero .recharts-cartesian-grid
+lines, the L-138c1-immune face; the tick fonts 10px/#666; the chart rect
+270×150; the 5 chips byte-equal) + **the maiden zero-face tooltip
+"Emailcount : 0" byte-equal two-app** (the chrome white/#ccc/0px/16px/400
+identical). **PASS 2 populated ours-only — every seeded contract holds**:
+the 7days-windowed KPIs 2/3/3/5/4/2 (the API cross-check: 23 total, the
+full byType call:7|email:6|meeting:4|note:1|task:3|whatsapp:2) · the
+priority rows 3 with the Xh/Xd badges "3d/1d/20h overdue" · the Overdue
+count badge "Overdue3" · the tab switches (Due Today 2 rows / Completed
+sliced to 5 — the M-76c4 cap) · the timeline 13 LONG-WEEKDAY headers + 17
+rows · **the maiden seeded tooltip face "Callcount : 5"** (the raw-dataKey
++ raw-number face — NO name + NO formatter) · the 0-value-bar elision
+genus (Note 0 → 4-of-5 bars) · the Call-filter round-trip (the KPIs
+1/2/0/5/0/0 + the chips "Call 5|rest 0" → restored byte-identically) · the
+dialog 672×426 + the dark submit · the @390 containment + the M-109c1 row
+containment holding (maxRight 358 < cardRight 374).
+
+**THE REMEDIATION (the pin-only session)**: D-141a0 the freeze pins (+3
+its, GREEN-at-birth — the by-type call-site construction pin + the
+SingleBarChart/GroupedBarsChart L-138c1 tick-spread guard pin in
+charts-internals (32) + the by-type chips palette pin in
+activities-calendar-parity (60); the mutation-proof: the name-prop drift →
+exactly 2 RED, the guard removal → exactly 1 RED, the hex drift → exactly
+1 RED, reverted → 92/92 GREEN) + D-141a1 the docs realignment (UNIT
+2057 → 2060 · badge 2195 → 2198 · SKILL v1.138.0 + the session-141 layer
++ **the s38→s138 prose-typo cleanup** — ~30 grid-fix-context sites across
+the s140 record set, the real session-38 history references preserved).

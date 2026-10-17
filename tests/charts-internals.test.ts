@@ -373,3 +373,78 @@ describe("session-140: the ConversionFunnel family stock construction (the maide
     expect(region).not.toMatch(/<XAxis|<YAxis/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-141 (the activities walk, walk32): the by-type call-site
+// construction + the SingleBarChart family's L-138c1 tick-spread guard.
+// The consumer #4 sweep-closing walk: charts.tsx moved at s138 (the
+// grid fix); reports #1 re-walked s138, the dashboard #2 s139, the leads
+// #3 s140 — THE ACTIVITIES BY-TYPE CHART was the family's LAST consumer,
+// never re-walked post-fix. The site is grid={false} (L-138c1-IMMUNE at
+// the grid face — no CartesianGrid surface) + tickFontSize 10 (tick
+// defined — the tick spread is a no-op here): the s138 fix changed this
+// site's rendering by exactly nothing, and walk32 verified the whole
+// interiors census byte-equal two-app (the bars, the ticks at 10px/#666,
+// the y-domain "0,1,2,3,4" quirk at zero, the chart rect 270x150, the
+// chips, the tooltip faces).
+// ---------------------------------------------------------------------------
+
+describe("session-141: the by-type call-site construction (the consumer #4 sweep-closing walk)", () => {
+  it("the activities by-type call site: grid={false} + tickFontSize 10 + radius [4,4,0,0] + #3b82f6 + height 150 + NO name + NO formatter (the raw-dataKey + raw-number tooltip face)", () => {
+    const page = stripComments(read("src/app/(app)/activities/activities-page.tsx") ?? "");
+    const i = page.indexOf("<SingleBarChart");
+    expect(i).toBeGreaterThan(-1);
+    const call = page.slice(i, i + 400);
+    // THE CALL-SITE CONSTRUCTION (walk32-verified two-app byte-equal):
+    // the chart rect 270x150 · the x-ticks carry the 5 labels + the
+    // y-ticks the "0,1,2,3,4" quirk at zero · both at fontSize 10 fill
+    // #666 (the stock recharts chrome) · NO grid (zero .recharts-
+    // cartesian-grid lines — the L-138c1-immune face) · the single-fill
+    // #3b82f6 bars with the rounded-top radius.
+    expect(call).toContain('dataKey="count"');
+    expect(call).toContain('fill="#3b82f6"');
+    expect(call).toContain("radius={[4, 4, 0, 0]}");
+    expect(call).toContain("tickFontSize={10}");
+    expect(call).toContain("height={150}");
+    expect(call).toContain("grid={false}");
+    // THE MAIDEN TOOLTIP FACE (never decoded on this chart before the
+    // s141 walk): NO name prop (the tooltip's series label = the RAW
+    // dataKey "count") + NO formatter (the raw number) — the seeded
+    // face read "Callcount : 5" (the 7days-windowed count) + the zero
+    // face "Emailcount : 0", byte-equal two-app at BOTH faces; the
+    // chrome white bg / #ccc border / 0px radius / 16px/400.
+    expect(call).not.toMatch(/\bname=/);
+    expect(call).not.toMatch(/\bformatter=/);
+    // THE 0-VALUE-BAR ELISION GENUS (the maiden decode): at the seeded
+    // 7days window the Note count is 0 and recharts renders NO bar rect
+    // for it (4-of-5 bars; at the all-zero face ZERO bars render on
+    // either app — the bt.bars.count 0/0 byte-equal genus, the same
+    // family as the leads funnel's degenerate trapezoids but with NO
+    // DOM residue at all here).
+  });
+
+  it("the SingleBarChart + GroupedBarsChart families carry the L-138c1 tick-spread guard (the explicit-undefined tick prop would kill the grid generators)", () => {
+    const src = charts();
+    // L-138c1: recharts 2.15's grid generators spread the context axis
+    // object over CartesianAxis.defaultProps — an explicit tick:undefined
+    // key nullifies defaultProps.tick, getTicks() bails on !tick, and the
+    // CartesianGrid falls back to the 4-line plot FRAME where the
+    // reference's recharts renders the visible-ticks+edges grid. The
+    // guard: the tick prop is spread ONLY when it carries a value —
+    // pinned at the family level for BOTH Cartesian bar families (the
+    // s138 fix's own construction, previously pinned only through the
+    // grid-conditional face).
+    for (const [family, nextExport] of [
+      ["SingleBarChart", "export function GroupedBarsChart"],
+      ["GroupedBarsChart", "export function TrendLineChart"],
+    ] as const) {
+      const i = src.indexOf(`export function ${family}`);
+      expect(i).toBeGreaterThan(-1);
+      const j = src.indexOf(nextExport, i);
+      const fn = src.slice(i, j > i ? j : i + 2400);
+      expect(fn).toMatch(/const tickProp = tick \? \{ tick \} : \{\};/);
+      const spreads = fn.match(/\{\.\.\.tickProp\}/g) ?? [];
+      expect(spreads.length).toBe(2); // the XAxis + the YAxis
+    }
+  });
+});

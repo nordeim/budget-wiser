@@ -16,12 +16,12 @@ Now Stage 3 — before dispatching audits, I need the freeze-map evidence to dec
 Key finding: **page-parts.tsx is consumed by all entity pages**, and `charts.tsx` (s138 fix) consumers include reports (✓ re-walked s138) and dashboard (✓ re-walked s139) — but what about activities/leads? Let me check the chart usage per surface to complete the blast-radius map.
 The blast-radius map is decisive: **activities rides 3× SingleBarChart (the s138-fixed family) — consumer #3, never re-walked post-fix** — while leads (+4 staleness) rides 4 fixed-family sites and calendar/accounts ride none. Let me check the activities call-site props (tick delivery determines whether the s138 fix actually changed its rendering).
 Activities' only chart site is `grid={false}` + tickFontSize 10 (fix-inert, no grid), while **leads rides 2 grid-bearing fixed-family sites (SingleBar + GroupedBars, tickFontSize 12) whose post-fix state and the maiden lenses (tooltip/grid H-V split) never ran**. Let me check the historical lens coverage of the leads charts to finalize the rotation decision.
-Session-118 (s118, 22 sessions ago) was the last dashboard-charts + leads-statcard walk — predating the s38 grid fix and the s38/s139 lens generation entirely. Let me read that section to see what was censused for leads charts.
+Session-118 (s118, 22 sessions ago) was the last dashboard-charts + leads-statcard walk — predating the s138 grid fix and the s138/s139 lens generation entirely. Let me read that section to see what was censused for leads charts.
 The rotation decision is grounded. **s140 = THE LEADS CHART-INTERIORS POST-FIX WALK**:
 
-- **Blast radius**: leads rides the s38-fixed families (SingleBar "Pipeline Value by Stage" + GroupedBarsChart — both **grid-bearing**, tickFontSize 12) — the fix's **consumer #3**, never re-walked post-fix (reports #1 ✓ s38, dashboard #2 ✓ s139)
-- **Maiden lenses never ran on leads charts**: the tooltip lens + H/V gridline split (invented s38/s139) — the last chart census was s118 (shallow: titles/fonts/heights only, 22 sessions ago, pre-fix)
-- **Rich moved-under carrier set since s118**: charts.tsx (s38!), select/page-layout (s133), entity-dialogs (s127), toast (s131), button (s130)
+- **Blast radius**: leads rides the s138-fixed families (SingleBar "Pipeline Value by Stage" + GroupedBarsChart — both **grid-bearing**, tickFontSize 12) — the fix's **consumer #3**, never re-walked post-fix (reports #1 ✓ s138, dashboard #2 ✓ s139)
+- **Maiden lenses never ran on leads charts**: the tooltip lens + H/V gridline split (invented s138/s139) — the last chart census was s118 (shallow: titles/fonts/heights only, 22 sessions ago, pre-fix)
+- **Rich moved-under carrier set since s118**: charts.tsx (s138!), select/page-layout (s133), entity-dialogs (s127), toast (s131), button (s130)
 - **Named alternatives are lower-yield**: accounts (+7, zero chart carriers — adjudicated lower-yield at s139, unchanged), calendar (+16, **zero recharts charts** — no grid/tooltip lens yield), activities (+15, one chart site with `grid={false}` — no grid face at all)
 
 This mirrors the s139 precedent exactly (blast-radius doctrine superseding named candidates). Now dispatching the two audit subagents in parallel per the house pattern.
@@ -49,7 +49,7 @@ Syntax smoke test PASSED (clean parse + imports, controlled phase error). Now th
 PASS 1 ours complete (114 axes @1440, 131 @390). Now the reference phases (remote — no local server).
 Reference phases complete (same axis counts — good sign). Running the PASS 1 compare now.
 **PASS 1 two-app zero-data: 245 axes, 0 diffs** — the cleanest PASS 1 in the walk lineage. Let me verify the census actually captured meaningful data (not empty records) before trusting it.
-The census is rich and meaningful — grids censused with H/V coordinates, the zero-state "0,1,2,3,4" y-tick quirk, the Contacted-elision (4 ticks at the 331px card — byte-equal on both apps), the funnel's 4 degenerate trapezoids byte-equal, all tooltips identically untriggerable. **The maiden lenses are all CLEAN — the s38 fix's consumer #3 verified byte-exact at both viewports.**
+The census is rich and meaningful — grids censused with H/V coordinates, the zero-state "0,1,2,3,4" y-tick quirk, the Contacted-elision (4 ticks at the 331px card — byte-equal on both apps), the funnel's 4 degenerate trapezoids byte-equal, all tooltips identically untriggerable. **The maiden lenses are all CLEAN — the s138 fix's consumer #3 verified byte-exact at both viewports.**
 
 Now PASS 2 (populated, ours-only): boot the seed walk db server + run the pop phases.
 PASS 2 显示全为零 —— 种子服务器没有提供该 seed 数据库。经典怀疑对象：之前的零服务器（zero-server）未被彻底 kill（`kill $SPID` 终止的是 `nohup` 包装器，而不是实际的 node 服务进程）—— 第二次启动时遇到了 EADDRINUSE，而 pop 阶段与仍在运行的 ZERO 服务器进行了交互。让我来验证一下。
@@ -63,7 +63,7 @@ Now fix the tooltip dismissal (the raw move doesn't dismiss either — use an h1
 Re-running the pop phases with the patched tooltip mechanism (the ref zero-data phases are unaffected — all their tooltips were untriggerable by height, mechanism-independent).
 **THE WALK31 VERDICT IS COMPLETE**:
 
-- **PASS 1 two-app zero-data: 245 axes, 0 diffs** — full byte-equal parity (the grids with H/V coordinates at both viewports = the s38-fix consumer #3 verified; the statcards; the funnel's 4-degenerate-trapezoid zero-face byte-equal; the legend contract; the containment)
+- **PASS 1 two-app zero-data: 245 axes, 0 diffs** — full byte-equal parity (the grids with H/V coordinates at both viewports = the s138-fix consumer #3 verified; the statcards; the funnel's 4-degenerate-trapezoid zero-face byte-equal; the legend contract; the containment)
 - **PASS 2 populated ours-only: every seeded contract holds** — the statcards/API cross-check exact (24/9/7[$687,000]/4[$226,000]/29.2%), the pipeline bars + VALUE sums consistent, the funnel counts 4/12/10/7 (STATUS-CUMULATIVE), the three maiden tooltip faces decoded, the round-trips restore byte-identically, the export fires
 
 **ZERO parity defects — a clean walk** (the s134/s136 zero-fix pattern). Now designing the remediation: pin-only. Let me check what the existing pins cover vs the walk's discoveries.

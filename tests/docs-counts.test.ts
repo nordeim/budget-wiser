@@ -375,7 +375,25 @@ const SUITES = 113;
 // right fill #000 + NO CartesianGrid, the L-138c1-immune family)];
 // mutation-proven: exactly 2 RED alone per construction drift];
 // SUITES + E2E unchanged (113 - 138).
-const UNIT = 2057;
+// Session-141: 2057 -> 2060 (+3 — the activities family walk [walk32:
+// PASS 1 two-app zero-data 327 axes, 1 diff = the DOCUMENTED More-Filters
+// superset (the s125 fix-over-defect genus) — ZERO REAL PARITY DEFECTS,
+// the third consecutive clean walk]; the +3 freeze pins document the
+// walk's maiden discoveries at the construction level [+2 in the EXISTING
+// charts-internals suite — the by-type call-site construction pin (the
+// grid={false} + tickFontSize 10 + radius [4,4,0,0] + #3b82f6 + height
+// 150 + NO name + NO formatter — the raw-dataKey + raw-number tooltip
+// face, the maiden decode "Callcount : 5" / the zero face "Emailcount :
+// 0" byte-equal two-app) + the SingleBarChart/GroupedBarsChart families'
+// L-138c1 tick-spread guard pin (the s138 fix's own construction, never
+// pinned at the family level)] + [+1 in the EXISTING
+// activities-calendar-parity suite — the by-type chips palette pin (the
+// five-hex BY_TYPE_CARD.colors map + the w-3 h-3 inline-backgroundColor
+// swatch + the STATIC Last 2 days subtitle)]; mutation-proven: the
+// name-prop drift -> exactly 2 RED (the pin + the pre-existing same-site
+// family pin), the guard removal -> exactly 1 RED, the hex drift ->
+// exactly 1 RED]; SUITES + E2E unchanged (113 - 138).
+const UNIT = 2060;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -561,6 +579,16 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).not.toMatch(/tests-2081%20checks/);
     expect(readme).not.toMatch(/# 1944 Vitest unit checks/);
     expect(pad).not.toMatch(/— 1944\/1944/);
+    // -----------------------------------------------------------------
+    // Session-141: the unit-count realignment (2057 -> 2060 + badge
+    // 2195 -> 2198 — the activities family walk's +3 freeze pins;
+    // SUITES stays 113 and E2E stays 138 — the s141 pins land in
+    // EXISTING files). The retired 2057/2195 constructions join the
+    // ladder — the same SITE-FORM anchors, the same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2195%20checks/);
+    expect(readme).not.toMatch(/# 2057 Vitest unit checks/);
+    expect(pad).not.toMatch(/— 2057\/2057/);
   });
 
   // ------------------------------------------------------------------
@@ -778,13 +806,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-140 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-141 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s139 layer now beneath the s140 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s140 layer now beneath the s141 head)",
     ).toContain(
-      "+ beneath it 2053 unit checks + 138 e2e checks green; the session-139 layer (the 139-c rotation — THE DASHBOARD CHART-INTERIORS POST-FIX RE-WALK",
+      "+ beneath it 2057 unit checks + 138 e2e checks green; the session-140 layer (the 140-c rotation — THE LEADS CHART-INTERIORS POST-FIX WALK",
     );
   });
 

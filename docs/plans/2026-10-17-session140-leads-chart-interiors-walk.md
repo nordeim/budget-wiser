@@ -96,10 +96,10 @@ the filter round-trip + the search round-trip + the export download.
 **THE VERDICT — PASS 1 (two-app, zero-data): 245 axes, ZERO diffs** —
 COMPLETE byte-equal parity on every compared axis at BOTH viewports:
 
-- THE GRIDS (L-140a1, the TOP risk — the s38 fix's consumer #3): the
+- THE GRIDS (L-140a1, the TOP risk — the s138 fix's consumer #3): the
   H/V geometry byte-equal on both grid-bearing charts at 1440 AND 390
   (ch0 H@5,58,110,163,215 + V@65,136,231,278,302 — the 10-line classic
-  grid; ch1 the empty-state 2-H grid) — **the s38 explicit-types fix's
+  grid; ch1 the empty-state 2-H grid) — **the s138 explicit-types fix's
   third consumer verified byte-exact, NO residual** (no 12-vs-11-style
   V-elision drift on the leads charts).
 - The zero-state y-tick quirk "0,1,2,3,4" byte-equal (the
@@ -142,7 +142,7 @@ fired (leads_2026-10-17.csv) · the day-counter 82 days (the F-118a1
 shape genus — the day form, never a literal).
 
 **THE WALK VERDICT: ZERO REAL PARITY DEFECTS — a clean walk** (the
-s134/s136 zero-fix pattern). The s38 grid-fix's consumer #3 verified
+s134/s136 zero-fix pattern). The s138 grid-fix's consumer #3 verified
 byte-exact; the maiden lenses found the three tooltip faces exactly as
 the construction predicts (no deviation); every seeded contract holds.
 
@@ -225,7 +225,7 @@ pass served the zero face correctly, proving the override).
 
 **THE VERDICT**: PASS 1 two-app zero-data — **245 axes, ZERO diffs** (the
 grids H/V byte-equal on both grid-bearing charts at both viewports — the
-s38 fix's consumer #3 verified, NO residual; the statcards byte-equal;
+s138 fix's consumer #3 verified, NO residual; the statcards byte-equal;
 the Contacted-elision byte-equal; the funnel zero-face byte-equal — both
 apps render 4 degenerate 0x0 trapezoids, the "renders NOTHING" note
 re-characterized; the wonlost empty face + the 2-item stock Legend

@@ -26,7 +26,7 @@ The audits dispatched as subagents (the house pattern): **140-a 9/9
 Verified** (one footnote: the "two CLAUDE carriers" wording —
 login-family's carrier is the e2e axis, zero functional impact) + THE
 COMPLETE LEADS CHART-INTERIORS PRE-WALK INVENTORY (the freeze map:
-leads-page.tsx frozen since s113 — 26 sessions; **charts.tsx s38 = THE
+leads-page.tsx frozen since s113 — 26 sessions; **charts.tsx s138 = THE
 ONLY functional carrier since the s136 walk** — page-parts' s139 move is
 the Sparkline arm, inert on leads; the chart anatomy: the pipeline
 SingleBarChart [the 5-STATUS vocabulary with VALUE sums, NO name prop →
@@ -34,7 +34,7 @@ the raw-dataKey tooltip face, NO radius] + the GroupedBarsChart wonlost
 [the month buckets in insertion order, EMPTY at zero, the series
 Won/Lost with the family's stock no-formatter Tooltip → the RAW-NUMBER
 face] + the ConversionFunnel [LEADS_FUNNEL 4 stages, STATUS-CUMULATIVE
-counts, no CartesianGrid — L-38c1-immune] + the 6 IconStatCards, all
+counts, no CartesianGrid — L-138c1-immune] + the 6 IconStatCards, all
 deriving from the FILTERED set; the maiden lens census; the pin coverage
 [the live interiors entirely unpinned]; the named risks L-140a1..a9 with
 the TOP = the post-fix gridline adjudication) + **140-b 11/11 PASS** (the
@@ -47,8 +47,8 @@ the focused ladder 294/294, the strays clean).
 **The rotation decision** (the session_296 close named the accounts
 fourth cycle / the calendar / the activities re-checks; the orchestrator
 superseded by the blast-radius doctrine — the s139 precedent):
-charts.tsx moved at s38; consumer #1 (reports) re-walked byte-exact at
-s38; consumer #2 (the dashboard) re-walked s139 — and that walk STILL
+charts.tsx moved at s138; consumer #1 (reports) re-walked byte-exact at
+s138; consumer #2 (the dashboard) re-walked s139 — and that walk STILL
 found two construction deviations via the maiden lenses; **consumer #3 =
 THE LEADS PAGE (two grid-bearing fixed-family sites + the funnel) never
 re-walked post-fix** — the maiden lenses never ran on its charts, the
@@ -65,7 +65,7 @@ both apps at 1440×900 + 390×844; the reference's storageState persisted
 + reused, ONE reference login; PORT 3141; every ours phase logging in
 fresh with the L-138c3 hydration settle). The census: the 6 statcards ·
 THE CHART-INTERIORS DEEP CENSUS (the bars with per-rect fills, the
-ticks/texts, **THE GRID H/V SPLIT with coordinates** — the s38 lens on
+ticks/texts, **THE GRID H/V SPLIT with coordinates** — the s138 lens on
 consumer #3, the dash/stroke chrome, the legend, the axis lines, the
 funnel trapezoids/labels) · **THE MAIDEN TOOLTIP LENS** on all three
 charts (the card-scoped wrapper read + the masked/raw dual records) ·
@@ -75,7 +75,7 @@ round-trip + the search round-trip + the export download.
 **THE VERDICT — PASS 1: 245 axes, ZERO diffs** — COMPLETE byte-equal
 parity on every compared axis at BOTH viewports:
 
-- **THE GRIDS** (the TOP risk — the s38 fix's consumer #3): the H/V
+- **THE GRIDS** (the TOP risk — the s138 fix's consumer #3): the H/V
   geometry byte-equal on both grid-bearing charts at 1440 AND 390 (ch0
   H@5,58,110,163,215 + V@65,136,231,278,302 — the 10-line classic grid;
   ch1 the empty-state 2-H grid) — **verified byte-exact, NO residual**
@@ -131,7 +131,7 @@ series-construction pin [the Won/Lost names + the #10b981/#ef4444 fills
 charts-internals (30 total — the ConversionFunnel FAMILY
 stock-construction pin [the FunnelChart + the bare no-formatter Tooltip
 + the LabelList right fill #000 dataKey label + NO CartesianGrid — the
-L-38c1-immune family, never pinned at the family level]). **The
+L-138c1-immune family, never pinned at the family level]). **The
 mutation-proof**: the name-prop drift on the pipeline call + the
 formatter drift on the funnel family Tooltip → exactly 2 RED alone, zero
 collateral; reverted → 75/75 GREEN.
@@ -181,8 +181,8 @@ the stacked single-column statcards + zero horizontal overflow.
   db to the next pass (the first PASS 2 censused the zero face). The
   reliable cleanup: `pkill -f server.js` + a port-dead confirmation.
 
-**Next:** the blast-radius verification of the s38 grid fix is complete
-across all three consumers (reports s38 · dashboard s139 · leads s140 —
+**Next:** the blast-radius verification of the s138 grid fix is complete
+across all three consumers (reports s138 · dashboard s139 · leads s140 —
 all byte-exact). The rotation returns to the cycle: the accounts fourth
 cycle (s133+7, the stalest two-app table family), the secondary
 surfaces (calendar s124+16 / activities s125+15 — the staler re-checks),
