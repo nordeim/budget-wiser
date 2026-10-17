@@ -710,11 +710,16 @@ export function Sparkline({
       <ResponsiveContainer width="100%" height="100%">
         {variant === "area" ? (
           <AreaChart data={data}>
+            {/* Session-139 (F-139c2, the maiden per-path census): the
+                reference's area spark passes NO stroke-width — the SVG
+                default 1 applies (our former explicit strokeWidth={1}
+                rendered the identical computed width; the attribute
+                retired for construction parity, the s131 zero-delta
+                precedent). */}
             <Area
               type="monotone"
               dataKey="v"
               stroke={color}
-              strokeWidth={1}
               fill={color}
               fillOpacity={0.3}
             />

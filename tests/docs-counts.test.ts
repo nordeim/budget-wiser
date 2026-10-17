@@ -342,7 +342,21 @@ const SUITES = 113;
 // 137 → 138 (+1 — the SECOND reports-mobile guard: the L-138c1/L-138c2
 // LIVE pins — the aging chart's 9-line classic grid + the source pie's
 // 5 labels at 390, the recharts-upgrade sentinel).
-const UNIT = 2051;
+// Session-139: 2051 → 2053 (+2 — the dashboard chart-interiors post-fix
+// re-walk [walk30: PASS 1 two-app zero-data 274 axes, 7 raw diffs →
+// TWO REAL parity defects, both one-line construction deviations in the
+// s138 fix's blast-radius family: F-139c1 the target rounding (our
+// Math.round rendered integer-only tooltip values where the reference's
+// raw 55k+random float renders the toLocaleString 3-fraction-digit form
+// — the maiden tooltip lens + the 5-sample decisive probe) + F-139c2 the
+// area-spark stroke-width (our explicit strokeWidth={1} vs the
+// reference's absent attribute — the SVG default 1, zero rendered delta,
+// the per-path tuple census); BOTH fixed + stash-proven (exactly 2 RED
+// alone) + the post-fix walk re-run 5 raw diffs — all the adjudicated
+// documented genera]; the +2 its live in the EXISTING
+// dashboard-family-parity suite [the target-formula pin + the
+// spark-area-arm pin]; SUITES + E2E unchanged (113 · 138).
+const UNIT = 2053;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -745,13 +759,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-138 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-139 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s135 layer now beneath the s136 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s138 layer now beneath the s139 head)",
     ).toContain(
-      "+ beneath it 2041 unit checks + 137 e2e checks green; the session-137 layer (the 137-c rotation — THE SETTINGS PICKLIST-EDITOR FAMILY FRESH-EYES WALK",
+      "+ beneath it 2051 unit checks + 138 e2e checks green; the session-138 layer (the 138-c rotation — THE REPORTS CHART-INTERIORS FRESH-EYES WALK",
     );
   });
 

@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2051 checks)      | `bun run test`                         |
+|  Unit tests (2053 checks)      | `bun run test`                         |
 |  Browser E2E (138 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2051) → `bun run build` → `bun run test:e2e` (138) — or the
+`bun run test` (2053) → `bun run build` → `bun run test:e2e` (138) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6428,4 +6428,46 @@ The 138-c rotation (the session_292 close's named direction: the remaining fresh
 - The fix (D-138a0): the conditional tickProp spread + explicit axis types across the grid-bearing families in charts.tsx (SingleBar / GroupedBars / TrendLine / RevenueLine — the HorizontalBar funnel already immune [explicit types, no tick prop]) — live-verified BYTE-EXACT against the reference (the aging grid H@5/70/135/200/265 + V@65/154/272/302 — all nine lines at both viewports); post-fix PASS 1 re-run: **849 axes, 0 diffs**.
 - The remediation: D-138a1 THE PINS (+10 its, reports-family-parity.test.ts — the 5 stash-proven L-138c1 source pins [exactly 5 RED at the pre-fix source: no bare tick={tick}, the conditional tickProp, the explicit types per family, the funnel's standing shape] + the KPI 5-label ordered set [the L-138a6 gap] + the Lost-Deals no-spark split + the 5 tab labels + the four labelFor contracts) + the e2e LIVE pin (+1 — in crm.spec BEFORE the reset test [the wipe leaves zero leads for every later spec file]: the aging chart's 9-line classic grid + the source pie's 5 format-verified labels at 390, the recharts-upgrade sentinel: a future recharts bump that re-breaks the tick delivery REDs here even though the source pins stay green; both halves polled — the s49 deterministic-wait doctrine) + D-138a2 the docs realignment (the lockstep RED 16 sites → GREEN 21/21; SKILL v1.135.0 + the session-138 layer).
 - Count ladder: 113 suites / 2051 unit / 138 e2e / badge 2189.
+
+### Session-139 (2026-10-17) — the dashboard chart-interiors post-fix re-walk (the two-fix session)
+
+The 139-c rotation (the s138 grid-fix blast-radius doctrine: charts.tsx moved at
+s138; reports — consumer #1 — was re-walked byte-exact in the s138 session; the
+DASHBOARD — consumer #2, the family source frozen since s87 — was never re-walked
+post-fix; the session_294 close's named alternatives — the toast ours-only surfaces
+and the accounts fourth cycle — both strictly lower-yield: the reference's toast
+system DOM-dead with the component chrome pinned at s131, the accounts family
+frozen since s133 with zero moved-under carriers):
+
+- The walk (walk30, the phased idiom): PASS 1 two-app zero-data — 274 axes, 7 raw
+  diffs → TWO REAL parity defects: **F-139c1 the target rounding** (our revenue
+  chart's `Math.round(55_000 + Math.random() * 10_000)` rendered integer-only
+  tooltip values where the reference's own formula carries NO rounding — the maiden
+  tooltip lens caught the ref's "$57,824.88" and the 5-sample decisive probe
+  confirmed the raw-float form) + **F-139c2 the area-spark stroke-width** (our
+  Sparkline area arm's explicit `strokeWidth={1}` vs the reference's absent
+  attribute — the SVG default 1, zero rendered delta, the per-path tuple census).
+  The maiden lenses otherwise clean: the gridline geometry byte-equal at 1440 on
+  both charts, the zero-state y-tick quirk "0,1,2,3,4" byte-equal, 5/6 sparkline
+  interiors byte-equal, the tooltip structure byte-equal, the @390 containment
+  clean. The adjudicated noise (all documented): the L-134c1 text-node-granularity
+  genus ×2 + the s91 chart-noise V-elision @390 (12-vs-11 gridlines, preserved
+  post-fix exactly as reasoned).
+- The fixes: D-139a0 the Math.round retirement (api/dashboard/route.ts) + D-139a1
+  the strokeWidth retirement (page-parts.tsx) — both live-verified byte-exact on
+  the post-fix walk re-run (our tooltip now renders the float form; the spark
+  tuples byte-identical; 5 raw diffs, all the adjudicated genera).
+- The remediation: D-139a2 THE PINS (+2 its, dashboard-family-parity.test.ts —
+  the target-formula pin + the spark-area-arm pin; stash-proven: the fixes
+  reverted alone → exactly 2 RED alone) + D-139a3 the docs realignment.
+- Count ladder: 113 suites / 2053 unit / 138 e2e / badge 2191.
+- The harness lessons: L-139c1 the card-class locator trap (the Card is
+  rounded-xl — the title-text CLIMB is the class-agnostic finder) · L-139c2 the
+  inactive-tooltip-wrapper trap (every recharts chart keeps its tooltip wrapper
+  mounted showing the INITIAL state — scope the read to the hovered chart's card)
+  · L-139c3 the random-mask discipline (number-masking hides the value-form
+  distinction the raw record exposes — record BOTH) · L-139c4 the trailing-zero
+  trim (toLocaleString's 3-fraction-digit default trims zeros — characterize
+  random faces across N samples before concluding quantization).
+
 - The harness lessons: L-138c1 the grid tick-delivery genus (the explicit-undefined prop quirk — NEVER pass `tick={undefined}`; spread conditionally) · L-138c2 the pie-animation gate (the recharts labels render only post-animation — settle > 2s before censusing pie label texts) · L-138c3 the login hydration race (an early fill lands before hydration — React resets the values and the POST 400s; settle before filling).

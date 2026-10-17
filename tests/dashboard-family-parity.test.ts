@@ -369,3 +369,64 @@ describe("session-78: the KPI_SPARK record (N-78c8)", () => {
     expect(block).not.toMatch(/The sparks themselves are recharts MONOTONE curves/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-139 pins: the dashboard chart-interiors post-fix re-walk (the
+// 139-c rotation — the s138 grid-fix blast-radius verification on the
+// fix's SECOND consumer + the maiden tooltip/spark-interior lenses). The
+// walk found TWO construction deviations, both fixed this session:
+// F-139c1 the target rounding + F-139c2 the area-spark stroke-width.
+// ---------------------------------------------------------------------------
+
+describe("session-139: the revenue target value form (F-139c1)", () => {
+  it("the target series carries NO rounding — the reference's own formula is the raw 55k+random float (the tooltip's toLocaleString renders the 3-fraction-digit default with trailing trims)", () => {
+    const src = dashRoute();
+    // The reference's revenue chart recomputes target per render as the
+    // bare float (the s31 Eke decode's "55k±random"; the s139 maiden
+    // tooltip lens LIVE-decoded the ref's form — $57,824.88 / $63,694.472
+    // / $56,795.191 across fresh loads — toLocaleString's default
+    // maximumFractionDigits=3 with trailing-zero trims, NO
+    // quantization). Our former Math.round rendered integer-only tooltip
+    // values ("Target : $60,977") — the value-FORM divergence the
+    // number-masked diff hid and the raw record exposed.
+    expect(src).toMatch(/target:\s*55_000\s*\+\s*Math\.random\(\)\s*\*\s*10_000/);
+    // the rounding never returns
+    expect(src).not.toMatch(/Math\.round\(\s*55_000/);
+    // the provenance comment carries the s139 decode note (the raw
+    // comment stream — the F-126c1 discipline: comments count as
+    // construction)
+    const raw = read("src/app/api/dashboard/route.ts") ?? "";
+    expect(raw).toMatch(/session-139/i);
+    expect(raw).toMatch(/no rounding/i);
+  });
+});
+
+describe("session-139: the Sparkline area arm carries NO stroke-width (F-139c2)", () => {
+  it("the area arm's Area passes stroke + fill + fillOpacity but NO strokeWidth — the reference's own construction (the SVG default 1 = our former explicit 1, zero rendered delta; the attribute retired)", () => {
+    const src = pageParts();
+    // The s139 maiden per-path census decoded the reference's area-spark
+    // tuples as `none|-|#8b5cf6|0.3;#8b5cf6|-|none|0.3` — NO
+    // stroke-width attribute on either path (the SVG default 1 applies);
+    // ours carried `none|1|…;#8b5cf6|1|…` (the explicit strokeWidth={1}).
+    // The rendered stroke width was identical (1 both) — the retirement
+    // is construction parity, the s131 zero-delta precedent.
+    const at = src.indexOf('variant === "area"');
+    expect(at).toBeGreaterThan(-1);
+    // the area arm ONLY — cut the block at the line arm's LineChart so
+    // the line's legitimate strokeWidth={2} never enters the window
+    const lineAt = src.indexOf("<LineChart", at);
+    const block = src.slice(at, lineAt > at ? lineAt : at + 900);
+    expect(block).toMatch(/<Area\b/);
+    expect(block).toMatch(/type="monotone"/);
+    expect(block).toMatch(/fillOpacity=\{0\.3\}/);
+    // the explicit strokeWidth never returns to the area arm
+    expect(block).not.toMatch(/strokeWidth/);
+    // the LINE arm keeps its explicit strokeWidth={2} (the decoded
+    // reference contract — the line sparks' stroke-width=2 attribute
+    // byte-verified in the same census)
+    const lat = src.indexOf('variant === "line"');
+    expect(lat).toBeGreaterThan(-1);
+    const lineBlock = src.slice(lat - 200, lat + 900);
+    expect(lineBlock).toMatch(/strokeWidth=\{2\}/);
+  });
+});

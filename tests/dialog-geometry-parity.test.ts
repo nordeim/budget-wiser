@@ -487,10 +487,20 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // the Lost-Deals no-spark split + the 5 tab labels + the four
     // labelFor contracts]); the four sites re-anchored again, the
     // retired 2041 form joins the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2051 checks)");
-    expect(claude).toContain("(currently 2051)");
-    expect(claude).toContain("Vitest unit suites (2051 checks)");
-    expect(claude).toContain("`bun run test` (2051)");
+    // session-139 lockstep carry-forward: 2051 -> 2053 (the s139 +2 —
+    // the dashboard chart-interiors post-fix re-walk: the TWO-FIX
+    // session [D-139a0 the F-139c1 target-rounding retirement in
+    // api/dashboard/route.ts + D-139a1 the F-139c2 area-spark
+    // stroke-width retirement in page-parts.tsx + D-139a2 the pins +2
+    // its in dashboard-family-parity.test.ts — the target-formula pin +
+    // the spark-area-arm pin, stash-proven exactly 2 RED alone]; the
+    // four sites re-anchored again, the retired 2051 form joins the
+    // negatives below.
+    expect(claude).toContain("Unit (Vitest, 2053 checks)");
+    expect(claude).toContain("(currently 2053)");
+    expect(claude).toContain("Vitest unit suites (2053 checks)");
+    expect(claude).toContain("`bun run test` (2053)");
+    expect(claude).not.toContain("Unit (Vitest, 2051 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2041 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2036 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2032 checks)");

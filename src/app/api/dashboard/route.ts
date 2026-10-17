@@ -80,14 +80,21 @@ export async function GET() {
   // ---- Revenue over time: the FIXED Nov..May labels + the 55k±random
   //      target (the reference recomputes the random per render; per request is
   //      our server-side expression of the same variance) — over the
-  //      UNFILTERED opps (the reference's `b` memo reads `f`, not `p`) ----
+  //      UNFILTERED opps (the reference's `b` memo reads `f`, not `p`).
+  //      Session-139 (F-139c1, the maiden tooltip lens): the reference's
+  //      own formula carries NO rounding — the raw 55k+random float (the
+  //      live-decoded tooltip values $57,824.88 / $63,694.472 / $56,795.191
+  //      across fresh loads — toLocaleString's 3-fraction-digit default with
+  //      trailing-zero trims). Our former Math.round rendered integer-only
+  //      tooltip values ("Target : $60,977") — the value-form divergence;
+  //      the rounding retired, no rounding ever again. ----
   const curMonth = now.getMonth();
   const revenueOverTime: DashboardData["revenueOverTime"] = REVENUE_LABELS.map((month, i) => {
     const m = (curMonth - 6 + i + 12) % 12;
     const won = wonOpps
       .filter((o) => o.updatedAt.getMonth() === m)
       .reduce((s, o) => s + (o.amount || 0), 0);
-    return { month, won, target: Math.round(55_000 + Math.random() * 10_000) };
+    return { month, won, target: 55_000 + Math.random() * 10_000 };
   });
 
   // ---- Lead sources (LEADS — the reference's `x` memo, unfiltered) ----
