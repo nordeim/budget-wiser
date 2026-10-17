@@ -5314,3 +5314,73 @@ every prior walk missed) · L-138c2 the pie-animation gate (the recharts labels 
 only post-animation — settle/poll past ~2s before censusing pie label texts) · L-138c3
 the login hydration race (an early fill resets on hydration and the POST 400s on
 validation — settle before filling).
+
+---
+
+## Session 139 — the dashboard chart-interiors post-fix re-walk (the two-fix session)
+
+- Stage 1: the workspace RESET again — re-cloned at 740a191 (the s138 ship
+  2a55fd2 + the session_294/295 transcript commits); the environment re-stood
+  (.env + db/ + census MATCH 15/24/10/23/12 + 4 users at the repo path; the
+  Playwright chromium-headless-shell 1243 reinstalled to match the lockfile);
+  the four intake docs read (session_294 + the s138 plan + the worklog +
+  session_295) — the s138 ship verified; the rotation decided per the
+  blast-radius doctrine (charts.tsx moved at s138; reports re-walked; the
+  DASHBOARD — the fix's second consumer — never re-walked post-fix; the named
+  alternatives toast-ours-only/accounts-4th-cycle both strictly lower-yield)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 113/2051 · build ·
+  e2e 138/138 (3.4m) — the exact s138-ship match
+- Stage 3: the audits — 139-a 9/9 Verified (one footnote: the PAD/plan
+  naming slip for the s138 e2e guard's spec file; + THE COMPLETE DASHBOARD
+  CHART-INTERIORS PRE-WALK INVENTORY: the freeze map [page.tsx s87 ·
+  charts.tsx s138 THE moved-under carrier], the chart anatomy, the maiden
+  lens census, the named risks L-139a1..a9) + 139-b 10/10 PASS (the ~97th
+  standing battery, zero findings)
+- Stage 4: probe:ref #111 — the reference STABLE at the 81-session standing
+  fingerprint; the four drift gates CLEAN ×4; scandihaven d4789c3 on-pattern;
+  census MATCH
+- Stage 5 (the 139-c rotation): THE DASHBOARD CHART-INTERIORS POST-FIX
+  RE-WALK — walk30 (the phased idiom; the maiden tooltip lens + the per-path
+  spark census + the H/V grid geometry lens): PASS 1 two-app zero-data — 274
+  axes, 7 raw diffs → TWO REAL parity defects: F-139c1 THE TARGET ROUNDING
+  (our Math.round rendered integer-only tooltip values where the reference's
+  raw 55k+random float renders the toLocaleString 3-fraction-digit form —
+  the maiden tooltip lens + the 5-sample decisive probe) + F-139c2 THE
+  AREA-SPARK STROKE-WIDTH (our explicit strokeWidth={1} vs the reference's
+  absent attribute — zero rendered delta, the per-path tuple census); the
+  maiden lenses otherwise CLEAN (the grids byte-equal at 1440 both charts —
+  the s138 fix's second consumer verified; the zero-state "0,1,2,3,4" quirk
+  byte-equal; 5/6 spark interiors byte-equal; the @390 containment clean);
+  the adjudicated noise all documented (the L-134c1 text-node granularity ×2
+  + the s91 chart-noise V-elision @390 preserved post-fix); PASS 2 populated
+  ours-only — every seeded contract holds (the KPI row, the pipeline bars +
+  chips, the populated ch0 tooltip 'Prospecting → value : $190,000' — the
+  raw-dataKey face, the API cross-check, the round-trips restored)
+- Stage 6: the remediation — D-139a0 the Math.round retirement
+  (api/dashboard/route.ts) + D-139a1 the strokeWidth retirement
+  (page-parts.tsx) + D-139a2 THE PINS (+2 its, dashboard-family-parity.test.ts
+  — the target-formula pin + the spark-area-arm pin; RED-first + the
+  stash-proof: exactly 2 RED alone) + D-139a3 the docs realignment [the
+  lockstep RED 12 sites → GREEN 21/21 + the two CLAUDE carriers re-anchored;
+  SUITES 113 · UNIT 2051 → 2053 (+2) · E2E 138 · badge 2189 → 2191; SKILL
+  v1.136.0 + the session-139 layer + the AGENTS Session-139 section + the PAD
+  Session-139 row] + D-139a4 the post-fix walk re-run [269 axes, 5 raw diffs —
+  all the adjudicated genera; our tooltip now renders the float form; the
+  spark tuples byte-identical]
+- Stage 7: the captures 284-287 (four unique md5s) + THE VLM BATTERY 4/4
+  CLEAN (the KPI row verbatim; the FIXED tooltip 'Target : $55,164.662'; the
+  pipeline tooltip 'Won → value : $337,000'; the phone face stacked +
+  hamburger + contained); the final gate lint 0/0 · tsc 0 · 113/2053 ·
+  build · 138/138 · the closing drift sweep CLEAN ×4 · census MATCH
+
+**The count ladder**: UNIT 2051 → 2053 (+2 its) · SUITES 113 UNCHANGED ·
+E2E 138 UNCHANGED · badge 2189 → 2191.
+
+**The walk-harness lessons**: L-139c1 the card-class locator trap (the Card
+is rounded-xl — the title-text CLIMB is the class-agnostic finder) · L-139c2
+the inactive-tooltip-wrapper trap (every recharts chart keeps its tooltip
+wrapper mounted showing the INITIAL state — scope the read to the hovered
+chart's card) · L-139c3 the random-mask discipline (number-masking hides the
+value-form distinction the raw record exposes — record BOTH) · L-139c4 the
+trailing-zero trim (toLocaleString's 3-fraction-digit default trims zeros —
+characterize random faces across N samples before concluding quantization).
