@@ -356,7 +356,26 @@ const SUITES = 113;
 // documented genera]; the +2 its live in the EXISTING
 // dashboard-family-parity suite [the target-formula pin + the
 // spark-area-arm pin]; SUITES + E2E unchanged (113 · 138).
-const UNIT = 2053;
+
+// Session-140: 2053 -> 2057 (+4 — the leads chart-interiors post-fix
+// re-walk [walk31: PASS 1 two-app zero-data 245 axes, ZERO diffs — the
+// s38 grid fix's consumer #3 verified byte-exact (the H/V geometry on
+// both grid-bearing charts at both viewports, NO residual); PASS 2 every
+// seeded contract holding; ZERO REAL PARITY DEFECTS — a clean walk, the
+// s134/s136 zero-fix pattern]; the +4 freeze pins document the walk's
+// THREE MAIDEN TOOLTIP FACES at the construction level [+3 in the
+// EXISTING leads-family-parity suite — the pipeline call-site
+// tooltip-construction pin (the dollarFormatter + NO name prop, the
+// raw-dataKey "value" face + NO radius) + the wonlost series-construction
+// pin (the Won/Lost names + the #10b981/#ef4444 fills, the raw-number
+// face's construction) + the funnel call-site pin (the stock
+// ConversionFunnel + the STATUS-CUMULATIVE memo)] + [+1 in the EXISTING
+// charts-internals suite — the ConversionFunnel FAMILY stock-construction
+// pin (the FunnelChart + the bare no-formatter Tooltip + the LabelList
+// right fill #000 + NO CartesianGrid, the L-138c1-immune family)];
+// mutation-proven: exactly 2 RED alone per construction drift];
+// SUITES + E2E unchanged (113 - 138).
+const UNIT = 2057;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -759,13 +778,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-139 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-140 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s138 layer now beneath the s139 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s139 layer now beneath the s140 head)",
     ).toContain(
-      "+ beneath it 2051 unit checks + 138 e2e checks green; the session-138 layer (the 138-c rotation — THE REPORTS CHART-INTERIORS FRESH-EYES WALK",
+      "+ beneath it 2053 unit checks + 138 e2e checks green; the session-139 layer (the 139-c rotation — THE DASHBOARD CHART-INTERIORS POST-FIX RE-WALK",
     );
   });
 

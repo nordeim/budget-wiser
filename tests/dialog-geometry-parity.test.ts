@@ -496,10 +496,22 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // the spark-area-arm pin, stash-proven exactly 2 RED alone]; the
     // four sites re-anchored again, the retired 2051 form joins the
     // negatives below.
-    expect(claude).toContain("Unit (Vitest, 2053 checks)");
-    expect(claude).toContain("(currently 2053)");
-    expect(claude).toContain("Vitest unit suites (2053 checks)");
-    expect(claude).toContain("`bun run test` (2053)");
+
+    // session-140 lockstep carry-forward: 2053 -> 2057 (the s140 +4 — the
+    // leads chart-interiors post-fix re-walk: the PIN-ONLY session [a
+    // clean walk — walk31 PASS 1 245 axes ZERO diffs, the s38 grid fix's
+    // consumer #3 verified byte-exact; D-140a0 the freeze pins +4 its —
+    // +3 in leads-family-parity (the pipeline call-site tooltip
+    // construction + the wonlost series construction + the funnel call
+    // site) + +1 in charts-internals (the ConversionFunnel family stock
+    // construction — the maiden funnel face), mutation-proven exactly
+    // 2 RED alone per drift]; the four sites re-anchored again, the
+    // retired 2053 form joins the negatives below.
+    expect(claude).toContain("Unit (Vitest, 2057 checks)");
+    expect(claude).toContain("(currently 2057)");
+    expect(claude).toContain("Vitest unit suites (2057 checks)");
+    expect(claude).toContain("`bun run test` (2057)");
+    expect(claude).not.toContain("Unit (Vitest, 2053 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2051 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2041 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2036 checks)");

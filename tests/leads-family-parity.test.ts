@@ -468,3 +468,84 @@ describe("session-136: the freeze pins (L-136a9 — the never-ordered sets)", ()
     expect(fields).toMatch(/label:\s*"Name\s*\*"/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-140 (the 140-c rotation — THE LEADS CHART-INTERIORS POST-FIX
+// WALK): the freeze pins. The walk31 verdict — ZERO REAL PARITY DEFECTS,
+// PASS 1 byte-equal on all 245 axes two-app at 1440+390 (the s138 grid
+// fix's consumer #3 verified — the H/V geometry byte-equal on both
+// grid-bearing charts at both viewports, NO residual), PASS 2 every
+// seeded contract holding — means the remediation is PIN-ONLY: the three
+// MAIDEN TOOLTIP FACES the walk decoded (never censused on ANY prior
+// walk — the lens was invented at s138 and run on reports + the
+// dashboard only) get their construction pins so any future drift REDs
+// exactly one assertion.
+// ---------------------------------------------------------------------------
+
+describe("session-140: the chart-interiors freeze pins (the maiden tooltip faces)", () => {
+  it("the pipeline call site's TOOLTIP construction: the dollarFormatter + NO name prop (the raw-dataKey face) + NO radius", () => {
+    // The walk's maiden decode: the populated ch0 tooltip reads
+    // "New value : $319,000" — the series name renders the RAW dataKey
+    // "value" (NO name prop on the call site, unlike the reports tab-1
+    // pipeline's "Value ($)") + the dollarFormatter face. The bars are
+    // PLAIN rects (NO radius — the dashboard's pipeline carries
+    // [8,8,0,0]; the leads site carries none). The construction drives
+    // the tooltip text; pin the source so the face cannot drift.
+    const src = leadsPage();
+    const i = src.indexOf("Pipeline Value by Stage");
+    expect(i).toBeGreaterThan(-1);
+    const region = src.slice(i, i + 900);
+    expect(region).toContain("<SingleBarChart");
+    expect(region).toMatch(/formatter=\{dollarFormatter\}/);
+    expect(region).toMatch(/tickFontSize=\{12\}/);
+    expect(region).toMatch(/height=\{250\}/);
+    // the raw-dataKey face: NO name prop in the call window
+    expect(region).not.toMatch(/name=/);
+    // the plain-rect construction: NO radius (the dashboard-only arm)
+    expect(region).not.toMatch(/radius=/);
+  });
+
+  it("the wonlost call site's series construction: Won/Lost names + the paired fills + xKey month (the RAW-NUMBER tooltip face)", () => {
+    // The walk's maiden decode: the populated ch1 tooltip reads
+    // "Sep 2026 / Won : 2 / Lost : 0" — the series NAMES render (the
+    // GroupedBars' per-series name prop) with RAW UN-FORMATTED numbers
+    // (the family's stock <Tooltip /> carries NO formatter — the
+    // raw-number face, never decoded on ANY family before this walk).
+    // The fills pair #10b981/#ef4444; the month buckets ride xKey
+    // "month" (the M-77c2 reverse-chrono insertion order).
+    const src = leadsPage();
+    const i = src.indexOf("Won vs Lost Over Time");
+    expect(i).toBeGreaterThan(-1);
+    const region = src.slice(i, i + 1100);
+    expect(region).toContain("<GroupedBarsChart");
+    expect(region).toMatch(/xKey="month"/);
+    expect(region).toMatch(/key:\s*"won",\s*name:\s*"Won",\s*fill:\s*"#10b981"/);
+    expect(region).toMatch(/key:\s*"lost",\s*name:\s*"Lost",\s*fill:\s*"#ef4444"/);
+    expect(region).toMatch(/tickFontSize=\{12\}/);
+    expect(region).toMatch(/height=\{250\}/);
+  });
+
+  it("the funnel call site: the stock ConversionFunnel with the STATUS-CUMULATIVE data + height 250 (the stock payload face)", () => {
+    // The walk's maiden decode: the populated ch2 tooltip reads "0 : 4"
+    // — the FunnelChart's stock payload face (the family's bare
+    // <Tooltip />, no formatter, no name prop at the call site). The
+    // zero-data face: BOTH apps render 4 degenerate 0x0 trapezoids with
+    // 0 labels — byte-equal (the AGENTS "renders NOTHING" note
+    // re-characterized by the walk: no VISIBLE funnel on either app,
+    // the DOM symmetric). The data rides the STATUS-CUMULATIVE funnel
+    // memo (the s27 bundle decode — 4/12/10/7 seeded, non-monotonic by
+    // construction).
+    const src = leadsPage();
+    const i = src.indexOf("Conversion Funnel");
+    expect(i).toBeGreaterThan(-1);
+    const region = src.slice(i, i + 700);
+    expect(region).toMatch(/<ConversionFunnel\s+data=\{funnel\}\s+height=\{250\}\s*\/>/);
+    // the STATUS-CUMULATIVE memo construction (the s27 vocabulary)
+    const f = src.indexOf("const funnel = React.useMemo");
+    expect(f).toBeGreaterThan(-1);
+    const memo = src.slice(f, f + 700);
+    expect(memo).toMatch(/LEADS_FUNNEL/);
+    expect(memo).toMatch(/n\(\["contacted",\s*"qualified",\s*"won"\]\)/);
+    expect(memo).toMatch(/n\(\["qualified",\s*"won"\]\)/);
+  });
+});

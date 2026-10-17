@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2053 checks)      | `bun run test`                         |
+|  Unit tests (2057 checks)      | `bun run test`                         |
 |  Browser E2E (138 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2053) → `bun run build` → `bun run test:e2e` (138) — or the
+`bun run test` (2057) → `bun run build` → `bun run test:e2e` (138) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6471,3 +6471,53 @@ frozen since s133 with zero moved-under carriers):
   random faces across N samples before concluding quantization).
 
 - The harness lessons: L-138c1 the grid tick-delivery genus (the explicit-undefined prop quirk — NEVER pass `tick={undefined}`; spread conditionally) · L-138c2 the pie-animation gate (the recharts labels render only post-animation — settle > 2s before censusing pie label texts) · L-138c3 the login hydration race (an early fill lands before hydration — React resets the values and the POST 400s; settle before filling).
+
+### Session-140 (2026-10-17) — the leads chart-interiors post-fix walk (the pin-only session)
+
+The blast-radius doctrine (the s139 precedent): charts.tsx moved at s38 —
+consumer #1 (reports) re-walked s38, consumer #2 (the dashboard) re-walked
+s139, **consumer #3 (the leads page — the grid-bearing SingleBarChart
+"Pipeline Value by Stage" + GroupedBarsChart "Won vs Lost Over Time" + the
+ConversionFunnel) never re-walked post-fix**; the maiden lenses (the tooltip
+lens + the H/V gridline split) never ran on the leads charts; the last chart
+census s118-shallow (22 sessions); the s136 walk was table-only. The named
+alternatives (accounts +7 zero-carrier / calendar +16 no-charts / activities
++15 one-gridless-site) all strictly lower-yield. The 140-a audit confirmed
+with the per-file freeze map (leads-page frozen since s113 — 26 sessions).
+
+**walk31** (the phased idiom; the walk dbs walk31-zero/walk31-seed at the
+repo db/ folder; the absolute-override standalone boots; PASS 1 two-app
+zero-data + PASS 2 populated ours-only; both viewports). **PASS 1: 245
+axes, ZERO diffs** — the grids H/V byte-equal on both grid-bearing charts
+at both viewports (the s38 fix's third consumer verified, NO residual), the
+zero-state y-tick quirk byte-equal, the statcards byte-equal (the s118
+contracts hold), the Contacted-elision byte-equal (4-of-5 ticks at the
+331px card), **the funnel zero-face byte-equal — BOTH apps render 4
+degenerate 0x0 trapezoids + 0 labels** (the "renders NOTHING" note
+re-characterized: no VISIBLE funnel on either app, the DOM symmetric), the
+wonlost empty face + the 2-item stock Legend byte-equal, the tooltips
+untriggerable identically, the @390 containment clean. **PASS 2: every
+seeded contract holds** — the statcards 24/9/7($687,000)/4($226,000)/
+29.2%/82 days with the API cross-check exact on every axis; the pipeline
+bars at the 0..800000 domain; the wonlost 10 bars (the M-77c2
+reverse-chrono); **THE THREE MAIDEN TOOLTIP FACES DECODED**: ch0 "New
+value : $319,000" (the raw-dataKey + dollarFormatter) + ch1 "Sep 2026 /
+Won : 2 / Lost : 0" (the RAW-NUMBER face — never decoded on ANY family) +
+ch2 "0 : 4" (the funnel stock payload); the filter + search round-trips
+restored byte-identical; the export download fired. **ZERO REAL PARITY
+DEFECTS — a clean walk.**
+
+The remediation: D-140a0 the freeze pins (+4 its — the three
+maiden-tooltip-face construction pins in leads-family-parity + the
+ConversionFunnel family stock-construction pin in charts-internals;
+mutation-proven exactly 2 RED alone per drift) + D-140a1 the docs
+realignment + D-140a2 the captures 288-291 + the VLM battery + D-140a3 the
+final gate (lint 0/0 · tsc 0 · 113/2057 · build · 138/138 · the drift
+sweep x4 · census MATCH).
+
+- Count ladder: 113 suites / 2057 unit / 138 e2e / badge 2195.
+- The walk-harness lessons: L-140c1 the dead raw mouse.move (the locator
+  hover scoped to the marked card is the working mechanism in this
+  chromium-headless-shell build) · L-140c2 the wrapper-kill trap (the
+  nohup'd server dies with the bash call; pkill -f server.js, else the
+  child survives EADDRINUSE-blocked re-boots serving the STALE db).

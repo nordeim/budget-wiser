@@ -339,3 +339,37 @@ describe("session-98 (F-98c2): the vs-wins legend genus — the reference ships 
     expect(leadsCall).not.toMatch(/legend=/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-140 (the 140-c rotation — THE LEADS CHART-INTERIORS POST-FIX
+// WALK): the ConversionFunnel FAMILY stock-construction pin. The walk's
+// maiden tooltip decode: the populated leads funnel tooltip reads
+// "0 : 4" — the FunnelChart's stock payload face (the family's bare
+// <Tooltip /> carries NO formatter and NO name wiring). The zero-data
+// face: BOTH apps render 4 degenerate 0x0 trapezoids with 0 labels —
+// byte-equal (the walk's re-characterization of the s10/s13 "renders
+// NOTHING" note: no VISIBLE funnel on either app, the DOM symmetric).
+// The family was never pinned at the family level.
+// ---------------------------------------------------------------------------
+
+describe("session-140: the ConversionFunnel family stock construction (the maiden funnel face)", () => {
+  it("the FunnelChart + the stock no-formatter Tooltip + the LabelList right fill #000 + NO CartesianGrid (the L-138c1-immune family)", () => {
+    const fn = charts();
+    const i = fn.indexOf("export function ConversionFunnel");
+    expect(i).toBeGreaterThan(-1);
+    const region = fn.slice(i, i + 1400);
+    expect(region).toMatch(/<FunnelChart>/);
+    // the stock Tooltip — NO formatter, NO name wiring (the "0 : 4"
+    // payload face the walk decoded)
+    expect(region).toMatch(/<Tooltip\s*\/>/);
+    expect(region).not.toMatch(/<Tooltip[^/]*formatter/);
+    // the LabelList: right position, the #000 fill, the label dataKey
+    expect(region).toMatch(/<LabelList position="right" fill="#000" stroke="none" dataKey="label"\s*\/>/);
+    // the FunnelBar rides dataKey "value" with the per-datum fills
+    expect(region).toMatch(/<FunnelBar dataKey="value" data=\{funnelData\}>/);
+    // L-138c1-IMMUNE: the family carries NO CartesianGrid (and no axis
+    // components at all — the grid-fix genus cannot touch it)
+    expect(region).not.toMatch(/CartesianGrid/);
+    expect(region).not.toMatch(/<XAxis|<YAxis/);
+  });
+});
