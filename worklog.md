@@ -5244,3 +5244,73 @@ pointer moves — locator.hover() only) · L-137c3 the React controlled-input
 trap (locator.fill() only — direct .value + synthetic events never reach
 React state) · L-137c4 the quote-collapse selector trap (string-replacing
 " → ' collapses querySelector quoting).
+
+---
+
+## Session 138 — the reports chart-interiors family fresh-eyes walk (the grid-fix session)
+
+- Stage 1: the workspace at f01f404 (the session_293 intake atop the s137 ship 4c23b0b);
+  the environment verified (.env + db/ + census MATCH 15/24/10/23/12 + 4 users); the four
+  intake docs read (session_292 + the s137 plan + the worklog + session_293) — the s137
+  ship verified; the next rotation decided per the session_292 close: the remaining
+  fresh-eyes seams — the reports chart interiors FIRST (the second named candidate)
+- Stage 2: the baseline gate GREEN — lint 0/0 · tsc 0 · 111/2032 · build · e2e 137/137
+  (3.4m) — the exact s137 ship match
+- Stage 3: the audits — 138-a 9/9 Verified (THE COMPLETE REPORTS CHART-INTERIORS
+  PRE-WALK INVENTORY: the freeze map [reports-page.tsx s123 · charts.tsx s98 · the
+  api/reports route s107], the tab map, the 16-chart anatomy, the data flow, the drift
+  carriers [the s133 retirement the ONLY moved-under carrier, code-verified no-op], the
+  pin coverage, the named risks L-138a1..a9 with the TOP = the seeded chart interiors) +
+  138-b 10/10 PASS (the ~96th standing battery, zero findings)
+- Stage 4: probe:ref #110 — the reference STABLE at the 81-session standing fingerprint
+  (index-DZ-xbrIm.js · 1,631,071 bytes · demo data ZERO · the TRUE-390 defect STANDS);
+  the four drift gates CLEAN ×4; scandihaven d4789c3 on-pattern; census MATCH
+- Stage 5 (the 138-c rotation): THE REPORTS CHART-INTERIORS FRESH-EYES WALK — walk29
+  (the phased idiom, the walk db ZERO-DATA PASS 1 / pristine-seeded PASS 2, ALL FIVE
+  TABS clicked through on both apps): PASS 1 (two-app, zero-data) — 849 axes compared,
+  ONE pre-fix divergence: the aging chart's gridlineCount ours 4 vs the reference 9 —
+  THE L-138c1 GRID TICK-DELIVERY GENUS (recharts 2.15.4's CartesianGrid generators
+  spread the context axis object over CartesianAxis.defaultProps; an explicit
+  tick={undefined} prop puts a tick:undefined KEY on that object which nullifies
+  defaultProps.tick, so getTicks() bails on !tick — the grid falls back to the 4-line
+  plot FRAME [edges only] where the reference renders the classic visible-ticks+edges
+  grid; every other axis byte-equal; the funnel family immune [explicit types, no tick
+  prop]); PASS 2 populated ours-only — every seeded contract holds [the KPI row
+  18/6/4 $337.0K/2 $92K/66.7% matching the /api/reports cross-check · the ten tables ·
+  the chart interiors · THE FOUR PIE LABEL TEXTS live-verified (the L-138c2
+  animation-gate lesson — the labels render only after the ~2s recharts mount
+  animation; the walk's first census recorded zero, the timing artifact) · THE MAIDEN
+  TOOLTIP LENS (the bar 'prospecting → Value ($): 190,000' + the line 'Oct 2026 →
+  revenue: $126,000' + the pie's stock name-index quirk) · the period round-trip
+  (quarter 18 → All Time 24 → Reset 18)]
+- Stage 6: the remediation — D-138a0 THE GRID FIX (charts.tsx: the conditional tickProp
+  spread + the explicit axis types across the four grid-bearing families —
+  live-verified BYTE-EXACT vs the reference: the aging grid's all nine lines at the
+  exact coordinates, both viewports; the post-fix walk re-run: 849 axes, 0 diffs) +
+  D-138a1 THE PINS (+10 its, reports-family-parity.test.ts: the 5 stash-proven L-138c1
+  source pins [exactly 5 RED at the pre-fix source] + the KPI 5-label ordered set [the
+  L-138a6 gap] + the Lost-Deals no-spark split + the 5 tab labels + the four labelFor
+  contracts) + the e2e LIVE pin (+1, in crm.spec BEFORE the reset test [the wipe leaves
+  zero leads for every later spec file]: the aging 9-line classic grid + the pie's 5
+  format-verified labels at 390, the recharts-upgrade sentinel; both halves polled) +
+  D-138a2 the docs realignment [the lockstep RED 16 sites → GREEN 21/21 + the two CLAUDE
+  carriers re-anchored; SKILL v1.135.0 + the session-138 layer + the AGENTS Session-138
+  section + the PAD Session-138 row]
+- Stage 7: the captures 280-283 (four unique files — 280 re-taken with the aging card
+  centered) + THE VLM BATTERY 4/4 CLEAN (280 the 9-line dashed grid + the ticks
+  0,2,4,6,8 + the violet bars; 281 the pie labels + the KPI values verbatim; 282 the
+  KPI row + the Revenue gridlines [the month labels + the legend below the viewport
+  fold — the computed census the authority]; 283 the hamburger nav + the stacked KPI +
+  the containment); the final gate lint 0/0 · tsc 0 · 113/2051 · build · 138/138; the
+  closing drift sweep CLEAN ×4; census MATCH
+
+**The count ladder**: UNIT 2041 → 2051 (+10 its) · SUITES 112 → 113 (the new
+reports-family-parity file) · E2E 137 → 138 (the s138 LIVE pin) · badge 2178 → 2189.
+
+**The walk-harness lessons**: L-138c1 the grid tick-delivery genus (NEVER pass
+tick={undefined} — the explicit-undefined KEY nullifies defaultProps.tick inside the
+grid generators' spread; spread conditionally; the maiden gridline census found what
+every prior walk missed) · L-138c2 the pie-animation gate (the recharts labels render
+only post-animation — settle/poll past ~2s before censusing pie label texts) · L-138c3
+the login hydration race (an early fill resets on hydration and the POST 400s on
+validation — settle before filling).
