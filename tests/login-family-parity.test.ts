@@ -374,7 +374,13 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // spec file; the retired form joins its negatives, the doctrine
     // unchanged).
     expect(src).not.toContain("**E2E (Playwright, 136 checks)**");
-    expect(src).toContain("**E2E (Playwright, 137 checks)**");
+    // session-138 lockstep carry-forward: the carrier re-anchored
+    // 137 -> 138 (the s138 e2e LIVE pin — the SECOND reports-mobile
+    // guard: the aging chart's 9-line classic grid + the source pie's
+    // 5 labels at 390, the recharts-upgrade sentinel; the retired form
+    // joins its negatives, the doctrine unchanged).
+    expect(src).not.toContain("**E2E (Playwright, 137 checks)**");
+    expect(src).toContain("**E2E (Playwright, 138 checks)**");
   });
 });
 

@@ -479,10 +479,19 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // placeholders + the Defaults 6-label ordered set + the picklist
     // interactive chrome; ZERO src changes]); the four sites re-anchored
     // again, the retired 2036 form joins the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2041 checks)");
-    expect(claude).toContain("(currently 2041)");
-    expect(claude).toContain("Vitest unit suites (2041 checks)");
-    expect(claude).toContain("`bun run test` (2041)");
+    // session-138 lockstep carry-forward: 2041 -> 2051 (the s138 +10 —
+    // the reports chart-interiors family fresh-eyes walk: the GRID-FIX
+    // session [D-138a0 the L-138c1 grid tick-delivery fix in charts.tsx
+    // + D-138a1 the pins +10 its, reports-family-parity.test.ts — the 5
+    // stash-proven grid-fix source pins + the KPI 5-label ordered set +
+    // the Lost-Deals no-spark split + the 5 tab labels + the four
+    // labelFor contracts]); the four sites re-anchored again, the
+    // retired 2041 form joins the negatives below.
+    expect(claude).toContain("Unit (Vitest, 2051 checks)");
+    expect(claude).toContain("(currently 2051)");
+    expect(claude).toContain("Vitest unit suites (2051 checks)");
+    expect(claude).toContain("`bun run test` (2051)");
+    expect(claude).not.toContain("Unit (Vitest, 2041 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2036 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2032 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2026 checks)");

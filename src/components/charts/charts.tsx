@@ -113,13 +113,21 @@ export function SingleBarChart({
   grid?: boolean;
 }) {
   const tick: AxisTick = tickFontSize ? { fontSize: tickFontSize } : undefined;
+  // Session-138 (L-138c1): the tick prop MUST NOT be passed as an explicit
+  // undefined — recharts 2.15's grid generators spread the context axis
+  // object over CartesianAxis.defaultProps, and an explicit tick:undefined
+  // key nullifies defaultProps.tick, so getTicks() bails on !tick and the
+  // CartesianGrid falls back to the 4-line plot FRAME (edges only) where
+  // the reference's recharts renders the visible-ticks+edges grid. Spread
+  // the prop ONLY when it carries a value.
+  const tickProp = tick ? { tick } : {};
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           {grid && <CartesianGrid strokeDasharray="3 3" />}
-          <XAxis dataKey={xKey} tick={tick} />
-          <YAxis tick={tick} />
+          <XAxis dataKey={xKey} type="category" {...tickProp} />
+          <YAxis type="number" {...tickProp} />
           <Tooltip formatter={formatter} />
           <Bar dataKey={dataKey} fill={fill} radius={radius} name={name} />
         </BarChart>
@@ -154,13 +162,16 @@ export function GroupedBarsChart({
   legend?: boolean;
 }) {
   const tick: AxisTick = tickFontSize ? { fontSize: tickFontSize } : undefined;
+  // Session-138 (L-138c1): the explicit-undefined tick prop breaks the grid
+  // generators (see SingleBarChart) — spread only when it carries a value.
+  const tickProp = tick ? { tick } : {};
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xKey} tick={tick} />
-          <YAxis tick={tick} />
+          <XAxis dataKey={xKey} type="category" {...tickProp} />
+          <YAxis type="number" {...tickProp} />
           <Tooltip />
           {legend && <Legend />}
           {series.map((s) => (
@@ -199,8 +210,12 @@ export function TrendLineChart({
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xKey} />
-          <YAxis />
+          {/* Session-138 (L-138c1): explicit axis types — the implicitly-typed
+              categorical X never delivered its ticks to the grid generator
+              (the edges-only V genus); typing it explicitly restores the
+              visible-ticks+edges grid the reference renders. */}
+          <XAxis dataKey={xKey} type="category" />
+          <YAxis type="number" />
           <Tooltip formatter={formatter} />
           {series.map((s) => (
             <Line key={s.key} type="monotone" dataKey={s.key} name={s.name} stroke={s.stroke} strokeWidth={2} />
@@ -317,13 +332,17 @@ export function RevenueLineChart({
   tickFontSize?: number;
 }) {
   const tick: AxisTick = tickFontSize ? { fontSize: tickFontSize } : undefined;
+  // Session-138 (L-138c1): same explicit-undefined tick-prop genus as the
+  // bar families — conditional spread + explicit axis types (the dashboard
+  // call site always passes 12, so this is the defensive arm of the fix).
+  const tickProp = tick ? { tick } : {};
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" tick={tick} />
-          <YAxis tick={tick} />
+          <XAxis dataKey="month" type="category" {...tickProp} />
+          <YAxis type="number" {...tickProp} />
           <Tooltip formatter={dollarFormatter} />
           {/* The reference ships the recharts DEFAULT legend (plainline
               icons, series-colored text) — no props. */}

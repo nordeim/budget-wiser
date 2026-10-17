@@ -116,8 +116,8 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const E2E = 137;
-const SUITES = 112;
+const E2E = 138;
+const SUITES = 113;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -326,7 +326,23 @@ const SUITES = 112;
 // its, leads-family-parity.test.ts — the 9 table heads ordered set +
 // the Gke 4 field labels + the row-menu trio + the edit dialog's 7
 // labels; ZERO src changes]; SUITES + E2E unchanged (111 · 137).
-const UNIT = 2041;
+// Session-138: 2041 → 2051 (+10 — the reports chart-interiors family
+// fresh-eyes walk [walk29: PASS 1 two-app zero-data byte-equal on 849
+// axes POST-FIX — the ONE pre-fix divergence (the aging gridlineCount
+// 4 vs 9) was THE L-138c1 GRID TICK-DELIVERY GENUS, fixed by D-138a0
+// (the conditional tickProp spread + explicit axis types in
+// charts.tsx — live-verified byte-exact vs the reference); PASS 2 every
+// seeded contract holding incl. the four pie label texts (the L-138c2
+// animation-gate lesson) + the maiden tooltip lens + the API
+// cross-check]: the NEW reports-family-parity suite [+10 its — the 5
+// L-138c1 grid-fix source pins (stash-proven: exactly 5 RED at the
+// pre-fix source) + the KPI 5-label ordered set (the L-138a6 gap) + the
+// Lost-Deals no-spark split + the 5 tab labels ordered set + the four
+// pie labelFor contracts]; SUITES 112 → 113 (the ONE new file); E2E
+// 137 → 138 (+1 — the SECOND reports-mobile guard: the L-138c1/L-138c2
+// LIVE pins — the aging chart's 9-line classic grid + the source pie's
+// 5 labels at 390, the recharts-upgrade sentinel).
+const UNIT = 2051;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -729,13 +745,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-137 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-138 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s135 layer now beneath the s136 head)",
     ).toContain(
-      "+ beneath it 2032 unit checks + 137 e2e checks green; the session-135 layer (the 135-c rotation — THE CONTACTS-LIST FAMILY THIRD-CYCLE RE-CHECK",
+      "+ beneath it 2041 unit checks + 137 e2e checks green; the session-137 layer (the 137-c rotation — THE SETTINGS PICKLIST-EDITOR FAMILY FRESH-EYES WALK",
     );
   });
 

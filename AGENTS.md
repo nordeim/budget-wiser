@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2041 checks)      | `bun run test`                         |
-|  Browser E2E (137 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (2051 checks)      | `bun run test`                         |
+|  Browser E2E (138 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2041) → `bun run build` → `bun run test:e2e` (137) — or the
+`bun run test` (2051) → `bun run build` → `bun run test:e2e` (138) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6420,3 +6420,12 @@ The 137-c rotation (the session_290 close's named direction: the fresh-eyes swee
 - The remediation: D-137a0 THE FREEZE PINS (+5 its, settings-family-parity.test.ts — the 5 panel titles + the 3 tab labels + the 5 add-input placeholders [incl. the Industries typo] + the Defaults 6-label ordered set + the picklist interactive chrome; all five stash-proven: each mutation → exactly 1 RED alone) + D-137a1 the docs realignment (the lockstep RED 12 → GREEN 21/21; the dialog-geometry CLAUDE carrier re-anchored). ZERO src changes — the freeze-pin genus closed on its LAST family (accounts s133 · dashboard s134 · contacts s135 · leads s136 · settings s137).
 - Count ladder: 112 suites / 2041 unit / 137 e2e / badge 2178.
 - The harness lessons: L-137c1 the inner-container scroll (main.overflow-auto — window.scrollY stays 0; reset before geometry censuses) · L-137c2 the synthetic-hover trap (CSS :hover needs REAL pointer moves — locator.hover() only) · L-137c3 the React controlled-input trap (locator.fill() only — direct .value + synthetic events never reach React state) · L-137c4 the quote-collapse selector trap.
+
+### Session-138 (2026-10-17) — the reports chart-interiors family fresh-eyes walk (the grid-fix session)
+
+The 138-c rotation (the session_292 close's named direction: the remaining fresh-eyes seams — the reports tab-content chart interiors with seeded data; the family source FROZEN [reports-page.tsx since s123, charts.tsx since s98, api/reports + reports-data since s107] while the s133 select retirement moved under it). The walk (walk29, the phased idiom, the walk db ZERO-DATA PASS 1 [the reference's own standing state] / pristine-seeded PASS 2): PASS 1 (two-app, zero-data) — **849 axes compared, ONE pre-fix divergence: the aging chart's gridlineCount ours 4 vs the reference 9 — THE L-138c1 GRID TICK-DELIVERY GENUS** (recharts 2.15.4's CartesianGrid generators spread the context axis object over CartesianAxis.defaultProps, and an explicit `tick={undefined}` prop puts a tick:undefined KEY on that object which nullifies defaultProps.tick, so getTicks() bails on `!tick` — the grid falls back to the 4-line plot FRAME [edges only] where the reference's recharts renders the classic visible-ticks+edges grid; every OTHER axis byte-equal — the ticks, the texts, the bars, the funnel's 15-line grid, the pies). PASS 2 populated ours-only — every seeded contract holds: the KPI row 18/6/4 $337.0K/2 $92K/66.7% matching the /api/reports cross-check (the L-138a4 chain) · the ten tables (4/10 · 6/5 · 15/4 · 10/5 · 2/10 …) · the chart interiors (bars/pies/lines/ticks/legends/sparks) · THE FOUR PIE LABEL TEXTS live-verified (the L-138c2 animation-gate lesson: the labels render only after the ~2s recharts mount animation — the walk's first census recorded zero, the timing artifact, not a defect; "referral: 5,call: 4,email: 3,website: 3,partner: 3" + the forecast/health/by-type formats) · THE MAIDEN TOOLTIP LENS (never censused on ANY chart in ANY family: the bar "prospecting → Value ($): 190,000" · the line "Oct 2026 → revenue: $126,000" · the pie's stock name-index quirk) · the period round-trip (quarter 18 → All Time 24 → Reset 18).
+
+- The fix (D-138a0): the conditional tickProp spread + explicit axis types across the grid-bearing families in charts.tsx (SingleBar / GroupedBars / TrendLine / RevenueLine — the HorizontalBar funnel already immune [explicit types, no tick prop]) — live-verified BYTE-EXACT against the reference (the aging grid H@5/70/135/200/265 + V@65/154/272/302 — all nine lines at both viewports); post-fix PASS 1 re-run: **849 axes, 0 diffs**.
+- The remediation: D-138a1 THE PINS (+10 its, reports-family-parity.test.ts — the 5 stash-proven L-138c1 source pins [exactly 5 RED at the pre-fix source: no bare tick={tick}, the conditional tickProp, the explicit types per family, the funnel's standing shape] + the KPI 5-label ordered set [the L-138a6 gap] + the Lost-Deals no-spark split + the 5 tab labels + the four labelFor contracts) + the e2e LIVE pin (+1 — in crm.spec BEFORE the reset test [the wipe leaves zero leads for every later spec file]: the aging chart's 9-line classic grid + the source pie's 5 format-verified labels at 390, the recharts-upgrade sentinel: a future recharts bump that re-breaks the tick delivery REDs here even though the source pins stay green; both halves polled — the s49 deterministic-wait doctrine) + D-138a2 the docs realignment (the lockstep RED 16 sites → GREEN 21/21; SKILL v1.135.0 + the session-138 layer).
+- Count ladder: 113 suites / 2051 unit / 138 e2e / badge 2189.
+- The harness lessons: L-138c1 the grid tick-delivery genus (the explicit-undefined prop quirk — NEVER pass `tick={undefined}`; spread conditionally) · L-138c2 the pie-animation gate (the recharts labels render only post-animation — settle > 2s before censusing pie label texts) · L-138c3 the login hydration race (an early fill lands before hydration — React resets the values and the POST 400s; settle before filling).

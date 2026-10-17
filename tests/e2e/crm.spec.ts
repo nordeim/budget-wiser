@@ -3230,6 +3230,130 @@ test("the opportunities consumers: the insights Open Deals tab + the contact Dea
   await expect(page.getByText("Compliance tracking renewal").first()).toBeVisible();
 });
 
+// ---------------------------------------------------------------------------
+// Session-138 (the 138-c walk's LIVE pins — placed HERE, before the reset
+// test, because the wipe leaves zero leads for every LATER spec file): the
+// walk29 chart-interiors census found the L-138c1 GRID TICK-DELIVERY GENUS —
+// recharts 2.15.4 rendered the 4-line plot FRAME on every vertical bar chart
+// (an explicit tick={undefined} prop nullifies CartesianAxis.defaultProps.tick
+// inside the grid generators, so getTicks() bails) where the reference renders
+// the classic visible-ticks+edges grid — live-probed byte-exact on the aging
+// chart (9 lines: H@5/70/135/200/265 + V@65/154/272/302). The D-138a0 fix
+// (the conditional tickProp spread + explicit axis types) restored it. This
+// guard holds the LIVE face — a future recharts upgrade that re-breaks the
+// tick delivery REDs here even though the source pins in
+// tests/reports-family-parity.test.ts would stay green. The second half pins
+// the L-138c2 pie-label face: the labels render only AFTER the ~2s recharts
+// mount animation (the walk's first census recorded zero — the timing
+// artifact, not a defect). Both halves POLLED (the s49 deterministic-wait
+// doctrine — fixed sleeps flake under the full-suite load).
+// ---------------------------------------------------------------------------
+test("the seeded aging chart + source pie render the classic chart interiors (the s138 L-138c1/L-138c2 live pins)", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/reports");
+  await page.waitForLoadState("domcontentloaded");
+  await expect(page.getByRole("tab", { name: "Sales Overview" })).toBeVisible();
+
+  // (a) the aging grid: 9 lines (5 y-tick horizontals + the
+  // elided-ticks+edges verticals) — NOT the 4-line frame the genus
+  // rendered. Measured live at 390 on the seeded db (svg 308 wide,
+  // y-ticks 0,2,4,6,8).
+  await page.getByRole("tab", { name: "Pipeline & Forecast" }).click();
+  await expect(page.getByRole("tabpanel", { name: "Pipeline & Forecast" })).toBeVisible();
+  const agingGrid = async () => page.evaluate(() => {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let n: Node | null;
+    let el: HTMLElement | null = null;
+    while ((n = walker.nextNode())) {
+      if ((n.textContent || "").trim() === "Aging Pipeline" && n.parentElement) {
+        el = n.parentElement as HTMLElement;
+        break;
+      }
+    }
+    if (!el) return { found: false as const, gridCount: -1, horizontalCount: -1, yTickCount: -1, docScrollW: 9999 };
+    let card: HTMLElement = el;
+    let steps = 0;
+    while (card.parentElement && steps < 8) {
+      const cs = getComputedStyle(card);
+      if (parseFloat(cs.borderTopWidth) > 0 && cs.boxShadow !== "none") break;
+      card = card.parentElement;
+      steps++;
+    }
+    const lines = card.querySelectorAll(".recharts-cartesian-grid line");
+    const yTicks = card.querySelectorAll(".recharts-yAxis .recharts-cartesian-axis-tick");
+    return {
+      found: true as const,
+      gridCount: lines.length,
+      horizontalCount: Array.from(lines).filter((l) => {
+        const x1 = Number((l as SVGLineElement).getAttribute("x1"));
+        const x2 = Number((l as SVGLineElement).getAttribute("x2"));
+        return x1 !== x2;
+      }).length,
+      yTickCount: yTicks.length,
+      docScrollW: document.documentElement.scrollWidth,
+    };
+  });
+  await expect.poll(agingGrid, { timeout: 15000, intervals: [400, 800] }).toMatchObject({
+    found: true,
+    gridCount: 9,
+    horizontalCount: 5,
+    yTickCount: 5,
+  });
+  const aging = await agingGrid();
+  expect(aging.docScrollW, "the aging tab must not overflow the 390px frame").toBeLessThanOrEqual(390);
+
+  // (b) the pie labels: the four LabelPieCharts' `${source}: ${value}`
+  // texts render (post-animation) at phone width — measured live:
+  // "referral: 5,call: 4,email: 3,website: 3,partner: 3".
+  await page.getByRole("tab", { name: "Lead Sources" }).click();
+  await expect(page.getByRole("tabpanel", { name: "Lead Sources" })).toBeVisible();
+  const pieState = async () => page.evaluate(() => {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let n: Node | null;
+    let el: HTMLElement | null = null;
+    while ((n = walker.nextNode())) {
+      if ((n.textContent || "").trim() === "Leads by Source" && n.parentElement) {
+        el = n.parentElement as HTMLElement;
+        break;
+      }
+    }
+    if (!el) return { found: false as const, sectorCount: -1, labelCount: -1, labelTexts: "", docScrollW: 9999 };
+    let card: HTMLElement = el;
+    let steps = 0;
+    while (card.parentElement && steps < 8) {
+      const cs = getComputedStyle(card);
+      if (parseFloat(cs.borderTopWidth) > 0 && cs.boxShadow !== "none") break;
+      card = card.parentElement;
+      steps++;
+    }
+    const labels = Array.from(card.querySelectorAll(".recharts-pie-label-text"));
+    return {
+      found: true as const,
+      sectorCount: card.querySelectorAll(".recharts-pie-sector").length,
+      labelCount: labels.length,
+      labelTexts: labels.map((t) => (t.textContent || "").replace(/\s+/g, " ").trim()).join(","),
+      docScrollW: document.documentElement.scrollWidth,
+    };
+  });
+  await expect.poll(pieState, { timeout: 15000, intervals: [400, 800] }).toMatchObject({
+    found: true,
+    // the five seeded source categories (the suite's intentional
+    // residuals ride ON these categories — an extra email lead shifts
+    // the COUNTS, never the category set; the exact VALUES are the unit
+    // pins' domain [seeded-reports-kpis] — this guard holds the LIVE
+    // rendering contracts: the sectors, the per-sector labels, the
+    // `${source}: ${count}` format)
+    sectorCount: 5,
+    labelCount: 5,
+  });
+  const pie = await pieState();
+  for (const lbl of pie.labelTexts.split(",")) {
+    expect(lbl, "every pie label reads the reference's `${source}: ${count}` format").toMatch(/^[a-z]+: \d+$/);
+  }
+  expect(pie.labelTexts).toContain("referral:");
+  expect(pie.docScrollW, "the labels may not overflow the 390px frame").toBeLessThanOrEqual(390);
+});
+
 test("the reset flow: confirm + alert + wipe (S26-P2) — LAST (its wipe must not poison earlier assertions)", async ({ page }) => {
   await page.goto("/settings");
   await page.getByRole("tab", { name: "Data" }).click();
