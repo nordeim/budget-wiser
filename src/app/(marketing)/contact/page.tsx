@@ -7,9 +7,11 @@ import { pageMetadata } from "@/lib/site";
 // us" card (the three social anchors with their lucide icons,
 // target=_blank rel="noopener noreferrer"). A pure server component.
 //
-// AUTH-GATED by the (app) layout like every app page (our standing
-// posture). The landing header's Contact link and the footer's Contact
-// link both point at the reference's own /Contact capital href.
+// Session-144 (D-144a1/F-144c1): the page moved (app) → (marketing) —
+// the reference serves it to GUESTS (walk34); the (marketing) layout
+// is session-optional (the same chrome for guests + logged-in users).
+// The landing header's Contact link and the footer's Contact link both
+// point at the reference's own /Contact capital href.
 export const metadata = pageMetadata({ page: "Contact", route: "/contact" });
 
 export default function ContactPageRoute() {

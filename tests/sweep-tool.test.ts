@@ -28,13 +28,20 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 const sweep = () => import("../scripts/sweep");
 
 describe("session-92 (S92-P5): the sweep tool — the one-command regression", () => {
-  it("exports the 11-page sweep list (the s91 set + the s96 login + the s142 landing/route-move)", async () => {
+  it("exports the 13-page sweep list (the s91 set + the s96 login + the s142 landing/route-move + the s144 marketing pair)", async () => {
     const { PAGES } = await sweep();
     expect(PAGES).toEqual([
       // Session-142 (D-142a6): the dashboard re-anchored to /dashboard
       // (the root became the PUBLIC landing) + the landing entry.
       { name: "dashboard", path: "/dashboard" },
       { name: "landing", path: "/" },
+      // Session-144 (D-144a2): the marketing pair joins the standing
+      // sweep — the reference serves /about + /contact publicly
+      // (walk34/F-144c1) and ours now mirrors it; the sweep captures
+      // BOTH apps logged-in (the same app chrome + the real-user
+      // topbar on both sides — the s142 landing precedent).
+      { name: "about", path: "/about" },
+      { name: "contact", path: "/contact" },
       { name: "accounts", path: "/accounts" },
       { name: "contacts", path: "/contacts" },
       { name: "leads", path: "/leads" },

@@ -455,9 +455,13 @@ describe("session-142: the brand token (the reference's marketing blue)", () => 
   });
 });
 
-describe("session-142: the /About + /Contact app pages (D-142a2)", () => {
+describe("session-142: the /About + /Contact marketing pages (D-142a2; session-144: moved to the PUBLIC (marketing) group — F-144c1)", () => {
   it("/about: the censused construction (server component, no client JS)", () => {
-    const src = read("src/app/(app)/about/page.tsx") ?? "";
+    // Session-144 (D-144a1/F-144c1): the path re-anchored — the four
+    // route files moved (app) → (marketing) (the reference serves them
+    // to GUESTS; the group layout is session-optional). The CONSTRUCTION
+    // pins below are unchanged — the page sources are byte-identical.
+    const src = read("src/app/(marketing)/about/page.tsx") ?? "";
     expect(src).not.toBeNull();
     const code = stripComments(src);
     expect(code).toContain('pageMetadata({ page: "About", route: "/about" })');
@@ -479,7 +483,7 @@ describe("session-142: the /About + /Contact app pages (D-142a2)", () => {
   });
 
   it("/about: the three intro paragraphs (the censused copy, flat-matched)", () => {
-    const code = flat(stripComments(read("src/app/(app)/about/page.tsx") ?? ""));
+    const code = flat(stripComments(read("src/app/(marketing)/about/page.tsx") ?? ""));
     expect(code).toContain(
       "NEO CRM is a clean, intuitive customer relationship management platform built to help you manage your accounts, contacts, and leads from one centralized, customizable dashboard. Instead of juggling spreadsheets, sticky notes, and scattered email threads, you get a single workspace where every relationship, conversation, and opportunity lives side by side.",
     );
@@ -497,7 +501,7 @@ describe("session-142: the /About + /Contact app pages (D-142a2)", () => {
   });
 
   it("the three socials with their lucide icons + the safe rel (RAW source — stripComments eats https://)", () => {
-    const raw = read("src/app/(app)/contact/page.tsx") ?? "";
+    const raw = read("src/app/(marketing)/contact/page.tsx") ?? "";
     expect(raw).toContain('href="https://www.linkedin.com"');
     expect(raw).toContain('href="https://x.com"');
     expect(raw).toContain('href="https://github.com"');
@@ -506,7 +510,7 @@ describe("session-142: the /About + /Contact app pages (D-142a2)", () => {
   });
 
   it("/contact: the censused construction (Email + Follow us)", () => {
-    const src = read("src/app/(app)/contact/page.tsx") ?? "";
+    const src = read("src/app/(marketing)/contact/page.tsx") ?? "";
     expect(src).not.toBeNull();
     const code = flat(stripComments(src));
     expect(code).toContain('pageMetadata({ page: "Contact", route: "/contact" })');
@@ -528,8 +532,8 @@ describe("session-142: the /About + /Contact app pages (D-142a2)", () => {
   });
 
   it("the capital aliases exist (the /About + /Contact .jsx render aliases)", () => {
-    const about = read("src/app/(app)/About/page.jsx") ?? "";
-    const contact = read("src/app/(app)/Contact/page.jsx") ?? "";
+    const about = read("src/app/(marketing)/About/page.jsx") ?? "";
+    const contact = read("src/app/(marketing)/Contact/page.jsx") ?? "";
     expect(stripComments(about)).toMatch(/import AboutPageRoute from "\.\.\/about\/page"/);
     expect(stripComments(about)).toMatch(/pageMetadata\(\{ page: "About", route: "\/About" \}\)/);
     expect(stripComments(contact)).toMatch(/import ContactPageRoute from "\.\.\/contact\/page"/);

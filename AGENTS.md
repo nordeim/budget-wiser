@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2104 checks)      | `bun run test`                         |
-|  Browser E2E (146 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (2108 checks)      | `bun run test`                         |
+|  Browser E2E (149 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2104) → `bun run build` → `bun run test:e2e` (146) — or the
+`bun run test` (2108) → `bun run build` → `bun run test:e2e` (149) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6660,3 +6660,50 @@ decode a baseline's share with a pixel-band scan before trusting it) ·
 **L-143c3 the content-offset vs viewport-offset trap** (a footer at
 content-offset 836 inside main is NOT at viewport 836 — add main's
 bounding-rect top before declaring above/below-fold).
+
+### Session-144 (2026-10-18) — the guest-family walk (the 144-c rotation)
+
+**THE MAIDEN GUEST-STATE CENSUS** (walk34): the s142/s143 walks censused
+the marketing family LOGGED-IN; the GUEST state was never walked — the
+s142 build's auth posture rode an unverified assumption (its own source
+comment: "the reference's guest-visible app shell is a base44 platform
+artifact we deliberately do not mirror"). The walk drove both apps'
+logged-OUT faces — **1 REAL FINDING**:
+
+- **F-144c1 THE MARKETING PAGES GATE (High)**: the reference serves
+  /About + /Contact to GUESTS — rendered-level verified (the full
+  content + the app chrome: the 8-link sidebar, the "Hi, Guest" topbar
+  with the gray-200 "G" avatar, the app footer; the guest funnel
+  landing → footer → About → Contact all-200). OURS: 307 → /login —
+  the funnel broke at the landing footer's links. Remediated: the
+  `(marketing)` route group (the four route files git-mv'd; the
+  session-optional layout `getSessionUser() ?? APP_GUEST_USER` → the
+  same AppShell chrome, NO redirect; the APP_GUEST_USER contract in
+  page-layout.ts — the Topbar's own fallback chain renders "Hi, Guest"
+  + "G" with ZERO Topbar changes; the store stays user:null —
+  hydrate's else branch). The (app) group's redirect UNTOUCHED — the
+  CRM data pages stay auth-gated (the reference renders those to
+  guests too — its "Hi, Guest" platform face, documented standing
+  genus; our server guard is the fix-over-defect).
+- **N-144b1 THE STALE DRAWER BATTERY (Medium, tooling)**: the
+  standalone `scripts/drawer-battery-390.ts` was stale vs the s142
+  route move — post-login lands on the PUBLIC landing (no CRM drawer
+  trigger) so the battery timed out deterministically. Remediated: the
+  post-login `goto("/Dashboard")` re-anchor (the e2e crm specs' own
+  s142 re-anchor; the route-move blast-radius lesson).
+
+**THE VERIFICATION**: the walk re-run (the guest faces EQUAL on every
+visible axis + the funnel working both apps) · 144-a 13/13 Verified,
+zero findings · 144-b 10/11 (N-144b1) · probe:ref #116 STABLE · the
+mutation-proof (3 drifts → exactly their pins RED) · lint 0/0 · tsc 0 ·
+**114/2108** · build · **e2e 149/149** (+3: the guest /About +
+/Contact + the funnel) · the drawer battery live GREEN · the four drift
+gates CLEAN ×4 (the 13-page sweep set — about/contact joined at
+0.00/0.00 desktop-tablet-landscape + 0.51/0.51 phone floor) · the
+captures 307-309 + the VLM battery 3/3 clean. The count ladder: UNIT
+2104 → 2108 (+4) · E2E 146 → 149 (+3) · badge 2250 → 2257. The
+walk-harness lessons: **L-144c1 the never-walked state** (every parity
+surface has TWO states — logged-in + guest; walk BOTH — the auth
+boundary itself is a parity axis) · **L-144c2 the re-anchor blast
+radius of a route move** (grep every post-login expectation in
+scripts/ + tests/ when a route moves, not just the failing carriers).

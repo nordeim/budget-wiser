@@ -7,11 +7,16 @@ import { pageMetadata } from "@/lib/site";
 // three intro paragraphs, the 4 icon cards and the "Get in touch with us
 // →" link. A pure server component — no state, no client JS.
 //
-// Like every (app) page it is AUTH-GATED by the group layout (our
-// standing security posture; the reference's guest-visible app shell is a
-// base44 platform artifact we deliberately do not mirror — the data stays
-// protected either way). Reachable from the landing footer's About link
-// (the /About capital alias) — the reference's own href.
+// Session-144 (D-144a1/F-144c1): the page moved (app) → (marketing) —
+// the reference serves it to GUESTS (walk34, rendered-level: the full
+// content + the app chrome + the "Hi, Guest" topbar). The s142 placement
+// auth-gated it on an UNVERIFIED assumption (its own comment claimed
+// "the reference's guest-visible app shell is a base44 platform
+// artifact" — wrong decode: the marketing family is deliberately
+// public; the platform-artifact face is the CRM DATA pages, a different
+// thing our (app) guard still fixes). The (marketing) layout is
+// session-optional — the same chrome for guests (APP_GUEST_USER) and
+// logged-in users.
 export const metadata = pageMetadata({ page: "About", route: "/about" });
 
 const ABOUT_PARAGRAPHS = [

@@ -84,6 +84,15 @@ async function main() {
       page.waitForURL((u) => !u.pathname.endsWith("/login"), { timeout: 30000 }),
       page.click('button[type="submit"]'),
     ]);
+    // Session-144 (D-144a0/N-144b1): the s142 route move made the
+    // post-login page the PUBLIC landing `/` (its own mobile menu —
+    // the disclosure pattern, no CRM drawer trigger), so the battery
+    // timed out deterministically at the trigger probe. The re-anchor:
+    // navigate to the CRM shell explicitly — the same re-anchor the e2e
+    // crm specs got at s142 (the route-move blast-radius lesson: grep
+    // every post-login expectation when a route moves, not just the
+    // failing carriers).
+    await page.goto(`${OUR_URL}/Dashboard`, { waitUntil: "networkidle" });
     await page.waitForTimeout(2000);
 
     // 1. the trigger: exact aria-label, geometry at TRUE 390

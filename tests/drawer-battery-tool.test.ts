@@ -51,4 +51,22 @@ describe("session-96 (S96-P1): the drawer battery tool — the F-96a1 reopen fix
     // no synthetic clicks
     expect(src).not.toMatch(/\.click\(\)\s*;?\s*\/\/\s*synthetic/);
   });
+
+  it("navigates to the CRM shell after login — the post-login page is the PUBLIC landing since the s142 route move (N-144b1)", () => {
+    const src = read("scripts/drawer-battery-390.ts");
+    // Session-144 (D-144a0/N-144b1): the s142 route move left this
+    // standalone tool stale — post-login redirects to the PUBLIC
+    // landing `/` (no CRM drawer trigger there), so the battery timed
+    // out deterministically at the trigger probe. The re-anchor: an
+    // explicit goto("/Dashboard") between the login wait and the
+    // trigger locator — the same re-anchor the e2e crm specs got at
+    // s142 (the route-move blast radius: grep every post-login
+    // expectation when a route moves, not just the failing carriers).
+    const loginIdx = src.indexOf("waitForURL((u) => !u.pathname.endsWith");
+    expect(loginIdx).toBeGreaterThan(0);
+    const triggerIdx = src.indexOf('button[aria-label="Open navigation menu"]');
+    expect(triggerIdx).toBeGreaterThan(loginIdx);
+    const between = src.slice(loginIdx, triggerIdx);
+    expect(between).toMatch(/goto\([^)]*Dashboard/);
+  });
 });

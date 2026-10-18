@@ -225,6 +225,28 @@ export const APP_FOOTER = {
   contact: { href: "/Contact", label: "Contact" },
 } as const;
 
+/** Session-144 (D-144a1/F-144c1): the GUEST chrome user — the reference
+ *  renders its public marketing pages (/About, /Contact) to SESSIONLESS
+ *  visitors with the full app chrome: the topbar shows "Hi, Guest" +
+ *  the avatar fallback (bg-gray-200, the "G" initial —
+ *  text-gray-600 font-semibold, walk34-censused on its live /About).
+ *  The Topbar's own fallback chain (user.name || user.email || "Guest")
+ *  renders this object's face with ZERO Topbar changes; the (marketing)
+ *  group layout feeds it when getSessionUser() resolves null.
+ *  Chrome-only by construction: an empty id/email can never resolve a
+ *  session — the store stays user:null (hydrate's else branch), and the
+ *  CRM links still hit the (app) login wall (the reference renders its
+ *  data pages to guests too — its platform face, not a behavior we
+ *  mirror; the (app) guard is the documented fix-over-defect). */
+export const APP_GUEST_USER = {
+  id: "",
+  email: "",
+  name: "Guest",
+  avatarColor: "",
+  photoUrl: null,
+  role: "",
+} as const;
+
 /** S16-P2: the page-ROOT model — every page owns its padding (the
  *  reference renders NO shell-level wrapper; its page roots carry the
  *  classes directly). Six pages ship the bg + min-height variant

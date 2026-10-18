@@ -380,7 +380,12 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // 5 labels at 390, the recharts-upgrade sentinel; the retired form
     // joins its negatives, the doctrine unchanged).
     expect(src).not.toContain("**E2E (Playwright, 137 checks)**");
-    expect(src).toContain("**E2E (Playwright, 146 checks)**");
+    // session-144 lockstep carry-forward: the carrier re-anchored
+    // 146 -> 149 (the s144 guest marketing block — the guest /About +
+    // /Contact faces + the funnel; the retired form joins its
+    // negatives, the doctrine unchanged).
+    expect(src).not.toContain("**E2E (Playwright, 146 checks)**");
+    expect(src).toContain("**E2E (Playwright, 149 checks)**");
   });
 });
 

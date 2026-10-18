@@ -100,6 +100,14 @@ export const PAGES = [
   // mock-dashboards render near-identically two-app; the landing's own
   // noise floor sits at the chart-bars' anti-aliasing).
   { name: "landing", path: "/" },
+  // Session-144 (D-144a2/F-144c1): the marketing pair joins the standing
+  // sweep — the reference serves /about + /contact PUBLICLY (walk34,
+  // rendered-level) and ours now mirrors it (the (marketing) group is
+  // session-optional). The sweep captures both apps LOGGED-IN: the same
+  // app chrome + the real-user topbar on both sides (the s142 landing
+  // precedent). The maiden runs measured their baselines.
+  { name: "about", path: "/about" },
+  { name: "contact", path: "/contact" },
   { name: "accounts", path: "/accounts" },
   { name: "contacts", path: "/contacts" },
   { name: "leads", path: "/leads" },
@@ -205,6 +213,11 @@ export const STANDING_BASELINES = {
     // regions' share; everything else (text, layout, the outline CTA,
     // the mock chrome) pixel-matches.
     landing: 9.9,
+    // session-144 (D-144a2): the marketing pair — the maiden runs
+    // measured 0.00% (the app chrome + the censused content
+    // pixel-identical logged-in); the 0.1 entry rides the family floor
+    about: 0.1,
+    contact: 0.1,
     accounts: 0.1,
     contacts: 0.6,
     leads: 0.1,
@@ -225,6 +238,11 @@ export const STANDING_BASELINES = {
     // hidden-below-sm sidebar shrink the blue regions; measured on the
     // maiden phone run)
     landing: 8.5,
+    // session-144: the marketing pair at the phone floor (the maiden
+    // run measured 0.51 — the lucide floor genus; the 0.75 entry rides
+    // the floor family ceiling)
+    about: 0.75,
+    contact: 0.75,
     accounts: 0.75,
     contacts: 0.75,
     leads: 0.75,
@@ -259,6 +277,10 @@ export const STANDING_BASELINES = {
     // maiden 768x1024 run measured 15.34% (the wider mock renders the
     // full blue sidebar + bars at a LARGER frame share)
     landing: 15.8,
+    // session-144: the marketing pair — 0.00% measured (the maiden
+    // tablet run)
+    about: 0.1,
+    contact: 0.1,
     accounts: 0.8,
     contacts: 0.1,
     leads: 0.1,
@@ -290,6 +312,10 @@ export const STANDING_BASELINES = {
     // session-142: the BRAND-TOKEN GENUS at the landscape share — the
     // maiden 1024x768 run measured 10.77%
     landing: 11.3,
+    // session-144: the marketing pair — 0.00% measured (the maiden
+    // landscape run)
+    about: 0.1,
+    contact: 0.1,
     accounts: 2.6,
     contacts: 0.1,
     leads: 0.1,

@@ -5593,3 +5593,23 @@ Stage Summary:
 - The marketing layer's below-fold gaps closed (the footer on all 11 app pages + the narrow FAQ) — both invisible to the viewport-only sweep, caught by the DOM walk
 - The s142 docs debt (the missing AGENTS/PAD sections) filled
 - The walk-harness lessons L-143c1/c2/c3 recorded (the blind band, the sub-tolerance genus, the content-vs-viewport offset trap)
+
+---
+Task ID: 144
+Agent: main (Super Z)
+Task: Session-144 — the guest-family walk (the 144-c rotation + the F-144c1/N-144b1 remediation)
+
+Work Log:
+- Pulled to db6ed2a; environment standing; census MATCH; baseline gate GREEN (the exact s143-ship match: 114/2104 + 146/146)
+- 144-a: 13/13 Verified, zero findings; 144-b: 10/11 (N-144b1 — the standalone drawer-battery script stale vs the s142 route move, deterministic timeout reproduced); probe:ref #116 STABLE
+- walk34 (the maiden guest-state census of the marketing family): F-144c1 THE MARKETING PAGES GATE — the reference serves /About + /Contact to GUESTS rendered-level (full content + app chrome + "Hi, Guest" topbar + G avatar; the funnel landing → footer → About → Contact all-200); ours 307 → /login — the s142 auth posture rode the wrong decode; + the decoded platform face (the reference's guest-visible CRM — our (app) guard stands)
+- D-144a0: the battery post-login goto("/Dashboard") re-anchor + pin; live GREEN
+- D-144a1: the (marketing) route group (4 files git-mv'd) + the session-optional layout (getSessionUser() ?? APP_GUEST_USER) + the APP_GUEST_USER contract; TDD (9 pins RED → GREEN → mutation-proof ×3); the walk re-run guest faces EQUAL; e2e +3 (the guest tests + the funnel); 114/2108
+- D-144a2: the sweep PAGES +about +contact (13-page set; the maiden baselines); the four drift gates CLEAN ×4; the drawer battery live GREEN
+- D-144a3: the docs realignment (2108/149/2257 + the lockstep GREEN incl. the login-family e2e-carrier re-anchor + the Appendix B landing-row fill [the s142 docs gap #2] + SKILL v1.141.0 + the s142 posture-comment corrections); the captures 307-309 + the VLM battery 3/3
+- The final gate GREEN; the two-commit ship via the SSH wrapper
+
+Stage Summary:
+- The marketing family's GUEST state closed: /About + /Contact public with the reference-mirrored guest chrome ("Hi, Guest" + the G avatar), the CRM data pages' guard frozen (the posture contrast pin)
+- The route-move blast-radius debt closed (the stale standalone battery re-anchored)
+- The walk-harness lessons L-144c1/c2 recorded (the never-walked state; the route-move re-anchor blast radius)

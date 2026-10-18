@@ -116,7 +116,9 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const E2E = 146;
+// Session-144: E2E 146 -> 149 (+3 — the guest marketing family: the
+// guest /About + /Contact faces + the funnel + the dual-casing).
+const E2E = 149;
 const SUITES = 114;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
@@ -413,7 +415,10 @@ const SUITES = 114;
 // pin [F-143c2, the max-w-3xl re-derivation]). SUITES + E2E unchanged
 // (114 - 146; the S16-P1 e2e pin re-anchored in place: the scrollDelta
 // 5 -> 58, the footer's 53px added to the mirrored 5px topbar quirk).
-const UNIT = 2104;
+// Session-144: 2104 -> 2108 (+4 — the guest-chrome pins: APP_GUEST_USER
+// + the (marketing)-layout session-optional pin + the (app)-guard
+// contrast freeze + the battery post-login re-anchor pin [N-144b1]).
+const UNIT = 2108;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -826,13 +831,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-143 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-144 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s142 layer now beneath the s143 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s143 layer now beneath the s144 head)",
     ).toContain(
-      "+ beneath it 2101 unit checks + 146 e2e checks green; the session-142 layer (the marketing-layer parity build",
+      "+ beneath it 2104 unit checks + 146 e2e checks green; the session-143 layer (THE LANDING FAMILY WALK",
     );
   });
 

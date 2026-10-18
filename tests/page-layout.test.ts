@@ -39,6 +39,7 @@ import {
   KPI_SPARK,
   KPI_VALUE,
   APP_FOOTER,
+  APP_GUEST_USER,
   LEADS_FILTERS_POPOVER,
   LEADS_TOOLBAR,
   LOGIN_LAYOUT,
@@ -285,6 +286,53 @@ describe("session-143: the app-shell footer (F-143c1 — the 11-page main-level 
     expect(src).toContain("<span>{APP_FOOTER.copyright}</span>");
     expect(src).toContain("href={APP_FOOTER.about.href}");
     expect(src).toContain("href={APP_FOOTER.contact.href}");
+  });
+});
+
+describe("session-144: the guest chrome + the marketing group (F-144c1 — the public About/Contact)", () => {
+  it("APP_GUEST_USER — the guest topbar face (walk34: the reference's 'Hi, Guest' + the gray-200 'G')", () => {
+    // The reference renders the full app chrome to SESSIONLESS visitors on
+    // its public marketing pages (walk34, rendered-level on /About): the
+    // topbar shows "Hi, Guest" + the avatar fallback (bg-gray-200, the
+    // "G" initial — text-gray-600 font-semibold per the live census). The
+    // Topbar's own fallback chain (user.name || user.email || "Guest")
+    // renders this object's face with ZERO Topbar changes; the contract
+    // exists so the (marketing) layout can feed it when getSessionUser()
+    // resolves null. Chrome-only: an empty id/email can never resolve a
+    // session — the store stays user:null (hydrate's else branch), the CRM
+    // links still hit the (app) login wall.
+    expect(APP_GUEST_USER.name).toBe("Guest");
+    expect(APP_GUEST_USER.photoUrl).toBeNull();
+    expect(APP_GUEST_USER.id).toBe("");
+    expect(APP_GUEST_USER.email).toBe("");
+    // the Topbar's avatar-fallback formula computes the reference's "G"
+    expect((APP_GUEST_USER.name || APP_GUEST_USER.email || "G").charAt(0).toUpperCase()).toBe("G");
+  });
+
+  it("the (marketing) layout is SESSION-OPTIONAL — no redirect, the guest fallback feeds AppShell (the F-144c1 contract)", () => {
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/app/(marketing)/layout.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("getSessionUser()");
+    expect(src).toContain("APP_GUEST_USER");
+    expect(src).toMatch(/user=\{user \?\? APP_GUEST_USER\}/);
+    // THE F-144c1 CONTRACT: the marketing group NEVER redirects — the
+    // reference serves /About + /Contact to guests (the public marketing
+    // family: landing → footer → About → Contact, all 200).
+    expect(src).not.toMatch(/redirect\(/);
+  });
+
+  it("the (app) group KEEPS its guard — the CRM data pages stay auth-gated (the posture freeze)", () => {
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/app/(app)/layout.tsx"),
+      "utf8",
+    );
+    // the contrast pin: the reference renders its CRM DATA pages to
+    // guests too (its platform face — "Hi, Guest" on /Dashboard); our
+    // server-guarded (app) group is the documented fix-over-defect and
+    // MUST survive the marketing group going public.
+    expect(src).toContain('redirect("/login")');
   });
 });
 
