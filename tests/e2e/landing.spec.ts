@@ -227,3 +227,60 @@ test.describe("the marketing app pages (authenticated)", () => {
     await expect(page.getByRole("heading", { name: "Contact Us" })).toBeVisible();
   });
 });
+
+// Session-145 (walk35 — the auth-transition family): the guest marketing
+// pages at PHONE width. The maiden 390 census: the reference's guest
+// /About at 390 renders NO navigation affordance at all (its sidebar
+// hidden, NO hamburger — only the "G" account button + the content + the
+// footer: the standing CRM-shell mobile defect extends to its
+// guest-served app pages). OURS mounts the AppShell drawer — the
+// headline fix-over-defect extends to the guest marketing family (the
+// s144 (marketing)-group decision). The test pins the drawer's presence
+// + its full link set for a sessionless visitor.
+test.describe("the guest marketing pages at 390 (session-145 — the fix extends to the guest family)", () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test("the guest /About at 390: the drawer works — the hamburger + all 8 links (the reference ships NO nav affordance there)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/About");
+
+    // the guest chrome + content still render (the s144 contract at
+    // phone width — capture 309's face). The greeting TEXT is hidden
+    // below sm on BOTH apps (walk35's pixel census: the reference's
+    // "Hi, Guest" span measures w=0 at 390, ours the same) — the G
+    // avatar is the phone-width greeting
+    await expect(page.getByRole("heading", { name: "About NEO CRM" })).toBeVisible();
+    await expect(page.getByText("Hi, Guest")).toBeHidden();
+    await expect(page.getByRole("button", { name: "Account menu" })).toBeVisible();
+
+    // no desktop sidebar at 390px
+    await expect(page.locator("aside").first()).toBeHidden();
+
+    // the drawer: hamburger → open → every destination reachable
+    const trigger = page.getByRole("button", { name: "Open navigation menu" });
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    await expect(dialog).toBeVisible();
+    for (const label of [
+      "Dashboard",
+      "Accounts",
+      "Contacts",
+      "Leads",
+      "Calendar",
+      "Activities",
+      "Reports",
+      "Settings",
+    ]) {
+      await expect(dialog.getByRole("link", { name: label, exact: true })).toBeVisible();
+    }
+
+    // a guest drawer link login-walls at the (app) guard — the drawer's
+    // Dashboard link enters the guarded group, which 307s a sessionless
+    // visitor (the posture; the reference's guest would land on its
+    // open platform face instead — the genus)
+    await dialog.getByRole("link", { name: "Dashboard", exact: true }).click();
+    await page.waitForURL("**/login**");
+    await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
+  });
+});

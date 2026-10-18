@@ -5613,3 +5613,22 @@ Stage Summary:
 - The marketing family's GUEST state closed: /About + /Contact public with the reference-mirrored guest chrome ("Hi, Guest" + the G avatar), the CRM data pages' guard frozen (the posture contrast pin)
 - The route-move blast-radius debt closed (the stale standalone battery re-anchored)
 - The walk-harness lessons L-144c1/c2 recorded (the never-walked state; the route-move re-anchor blast radius)
+
+---
+Task ID: 145
+Agent: main (Super Z)
+Task: Session-145 — the auth-transition family walk (the 145-c rotation, the pin-only session)
+
+Work Log:
+- Re-cloned at 205dac4 (the s144 ship + the session_306/307 logs); the environment re-stood (bun install, .env, db push+seed, census MATCH, the fresh sandbox's Playwright chromium re-installed); the baseline gate GREEN — the exact s144-ship match (114/2108 + 149/149)
+- 145-a: 14/14 Verified, zero findings (the (marketing) group + APP_GUEST_USER + the guard + the battery re-anchor + the captures 307-309 + the LIVE guest boundary curls + the docs layers); 145-b: 11/11 PASS; probe:ref #117 STABLE (the s142 fingerprint; the CRM-shell mobile defect STILL STANDS)
+- walk35 (the maiden census of the auth-boundary transition family, the session_307 'next' hint): 7 axes EQUAL (the landing's LOGGED-IN face — both apps SESSION-STATIC, the maiden census · the post-login redirect → / both · the login guest face + the error state · the /login authed-visitor pure render) · 3 axes documented-genus (the logout — the reference stays on-page in its guest platform face, ours /login the posture fix · the /signup superset · the guest marketing pages at 390 — the reference NO nav affordance, ours the working drawer) — ZERO real findings
+- D-145a0: the four unit pins (the landing session-static + the logout target + the post-login redirect + the /login+/signup pure-render); D-145a1: the guest 390 drawer e2e (RED at birth on the wrong greeting-text expectation → re-derived from the pixel census → GREEN); D-145a2: the mutation-proof ×4 (each drift → exactly 1 RED → reverted)
+- N-145a1: the s144 docs-gap #3 — the page-layout census site stale 1631/193 vs live 1653/196 (the APP_GUEST_USER growth never re-anchored); filled at the realignment (1653/197)
+- D-145a3: the docs realignment (2112/150/2262 · the lockstep GREEN 21/21 · SKILL v1.142.0 + the session-145 layer · the AGENTS/PAD/CLAUDE/README carriers · the session_308 record + the plan record + this worklog)
+- D-145a4: the captures 310-312 + the VLM battery 3/3 clean; the final gate GREEN (lint 0/0 · tsc 0 · 114/2112 · build · e2e 150/150 · the drift gates CLEAN ×4 · census MATCH)
+
+Stage Summary:
+- The auth-boundary transition family closed with ZERO real findings — every axis EQUAL or documented-genus; the 5 never-pinned axes frozen (the pin-only pattern)
+- The s144 docs debt filled (the page-layout census site)
+- The walk-harness lessons L-145c1/c2 recorded (the transition targets ride the route landscape; the pin-only session still ships pins)

@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2108 checks)      | `bun run test`                         |
-|  Browser E2E (149 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (2112 checks)      | `bun run test`                         |
+|  Browser E2E (150 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2108) → `bun run build` → `bun run test:e2e` (149) — or the
+`bun run test` (2112) → `bun run build` → `bun run test:e2e` (150) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6707,3 +6707,47 @@ surface has TWO states — logged-in + guest; walk BOTH — the auth
 boundary itself is a parity axis) · **L-144c2 the re-anchor blast
 radius of a route move** (grep every post-login expectation in
 scripts/ + tests/ when a route moves, not just the failing carriers).
+
+### Session-145 (2026-10-18) — the auth-transition family walk (the 145-c rotation)
+
+**THE MAIDEN AUTH-BOUNDARY TRANSITION CENSUS** (walk35, the session_307
+"next" hint): the login/signup guest→auth flows — the last barely-walked
+family; the s126 login-family re-walk predates the s142 route move. The
+walk drove both apps through the full guest→auth→guest round-trip.
+**The verdict: 7 axes EQUAL · 3 axes documented-genus · ZERO real
+findings** — a PIN-ONLY session (the s136/s140 pattern):
+
+- **The landing's LOGGED-IN face (the maiden census)**: both apps
+  SESSION-STATIC — the reference post-login lands on `/` with the
+  IDENTICAL guest face (the same nav, the same "Open dashboard" CTA, no
+  user indicator); ours the same.
+- **The post-login redirect**: EQUAL — both apps `/login` submit → `/`.
+- **The login card faces**: EQUAL — the guest anatomy + the
+  invalid-credentials error state + the authed-visitor pure render (the
+  s23 retirement; the reference serves the login card to authed visitors
+  too).
+- **The logout transition**: GENUS-consistent — the reference's Logout
+  stays on-page rendering its guest platform face (the documented
+  no-guard genus); ours `router.push("/login")` — the (app)-guard
+  posture's client expression.
+- **The guest marketing pages at 390 (the maiden phone census)**: the
+  reference's guest /About renders NO navigation affordance at all (the
+  standing mobile defect extends to its guest-served app pages); ours
+  the working drawer — the headline fix extends to the guest family.
+
+**THE PIN-ONLY REMEDIATION** (the 5 never-pinned axes frozen, the
+mutation-proof ×4 — each drift → exactly 1 RED): the landing COMPONENT's
+session-static contract + the logout transition target + the post-login
+redirect target (source-frozen, e2e-only before) + the /login + /signup
+pure-render + the guest 390 drawer e2e. **N-145a1 (the s144 docs-gap
+#3)**: the page-layout census site stale 1631/193 vs live 1653/196 at
+the s144 ship (the APP_GUEST_USER growth never re-anchored) — filled.
+**THE VERIFICATION**: 145-a 14/14 Verified · 145-b 11/11 · probe:ref
+#117 STABLE · lint 0/0 · tsc 0 · **114/2112** · build · **e2e 150/150**
+(+1) · the four drift gates CLEAN ×4 · census MATCH. The count ladder:
+UNIT 2108 → 2112 (+4) · E2E 149 → 150 (+1) · badge 2257 → 2262. The
+walk-harness lessons: **L-145c1 the transition targets ride the route
+landscape** (a route landscape change re-opens the transition family
+even when no bundle changes) · **L-145c2 the pin-only session still
+ships pins** (the maiden census axes ride only comments + the e2e's
+incidental coverage; the freeze pins are the walk's durable artifact).

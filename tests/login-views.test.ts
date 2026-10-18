@@ -361,3 +361,52 @@ describe("session-96: the form-family walk remediation (the v4 space-y genus on 
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session 145 (walk35 — the auth-transition family): the transition-target
+// pins. Three contracts live-verified on BOTH apps this walk:
+//   1. the POST-LOGIN REDIRECT target is the PUBLIC landing `/` (the
+//      reference's own submit lands there; ours since the s142 re-anchor —
+//      previously source-unpinned, e2e-only);
+//   2. /login + /signup are PURE RENDERS — no session read, no
+//      authenticated redirect (the s23-P2 / s67-N-67f retirements; the
+//      reference serves the login card to authed visitors too, verified
+//      live on both apps).
+// The pins freeze the targets so a future redirect drift REDs here exactly.
+// ---------------------------------------------------------------------------
+
+describe("session-145: the auth-transition targets (walk35)", () => {
+  it("the post-login redirect lands on the PUBLIC landing — router.push(\"/\") on BOTH submit sites (the s142 re-anchor, source-frozen)", () => {
+    const src = loginCardSrc()
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    // the two sites: the signin success (S21-P2) + the reset-completion
+    // return to the signin view — both land on the landing
+    const pushes = src.match(/router\.push\("\/"\)/g) ?? [];
+    expect(pushes.length).toBe(2);
+    // negatives: never the CRM dashboard (the pre-s142 target) and
+    // never a deep page
+    expect(src).not.toMatch(/router\.push\("\/[Dd]ashboard"\)/);
+    expect(src).not.toMatch(/router\.push\("\/(accounts|contacts|leads|reports|settings|profile)"/);
+  });
+
+  it("/login + /signup are pure renders — NO session read, NO authenticated redirect (the s23-P2 + N-67f retirements, walk35-verified on both apps)", () => {
+    const pages = [
+      ["src/app/login/page.tsx", "the login route"],
+      ["src/app/signup/page.tsx", "the signup route"],
+    ] as const;
+    for (const [rel, label] of pages) {
+      const raw = readOr(rel);
+      expect(raw.length, `${label} must exist`).toBeGreaterThan(0);
+      // comments stripped: both pages DOCUMENT the retirement in
+      // comments that name redirect() — the pin reads the code, not the
+      // documentation (the s21/s22 own-doc-comment hazard)
+      const src = raw
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/\/\/[^\n]*/g, "");
+      expect(src, `${label}: no session resolution`).not.toMatch(/getSessionUser/);
+      expect(src, `${label}: no redirect call`).not.toMatch(/redirect\(/);
+      expect(src, `${label}: no layout guard import`).not.toMatch(/from "next\/navigation"/);
+    }
+  });
+});

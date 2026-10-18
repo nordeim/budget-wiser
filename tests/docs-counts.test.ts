@@ -116,9 +116,10 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-// Session-144: E2E 146 -> 149 (+3 — the guest marketing family: the
-// guest /About + /Contact faces + the funnel + the dual-casing).
-const E2E = 149;
+// Session-145: E2E 149 -> 150 (+1 — the guest 390 drawer e2e: the
+// hamburger + the 8 links on the guest /About, the fix extending to
+// the guest marketing family).
+const E2E = 150;
 const SUITES = 114;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
@@ -415,10 +416,11 @@ const SUITES = 114;
 // pin [F-143c2, the max-w-3xl re-derivation]). SUITES + E2E unchanged
 // (114 - 146; the S16-P1 e2e pin re-anchored in place: the scrollDelta
 // 5 -> 58, the footer's 53px added to the mirrored 5px topbar quirk).
-// Session-144: 2104 -> 2108 (+4 — the guest-chrome pins: APP_GUEST_USER
-// + the (marketing)-layout session-optional pin + the (app)-guard
-// contrast freeze + the battery post-login re-anchor pin [N-144b1]).
-const UNIT = 2108;
+// Session-145: 2108 -> 2112 (+4 — the walk35 transition pins: the
+// landing session-static + the logout target + the post-login redirect
+// + the /login+/signup pure-render [all in landing-page / page-layout
+// / login-views, EXISTING files]).
+const UNIT = 2112;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -831,13 +833,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-144 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-145 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s143 layer now beneath the s144 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s144 layer now beneath the s145 head)",
     ).toContain(
-      "+ beneath it 2104 unit checks + 146 e2e checks green; the session-143 layer (THE LANDING FAMILY WALK",
+      "+ beneath it 2108 unit checks + 149 e2e checks green; the session-144 layer (THE GUEST-FAMILY WALK",
     );
   });
 
@@ -935,14 +937,20 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // (the APP_FOOTER block +20 lines and the +2 its — the footer pins).
     expect(skill).not.toContain("test-pinned module (1600 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 191 checks");
+    // Session-145: the retired 1631/193 forms join the negatives ladder
+    // (the N-145a1 fix — the s144 APP_GUEST_USER growth never re-anchored
+    // this site: 1631/193 rode the s143 census; the s144 ship added +22
+    // lines +3 its; the 145 realignment carries it to the live census).
+    expect(skill).not.toContain("test-pinned module (1631 lines");
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 193 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1631 lines; `tests/page-layout.test.ts`, 193 checks",
+      "test-pinned module (1653 lines; `tests/page-layout.test.ts`, 197 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1631 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1653 |");
     // Session-143: the retired 1600 form joins the negatives ladder.
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1600 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1530 |");

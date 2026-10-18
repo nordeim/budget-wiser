@@ -540,3 +540,30 @@ describe("session-142: the /About + /Contact marketing pages (D-142a2; session-1
     expect(stripComments(contact)).toMatch(/pageMetadata\(\{ page: "Contact", route: "\/Contact" \}\)/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session 145 (walk35 — the auth-transition family): the landing's
+// SESSION-STATIC contract. The maiden logged-in-face census: the reference
+// post-login lands on `/` and renders the IDENTICAL guest face (the same
+// nav, the same "Open dashboard" CTA — no user indicator, no Login→swap,
+// no account affordance anywhere on the marketing surface). Ours is the
+// same (live-verified both apps at 1440 + the post-login redirect). The
+// pin freezes the component's session-blindness so a future "personalize
+// the landing for signed-in users" drift REDs here exactly.
+// ---------------------------------------------------------------------------
+
+describe("session-145: the landing is SESSION-STATIC (walk35, the maiden logged-in-face census)", () => {
+  it("the landing COMPONENT is session-blind — no session reads, no store, no signed-in affordances", () => {
+    const src = landing();
+    expect(src, LANDING_PAGE).not.toBeNull();
+    // no session plumbing of any kind reaches the marketing surface
+    expect(src).not.toMatch(/getSessionUser/);
+    expect(src).not.toMatch(/useCrmStore/);
+    expect(src).not.toMatch(/useSession|signedIn|isAuthenticated/);
+    // the CTA vocabulary is constant for both session states: the
+    // reference's own landing shows "Open dashboard" to logged-in users
+    // too (its post-login redirect target IS this page)
+    expect(src).toMatch(/Open dashboard/);
+    expect(src).not.toMatch(/Sign out|Log out|My account|View profile/);
+  });
+});

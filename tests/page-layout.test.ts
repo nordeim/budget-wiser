@@ -2567,3 +2567,35 @@ describe("session-98 parity pins (the CardHeader v4 row-genus fix, F-98c1)", () 
     ).toBe(2);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session 145 (walk35 — the auth-transition family): the LOGOUT transition
+// contract. The reference's own Logout keeps the user on the current CRM
+// page, which re-renders in its guest platform face ("Hi, Guest" + the
+// zero-data dashboard — the documented no-guard genus we do not mirror).
+// OURS lands on /login: the (app)-group server guard would 307 any CRM
+// page for the logged-out user anyway; the client-side push is the same
+// posture expressed one hop earlier (the fix-over-defect's transition
+// face). The pin freezes the target so a "logout stays on-page" drift
+// (the genus copy) REDs here exactly.
+// ---------------------------------------------------------------------------
+
+describe("session-145: the logout transition (walk35)", () => {
+  it("the topbar's Logout lands on /login — the (app)-guard posture's client expression", () => {
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/components/layout/topbar.tsx"),
+      "utf8",
+    ).replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
+    // the transition: await logout() → push("/login") → refresh()
+    expect(src).toMatch(/await logout\(\);/);
+    expect(src).toMatch(/router\.push\("\/login"\)/);
+    // negatives: the logout never lands on the landing or a CRM page
+    // (the reference's stay-on-page genus is NOT mirrored)
+    const logoutBlock = src.slice(
+      src.indexOf('onSelect={async () => {'),
+      src.indexOf("Logout", src.indexOf('onSelect={async () => {')),
+    );
+    expect(logoutBlock).not.toMatch(/router\.push\("\/"\)/);
+    expect(logoutBlock).not.toMatch(/router\.push\("\/[Dd]ashboard"\)/);
+  });
+});
