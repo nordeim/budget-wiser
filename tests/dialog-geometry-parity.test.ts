@@ -517,10 +517,22 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // construction — the maiden funnel face), mutation-proven exactly
     // 2 RED alone per drift]; the four sites re-anchored again, the
     // retired 2053 form joins the negatives below.
-    expect(claude).toContain("Unit (Vitest, 2060 checks)");
-    expect(claude).toContain("(currently 2101)");
-    expect(claude).toContain("Vitest unit suites (2060 checks)");
-    expect(claude).toContain("`bun run test` (2101)");
+    // session-143 lockstep carry-forward: 2101 -> 2104 (+3 — the
+    // landing family walk's remediation pins: the APP_FOOTER contract +
+    // the AppShell mount + the FAQ container) AND the s142-missed pair
+    // filled: CLAUDE's commands-table unit row + the test-pyramid line
+    // still read 2060 (the s142 realignment updated only the gate-order/
+    // e2e/seam sites — the 143-a docs-gap genus, here at the CLAUDE
+    // carrier axis; both sites now 2104 with the 2060/2101 forms joining
+    // the negatives below).
+    expect(claude).toContain("Unit (Vitest, 2104 checks)");
+    expect(claude).toContain("(currently 2104)");
+    expect(claude).toContain("Vitest unit suites (2104 checks)");
+    expect(claude).toContain("`bun run test` (2104)");
+    expect(claude).not.toContain("Unit (Vitest, 2060 checks)");
+    expect(claude).not.toContain("Vitest unit suites (2060 checks)");
+    expect(claude).not.toContain("(currently 2101)");
+    expect(claude).not.toContain("`bun run test` (2101)");
     expect(claude).not.toContain("Unit (Vitest, 2053 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2051 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2041 checks)");

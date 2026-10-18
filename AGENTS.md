@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2101 checks)      | `bun run test`                         |
+|  Unit tests (2104 checks)      | `bun run test`                         |
 |  Browser E2E (146 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2101) → `bun run build` → `bun run test:e2e` (146) — or the
+`bun run test` (2104) → `bun run build` → `bun run test:e2e` (146) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6574,3 +6574,89 @@ exactly 2 RED, the guard removal → exactly 1 RED, the hex drift → exactly
 2057 → 2060 · badge 2195 → 2198 · SKILL v1.138.0 + the session-141 layer
 + **the s38→s138 prose-typo cleanup** — ~30 grid-fix-context sites across
 the s140 record set, the real session-38 history references preserved).
+
+### Session-142 (2026-10-18) — the marketing-layer parity build (probe:ref #114's parity event)
+
+*The section the s142 record's D-142a8 claimed but the tree never carried —
+the 143-a audit found the gap (the docs-counts lockstep checks counts, not
+sections); filled at D-143a3.*
+
+**probe:ref #114 = THE PARITY EVENT** — the reference's first bundle change
+in 82 sessions (`index-DZ-xbrIm.js` → `index-Dc6wvGtA.js`, +65KB): the
+public marketing landing at `/` + the /About + /Contact app pages + the
+post-login redirect to `/`. The eight-probe decode: the landing anatomy
+(the sticky header + the WORKING md:hidden disclosure menu; the hero + the
+CSS-built mock dashboard; the 6 feature cards; the $9/$19/$39 pricing
+tiers with the Pro highlight; the 6 single-open FAQ items; the footer) ·
+the CRM shell UNCHANGED with its mobile defect STILL STANDING (the #114
+"NAV-FIXED" verdict was the LANDING's own hamburger; the probe's TRUE-390
+census retargeted `/` → `/Dashboard`) · **the landing brand-token genus**
+(the reference's `--brand` custom property never entered its Tailwind
+build — zero bg-brand/text-brand utility rules — its landing CTAs render
+invisible in every browser; ours the working blue #2563eb, the
+drawer-precedent fix-over-defect) · the dashboard re-derivation (the
+rolling last-7-months window; the synthetic Target series + Legend
+retired; the s33 header trio retired to the singleton disabled-at-zero
+Export).
+
+**THE REMEDIATION**: D-142a0 the route move ((app)/page.tsx →
+(app)/dashboard/page.tsx, the capital alias re-import, the 14 test-path
+carriers, the e2e re-anchors) + D-142a1 the landing page (PUBLIC at the
+root, the full censused construction, `--color-brand` in @theme; three
+documented deviations: truncate, the FAQ aria superset, the working blue)
++ D-142a2 the /About + /Contact pages + the capital aliases + D-142a3 the
+sitemap +/about +/contact + D-142a4 the probe re-anchor (STABLE on the new
+fingerprint) + D-142a5 the unit pins (tests/landing-page.test.ts 36 its +
+the mutation-proof: 3 drifts → exactly their pins RED) + D-142a6 the
+landing e2e spec (+8) + the sweep PAGES + the brand-token baselines +
+D-142a7 the captures 296-303 + the VLM battery clean + D-142a8 the docs
+realignment (UNIT 2060 → 2101 +41 · SUITES 113 → 114 · E2E 138 → 146 +8 ·
+badge 2198 → 2247) + D-142a9 the final gate (lint 0/0 · tsc 0 · 114/2101 ·
+build · e2e 146/146 · the drift sweep CLEAN ×4 — the dashboard 0.03%
+pixel-perfect · census MATCH). The count ladder: UNIT 2060 → 2101 ·
+E2E 138 → 146 · badge 2198 → 2247. The walk-harness lessons: L-142c1 the
+brand-utilities-never-generate decode (the CSS source authoritative over
+the computed-style probe) · L-142c2 the disabled-at-zero Export's
+half-blue face · L-142c3 the retirement blast radius.
+
+### Session-143 (2026-10-18) — the landing family walk (the 143-c rotation)
+
+**THE MAIDEN LANDING-FAMILY FRESH-EYES CENSUS** (walk33): both apps at
+1440×900 + 390×844, the anatomy census + the interaction lenses — **19
+axes EQUAL · 1 GENUS (the brand-token ctaBg, documented) · 2 REAL
+FINDINGS**:
+
+- **F-143c1 THE APP-SHELL FOOTER**: the reference renders a 53px
+  main-level footer (`© 2026 NEO CRM` + About/Contact links,
+  byte-censused) on **ALL 11 app pages**; ours rendered none. Below the
+  900px fold on 10 of 11 (tall pages); above-fold on profile (viewport
+  823) where its white-vs-gray-50 bg is a 6-channel delta UNDER the
+  sweep's 12 tolerance — the pixel gates never saw it (the text/border
+  pixels rode inside profile's 0.17% baseline). Remediated: the
+  APP_FOOTER contract in page-layout.ts + the AppShell mount after
+  {children} inside main + the S16-P1 e2e re-anchor (scrollDelta 5 → 58,
+  live-verified on the reference).
+- **F-143c2 THE FAQ CONTAINER**: the reference's FAQ is the ONLY narrow
+  landing section (max-w-3xl, the h2 a direct child); ours rode the
+  max-w-6xl + max-w-2xl pattern — the 1102px vs 718px column (the answer
+  wrap 43 vs 66px). Below the fold — the DOM census caught what the
+  viewport-only sweep cannot. Remediated: the container re-derived, the
+  walk-verified geometry EQUAL (768/720/66).
+
+**THE VERIFICATION**: the walk re-run (the FAQ geometry byte-equal + the
+footer census 11/11) · the audits (143-a 12/13 Verified + the s142
+docs-gap finding — the AGENTS Session-142 section + the PAD session-142
+row, claimed but missing, filled at D-143a3; 143-b 11/11 PASS, zero
+findings) · probe:ref #115 STABLE · the four drift gates CLEAN ×4 (the
+profile footer band 0.17% → 0.00%) · the captures 304-306 + the VLM
+battery 3/3 clean. The count ladder: UNIT 2101 → 2104 (+3 — the
+APP_FOOTER contract pin + the AppShell mount pin + the FAQ container pin,
+mutation-proven: 3 drifts → exactly their pins RED) · SUITES + E2E
+unchanged (114/146). The walk-harness lessons: **L-143c1 the
+viewport-only sweep's blind band** (everything below the fold is never
+pixel-compared — run the DOM census on every new surface) · **L-143c2 the
+sub-tolerance footer** (white vs gray-50 = 6 channels < the 12 tolerance —
+decode a baseline's share with a pixel-band scan before trusting it) ·
+**L-143c3 the content-offset vs viewport-offset trap** (a footer at
+content-offset 836 inside main is NOT at viewport 836 — add main's
+bounding-rect top before declaring above/below-fold).

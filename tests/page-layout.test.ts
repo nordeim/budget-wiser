@@ -38,6 +38,7 @@ import {
   KPI_CARD,
   KPI_SPARK,
   KPI_VALUE,
+  APP_FOOTER,
   LEADS_FILTERS_POPOVER,
   LEADS_TOOLBAR,
   LOGIN_LAYOUT,
@@ -250,6 +251,40 @@ describe("app-shell parity (session-7 DOM-verified)", () => {
     // 5px mirrored topbar quirk). The s13 "plain p-4 sm:p-8 inner" pin
     // was a shell-level read of what are actually PER-PAGE roots.
     expect("inner" in SHELL_LAYOUT).toBe(false);
+  });
+});
+
+describe("session-143: the app-shell footer (F-143c1 — the 11-page main-level footer)", () => {
+  it("APP_FOOTER — the byte-censused construction (walk33, live at 1440x900)", () => {
+    // The reference renders a footer INSIDE main after the page wrapper on
+    // ALL 11 app pages (dashboard, accounts, contacts, leads, calendar,
+    // activities, reports, settings, profile, about, contact) —
+    // byte-extracted from its live DOM. Below the 900px fold on 10 pages;
+    // on profile above-fold at viewport 823 (its white bg a 6-channel
+    // delta under the sweep's 12 tolerance — the text/border pixels ride
+    // inside profile's 0.17% baseline).
+    expect(APP_FOOTER.footer).toBe(
+      "border-t border-gray-200 bg-white px-4 sm:px-8 py-4 text-sm text-gray-500 flex flex-wrap items-center gap-x-5 gap-y-2",
+    );
+    expect(APP_FOOTER.link).toBe("hover:text-gray-800 transition-colors");
+    expect(APP_FOOTER.copyright).toBe("© 2026 NEO CRM");
+    expect(APP_FOOTER.about).toEqual({ href: "/About", label: "About" });
+    expect(APP_FOOTER.contact).toEqual({ href: "/Contact", label: "Contact" });
+  });
+
+  it("the AppShell renders the footer INSIDE main, AFTER the page children (the reference's placement)", () => {
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/components/layout/app-shell.tsx"),
+      "utf8",
+    );
+    // the exact mount: <main>{children}<footer …> — the footer a sibling
+    // of the page wrapper, a direct child of the main scroller
+    expect(src).toMatch(
+      /<main className=\{SHELL_LAYOUT\.main\}>\s*\{children\}\s*<footer className=\{APP_FOOTER\.footer\}>/,
+    );
+    expect(src).toContain("<span>{APP_FOOTER.copyright}</span>");
+    expect(src).toContain("href={APP_FOOTER.about.href}");
+    expect(src).toContain("href={APP_FOOTER.contact.href}");
   });
 });
 
@@ -1941,7 +1976,9 @@ describe("session-16: the page-root model — padding belongs to the page (S16-P
       "utf8",
     );
     expect(src).not.toMatch(/SHELL_LAYOUT\.inner/);
-    expect(src).toMatch(/<main[^>]*>\{children\}/);
+    // Session-143 re-anchor: {children} still rides DIRECTLY in main (no
+    // padding wrapper) — the footer now follows it on its own line.
+    expect(src).toMatch(/<main[^>]*>\s*\{children\}/);
   });
 
   it("every page renders its own root wrapper (source-level)", () => {

@@ -1144,9 +1144,16 @@ test("the New Event dialog is the wide family with the blue submit (S15-P12)", a
 test("the contacts full-height layout is the page root — no double padding (S16-P1)", async ({ page }) => {
   // Reference at 390: main > flex h-[calc(100vh-64px)] DIRECTLY (the
   // h-calc box spans the full 390px; padding lives inside its p-8
-  // scroller). The table card computes 326px wide and main scrolls only
-  // the 5px mirrored topbar quirk. Our blanket shell wrapper used to
-  // pad the layout (358px h-calc, 294px card, 37px scroll).
+  // scroller). The table card computes 326px wide. Our blanket shell
+  // wrapper used to pad the layout (358px h-calc, 294px card, 37px
+  // scroll).
+  // Session-143 re-anchor: the scrollDelta is now 58, not 5 — the
+  // s142-marketing bundle shipped a 53px main-level footer after the
+  // page root on ALL the reference's app pages (walk33-censused; we
+  // mirror it at D-143a0). Live-verified on the reference at 390x844:
+  // scrollDelta 58 = the 5px mirrored topbar quirk + the 53px footer.
+  // Anything beyond ~10px of THAT means the double-padding is back
+  // (or the footer went missing again).
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/contacts");
 
@@ -1167,8 +1174,8 @@ test("the contacts full-height layout is the page root — no double padding (S1
   expect(geometry.hcalcW).toBeGreaterThanOrEqual(389);
   expect(geometry.cardW).toBe(326);
   // The 64px calc is 5px short of the real 69px topbar — the mirrored
-  // quirk. Anything beyond ~10px means the double-padding is back.
-  expect(Math.abs(geometry.scrollDelta - 5)).toBeLessThan(10);
+  // quirk — PLUS the 53px app-shell footer (session-143).
+  expect(Math.abs(geometry.scrollDelta - 58)).toBeLessThan(10);
 });
 
 test("the settings picklist grid renders 2 columns at tablet width (S16-P6)", async ({ page }) => {

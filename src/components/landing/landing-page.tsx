@@ -544,13 +544,18 @@ function Faq() {
   const [openIndex, setOpenIndex] = React.useState(0);
 
   return (
+    // Session-143 (D-143a1/F-143c2): the FAQ is the ONLY narrow landing
+    // section — the reference's container is max-w-3xl (768px) with the h2
+    // a DIRECT child (720px, no inner wrapper; walk33-censused). Every
+    // other section keeps the max-w-6xl container + the max-w-2xl h2
+    // wrapper; the s142 build wrongly rode that wide pattern here too —
+    // the 1102px column vs the reference's 718px (the open-answer wrap
+    // 43px vs 66px; below the sweep's fold, caught by the DOM walk).
     <section id="faq" className="py-16 sm:py-24 bg-gray-50 scroll-mt-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
-            Questions, answered
-          </h2>
-        </div>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+          Questions, answered
+        </h2>
         <div className="mt-10 divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
           {FAQ_ITEMS.map((item, index) => {
             const open = index === openIndex;

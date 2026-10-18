@@ -5527,3 +5527,69 @@ Stage Summary:
 - The landing brand-token genus decoded + documented (the reference's broken utilities; ours the working blue — the drawer-precedent fix-over-defect)
 - The dashboard re-derived to the new reference (the rolling window, the single Won series, the singleton Export)
 - The ship: the two-commit pattern → the SSH wrapper push
+
+## Session-143 (2026-10-18) — the landing family walk (the 143-c rotation + the two-findings remediation)
+
+- Stage 1: the workspace pulled to 35e958a (the s142 ship + the
+  session_303 transcript); the environment standing; the census MATCH; the
+  baseline gate GREEN — the exact s142-ship match (114/2101 + 146/146)
+- Stage 2: the audits — 143-a **12/13 Verified + THE DOCS-GAP FINDING**
+  (the s142 record's D-142a8 claims "the AGENTS Session-142 section + the
+  PAD session-142 row" — NEITHER in the tree; the lockstep checks counts,
+  not sections; filled at D-143a3) + 143-b 11/11 PASS (the ~100th
+  standing battery, zero findings)
+- Stage 3: probe:ref #115 — the reference STABLE at the s142-re-anchored
+  fingerprint; the CRM-shell mobile defect STILL STANDS; no parity event
+- Stage 4 (the 143-c rotation): THE LANDING FAMILY WALK (walk33, the
+  maiden fresh-eyes two-app census of the s142 marketing layer) — 19
+  anatomy axes EQUAL · 1 GENUS (the brand-token ctaBg) · **2 REAL
+  FINDINGS**: F-143c1 THE APP-SHELL FOOTER (the reference's 53px
+  main-level footer on ALL 11 app pages — © 2026 NEO CRM + About/Contact;
+  below the fold on 10, above-fold on profile where its white-vs-gray-50
+  is a 6-channel delta UNDER the sweep's 12 tolerance — invisible to every
+  pixel gate; the decode chain: the scope census × the as-captured probe
+  [main's 69px topbar offset] × the bottom-band pixel scan) + F-143c2 THE
+  FAQ CONTAINER (max-w-3xl + the direct h2 vs our max-w-6xl +
+  max-w-2xl — the 1102 vs 718px column, the 43 vs 66px answer wrap;
+  below-fold, DOM-caught)
+- Stage 5 (the remediation, TDD): D-143a0 the APP_FOOTER contract + the
+  AppShell mount + D-143a1 the FAQ container re-derivation — the 3 pins
+  RED at birth → the fixes → the mutation-proof (3 drifts → exactly their
+  pins RED) → the full suite 114/2104; the S16-P1 e2e re-anchor
+  (scrollDelta 5 → 58, live-verified on the reference at 390×844); e2e
+  146/146; the four drift gates CLEAN ×4 (the profile footer band
+  0.17% → 0.00%); the walk re-verify (the FAQ geometry byte-EQUAL + the
+  footer census 11/11)
+- Stage 6: the docs realignment — the count ladder (2101 → 2104 · badge
+  2247 → 2250 · the page-layout census 1600/191 → 1631/193) + THE S142
+  DOCS-GAP FILL (the AGENTS Session-142 section + the PAD session-142
+  row) + the s143 sections/rows + SKILL v1.140.0 + the F-108a1 layer-axis
+  re-anchor + the lockstep GREEN 21/21; the captures 304-306 + the VLM
+  battery 3/3 clean
+- Stage 7: the final gate GREEN (lint 0/0 · tsc 0 · 114/2104 · build ·
+  e2e 146/146 · drift ×4 CLEAN · census MATCH) + the ship
+
+**The count ladder**: UNIT 2101 → 2104 (+3 its) · SUITES 114 UNCHANGED ·
+E2E 146 UNCHANGED · badge 2247 → 2250.
+
+**The ship**: the two-commit pattern (the feat + the session log) pushed
+to git@github.com:nordeim/neo-crm.git main via the SSH wrapper.
+
+---
+Task ID: 143
+Agent: main (Super Z)
+Task: Session-143 — the landing family walk (the 143-c rotation + the F-143c1/c2 remediation)
+
+Work Log:
+- Pulled to 35e958a; environment standing; census MATCH; baseline gate GREEN (the exact s142-ship match)
+- 143-a: 12/13 + the docs-gap finding; 143-b: 11/11; probe:ref #115 STABLE
+- walk33: 19 EQUAL · 1 GENUS · 2 findings (F-143c1 the app-shell footer ×11 pages; F-143c2 the FAQ container) — both decoded to root mechanism (the below-fold blind band + the sub-tolerance white-vs-gray-50)
+- D-143a0/a1: the APP_FOOTER contract + the AppShell mount + the FAQ max-w-3xl re-derivation; TDD (RED → GREEN → mutation-proof ×3); 114/2104
+- The S16-P1 e2e re-anchor (5 → 58, reference-verified); e2e 146/146; the drift gates CLEAN ×4 (profile 0.17% → 0.00%)
+- D-143a3: the docs realignment + the s142 docs-gap fill (AGENTS Session-142 section + PAD session-142 row) + the s143 layers; the lockstep GREEN
+- The captures 304-306 + the VLM battery 3/3; the final gate GREEN; the ship
+
+Stage Summary:
+- The marketing layer's below-fold gaps closed (the footer on all 11 app pages + the narrow FAQ) — both invisible to the viewport-only sweep, caught by the DOM walk
+- The s142 docs debt (the missing AGENTS/PAD sections) filled
+- The walk-harness lessons L-143c1/c2/c3 recorded (the blind band, the sub-tolerance genus, the content-vs-viewport offset trap)

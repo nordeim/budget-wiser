@@ -205,6 +205,26 @@ export const SHELL_LAYOUT = {
   main: "flex-1 overflow-auto bg-background",
 } as const;
 
+/** Session-143 (D-143a0/F-143c1): the app-shell footer — the reference
+ *  renders this INSIDE main, AFTER the page wrapper, on ALL 11 app pages
+ *  (dashboard, accounts, contacts, leads, calendar, activities, reports,
+ *  settings, profile, about, contact — byte-censused live at 1440×900).
+ *  It sits below the 900px fold on 10 of the 11 (tall pages); on profile
+ *  it is above-fold at viewport 823 — its white surface vs our old bare
+ *  gray main was a 6-channel delta, UNDER the sweep's 12 tolerance, so
+ *  the pixel gates never caught the gap (the text/border pixels rode
+ *  inside profile's 0.17% baseline). The DOM walk (walk33) caught it.
+ *  Consumed by AppShell; tests/page-layout.test.ts pins the contract +
+ *  the exact mount (a sibling of the page children inside main). */
+export const APP_FOOTER = {
+  footer:
+    "border-t border-gray-200 bg-white px-4 sm:px-8 py-4 text-sm text-gray-500 flex flex-wrap items-center gap-x-5 gap-y-2",
+  link: "hover:text-gray-800 transition-colors",
+  copyright: "© 2026 NEO CRM",
+  about: { href: "/About", label: "About" },
+  contact: { href: "/Contact", label: "Contact" },
+} as const;
+
 /** S16-P2: the page-ROOT model — every page owns its padding (the
  *  reference renders NO shell-level wrapper; its page roots carry the
  *  classes directly). Six pages ship the bg + min-height variant

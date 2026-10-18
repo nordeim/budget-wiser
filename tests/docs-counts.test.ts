@@ -407,7 +407,13 @@ const SUITES = 114;
 // single-open, the 390 disclosure menu, the guest CTA login-wall, the
 // post-login redirect, the footer anchors] + the authenticated About/
 // Contact faces).
-const UNIT = 2101;
+// Session-143: 2101 -> 2104 (+3 — the landing family walk's remediation
+// pins: the APP_FOOTER contract pin + the AppShell mount pin [F-143c1,
+// the reference's 11-page main-level footer mirrored] + the FAQ container
+// pin [F-143c2, the max-w-3xl re-derivation]). SUITES + E2E unchanged
+// (114 - 146; the S16-P1 e2e pin re-anchored in place: the scrollDelta
+// 5 -> 58, the footer's 53px added to the mirrored 5px topbar quirk).
+const UNIT = 2104;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -820,13 +826,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-142 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-143 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s140 layer now beneath the s141 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s142 layer now beneath the s143 head)",
     ).toContain(
-      "+ beneath it 2057 unit checks + 138 e2e checks green; the session-140 layer (the 140-c rotation — THE LEADS CHART-INTERIORS POST-FIX WALK",
+      "+ beneath it 2101 unit checks + 146 e2e checks green; the session-142 layer (the marketing-layer parity build",
     );
   });
 
@@ -920,14 +926,20 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // Session-130: the retired 190 form joins the negatives ladder (the
     // F-130c1 ghost-hover-text pin, page-layout.test.ts 190→191).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 190 checks");
+    // Session-143: the retired 1600/191 forms join the negatives ladder
+    // (the APP_FOOTER block +20 lines and the +2 its — the footer pins).
+    expect(skill).not.toContain("test-pinned module (1600 lines");
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 191 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1600 lines; `tests/page-layout.test.ts`, 191 checks",
+      "test-pinned module (1631 lines; `tests/page-layout.test.ts`, 193 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1600 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1631 |");
+    // Session-143: the retired 1600 form joins the negatives ladder.
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1600 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1530 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1548 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1559 |");

@@ -390,6 +390,23 @@ describe("session-142: the footer + the page wrapper", () => {
     expect(src).toContain("© 2026 NEO CRM");
   });
 
+  it("session-143 (F-143c2): the FAQ SECTION container is max-w-3xl + the h2 rides DIRECT (no wrapper)", () => {
+    const src = landing();
+    // walk33: the reference's FAQ is the ONLY narrow landing section — its
+    // container max-w-3xl (768px) with the h2 a DIRECT child (720px); every
+    // other section keeps the max-w-6xl container + the max-w-2xl h2
+    // wrapper. Ours wrongly rode the wide pattern → the 1102px column (the
+    // answer wrap 43px vs the reference's 66px — below the sweep's fold).
+    expect(src).toMatch(
+      /<section id="faq"[^>]*>\s*<div className="max-w-3xl mx-auto px-4 sm:px-6">\s*<h2/,
+    );
+    // the retired wide construction must NOT return (the wrapper div
+    // between the container and the h2)
+    expect(src).not.toMatch(
+      /className="max-w-3xl mx-auto px-4 sm:px-6">\s*<div className="max-w-2xl">/,
+    );
+  });
+
   it("the FAQ data constants ride single-line strings (the pin-friendly construction)", () => {
     // the FAQ answers + the data-array copy are single-line source
     // strings — the mixed pin shapes are intentional: construction

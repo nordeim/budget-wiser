@@ -6,7 +6,7 @@ import { SidebarNav, BrandMark } from "./sidebar";
 import { MobileNav } from "./mobile-nav";
 import { Topbar } from "./topbar";
 import { useCrmStore } from "@/stores/crm-store";
-import { SHELL_LAYOUT } from "@/lib/page-layout";
+import { APP_FOOTER, SHELL_LAYOUT } from "@/lib/page-layout";
 import type { User as AppUser } from "@/types";
 
 /**
@@ -63,7 +63,22 @@ export function AppShell({ user, children }: { user: AppUser; children: React.Re
           top. */}
       <div className={SHELL_LAYOUT.mainColumn}>
         <Topbar user={user} onOpenMobileNav={() => setMobileNavOpen(true)} mobileNavOpen={mobileNavOpen} />
-        <main className={SHELL_LAYOUT.main}>{children}</main>
+        {/* Session-143 (D-143a0/F-143c1): the footer follows the page
+            children INSIDE main — the reference's placement on all 11 app
+            pages (walk33-censused; the contract rides APP_FOOTER in
+            page-layout.ts, pinned by tests/page-layout.test.ts). */}
+        <main className={SHELL_LAYOUT.main}>
+          {children}
+          <footer className={APP_FOOTER.footer}>
+            <span>{APP_FOOTER.copyright}</span>
+            <a className={APP_FOOTER.link} href={APP_FOOTER.about.href}>
+              {APP_FOOTER.about.label}
+            </a>
+            <a className={APP_FOOTER.link} href={APP_FOOTER.contact.href}>
+              {APP_FOOTER.contact.label}
+            </a>
+          </footer>
+        </main>
       </div>
     </div>
   );
