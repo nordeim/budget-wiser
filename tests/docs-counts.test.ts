@@ -420,7 +420,12 @@ const SUITES = 114;
 // landing session-static + the logout target + the post-login redirect
 // + the /login+/signup pure-render [all in landing-page / page-layout
 // / login-views, EXISTING files]).
-const UNIT = 2112;
+// Session-146: 2112 -> 2115 (+3 — the s146 re-derivation pins in
+// sweep-tool.test.ts: the three re-anchored baseline values + the
+// byte-stable confirmations + the mechanism-comment source pins;
+// SUITES + E2E unchanged [114 / 150 — the its land in the EXISTING
+// sweep-tool suite]).
+const UNIT = 2115;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -616,6 +621,16 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).not.toMatch(/tests-2195%20checks/);
     expect(readme).not.toMatch(/# 2057 Vitest unit checks/);
     expect(pad).not.toMatch(/— 2057\/2057/);
+    // -----------------------------------------------------------------
+    // Session-146: the unit-count realignment (2112 -> 2115 + badge
+    // 2262 -> 2265 — the baselines re-derivation's +3 pins; SUITES
+    // stays 114 and E2E stays 150 — the s146 pins land in the EXISTING
+    // sweep-tool suite). The retired 2112/2262 constructions join the
+    // ladder — the same SITE-FORM anchors, the same doctrine.
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/tests-2262%20checks/);
+    expect(readme).not.toMatch(/# 2112 Vitest unit checks/);
+    expect(pad).not.toMatch(/— 2112\/2112/);
   });
 
   // ------------------------------------------------------------------
@@ -833,13 +848,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-145 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-146 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s144 layer now beneath the s145 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s145 layer now beneath the s146 head)",
     ).toContain(
-      "+ beneath it 2108 unit checks + 149 e2e checks green; the session-144 layer (THE GUEST-FAMILY WALK",
+      "+ beneath it 2112 unit checks + 150 e2e checks green; the session-145 layer (THE AUTH-TRANSITION FAMILY WALK",
     );
   });
 

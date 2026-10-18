@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2112 checks)      | `bun run test`                         |
+|  Unit tests (2115 checks)      | `bun run test`                         |
 |  Browser E2E (150 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2112) → `bun run build` → `bun run test:e2e` (150) — or the
+`bun run test` (2115) → `bun run build` → `bun run test:e2e` (150) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6751,3 +6751,59 @@ landscape** (a route landscape change re-opens the transition family
 even when no bundle changes) · **L-145c2 the pin-only session still
 ships pins** (the maiden census axes ride only comments + the e2e's
 incidental coverage; the freeze pins are the walk's durable artifact).
+
+### Session-146 (2026-10-18) — the drift-sweep baselines re-derivation (the 146-c rotation)
+
+**THE MAIDEN UNIFORM RE-MEASUREMENT** (walk36, the session_309 "next"
+hint's candidate #2 — chosen over the marketing phone re-walk because the
+last FOUR sessions all censused the marketing family while the core
+10-page baseline tables date from s91–s99, 47+ sessions old): all 4
+viewport classes × 13 pages re-measured, the moved values reproduced ×2+
+runs. **The verdict: ZERO upward drift — every genus byte-stable or
+retired:**
+
+- **The exact reproductions**: tablet landing 15.34 EXACT · landscape
+  landing 10.77 EXACT · tablet accounts 0.72 EXACT · landscape accounts
+  2.43 EXACT (the maiden s97/s99 values, unchanged 47+ sessions) · the
+  desktop landing 9.59 (the s142 maiden) · the settings picklist
+  4.73/7.34/5.19/4.74 · the login logo 0.28/0.78/0.46/0.46 · the phone
+  floor family 0.51-0.56 · about/contact 0.00/0.00/0.51/0.51.
+- **F-146c1 THE PHONE-LANDING BASELINE EROSION**: the genus share 8.5
+  (the s142 maiden, the PRIOR sandbox) → **5.32** (byte-stable ×3 runs;
+  the cluster decode the SAME brand-token genus — the CTA band 4.30% +
+  the hero badge 0.76% + the logo 0.22%; the share rides the sandbox's
+  font rasterization — the above-the-fold mock sliver varies
+  cross-environment). The 8.5 entry carried **3.2 points of dead slack**
+  under which a real +3% blue-shift regression passed the drift gate
+  asleep. RE-ANCHORED 8.5 → 6.0 (trips at 6.5, +1.2 regression
+  sensitivity).
+- **N-146a1 THE STALE DESKTOP GENERA ×2**: the s91-era contacts ~0.5%
+  "lucide aria-hidden superset" (0.00 at every gate since s142 — the
+  superset is the DOM-level N-89c6 library attribute, never the pixel
+  diff; the comment misattributed it) re-anchored 0.6 → 0.1 (the family
+  floor) · the dashboard ~0.3% "2px chart-baseline artifact" (0.03 since
+  s142) re-anchored 0.4 → 0.15.
+
+**THE REMEDIATION**: D-146a0 the three baseline re-anchors + the header
+standing-explained block + the runtime standingExplained lines re-derived
+· D-146a1 the pin re-anchors (the standingExplained pin's retired
+/lucide/ requirement dropped, the desktop-table pin's stale floors
+lowered, the NEW session-146 describe — the re-anchored values frozen +
+the byte-stable confirmations + the mechanism-comment source pins; the
+mutation-proof ×3 — each value drifted → exactly 1 RED → reverted →
+GREEN) · D-146a2 the four drift gates re-run GREEN under the re-anchored
+tables · D-146a3 the captures 313-314 + the VLM battery 2/2 clean ·
+D-146a4 the docs realignment (the count ladder 2112 → 2115 · badge 2262 →
+2265 · SKILL v1.143.0 + the session-146 layer · this section · the PAD
+session-146 row + the totals · the session_310 record + the plan record +
+the worklog). **THE VERIFICATION**: 146-a 11/11 spot-verified · 146-b
+11/11 PASS · probe:ref #118 STABLE (the 5th consecutive) · lint 0/0 ·
+tsc 0 · **114/2115** (+3) · build · **e2e 150/150** · the four drift
+gates CLEAN ×4 · census MATCH. The walk-harness lessons:
+**L-146c1 the baseline is a snapshot of its sandbox** (a standing entry
+measured in one environment carries that environment's rasterization;
+the quarterly re-derivation is not optional bookkeeping — the dead slack
+compounds silently, 3.2 points in 4 sessions here) · **L-146c2 the
+genus comment must name the MECHANISM, not the value** (the s91 comment
+attributed a DOM-level superset to a pixel diff — when the pixels
+retired, the comment kept documenting a genus that never was).

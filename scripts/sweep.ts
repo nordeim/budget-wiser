@@ -20,8 +20,16 @@
 // The standing EXPLAINED diffs (do not treat as drift):
 //   settings ~4.7%  the picklist-DATA genus (the reference's picklists
 //                    wiped with its workspace, ours seeded)
-//   contacts ~0.5%  the lucide aria-hidden superset + noise
-//   dashboard ~0.3% a 2px zero-area chart-baseline artifact
+//   landing  ~9.6%  the s142 brand-token genus (the reference's CSS
+//                    build dropped its brand utilities — its CTAs
+//                    render invisible; ours the working blue)
+//   login    ~0.28% the brand-mark logo genus (constant-absolute px)
+// Session-146 (the baselines re-derivation): the s91-era contacts
+//   ~0.5% (the "lucide superset + noise") and dashboard ~0.3% (the 2px
+//   chart-baseline artifact) genera are RETIRED — contacts 0.00 and
+//   dashboard 0.03 at the s142–s146 gates alike (the s91 comment
+//   misattributed the DOM-level N-89c6 aria-hidden superset to a pixel
+//   diff; the artifact left with the s139/s142 chart re-derivations).
 // Every other page ran 0.00-0.01% at the s91/s92 ships. The tool is a
 // drift REPORT (exit 0 with the table); pass --max-diff <pct> (the
 // space-separated form — the one the parser reads) to gate
@@ -199,7 +207,12 @@ export const TOLERANCE = 12;
  * PAGES/TOLERANCE/diffPixels/parsePagesArg. */
 export const STANDING_BASELINES = {
   desktop: {
-    dashboard: 0.4,
+    // session-146 (the baselines re-derivation): re-anchored 0.4 → 0.15
+    // — the s91-era "2px zero-area chart-baseline artifact" genus
+    // RETIRED (0.03 at every gate since s142; the artifact left with
+    // the s139/s142 chart re-derivations). 0.15 trips at 0.65 vs the
+    // stale 0.9.
+    dashboard: 0.15,
     // session-142 (D-142a6): the BRAND-TOKEN GENUS (the fix-over-defect
     // doctrine, the drawer precedent) — the reference's landing CSS
     // build DROPPED its brand utilities (its stylesheet ships --brand
@@ -219,7 +232,13 @@ export const STANDING_BASELINES = {
     about: 0.1,
     contact: 0.1,
     accounts: 0.1,
-    contacts: 0.6,
+    // session-146 (the baselines re-derivation): re-anchored 0.6 → 0.1
+    // — the s91-era "lucide aria-hidden superset + noise" genus
+    // RETIRED (0.00 at every gate since s142; the superset is the
+    // DOM-level N-89c6 library injection — an attribute, never the
+    // pixel diff — and the s91 pixel noise left with the later table
+    // fixes). 0.1 trips at 0.6, matching the family floor.
+    contacts: 0.1,
     leads: 0.1,
     calendar: 0.1,
     activities: 0.1,
@@ -233,11 +252,19 @@ export const STANDING_BASELINES = {
   },
   phone: {
     dashboard: 0.75,
-    // session-142: the phone landing face — the BRAND-TOKEN GENUS at
-    // the narrower frame's share (the stacked hero CTA + the mock's
-    // hidden-below-sm sidebar shrink the blue regions; measured on the
-    // maiden phone run)
-    landing: 8.5,
+    // session-146 (F-146c1, the baselines re-derivation): RE-ANCHORED
+    // 8.5 → 6.0. The s142 maiden (the PRIOR sandbox) measured 8.5; the
+    // s146 re-measurement measures 5.32 — byte-stable ×3 runs, the
+    // cluster decode the SAME brand-token genus (the stacked CTA band
+    // 4.30% + the hero badge 0.76% + the logo 0.22%; the reference's
+    // invisible CTAs, ours the working blue — the genus unchanged). The
+    // share rides the sandbox's font rasterization: the above-the-fold
+    // composition at 390 (the mock's sliver) varies cross-environment —
+    // the s142 value carried 3.2 points of dead slack under which a real
+    // +3% blue-shift regression passed the drift gate asleep. 6.0 trips
+    // at 6.5 (+1.2 regression sensitivity, 0.68 intra-sandbox headroom
+    // over the ×3-stable 5.32).
+    landing: 6.0,
     // session-144: the marketing pair at the phone floor (the maiden
     // run measured 0.51 — the lucide floor genus; the 0.75 entry rides
     // the floor family ceiling)
@@ -348,12 +375,16 @@ export function standingBaseline(width: number): BaselineTable {
  * genera line — the desktop trio used to print on EVERY run regardless
  * of viewport class, describing shares that only exist at 1440 (the
  * phone settings genus is ~7.3, not ~4.7; the tablet surface carries
- * the accounts overflow genus). Mirrors the standingBaseline banding. */
+ * the accounts overflow genus). Mirrors the standingBaseline banding.
+ * Session-146 (the baselines re-derivation): the desktop line's
+ * contacts + dashboard genera retired (0.00/0.03 measured — the s91
+ * entries were stale); the phone landing share re-anchored 8.5 → 5.32
+ * (the same brand-token genus, the prior-sandbox share). */
 export function standingExplained(width: number): string {
   if (width < 768) {
     return (
       "[sweep] standing explained (phone): the ~0.5% mobile-nav floor on every page (our superset topbar) " +
-      "· settings ~7.3% picklist-data · reports ~0.7% floor + chart noise · login ~0.75% logo genus · landing ~8% the s142 brand-token genus (the reference's landing CSS build dropped its brand utilities — its CTAs/logo/mock bars render transparent; ours the working blue)"
+      "· settings ~7.3% picklist-data · reports ~0.7% floor + chart noise · login ~0.75% logo genus · landing ~5.3% the s142 brand-token genus (the reference's landing CSS build dropped its brand utilities — its CTAs/logo/mock bars render transparent; ours the working blue; the s146 re-derivation: the share re-anchored from the prior-sandbox 8.5, the genus unchanged)"
     );
   }
   if (width < 1024) {
@@ -369,7 +400,7 @@ export function standingExplained(width: number): string {
     );
   }
   return (
-    "[sweep] standing explained (desktop): settings ~4.7% picklist-data · contacts ~0.5% lucide superset · dashboard ~0.3% chart artifact · landing ~9.6% the s142 brand-token genus (the reference's landing CSS build dropped its brand utilities — its primary CTAs render INVISIBLE; ours the working blue, the drawer-precedent fix-over-defect)"
+    "[sweep] standing explained (desktop): settings ~4.7% picklist-data · landing ~9.6% the s142 brand-token genus (the reference's landing CSS build dropped its brand utilities — its primary CTAs render INVISIBLE; ours the working blue, the drawer-precedent fix-over-defect) · login ~0.28% logo genus (s146: the contacts + dashboard s91 genera retired — 0.00/0.03 measured at every gate since s142)"
   );
 }
 

@@ -529,16 +529,24 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // session-145 lockstep carry-forward: 2108 -> 2112 (the walk35
     // transition pins: the landing session-static + the logout target +
     // the post-login redirect + the /login+/signup pure-render).
+    // session-146 lockstep carry-forward: 2112 -> 2115 (the baselines
+    // re-derivation's +3 pins in sweep-tool.test.ts — the re-anchored
+    // baseline values + the byte-stable confirmations + the
+    // mechanism-comment source pins).
     expect(claude).not.toContain("Unit (Vitest, 2108 checks)");
-    expect(claude).toContain("Unit (Vitest, 2112 checks)");
+    expect(claude).not.toContain("Unit (Vitest, 2112 checks)");
+    expect(claude).toContain("Unit (Vitest, 2115 checks)");
     // session-145 lockstep carry-forward: the coverage line 2108 ->
-    // 2112 (the walk35 transition pins).
+    // 2112 (the walk35 transition pins); s146: 2112 -> 2115.
     expect(claude).not.toContain("(currently 2108)");
-    expect(claude).toContain("(currently 2112)");
+    expect(claude).not.toContain("(currently 2112)");
+    expect(claude).toContain("(currently 2115)");
     expect(claude).not.toContain("Vitest unit suites (2108 checks)");
-    expect(claude).toContain("Vitest unit suites (2112 checks)");
+    expect(claude).not.toContain("Vitest unit suites (2112 checks)");
+    expect(claude).toContain("Vitest unit suites (2115 checks)");
     expect(claude).not.toContain("`bun run test` (2108)");
-    expect(claude).toContain("`bun run test` (2112)");
+    expect(claude).not.toContain("`bun run test` (2112)");
+    expect(claude).toContain("`bun run test` (2115)");
     expect(claude).not.toContain("Unit (Vitest, 2060 checks)");
     expect(claude).not.toContain("Vitest unit suites (2060 checks)");
     expect(claude).not.toContain("(currently 2101)");

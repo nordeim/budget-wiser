@@ -5632,3 +5632,20 @@ Stage Summary:
 - The auth-boundary transition family closed with ZERO real findings — every axis EQUAL or documented-genus; the 5 never-pinned axes frozen (the pin-only pattern)
 - The s144 docs debt filled (the page-layout census site)
 - The walk-harness lessons L-145c1/c2 recorded (the transition targets ride the route landscape; the pin-only session still ships pins)
+---
+Task ID: 146
+Agent: main (Super Z)
+Task: Session-146 — the drift-sweep baselines re-derivation (the 146-c rotation) — full maintenance cycle on nordeim/neo-crm
+
+Work Log:
+- Pulled to df480b6; environment standing; census MATCH; baseline gate GREEN (the exact s145-ship match: 114/2112 + 150/150; one settings-Defaults flake reproduced GREEN in isolation + on the re-run)
+- 146-a: 11/11 spot-verified, zero findings; 146-b: 11/11 PASS (the standing battery incl. the drawer battery GREEN); probe:ref #118 STABLE (the 5th consecutive — no parity event)
+- The rotation choice: the re-derivation over the marketing phone re-walk (the last 4 sessions all censused the marketing family; the core baselines 47+ sessions old)
+- walk36 (the maiden uniform re-measurement, 4 classes × 13 pages): ZERO upward drift — the tablet/landscape genera reproduce EXACTLY (15.34/10.77/0.72/2.43); F-146c1 the phone-landing baseline EROSION (8.5 prior-sandbox → 5.32 current, byte-stable ×3, the cluster decode the same brand-token genus; 3.2 points of dead slack) + N-146a1 the stale desktop genera ×2 (the contacts lucide misattribution 0.00 since s142 + the dashboard chart artifact 0.03 since s142)
+- D-146a0: the three baseline re-anchors (8.5→6.0 · 0.4→0.15 · 0.6→0.1) + the comments + the runtime print; D-146a1: the pin re-anchors + the NEW session-146 describe; the mutation-proof ×3 (each drift → exactly 1 RED); D-146a2: the four drift gates GREEN under the re-anchored tables; D-146a3: the captures 313-314 + the VLM 2/2
+- D-146a4: the docs realignment (2115/150/2265 across the 20 live-tense sites; SKILL v1.143.0 + the session-146 layer; the AGENTS/PAD/CLAUDE/README carriers; the session_310 record + the plan record + this worklog)
+- D-146a5: the final gate + the two-commit ship via the SSH wrapper
+
+Stage Summary:
+- The drift-sweep tripwires recalibrated: the dead slack retired (3.2 points at the phone landing; the stale s91 genera named and re-anchored); every byte-stable genus confirmed (the tablet/landscape reproductions EXACT)
+- The walk-harness lessons L-146c1/c2 recorded (the baseline is a snapshot of its sandbox; the genus comment must name the mechanism)

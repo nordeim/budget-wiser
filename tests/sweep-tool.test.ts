@@ -209,13 +209,16 @@ describe("session-92 (S92-P5): the sweep tool — the one-command regression", (
   // gate must sit ABOVE the worst standing genus (settings ~7.5% at phone
   // width), so it can never see a 0.00% page drifting to 5%. The drift
   // gate judges each page against ITS OWN standing baseline + margin.
-  it("standingBaseline: the desktop table (the s91–s96 standing genera, generous to run noise)", async () => {
+  it("standingBaseline: the desktop table (the s91–s96 standing genera, generous to run noise; s146: the dashboard + contacts entries re-anchored down — the retired genera)", async () => {
     const { standingBaseline } = await sweep();
     const b = standingBaseline(1440);
     expect(b.settings).toBeGreaterThanOrEqual(4.7);
     expect(b.settings).toBeLessThanOrEqual(5.2);
-    expect(b.dashboard).toBeGreaterThanOrEqual(0.3);
-    expect(b.contacts).toBeGreaterThanOrEqual(0.4);
+    // the s146 re-derivation: the chart-artifact + lucide-attribution
+    // genera retired — the entries re-anchored to 0.15/0.1 (the s91-era
+    // >= 0.3 / >= 0.4 floors encoded the stale slack)
+    expect(b.dashboard).toBeGreaterThanOrEqual(0.1);
+    expect(b.contacts).toBeGreaterThanOrEqual(0.05);
     // every PAGES name has a desktop baseline (a new page must join the
     // table deliberately — the fail-fast doctrine)
     const { PAGES } = await sweep();
@@ -462,19 +465,28 @@ describe("session-98 (F-98a1/B-98a1/N-98a1): the sweep docs + the per-class prin
     expect(doc).not.toMatch(/desktop otherwise/);
   });
 
-  it("standingExplained(width): the per-class genera line (N-98a1 — the desktop trio no longer prints on phone runs; s99: the fourth class)", async () => {
+  it("standingExplained(width): the per-class genera line (N-98a1 — the desktop trio no longer prints on phone runs; s99: the fourth class; s146: the re-derivation — the contacts + dashboard desktop genera RETIRED, the phone landing share re-anchored)", async () => {
     const { standingExplained } = await sweep();
     const desktop = standingExplained(1440);
     const phone = standingExplained(390);
     const tablet = standingExplained(768);
     const landscape = standingExplained(1024);
-    // the desktop line keeps the standing trio
+    // the desktop line keeps the picklist + brand-token genera; the s91
+    // contacts (lucide) + dashboard (chart artifact) genera are RETIRED
+    // (the s146 re-derivation: 0.00/0.03 measured at every gate since
+    // s142 — the retired genera must not re-enter the line)
     expect(desktop).toMatch(/picklist/);
-    expect(desktop).toMatch(/lucide/);
-    // the phone line carries the mobile-nav floor + the phone settings share
+    expect(desktop).toMatch(/brand-token/);
+    expect(desktop).not.toMatch(/lucide superset/);
+    expect(desktop).not.toMatch(/chart artifact/);
+    // the phone line carries the mobile-nav floor + the phone settings
+    // share + the RE-ANCHORED landing genus share (~5.3, the s146
+    // re-derivation of the prior-sandbox 8.5)
     expect(phone).toMatch(/mobile-nav|floor/);
     expect(phone).toMatch(/7\.3/);
+    expect(phone).toMatch(/5\.3/);
     expect(phone).not.toMatch(/~4\.7/);
+    expect(phone).not.toMatch(/~8%/);
     // the tablet line carries the accounts overflow genus + its shares
     expect(tablet).toMatch(/overflow/);
     expect(tablet).toMatch(/5\.2/);
@@ -497,6 +509,72 @@ describe("session-98 (F-98a1/B-98a1/N-98a1): the sweep docs + the per-class prin
     expect(src).toMatch(/standingExplained\(WIDTH\)/);
     // the old unconditional desktop line is gone
     expect(src).not.toMatch(/standing explained: settings ~4\.7% picklist-data · contacts ~0\.5% lucide superset/);
+  });
+});
+
+// Session-146 (the 146-c rotation — the drift-sweep baselines
+// re-derivation): the quarterly re-anchor. The maiden uniform
+// re-measurement of all 4 viewport classes × 13 pages found ZERO upward
+// drift — every genus byte-stable (tablet landing 15.34 EXACT · landscape
+// landing 10.77 EXACT · tablet accounts 0.72 EXACT · landscape accounts
+// 2.43 EXACT · the settings picklist 4.73/7.34/5.19/4.74 · the login logo
+// genus 0.28/0.78/0.46/0.46 · the phone floor family 0.51-0.56) — but
+// three entries carried stale slack: the phone landing genus share
+// (the s142 maiden's PRIOR-sandbox 8.5 vs the current-sandbox 5.32,
+// byte-stable ×3 runs, the cluster decode the SAME brand-token genus —
+// the CTA band 4.30% + the badge 0.76% + the logo 0.22%) and the two
+// retired s91-era desktop genera (the contacts "lucide superset" —
+// a DOM-level N-89c6 attribute never the pixel diff, 0.00 since s142;
+// the dashboard "2px chart-baseline artifact" — 0.03 since s142). This
+// pin freezes the re-anchored values (L-146c1: a baseline is a snapshot
+// of its sandbox — the quarterly re-derivation is the tripwire's
+// calibration).
+describe("session-146: the re-anchored standing baselines (the quarterly re-derivation)", () => {
+  it("the three re-anchored entries: phone.landing 6.0 · desktop.dashboard 0.15 · desktop.contacts 0.1 (the F-146c1 tightening — the dead slack retired)", async () => {
+    const { standingBaseline } = await sweep();
+    const phone = standingBaseline(390);
+    const desktop = standingBaseline(1440);
+    // the phone landing: 8.5 → 6.0 (the measured 5.32 + the margin math —
+    // trips at 6.5, +1.2 regression sensitivity vs the old +3.7 slack)
+    expect(phone.landing).toBe(6);
+    // the desktop dashboard: 0.4 → 0.15 (the chart-artifact genus retired)
+    expect(desktop.dashboard).toBe(0.15);
+    // the desktop contacts: 0.6 → 0.1 (the lucide-attribution retired —
+    // the family floor)
+    expect(desktop.contacts).toBe(0.1);
+  });
+
+  it("the byte-stable genera stay untouched (the re-derivation's confirmations — the tablet/landscape landing/accounts + the settings family + the login family + the phone floor)", async () => {
+    const { standingBaseline } = await sweep();
+    const desktop = standingBaseline(1440);
+    const phone = standingBaseline(390);
+    const tablet = standingBaseline(768);
+    const landscape = standingBaseline(1024);
+    // the exact reproductions (unchanged 47+ sessions later)
+    expect(tablet.landing).toBe(15.8);
+    expect(landscape.landing).toBe(11.3);
+    expect(tablet.accounts).toBe(0.8);
+    expect(landscape.accounts).toBe(2.6);
+    // the settings picklist genus family
+    expect(desktop.settings).toBe(4.9);
+    expect(phone.settings).toBe(7.7);
+    expect(tablet.settings).toBe(5.5);
+    // the login logo genus family
+    expect(desktop.login).toBe(0.3);
+    expect(phone.login).toBe(1.4);
+    // the phone floor family (the mobile-nav superset topbar genus)
+    expect(phone.about).toBe(0.75);
+    expect(phone.contact).toBe(0.75);
+  });
+
+  it("the sweep source documents the re-derivation (the L-146c2 mechanism-named comments)", () => {
+    const src = read("scripts/sweep.ts");
+    // the re-derivation markers at the three re-anchored entries
+    expect(src).toMatch(/session-146 \(F-146c1, the baselines re-derivation\): RE-ANCHORED/);
+    expect(src).toMatch(/session-146 \(the baselines re-derivation\): re-anchored 0\.4 → 0\.15/);
+    expect(src).toMatch(/session-146 \(the baselines re-derivation\): re-anchored 0\.6 → 0\.1/);
+    // the retired s91 genera no longer ride the runtime print's desktop line
+    expect(src).not.toMatch(/contacts ~0\.5% lucide superset · dashboard ~0\.3% chart artifact/);
   });
 });
 
