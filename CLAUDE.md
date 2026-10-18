@@ -35,7 +35,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2060) → `bun run build` → `bun run test:e2e` (138) — or the
+   `bun run test` (2101) → `bun run build` → `bun run test:e2e` (146) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -112,7 +112,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
 | `bun run test`      | Vitest unit suites (2060 checks)            |
-| `bun run test:e2e`  | Playwright E2E (138 checks, needs build first) |
+| `bun run test:e2e`  | Playwright E2E (146 checks, needs build first) |
 | `bun run gate`      | The full gate in one command (lint → typecheck → test → build → e2e) |
 | `bun run db:push`   | Push Prisma schema (no migrations folder)     |
 | `bun run db:seed`   | Reseed demo data in place                     |
@@ -296,7 +296,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   TABLE_CARD plain-div rule, CALENDAR_CARD, SETTINGS_GRID + the
   design-tokens `th, td { padding: 1px }` platform reset). Node
   environment; `@` alias resolved.
-- **E2E (Playwright, 138 checks)** — `tests/e2e/`: `auth.spec.ts`
+- **E2E (Playwright, 146 checks)** — `tests/e2e/`: `auth.spec.ts`
   (logged-out surface + session-11's login reset-password flow +
   session-21's in-place funnel: the Callout banner with zero toasts,
   the signup view swap + mismatch guard, the verify-email ladder +
@@ -385,7 +385,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2060).
+the seam (currently 2101).
 
 ## Code Quality Standards
 
@@ -448,7 +448,11 @@ React-hooks rules that matter here (violations are errors):
 
 - `(app)` route group: `src/app/(app)/layout.tsx` resolves the session
   server-side and redirects to `/login`; all authenticated pages live inside
-  the group. `/login` and `/signup` sit outside it.
+  the group. `/login` and `/signup` sit outside it — and, since session-142,
+  so does the PUBLIC landing page at `/` (the reference's marketing layer:
+  its own root is public; post-login redirects to `/`, the "Open dashboard"
+  CTA enters the CRM). The dashboard's canonical route is
+  `(app)/dashboard/page.tsx` with the `/Dashboard` capital alias (s24).
 - Client shell: `AppShell` (sidebar ≥lg, topbar, mobile drawer) wraps every
   authenticated page; `hydrate()` bootstraps the store once.
 

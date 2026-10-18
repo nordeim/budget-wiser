@@ -47,12 +47,17 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/label";
 import { KpiCard, PageHeader, Sparkline } from "@/components/shared/page-parts";
 import { RevenueLineChart, SingleBarChart, dollarFormatter } from "@/components/charts/charts";
-import { AccountDialog, ActivityDialog, ContactDialog, EventDialog, LeadDialog } from "@/components/shared/entity-dialogs";
+import { ActivityDialog, LeadDialog } from "@/components/shared/entity-dialogs";
 import { useCrmStore } from "@/stores/crm-store";
 import { OPP_STAGE_META, CHART_COLORS, LEAD_SOURCE_OPTIONS, PIPELINE_STAGES, PIPELINE_LABELS } from "@/lib/constants";
 import { formatCompactCurrency } from "@/lib/format";
 
-type QuickCreate = "lead" | "contact" | "account" | "event" | "activity" | null;
+// Session-142 (D-142b0): the header trio's retirement narrowed the
+// quick-create vocabulary — only the two card-level ghost Adds remain
+// (the Lead Sources card → the Lead dialog; the Upcoming Activities
+// card → the Activity dialog). The contact/account/event members
+// retired with the header dropdown (their only entry points).
+type QuickCreate = "lead" | "activity" | null;
 
 export default function DashboardPage() {
   const { dashboard, hydrated, fetchDashboard, leads, contacts, accounts, activities, opportunities } = useCrmStore();
@@ -180,48 +185,6 @@ export default function DashboardPage() {
     downloadBlob(unquotedHeaderCsv(header, rows), entityExportFilename("Leads"), "text/csv");
   }
 
-  function exportContactsCsv() {
-    if (contacts.length === 0) return;
-    const header = ["Name", "Email", "Phone", "Company", "Position", "Status", "Source"];
-    const rows = contacts.map((c) => [
-      c.name || "",
-      c.email || "",
-      c.phone || "",
-      c.company || "",
-      c.position || "",
-      c.status || "",
-      c.source || "",
-    ]);
-    downloadBlob(toQuotedCsv(header, rows), csvFilename("contacts"), "text/csv");
-  }
-
-  function exportAccountsCsv() {
-    if (accounts.length === 0) return;
-    const header = ["Name", "Industry", "Phone", "Email", "Website", "Annual Revenue", "Employees", "Status", "Tier", "Health"];
-    // Session-86 (M-86c2): the Tier column carries the COMPUTED tier —
-    // the reference's export maps its filter memo's derived fe.tier
-    // (revenue > 1M Key / > 500k A / > 100k B / else C), never a stored
-    // field (it models none).
-    const rows = accounts.map((a) => [
-      a.name || "",
-      a.industry || "",
-      a.phone || "",
-      a.email || "",
-      a.website || "",
-      String(a.annualRevenue || ""),
-      String(a.employees || ""),
-      a.status || "",
-      accountTierFromRevenue(a.annualRevenue),
-      a.health || "",
-    ]);
-    downloadBlob(toQuotedCsv(header, rows), csvFilename("accounts"), "text/csv");
-  }
-
-  function exportActivitiesCsv() {
-    if (activities.length === 0) return;
-    downloadBlob(entityDumpCsv(activities), entityExportFilename("Activity"), "text/csv");
-  }
-
   return (
     // Session-16 (S16-P2): the page owns its padding (the shell-level
     // wrapper retired) — the reference's dashboard root is
@@ -232,48 +195,25 @@ export default function DashboardPage() {
         title="Dashboard"
         actions={
           <>
-            <Dropdown>
-              <DropdownTrigger asChild>
-                {/* Session-6 anatomy: outline h-8 px-3 text-xs with the label
-                    hidden below sm (reference: border-input bg-background
-                    shadow-sm h-8 rounded-md px-3 text-xs + span.hidden
-                    sm:inline). */}
-                <Button variant="outline" size="sm">
-                  <Plus className="h-4 w-4 mr-2" /> <span className={DASHBOARD_HEADER.addLabelClass}>{DASHBOARD_HEADER.addLabel}</span>
-                </Button>
-              </DropdownTrigger>
-              <DropdownContent align="end">
-                <DropdownItem onClick={() => setQuickCreate("lead")}><Target className="h-4 w-4 text-muted" /> Lead</DropdownItem>
-                <DropdownItem onClick={() => setQuickCreate("contact")}><Users className="h-4 w-4 text-muted" /> Contact</DropdownItem>
-                <DropdownItem onClick={() => setQuickCreate("account")}><TrendingUp className="h-4 w-4 text-muted" /> Account</DropdownItem>
-                <DropdownItem onClick={() => setQuickCreate("event")}><Phone className="h-4 w-4 text-muted" /> Event</DropdownItem>
-                <DropdownItem onClick={() => setQuickCreate("activity")}><Zap className="h-4 w-4 text-muted" /> Activity</DropdownItem>
-              </DropdownContent>
-            </Dropdown>
-            {/* The reference ships two adjacent Export buttons (its own
-                template quirk). We keep the exact visual but give each a
-                distinct job: outline opens the export menu, filled is the
-                one-click leads export. */}
-            <Dropdown>
-              <DropdownTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Download className="h-4 w-4 mr-2" /> <span className={DASHBOARD_HEADER.outlineExportLabelClass}>{DASHBOARD_HEADER.outlineExportLabel}</span>
-                </Button>
-              </DropdownTrigger>
-              <DropdownContent align="end">
-                <DropdownItem onClick={exportLeadsCsv}>Leads</DropdownItem>
-                <DropdownItem onClick={exportContactsCsv}>Contacts</DropdownItem>
-                <DropdownItem onClick={exportAccountsCsv}>Accounts</DropdownItem>
-                <DropdownItem onClick={exportActivitiesCsv}>Activities</DropdownItem>
-              </DropdownContent>
-            </Dropdown>
-            {/* Session-8 (S8-1): the reference's primary Export renders its
-                label as a BARE always-visible text node (not hidden below
-                sm like the outline Export) — re-pinned from the live DOM. */}
+            {/* Session-142 (D-142b0): the s33 header TRIO is a DUO no
+                more — the reference's index-Dc6wvGtA.js bundle RETIRED
+                the Add + outline-Export pair (live-censused: its header
+                row `flex gap-2 w-full sm:w-auto` carries exactly ONE
+                button — the blue primary Export at x 1313; no Add
+                button anywhere on the page). Ours re-mirrors: the
+                quick-create dropdown + the export-menu dropdown retired
+                with the pair (the functional-superset jobs went with
+                the reference's own buttons — the s33 dead-trio decode
+                is historical). The one-click leads export stays. */}
             <Button
               variant="default"
               size="sm"
               onClick={exportLeadsCsv}
+              // Session-142 (D-142b0): the reference's Export is DISABLED
+              // at zero data (live-censused: disabled=true + the stock
+              // opacity-50 arm rendering the half-blue (142,173,242) face
+              // on its white card — the sweep's phone cluster decoded).
+              disabled={leads.length === 0}
             >
               <Download className="h-4 w-4 mr-2" />
               {DASHBOARD_HEADER.primaryExportLabel}
@@ -486,11 +426,11 @@ export default function DashboardPage() {
               data={dashboard?.revenueOverTime ?? []}
               tickFontSize={12}
               series={[
-                // Both series are filled Areas on the reference (DOM-verified
-                // recharts-area ×2) — fillOpacity .6 won / .3 target,
-                // STOCK strokeWidth (the reference passes none).
+                // Session-142 (D-142b0): the ONE won series — the reference's
+                // new bundle retired the target series AND the legend (the
+                // emerald filled Area, fillOpacity .6, STOCK strokeWidth —
+                // the s87 re-pin minus its target arm).
                 { key: "won", label: "Won", color: CHART_COLORS.emerald, fillOpacity: 0.6 },
-                { key: "target", label: "Target", color: CHART_COLORS.red, fillOpacity: 0.3 },
               ]}
             />
           </CardContent>
@@ -785,10 +725,11 @@ export default function DashboardPage() {
       </Card>
 
       {/* Quick-create dialogs */}
+      {/* Session-142 (D-142b0): the three unreachable dialogs (contact/
+          account/event — their only entry points were the retired header
+          dropdown's menu items) retired with the trio; the two reachable
+          dialogs stay. */}
       <LeadDialog open={quickCreate === "lead"} onOpenChange={(o) => !o && setQuickCreate(null)} />
-      <ContactDialog open={quickCreate === "contact"} onOpenChange={(o) => !o && setQuickCreate(null)} />
-      <AccountDialog open={quickCreate === "account"} onOpenChange={(o) => !o && setQuickCreate(null)} />
-      <EventDialog open={quickCreate === "event"} onOpenChange={(o) => !o && setQuickCreate(null)} />
       <ActivityDialog open={quickCreate === "activity"} onOpenChange={(o) => !o && setQuickCreate(null)} />
     </div>
   );

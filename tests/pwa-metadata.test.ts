@@ -190,7 +190,7 @@ describe("session-19: the per-route metadata seam (S19-P4, S19-P5)", () => {
     // The dashboard inherits the root layout's metadata (og:url = the
     // origin root — the reference's unprefixed family): NO wrapper
     // metadata export of its own.
-    expect(readOr("src/app/(app)/page.tsx")).not.toMatch(
+    expect(readOr("src/app/(app)/dashboard/page.tsx")).not.toMatch(
       /export const metadata/,
     );
   });

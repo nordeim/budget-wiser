@@ -116,8 +116,8 @@ import { describe, expect, it } from "vitest";
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 
-const E2E = 138;
-const SUITES = 113;
+const E2E = 146;
+const SUITES = 114;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -393,7 +393,21 @@ const SUITES = 113;
 // name-prop drift -> exactly 2 RED (the pin + the pre-existing same-site
 // family pin), the guard removal -> exactly 1 RED, the hex drift ->
 // exactly 1 RED]; SUITES + E2E unchanged (113 - 138).
-const UNIT = 2060;
+// Session-142: 2060 -> 2101 (+41 — the marketing-layer parity build:
+// the landing-page construction census [36 its: the header/hero/mock/
+// features/preview/pricing/FAQ single-open/footer constructions + the
+// PUBLIC-page source rule + the /About + /Contact pins] + the probe
+// re-anchor [the landingNavVerdict + the mobileCensusPage pins] + the
+// sitemap +2 + the space-y census re-anchor [107 -> 114, the reference's
+// own landing constructions mirrored] + the D-142b0 re-derivations [the
+// target retirement + the rolling window + the trio retirement + the
+// disabled-at-zero Export + CHART_COLORS.red retirement]). SUITES 113 ->
+// 114 (+1: tests/landing-page.test.ts). E2E 138 -> 146 (+8: the landing
+// spec — the public block [the anatomy, the pricing tiers, the FAQ
+// single-open, the 390 disclosure menu, the guest CTA login-wall, the
+// post-login redirect, the footer anchors] + the authenticated About/
+// Contact faces).
+const UNIT = 2101;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -462,7 +476,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
   it("PAD HEAD line carries the live counts (the site-form anchor)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain(
-      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 7 spec`,
+      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 8 spec`,
     );
   });
 
@@ -806,7 +820,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-141 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-142 layer`,
     );
     expect(
       skill,
@@ -840,7 +854,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B e2e-total row must carry the live spec-file + check counts",
-    ).toContain(`| **e2e total** | 7 spec files + the setup project | **${E2E}** |`);
+    ).toContain(`| **e2e total** | 8 spec files + the setup project | **${E2E}** |`);
     // Session-111 (F-111a1): the Appendix B wall-clock PROSE line is a
     // live-tense count site — the s110 realignment updated the table
     // rows but missed the phrase (it read "108 suites" for one session

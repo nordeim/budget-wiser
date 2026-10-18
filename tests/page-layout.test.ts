@@ -1246,7 +1246,7 @@ describe("session-13: KPI value string (S13-P9 + S13-P10)", () => {
     // delta element here would render; it does not exist). Ours shipped
     // a "+1d" delta.
     const src = readFileSync(
-      path.resolve(import.meta.dirname, "../src/app/(app)/page.tsx"),
+      path.resolve(import.meta.dirname, "../src/app/(app)/dashboard/page.tsx"),
       "utf8",
     );
     const m = src.match(/label="Avg\. Sales Cycle"[\s\S]{0,400}?<\/KpiCard>/);
@@ -1946,7 +1946,7 @@ describe("session-16: the page-root model — padding belongs to the page (S16-P
 
   it("every page renders its own root wrapper (source-level)", () => {
     const standard = [
-      "../src/app/(app)/page.tsx",
+      "../src/app/(app)/dashboard/page.tsx",
       "../src/app/(app)/accounts/accounts-page.tsx",
       "../src/app/(app)/calendar/calendar-page.tsx",
       "../src/app/(app)/activities/activities-page.tsx",
@@ -2170,7 +2170,7 @@ describe("session-17: the polygon Filter glyph (S17-P2b)", () => {
 
   it("dashboard, leads and contacts use FilterPolygon for their filter buttons", () => {
     for (const rel of [
-      "../src/app/(app)/page.tsx",
+      "../src/app/(app)/dashboard/page.tsx",
       "../src/app/(app)/leads/leads-page.tsx",
       "../src/app/(app)/contacts/contacts-page.tsx",
     ]) {
@@ -2427,21 +2427,19 @@ describe("session-33 parity pins (the filter-bar search + the header trio)", () 
     expect(FILTER_BAR.searchPlaceholder).toBe("Stage: Source");
   });
 
-  it("DASHBOARD_HEADER pins the FULL trio: Add + outline Export + blue Export (S33-P2)", () => {
-    // The s33 bundle decode: the reference's dashboard header ships
-    // THREE adjacent buttons — Add (outline, label hidden below sm),
-    // Export (outline, label hidden below sm), Export (bg-blue-600
-    // hover:bg-blue-700, bare always-visible label) — and ALL THREE are
-    // DEAD there (no onClick in the bundle; the §16c dead-list covered
-    // only the Exports + the login Sign up link). Ours keeps the exact
-    // visual with functional superset jobs (quick-create menu / export
-    // menu / one-click export).
-    expect(DASHBOARD_HEADER.addLabel).toBe("Add");
-    expect(DASHBOARD_HEADER.addLabelClass).toBe("hidden sm:inline");
-    expect(DASHBOARD_HEADER.outlineExportLabel).toBe("Export");
-    expect(DASHBOARD_HEADER.outlineExportLabelClass).toBe("hidden sm:inline");
+  it("DASHBOARD_HEADER pins the s142 SINGLETON: the blue Export alone (D-142b0)", () => {
+    // Session-142 (D-142b0): the reference's index-Dc6wvGtA.js bundle
+    // RETIRED the s33 trio — its header row now carries exactly ONE
+    // button (the blue primary Export; live-censused at 1440 + 390, no
+    // Add anywhere). The addLabel/outlineExportLabel members retired
+    // with the reference's own buttons; the s33 dead-trio decode and
+    // the s47 functional-superset rewire are historical records.
     expect(DASHBOARD_HEADER.primaryExportLabel).toBe("Export");
     expect(DASHBOARD_HEADER.primaryExportLabelClass).toBe("");
+    expect("addLabel" in DASHBOARD_HEADER).toBe(false);
+    expect("outlineExportLabel" in DASHBOARD_HEADER).toBe(false);
+    expect("addLabelClass" in DASHBOARD_HEADER).toBe(false);
+    expect("outlineExportLabelClass" in DASHBOARD_HEADER).toBe(false);
   });
 });
 

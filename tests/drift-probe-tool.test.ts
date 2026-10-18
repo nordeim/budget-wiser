@@ -83,8 +83,24 @@ describe("session-101 (S101-P1): the drift probe — the reference-stability too
 
   it("STANDING: the pinned constants — the bundle md5 + bytes · the desktop nav 256/8 (the census contract the probe reports against)", async () => {
     const { STANDING } = await probe();
-    expect(STANDING.bundle).toEqual({ md5: "a70a637fcf1d4291da8e0d965676dc11", bytes: 1_631_071 });
+    // Session-142 (D-142a4): the re-anchored constants — the
+    // MARKETING-LAYER parity event (index-Dc6wvGtA.js: the landing page
+    // + /About + /Contact; the first bundle change in 82 sessions).
+    expect(STANDING.bundle).toEqual({ md5: "2731a47fced41044fd524fa0e0a9f71c", bytes: 1_696_901 });
     expect(STANDING.desktopNav).toEqual({ width: 256, visibleLinks: 8 });
+  });
+
+  it("landingNavVerdict: STANDING at the marketing layer's 7 header links + 5 sections (the s142 landing census)", async () => {
+    const { landingNavVerdict } = await probe();
+    expect(landingNavVerdict({ navLinks: 7, sections: 5 })).toBe("STANDING");
+    expect(landingNavVerdict({ navLinks: 6, sections: 5 })).toBe("CHANGED");
+    expect(landingNavVerdict({ navLinks: 7, sections: 4 })).toBe("CHANGED");
+  });
+
+  it("STANDING: the TRUE-390 census targets the CRM SHELL at /Dashboard (not the landing — the defect tracker stays on the app pages)", async () => {
+    const { STANDING } = await probe();
+    expect(STANDING.mobileCensusPage).toBe("/Dashboard");
+    expect(STANDING.landing).toEqual({ navLinks: 7, sections: 5 });
   });
 
   it("the probe wires the seams: the header documents the tool · package.json gains probe:ref · the --json flag literal · NOT part of the offline gate", () => {

@@ -355,8 +355,8 @@ neo-crm/
 │   ├── stores/crm-store.ts      # single Zustand store + call() client
 │   └── types/index.ts           # wire types shared by API and client
 ├── tests/
-│   ├── *.test.ts                # 113 Vitest suites — 2060 checks
-│   └── e2e/                     # global-setup, auth.setup, 7 spec files + setup project — 138 checks
+│   ├── *.test.ts                # 114 Vitest suites — 2101 checks
+│   └── e2e/                     # global-setup, auth.setup, 8 spec files + setup project — 146 checks
 ├── docs/                        # validation report, SSH runbook, screenshots
 ├── next.config.ts               # standalone output + traced prisma root
 └── postcss.config.mjs           # @tailwindcss/postcss — REQUIRED (ADR-005)
@@ -815,7 +815,7 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 | Unit — the dashboard chart-interiors post-fix re-walk layer (the 139-c rotation — the s138 grid-fix blast-radius verification on the fix's SECOND consumer + the maiden tooltip/spark-interior lenses: the F-139c1 target-rounding retirement [the raw 55k+random float, the toLocaleString 3-fraction-digit form] + the F-139c2 area-spark stroke-width retirement [the SVG default 1] + the 2 stash-proven pins in dashboard-family-parity — session-139) | 113 | 2053 | `tests/dashboard-family-parity.test.ts` | Vitest |
 | Unit — the leads chart-interiors post-fix re-walk layer (the 140-c rotation — the s38 grid-fix blast-radius doctrine consumer #3 + the maiden tooltip lenses: the three freeze pins [the pipeline call-site tooltip construction — the raw-dataKey face + the dollarFormatter + NO radius; the wonlost series construction — the Won/Lost names + the paired fills, the raw-number face; the funnel call site — the stock ConversionFunnel + the STATUS-CUMULATIVE memo] + the ConversionFunnel family stock-construction pin — session-140) | 113 | 2057 | `tests/leads-family-parity.test.ts` + `tests/charts-internals.test.ts` | Vitest |
 | Unit — the activities family walk layer (the 141-c rotation — the charts.tsx consumer #4 sweep-close + the maiden lenses: the by-type call-site construction pin [grid={false} + tickFontSize 10 + radius [4,4,0,0] + #3b82f6 + height 150 + NO name + NO formatter — the raw-dataKey + raw-number tooltip face, the maiden decode "Callcount : 5" / the zero face "Emailcount : 0" byte-equal two-app] + the SingleBarChart/GroupedBarsChart families' L-138c1 tick-spread guard pin [the s138 fix's own construction, pinned at the family level] + the by-type chips palette pin [the five-hex BY_TYPE_CARD.colors map + the inline-backgroundColor swatch + the STATIC "Last 2 days" subtitle] — session-141) | 113 | 2060 | `tests/charts-internals.test.ts` + `tests/activities-calendar-parity.test.ts` | Vitest |
-| **Total** | **113** | **2060 unit + 138 e2e** | | |
+| **Total** | **114** | **2101 unit + 146 e2e** | | |
 | Unit — the accounts rail layer (the M-86c1 pins [the account Status trio active/inactive/PROSPECT at BOTH dialog configs — the reference's bce/wce decode; the edit dialog's offered Prospect previously ALWAYS 400'd against the churned validators] + the M-86c2 pins [the accountTierFromRevenue boundary matrix + the six consumption sites — row/KPI/filter/both exports/Cards — + the five stored-field retirement negatives: schema/type/API/create-payload/seed] + the L-86c3 pins [the name-only search predicate + the industry/email concat negative] + the N-86c6 pin [the explicit pl-9 h-9] + the L-86c4 pins [the filtered-map export basis + the zero-RAW guard + the RAW header binding] + the N-86c5 pins [the three dead SelectValue placeholders] + the green anchors [the rail anatomy + the checkbox labels + the revenue ranges]; +25 its, −3 retired = +22 net → 1709 — session-86) | 1 | 25 new − 3 lockstep-retired (accounts-rail-parity) | `tests/accounts-rail-parity.test.ts` (NEW) | Vitest |
 | Unit — the dashboard KPI-family layer (the M-87c1 pins [the Avg-Sales-Cycle "days" suffix text-muted gray-500 -> the reference's literal text-gray-600 rgb(75,85,99), the s12 label fix's missed sibling, LIVE-verified both apps] + the L-87c2 pins [the SINGLE-SLOT spark construction — ONE slot div per card (mt-2 h-8 line/area; mt-2 h-8 flex items-end gap-1 bars) with the chart as the DIRECT child: the bare ResponsiveContainer / the bare div bars flex-1 bg-cyan-400|bg-green-400 rounded-sm (the static colors as bg-CLASSES, inline only for the colorFor variant); the KpiCard's sparkClassName slot + the content-only Sparkline (the className prop, the aria-hidden, the reports' h-full intermediate div all retire)] + the L-87c3 pins [the Card > CardContent "p-4 sm:p-6" split + the labelRow (flex justify-between items-start mb-2 > span) + the BARE valueRow (flex items-end gap-2 — no mt-2, no flex-wrap) + the span value + the div delta/valueNote] + the N-87c4 pins [the stage/source dead SelectValue placeholders mirrored + the view switcher's "Format" documented-unmirrorable (our functional "" default would render it)] + the N-87c5/c6 pins [the bare sm:w-auto + the explicit pl-9 h-9] + the N-87c7 pins [the Pipeline card's BARE stock CardHeader + the five nested flex justify-between items-center rows + the Last-6-months literal text-gray-500] + the N-87a1 pin [the vacuous api-robustness tier row retired]; +25 its, −1 vacuous-retired = +24 net → 1733 — session-87) | 1 | 25 new − 1 lockstep-retired (dashboard-kpi-parity) + 3 files re-anchored (page-layout KPI_CARD.card, dashboard-family-parity ×3 pins, reports-filter-parity LineChart) | `tests/dashboard-kpi-parity.test.ts` (NEW), `tests/page-layout.test.ts`, `tests/dashboard-family-parity.test.ts`, `tests/reports-filter-parity.test.ts`, `tests/api-robustness.test.ts` | Vitest |
 | Unit — the contacts-family layer + the v3-palette re-pin (the M-88c1 pins [the @theme V3-PALETTE RE-PIN — 92 --color-{family}-{step} tokens covering every literal palette class used in src/; Tailwind v4's default oklch palette diverges from the reference's v3 hex palette on the chromatic families (blue-600 v4 #155dfc rgb(21,93,252) vs v3 #2563eb rgb(37,99,235); red-600 Δ38; green-400 Δ69; amber-400 Δ36; purple-600 Δ35; cyan-400 Δ34 — 56 of 118 literal classes visibly; verified against the reference's compiled CSS on 97 rules, zero mismatches; the S15-P12 hazard retired family-wide; the fifth member of the v4 re-pin family)] + the M-88c2 pins [the table's last-activity icon Zap -> the reference's AC=tr("Activity") pulse glyph] + the M-88c3 pins [the Award pair — wT=tr("Award") at the stat card icon + the name-cell amber overlay; the bundle ships NO Crown] + the M-88c4 pins [the Source labels capitalized via the reference's own charAt(0).toUpperCase()+slice(1); the id/value stay raw] + the L-88c5 pins [the IconStatCard contacts-arm Card > CardContent "p-6" split + the iconColor bg-CLASS chip mechanism (no inline style/shrink-0/aria-hidden) + the trend-row div with explicit-color TrendingUp|TrendingDown + trendDir; the subValue/tone/color retire from the arm] + the L-88c6 pins [the Export CSV disabled binding reads the RAW list — the s63 N-62e "unresolvable" bundle-RESOLVED] + the L-88c7 pins [the conditional mr-[500px] on the inner scroll div while the detail slide-over is open] + the N-88c8 pins [the mobile badge's bare map — the border font-medium extras retired] + the N-88c9 pin [the aria-expanded superset documented] + the N-88a1/a2 pins [the describe-title count + the stale s11 comment re-derived]; +17 its = 1750 — session-88) | 1 | 17 new (contacts-family-parity) + 2 files re-anchored (api-robustness describe title, page-layout comment) | `tests/contacts-family-parity.test.ts` (NEW), `tests/api-robustness.test.ts`, `tests/page-layout.test.ts` | Vitest |
@@ -828,7 +828,7 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 > those rows added or re-anchored — NOT the file's total checks, and NOT
 > a summable column (shared files like `constants.test.ts` appear in
 > several session rows). The **Total** row counts files and checks at
-> HEAD: 113 Vitest suites with 2060 checks + 138 e2e checks in 7 spec
+> HEAD: 114 Vitest suites with 2101 checks + 146 e2e checks in 8 spec
 > files (auth, crm, mobile-navigation, reports-mobile, settings-mobile,
 > calendar-mobile, activities-mobile) + the auth.setup project (the
 > s88 pass bumped the Total + inventory rows but missed this footnote —
@@ -1251,9 +1251,9 @@ must keep all 7 regression checks green unmodified.
 
 - [ ] `bun run lint` — 0 errors, 0 warnings
 - [ ] `bun run typecheck` — clean (the real type gate; build has `ignoreBuildErrors`)
-- [ ] `bun run test` — 2060/2060
+- [ ] `bun run test` — 2101/2101
 - [ ] `bun run build` — standalone build succeeds
-- [ ] `bun run test:e2e` — 138/138
+- [ ] `bun run test:e2e` — 146/146
 - [ ] Mobile drawer manually exercised at 390px (open → navigate → Escape)
 - [ ] Zero webfonts: `document.fonts` empty on /, body computes the stock
       `ui-sans-serif, system-ui` stack, smoothing `auto` (session-22)
@@ -1321,8 +1321,8 @@ bun run dev          # http://localhost:3000 — demo: sepnetflix2023@outlook.co
 | ------- | -------- | ------- |
 | `bun run dev` | root | Dev server :3000, log tee'd to `dev.log` |
 | `bun run lint` / `typecheck` | root | Quality gates (must be 0/0 / clean) |
-| `bun run test` | root | 2060 unit checks |
-| `bun run test:e2e` | root | 138 browser checks (build first) |
+| `bun run test` | root | 2101 unit checks |
+| `bun run test:e2e` | root | 146 browser checks (build first) |
 | `bun run db:census` | root | The sanctioned DB census — resolved path + counts + the seed-contract verdict (session-53; never a raw PrismaClient) |
 | `bun run gate` | root | The full gate in one command (lint → typecheck → test → build → e2e) |
 | `bunx vitest run tests/auth.test.ts` | root | One suite |

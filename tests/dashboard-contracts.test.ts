@@ -36,7 +36,7 @@ function stripComments(src: string): string {
     .replace(/\/\/[^\n]*/g, "");
 }
 
-const page = () => stripComments(read("src/app/(app)/page.tsx") ?? "");
+const page = () => stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
 const layout = () => stripComments(read("src/lib/page-layout.ts") ?? "");
 
 describe("session-27: the dashboard pipeline legend chips (the O-map)", () => {
@@ -314,15 +314,16 @@ describe("session-33: the filter-bar search + the header trio render (S33-P1/P2)
     expect(region).toMatch(/onChange=\{/);
   });
 
-  it("the header trio's labels come from the DASHBOARD_HEADER contract", () => {
+  it("the header carries the s142 SINGLETON: the blue Export alone (D-142b0 — the s33 trio retired on the reference's new bundle)", () => {
     const src = page();
-    expect(src).toContain("DASHBOARD_HEADER.addLabel");
-    expect(src).toContain("DASHBOARD_HEADER.outlineExportLabel");
     expect(src).toContain("DASHBOARD_HEADER.primaryExportLabel");
-    // The hidden-sm label classes ride the contract too (Add + outline
-    // Export share it; the primary Export keeps the bare label).
-    expect(src.match(/DASHBOARD_HEADER\.addLabelClass/g)?.length).toBe(1);
-    expect(src.match(/DASHBOARD_HEADER\.outlineExportLabelClass/g)?.length).toBe(1);
+    // The retired pair never returns (the reference's index-Dc6wvGtA.js
+    // header row carries exactly ONE button; the quick-create + export
+    // dropdowns retired with it).
+    expect(src).not.toContain("DASHBOARD_HEADER.addLabel");
+    expect(src).not.toContain("DASHBOARD_HEADER.outlineExportLabel");
+    expect(src).not.toMatch(/DASHBOARD_HEADER\.addLabelClass/);
+    expect(src).not.toMatch(/DASHBOARD_HEADER\.outlineExportLabelClass/);
   });
 
   it("the dead-affordance pair stays no-op: Filter + More... carry NO onClick (the reference's dead controls mirrored)", () => {

@@ -344,9 +344,12 @@ export function RevenueLineChart({
           <XAxis dataKey="month" type="category" {...tickProp} />
           <YAxis type="number" {...tickProp} />
           <Tooltip formatter={dollarFormatter} />
-          {/* The reference ships the recharts DEFAULT legend (plainline
-              icons, series-colored text) — no props. */}
-          <Legend />
+          {/* Session-142 (D-142b0): the Legend is RETIRED — the reference's
+              new bundle renders its revenue chart with NO legend element
+              (live-censused on index-Dc6wvGtA.js: zero legend wrappers, the
+              tooltip's single "Won : $0" item face). The component stays
+              multi-series-capable (the series prop maps) but the dashboard
+              call site passes the ONE won series. */}
           {series.map((s) => (
             <Area
               key={s.key}

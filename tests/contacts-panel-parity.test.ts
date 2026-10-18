@@ -109,12 +109,19 @@ describe("session-82: the Button-icon-margin re-derivation (M-82c1)", () => {
     expect(TOPBAR_LAYOUT.userButton).toBe("flex items-center gap-1 sm:gap-2");
   });
 
-  it("the header/export family: every text-button svg carries its own mr-2 (16 sites)", () => {
+  it("the header/export family: every text-button svg carries its own mr-2 (14 sites — the s142 dashboard retirement)", () => {
     // Each the reference's own per-surface class, bundle-decoded:
     // Ad/cs/IB/kB/Fy/FB + w-4 h-4 mr-2 on every header/export button.
-    const dashboard = page("src/app/(app)/page.tsx");
-    expect(dashboard).toMatch(/<Plus className="h-4 w-4 mr-2" \/> <span/);
-    expect(dashboard).toMatch(/<Download className="h-4 w-4 mr-2" \/> <span/);
+    // Session-142 (D-142b0): the dashboard's TWO sites retired with the
+    // s33 header trio (the Add + outline-Export pair) — its surviving
+    // primary Export keeps the Download icon + mr-2; the census re-
+    // anchored 16 → 14 sites.
+    const dashboard = page("src/app/(app)/dashboard/page.tsx");
+    // the surviving singleton: the primary Export (Download + bare label)
+    expect(dashboard).toMatch(/<Download className="h-4 w-4 mr-2" \/>/);
+    // the retired pair's construction never returns
+    expect(dashboard).not.toMatch(/<Plus className="h-4 w-4 mr-2" \/> <span/);
+    expect(dashboard).not.toMatch(/<Download className="h-4 w-4 mr-2" \/> <span/);
 
     const accounts = page("src/app/(app)/accounts/accounts-page.tsx");
     expect(accounts).toMatch(/<Download className="h-4 w-4 mr-2" \/> <span/);

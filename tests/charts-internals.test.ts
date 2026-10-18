@@ -179,7 +179,7 @@ describe("session-27: the retired chart family", () => {
 
 describe("session-27: the per-surface chart wirings (the pages)", () => {
   it("the dashboard pipeline uses SingleBarChart with #3b82f6 + radius [8,8,0,0] + value dataKey + $ formatter + tick 12", () => {
-    const page = stripComments(read("src/app/(app)/page.tsx") ?? "");
+    const page = stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
     expect(page).toMatch(/SingleBarChart/);
     const region = page.slice(page.indexOf("Sales Pipeline by Stage") - 1200, page.indexOf("Sales Pipeline by Stage") + 400);
     expect(region).toMatch(/fill="#3b82f6"/);
@@ -187,7 +187,7 @@ describe("session-27: the per-surface chart wirings (the pages)", () => {
   });
 
   it("the dashboard renders the O-map legend chips (w-3 h-3 rounded squares + text-gray-600 + $X.Xk format)", () => {
-    const page = stripComments(read("src/app/(app)/page.tsx") ?? "");
+    const page = stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
     expect(page).toMatch(/PIPELINE_LEGEND/);
     const layout = stripComments(read("src/lib/page-layout.ts") ?? "");
     // Session-63 re-anchor: the definition form (the sweep list carries

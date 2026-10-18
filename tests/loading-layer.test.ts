@@ -40,7 +40,7 @@ function stripComments(src: string): string {
 }
 
 const PAGES = [
-  "src/app/(app)/page.tsx",
+  "src/app/(app)/dashboard/page.tsx",
   "src/app/(app)/leads/leads-page.tsx",
   "src/app/(app)/accounts/accounts-page.tsx",
   "src/app/(app)/contacts/contacts-page.tsx",
@@ -91,7 +91,7 @@ describe("session-25: zero loading UI — the reference's instant-render model (
   });
 
   it("the dashboard renders KPI cards when k is null (no !k skeleton branch)", () => {
-    const src = read("src/app/(app)/page.tsx");
+    const src = read("src/app/(app)/dashboard/page.tsx");
     const code = stripComments(src!);
     // The `!k ? skeletons : cards` ternary is retired — the cards render
     // unconditionally with null-safe values (the reports page's existing

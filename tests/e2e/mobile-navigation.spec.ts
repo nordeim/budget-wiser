@@ -7,7 +7,7 @@ import { expect, test } from "@playwright/test";
 test.describe("mobile navigation drawer", () => {
   test("hamburger opens the drawer with every nav destination", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
 
     // No desktop sidebar at 390px.
     await expect(page.locator("aside").first()).toBeHidden();
@@ -38,7 +38,7 @@ test.describe("mobile navigation drawer", () => {
 
   test("tapping a drawer link navigates and closes the drawer", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
 
     await page.getByRole("button", { name: "Open navigation menu" }).click();
     const dialog = page.getByRole("dialog", { name: "Navigation menu" });
@@ -54,7 +54,7 @@ test.describe("mobile navigation drawer", () => {
 
   test("Escape closes the drawer and restores focus", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
 
     const trigger = page.getByRole("button", { name: "Open navigation menu" });
     await trigger.click();
@@ -77,7 +77,7 @@ test.describe("mobile navigation drawer", () => {
     // behind the aria-modal dialog (WCAG 2.4.3). The fix retries focus
     // across frames until activeElement lands inside the panel.
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
 
     const trigger = page.getByRole("button", { name: "Open navigation menu" });
     await trigger.click();
@@ -102,7 +102,7 @@ test.describe("mobile navigation drawer", () => {
 
   test("body scroll is locked while the drawer is open", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
 
     await page.getByRole("button", { name: "Open navigation menu" }).click();
     expect(await page.evaluate(() => document.body.style.overflow)).toBe("hidden");
@@ -119,7 +119,7 @@ test.describe("mobile navigation drawer", () => {
     // must close and unlock at the SAME breakpoint it hides (symmetrical
     // breakpoint strategy).
     await page.setViewportSize({ width: 700, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
 
     await page.getByRole("button", { name: "Open navigation menu" }).click();
     const dialog = page.getByRole("dialog", { name: "Navigation menu" });
@@ -145,7 +145,7 @@ test.describe("mobile navigation drawer", () => {
 
   test("desktop shows the persistent sidebar instead", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/");
+    await page.goto("/dashboard");
     await expect(page.locator("aside").first()).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Open navigation menu" }),
@@ -164,7 +164,7 @@ test.describe("mobile navigation drawer", () => {
     // Shift+Tab returns to the last focusable — focus never escapes the
     // aria-modal panel while it is open.
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
 
     const panel = page.locator('[role=dialog][aria-label="Navigation menu"]');
     // (1) CLOSED: the panel is inert (the attribute, not just invisible).
@@ -237,7 +237,7 @@ test.describe("mobile navigation drawer", () => {
     // pushes + seeds db/e2e.db) — the seeded-state mobile face the
     // zero-data drift sweep cannot see.
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/dashboard");
     await page.waitForLoadState("domcontentloaded");
 
     await page.getByRole("button", { name: "Open navigation menu" }).click();

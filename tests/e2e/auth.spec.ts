@@ -35,8 +35,19 @@ test("rejects wrong credentials with a visible error", async ({ page }) => {
   await expect(page.getByRole("status")).toHaveCount(0);
 });
 
-test("unauthenticated visits redirect to /login", async ({ page }) => {
+test("unauthenticated visits to app pages redirect to /login (the (app) guard), but `/` serves the PUBLIC landing", async ({ page }) => {
+  // Session-142 (D-142a0): the reference's root is now its PUBLIC
+  // marketing landing page (probe:ref #114's parity event) — a guest
+  // sees the landing (no redirect, live-verified logged-out on the
+  // reference); our mirror serves the same public surface. The app
+  // pages themselves stay auth-gated by the (app) group layout (our
+  // documented security posture — the reference's guest-visible app
+  // shell is a base44 platform artifact).
   await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Every account, contact and deal in one calm workspace" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open dashboard" }).first()).toBeVisible();
+  // the app pages still login-wall:
+  await page.goto("/dashboard");
   await page.waitForURL("**/login");
   await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
 });

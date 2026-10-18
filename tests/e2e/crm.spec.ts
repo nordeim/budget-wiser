@@ -4,7 +4,7 @@ import { e2ePort } from "./e2e-port";
 // Authenticated golden path across the CRM (uses the seeded e2e database).
 
 test("dashboard renders seeded KPIs, charts and recent deals", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 
   // KPI cards
@@ -612,7 +612,7 @@ test("per-page document titles follow the Page | NEO CRM scheme", async ({ page 
   // Session-10 (S10-10): the reference titles every non-dashboard page
   // "X | NEO CRM"; the dashboard + login stay "NEO CRM" (document.title
   // probes on all 10 routes of the live reference).
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
   await expect(page).toHaveTitle("NEO CRM");
   for (const [path, title] of [
@@ -777,7 +777,7 @@ test("the sidebar hrefs are the reference's CAPITALIZED paths (S24-P2)", async (
   // Byte-extracted from the reference's live DOM: its sidebar links point
   // at /Dashboard, /Accounts, … /Settings — Dashboard at /Dashboard, NOT
   // the root — and every capital URL renders in place (S24-P1).
-  await page.goto("/");
+  await page.goto("/dashboard");
 
   const aside = page.locator("aside");
   const hrefs = await aside.locator("a").evaluateAll((els) =>
@@ -802,7 +802,7 @@ test("the active nav state is CASE-INSENSITIVE like the reference's (S24-P2)", a
   const active = page.locator("aside a[aria-current='page']");
   await expect(active).toHaveAttribute("href", "/Reports");
 
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.locator("aside a[aria-current='page']")).toHaveAttribute("href", "/Dashboard");
 });
 
@@ -834,7 +834,7 @@ test("the dashboard More... button is the reference's dead affordance (S24-P3)",
   // Live-verified on the reference: clicking More... changes NOTHING —
   // zero DOM delta, zero dialogs, zero navigation. Ours pushed /leads
   // (an invention); the no-op is now pinned.
-  await page.goto("/");
+  await page.goto("/dashboard");
   await page.getByRole("button", { name: "More...", exact: true }).click();
   // Session-49 (S49-P3): a BOUNDED no-op-contract wait — the pinned
   // contract is "nothing happens" (no navigation, no dialog), so there
@@ -842,12 +842,12 @@ test("the dashboard More... button is the reference's dead affordance (S24-P3)",
   // assertions would pass vacuously at t≈0. The 300ms window is the
   // window in which a wrong navigation would have started.
   await page.waitForTimeout(300);
-  await expect(page).toHaveURL(/\/$|\/Dashboard/);
+  await expect(page).toHaveURL(/\/[Dd]ashboard/);
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 });
 
 test("global search finds a seeded account", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   await page.getByLabel("Search accounts, contacts and leads").fill("Northwind");
   // Session-65 (N-65b re-anchor): the pre-s65 assertions were VACUOUS —
   // getByText("Accounts").first() resolved to the ALWAYS-VISIBLE SIDEBAR
@@ -937,7 +937,7 @@ test("the topbar account menu is a real role=menu with Profile/Logout (S13-P4)",
   // The reference ships the stock Radix DropdownMenu (role=menu with
   // menuitems, rounded-md shadow-md surface). Ours was a Popover-based
   // role=dialog with a custom surface — this pins the menu semantics.
-  await page.goto("/");
+  await page.goto("/dashboard");
   await page.getByRole("button", { name: "Account menu" }).click();
 
   const menu = page.locator('[role="menu"]');
@@ -1259,7 +1259,7 @@ test("the topbar account trigger is the stock ghost Button + two-level avatar (S
   // Reference trigger: the full stock ghost construction (incl. the 1px
   // focus-visible ring) + the stock two-level Avatar (a rounded-full root
   // span wrapping a fallback div with the initial).
-  await page.goto("/");
+  await page.goto("/dashboard");
 
   const trigger = page.getByRole("button", { name: "Account menu" });
   await expect(trigger).toBeVisible();
@@ -1284,7 +1284,7 @@ test("the sidebar Accounts nav ships the users glyph (S17-P2a)", async ({ page }
   // The reference's sidebar: Accounts = `users` (two-person), Contacts =
   // `circle-user`, Calendar = `calendar` — all three renamed-but-equal
   // exports in lucide 0.525. The glyph census, e2e-pinned.
-  await page.goto("/");
+  await page.goto("/dashboard");
 
   const accountsLink = page.getByRole("link", { name: "Accounts" }).first();
   await expect(accountsLink.locator("svg.lucide-users")).toBeVisible();
@@ -1348,7 +1348,7 @@ test("the blue primary buttons carry the bare shadow scale (S17-P4)", async ({ p
 // ---------------------------------------------------------------------------
 
 test("the head ships the reference meta description (S18-P1)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   const description = await page
     .locator('meta[name="description"]')
     .getAttribute("content");
@@ -1358,7 +1358,7 @@ test("the head ships the reference meta description (S18-P1)", async ({ page }) 
 });
 
 test("the head ships the OpenGraph + Twitter card family (S18-P2)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
     "content",
     "NEO CRM",
@@ -1390,7 +1390,7 @@ test("the head ships the OpenGraph + Twitter card family (S18-P2)", async ({ pag
 });
 
 test("the head ships the file-convention favicon link (S18-P3)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   const icon = page.locator('link[rel="icon"]');
   await expect(icon).toHaveCount(1);
   const href = await icon.getAttribute("href");
@@ -1446,7 +1446,7 @@ test("sitemap.xml serves the nine real routes (S18-P4)", async ({ page }) => {
 // ---------------------------------------------------------------------------
 
 test("manifest.json serves the reference's installable manifest (S19-P1)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.locator('link[rel="manifest"]')).toHaveCount(1);
   const res = await page.request.get("/manifest.json");
   expect(res.status()).toBe(200);
@@ -1465,7 +1465,7 @@ test("manifest.json serves the reference's installable manifest (S19-P1)", async
 });
 
 test("the head ships the reference's #000000 theme-color + PWA metas (S19-P2, S19-P3)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
     "content",
     "#000000",
@@ -1482,7 +1482,7 @@ test("the head ships the reference's #000000 theme-color + PWA metas (S19-P2, S1
 });
 
 test("the apple-touch-icon link resolves to a real asset (S19-P3)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   const apple = page.locator('link[rel="apple-touch-icon"]');
   await expect(apple).toHaveCount(1);
   const href = await apple.getAttribute("href");
@@ -1522,7 +1522,7 @@ test("inner pages ship PER-ROUTE canonical + OG/Twitter (S19-P4, S19-P5)", async
 });
 
 test("the dashboard keeps the unprefixed root metadata family (S19-P4)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
     "content",
     "NEO CRM",
@@ -1586,7 +1586,7 @@ test("every HTML route ships the reference's security-header set (S20-P1, S20-P2
 });
 
 test("static assets ship the security-header set too (S20-P1, S20-P2)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   // The reference sets the same set on its hashed CSS asset (verified on
   // /static/index-*.css).
   const cssHref = await page
@@ -1624,7 +1624,7 @@ test("manifest.json + robots.txt keep their reference-matching content-types (re
 // ---------------------------------------------------------------------------
 
 test("the app ships ZERO webfonts and the stock system font stack (S22-P1)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   // The reference's computed body family is Tailwind's stock default
   // stack (byte-extracted from its preflight html rule); it loads NO
   // webfont anywhere (document.fonts empty, zero @font-face in its
@@ -1669,7 +1669,7 @@ test("the login page computes the same stock stack — no webfont anywhere (S22-
 });
 
 test("the body computes default auto font smoothing — no antialiased (S22-P2)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   // The reference ships zero font-smoothing rules (computed `auto` and
   // no text-rendering override); our scaffold-era double antialiased
   // (the html CSS rule + the body utility) rendered thinner text on
@@ -1703,7 +1703,7 @@ test("the reports period dropdown ships the reference's 6 options (S25-P6)", asy
 });
 
 test("the dashboard renders KPI cards immediately — zero skeleton pass (S25-P1)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   // The reference's instant-render model: the full page (KPI cards with
   // zeros/real values) renders from FIRST paint — no animate-pulse family
   // ever mounts (live-verified with the entity-fetch-abort probe on the
@@ -1973,45 +1973,44 @@ test("the contacts page export downloads the quoted 7-column CSV (S26-P5)", asyn
   expect(body.split("\n")[0]).toBe('"Name","Email","Phone","Company","Position","Status","Source"');
 });
 
-test("the dashboard export trio downloads the client-side CSVs (S47-P1)", async ({ page }) => {
+test("the dashboard export is the s142 SINGLETON: the one-click leads CSV (S47-P1 + D-142b0)", async ({ page }) => {
+  // Session-142 (D-142b0): the reference's index-Dc6wvGtA.js bundle
+  // retired the s33 header trio (Add + outline Export gone; ONE blue
+  // Export remains — live-censused at 1440 + 390). Our export-menu
+  // dropdown retired with the reference's own buttons; the primary
+  // Export keeps the s47 one-click leads-export job.
   // Session-49 (S49-P3): the hydration wait is the /api/leads response
   // (set up BEFORE the navigation) + the "Follow up with" rows as the
   // store-commit signal — the leads builder has NO zero-guard, so a
   // pre-commit click would download a header-only CSV and fail the
-  // row assertion below (the old 600ms sleep was the same guard,
-  // arbitrary-tailed).
+  // row assertion below.
   const leadsLoaded = page.waitForResponse((r) => r.url().includes("/api/leads"));
-  await page.goto("/");
+  await page.goto("/dashboard");
   await leadsLoaded;
   await expect(page.getByText(/Follow up with/).first()).toBeVisible();
-  // The outline Export opens the menu; its Leads item fires the leads
-  // builder (the s29 leads-page convention: leads_ISO.csv, unquoted
-  // header + quoted value cells). The URL must STAY / — the pre-S47-P1
-  // wiring navigated the browser to the raw 400 JSON body.
-  const menuDownloadPromise = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export" }).first().click();
-  await page.getByRole("button", { name: "Leads" }).click();
-  const menuDownload = await menuDownloadPromise;
-  expect(menuDownload.suggestedFilename()).toMatch(/^leads_\d{4}-\d{2}-\d{2}\.csv$/);
-  const menuPath = await menuDownload.path();
-  const { readFileSync } = await import("node:fs");
-  const menuBody = readFileSync(menuPath!, "utf8");
-  expect(menuBody.split("\n")[0]).toBe(
-    "Name,Email,Phone,Company,Value,Status,Source,Next Follow-up",
-  );
-  expect(menuBody.split("\n")[1]).toMatch(/^"/);
-  // The primary (filled) Export is the one-click leads export — the
-  // documented job (the dashboard-contracts session-33 S33-P1/P2
-  // describe: the DASHBOARD_HEADER pins + the dead-affordance pair —
-  // s65 token-form refresh of the drifted line citation).
+  // The header carries exactly ONE Export button (the retired pair
+  // never returns).
+  const headerExports = page.locator("main").getByRole("button", { name: "Export", exact: true });
+  await expect(headerExports).toHaveCount(1);
+  // The primary Export is the one-click leads export — the documented
+  // job (the s29 leads-page convention: leads_ISO.csv, unquoted header
+  // + quoted value cells).
   const directDownloadPromise = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export" }).last().click();
+  await headerExports.first().click();
   const directDownload = await directDownloadPromise;
   expect(directDownload.suggestedFilename()).toMatch(/^leads_\d{4}-\d{2}-\d{2}\.csv$/);
+  const directPath = await directDownload.path();
+  const { readFileSync } = await import("node:fs");
+  const directBody = readFileSync(directPath!, "utf8");
+  expect(directBody.split("\n")[0]).toBe(
+    "Name,Email,Phone,Company,Value,Status,Source,Next Follow-up",
+  );
+  expect(directBody.split("\n")[1]).toMatch(/^"/);
   // No navigation happened — the dashboard is still the page (N-48e:
   // the old toContain("/") matched every URL; the file's own
   // More... idiom pins the actual route).
-  await expect(page).toHaveURL(/\/$|\/Dashboard/);
+  // Session-142 (D-142a0): the LOWERCASE /dashboard form (the route move).
+  await expect(page).toHaveURL(/\/[Dd]ashboard/);
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 });
 
@@ -2966,7 +2965,7 @@ test("the settings defaults persist via the debounce WITHOUT losing focus (S72-P
 });
 
 test("the logout round-trip: the menu Logout clears the session + protects the app (S73-P7a)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
   await page.getByRole("button", { name: "Account menu" }).click();
   const menu = page.getByRole("menu");
@@ -3025,20 +3024,19 @@ test("the contact upload negative trio: the client alert + the two server reject
   await expect(dialog.locator("img")).toHaveCount(0);
 });
 
-test("the dashboard quick-create dropdown smoke: the five items + the Lead click-through (S73-P7d)", async ({ page }) => {
-  await page.goto("/");
+test("the dashboard quick-create: the header Add is GONE (the s142 singleton header) + the Lead Sources Add still opens the Lead dialog (S73-P7d + D-142b0)", async ({ page }) => {
+  await page.goto("/dashboard");
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
-  // The Add dropdown (our superset — the reference's Add is a plain
-  // button): opens the Popover menu with the five quick-create items.
-  // The page carries THREE "Add" buttons (the header trigger + the two
-  // quick-log text buttons) — the trigger is the only PopovER one
-  // (aria-haspopup).
-  await page.locator('button[aria-haspopup="dialog"]').filter({ hasText: "Add" }).click();
-  for (const item of ["Lead", "Contact", "Account", "Event", "Activity"]) {
-    await expect(page.getByRole("button", { name: item, exact: true })).toBeVisible();
-  }
-  // One click-through: the Lead item opens the create dialog.
-  await page.getByRole("button", { name: "Lead", exact: true }).click();
+  // Session-142 (D-142b0): the s33 header trio retired on the
+  // reference's new bundle — the header Add (our quick-create Popover
+  // trigger) retired with it. No Popover Add trigger renders anywhere
+  // on the page (the S73 signature was the aria-haspopup trigger).
+  await expect(page.locator('button[aria-haspopup="dialog"]').filter({ hasText: "Add" })).toHaveCount(0);
+  // The quick-create dialogs REMAIN reachable through the Lead Sources
+  // card's ghost Add (the S7-18 construction): one click-through to the
+  // create dialog.
+  const sourcesCard = page.locator("main .rounded-xl", { hasText: "Lead Sources" });
+  await sourcesCard.getByRole("button", { name: "Add" }).click();
   const createDialog = page.getByRole("dialog");
   await expect(createDialog).toBeVisible();
   await expect(createDialog.getByText("Create New Lead")).toBeVisible();
@@ -3223,7 +3221,7 @@ test("the opportunities consumers: the insights Open Deals tab + the contact Dea
 
   // (3) The dashboard Recent Deals rows (opps by updatedAt desc, top 5).
   await page.keyboard.press("Escape");
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(page.getByText("Recent Deals").first()).toBeVisible();
   // "Compliance tracking renewal" carries updatedAt -1d — always inside
   // the recent-5 window (date-independent like the s18 all-time lesson).

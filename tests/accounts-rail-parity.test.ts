@@ -54,7 +54,7 @@ function stripComments(src: string) {
 }
 
 const page = () => stripComments(read("src/app/(app)/accounts/accounts-page.tsx"));
-const dashboard = () => stripComments(read("src/app/(app)/page.tsx"));
+const dashboard = () => stripComments(read("src/app/(app)/dashboard/page.tsx"));
 const dialogs = () => stripComments(read("src/components/shared/entity-dialogs.tsx"));
 const editDialog = () => stripComments(read("src/components/shared/entity-edit-dialog.tsx"));
 const constants = () => stripComments(read("src/lib/constants.ts"));
@@ -178,11 +178,16 @@ describe("session-86: the computed-tier derivation (M-86c2)", () => {
     expect(block).not.toMatch(/a\.isKey/);
   });
 
-  it("the dashboard's accounts CSV export carries the computed Tier column", () => {
+  it("the dashboard's accounts CSV export is RETIRED with the s33 header trio (the computed Tier column lives on the accounts page's own export)", () => {
+    // Session-142 (D-142b0): the reference's index-Dc6wvGtA.js bundle
+    // retired the header trio — our export-menu dropdown (and its
+    // contacts/accounts/activities builders) retired with the
+    // reference's own buttons. The computed-tier derivation stays
+    // pinned on the accounts page's export (the test above).
     const src = dashboard();
-    const i = src.indexOf("function exportAccountsCsv");
-    const block = src.slice(i, i + 1100);
-    expect(block).toMatch(/accountTierFromRevenue\(a\.annualRevenue\)/);
+    expect(src).not.toMatch(/function exportAccountsCsv/);
+    // the computed tier still rides the accounts page's export
+    expect(page()).toMatch(/accountTierFromRevenue\(a\.annualRevenue\)/);
   });
 
   it("the stored tier/isKey RETIRE: schema, wire type, API blocks, create payload, seed", () => {

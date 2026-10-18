@@ -11,6 +11,11 @@ import { siteUrl } from "@/lib/site";
 // case-insensitively; our router is case-sensitive (the documented s14
 // decision, /Profile as the one aliased casing), so this sitemap lists
 // the real lowercase routes the router actually serves.
+// Session-142 (D-142a3): + /about + /contact (the reference's two new
+// marketing-layer app pages — its URL surface now includes them; ours
+// mirrors at the lowercase canonicals). `/` stays 1.0 — it is now the
+// PUBLIC landing page (the reference's own root), still the highest-
+// priority crawlable route.
 export const dynamic = "force-static";
 
 const ROUTES: Array<{ path: string; priority: string }> = [
@@ -23,6 +28,8 @@ const ROUTES: Array<{ path: string; priority: string }> = [
   { path: "/reports", priority: "0.8" },
   { path: "/settings", priority: "0.8" },
   { path: "/profile", priority: "0.8" },
+  { path: "/about", priority: "0.8" },
+  { path: "/contact", priority: "0.8" },
 ];
 
 export function GET(): Response {

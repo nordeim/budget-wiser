@@ -186,9 +186,13 @@ export interface DashboardData {
     conversionRate: string;
     avgSalesCycleDays: number;
   };
-  /** The FIXED Nov..May label window (the reference's hardcoded quirk) —
-   *  over the UNFILTERED opps (the reference's `b` memo reads `f`). */
-  revenueOverTime: Array<{ month: string; won: number; target: number }>;
+  /** Session-142 (D-142b0): the ROLLING last-7-months window (labels =
+   *  the data months, ending at the current month — the reference's new
+   *  bundle retired its fixed Nov..May quirk) — over the UNFILTERED
+   *  opps (the reference's `b` memo reads `f`). The WON series only:
+   *  the synthetic target member retired with the reference's
+   *  index-Dc6wvGtA.js bundle (one area series, no legend). */
+  revenueOverTime: Array<{ month: string; won: number }>;
   leadSources: Array<{ source: string; count: number; value: number }>;
   /** Session-78 (L-78c4): the reference's `A` memo — the top-10-by-date
    *  window filtered to date >= now, slice(0,3). */

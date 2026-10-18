@@ -34,10 +34,33 @@ export const dynamic = "force-dynamic";
 // tests/seeded-dashboard-kpis.test.ts (the seed→seam chain: 24 / 0 /
 // 0 / "29.2" / 83 on the parsed seed at the synthetic seed-time NOW).
 
-/** The reference's FIXED 7-label window — hardcoded in its bundle, it does
- *  NOT track the data months (the labels stay Nov..May forever; the data
- *  indexes the last 7 months relative to now). */
-const REVENUE_LABELS = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"] as const;
+/** Session-142 (D-142b0 — the dashboard re-derivation on the reference's
+ *  index-Dc6wvGtA.js bundle): the revenue chart's FIXED Nov..May label
+ *  quirk is RETIRED — the new reference derives the 7 labels as the
+ *  ROLLING last-7-months window ending at the current month
+ *  (live-censused Apr..Oct on 2026-10-18: xTicks Apr/May/Jun/Jul/Aug/
+ *  Sep/Oct). The labels and the data month-indices now AGREE (the old
+ *  quirk paired fixed labels with rolling data indices — the mismatch
+ *  we mirrored verbatim since s31).
+ *  The synthetic 55k±random TARGET series is retired with it: the new
+ *  reference renders ONE area series ("Won") — no target series, NO
+ *  legend (both live-censused absent on the new bundle; the zero-data
+ *  face renders the flat area + the "0,1,2,3,4" y-quirk domain + the
+ *  "Won : $0" dollar-formatter tooltip face). */
+const MONTH_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
 
 export async function GET() {
   const guard = await requireSession();
@@ -77,24 +100,21 @@ export async function GET() {
   //      src/lib/dashboard-data.ts) ----
   const kpis = dashboardKpis(leads, now);
 
-  // ---- Revenue over time: the FIXED Nov..May labels + the 55k±random
-  //      target (the reference recomputes the random per render; per request is
-  //      our server-side expression of the same variance) — over the
-  //      UNFILTERED opps (the reference's `b` memo reads `f`, not `p`).
-  //      Session-139 (F-139c1, the maiden tooltip lens): the reference's
-  //      own formula carries NO rounding — the raw 55k+random float (the
-  //      live-decoded tooltip values $57,824.88 / $63,694.472 / $56,795.191
-  //      across fresh loads — toLocaleString's 3-fraction-digit default with
-  //      trailing-zero trims). Our former Math.round rendered integer-only
-  //      tooltip values ("Target : $60,977") — the value-form divergence;
-  //      the rounding retired, no rounding ever again. ----
+  // ---- Revenue over time: the ROLLING last-7-months window (D-142b0:
+  //      the s142 re-derivation — labels = the data months, ending at the
+  //      current month) over the UNFILTERED opps (the reference's `b`
+  //      memo reads `f`, not `p`). The WON series only — the target
+  //      series + the legend retired with the reference's new bundle
+  //      (the s31 "55k±random" synthetic face and the s139 F-139c1
+  //      value-form decode are both historical now; no rounding
+  //      question remains — there is no synthetic value left to round).
   const curMonth = now.getMonth();
-  const revenueOverTime: DashboardData["revenueOverTime"] = REVENUE_LABELS.map((month, i) => {
+  const revenueOverTime: DashboardData["revenueOverTime"] = Array.from({ length: 7 }, (_, i) => {
     const m = (curMonth - 6 + i + 12) % 12;
     const won = wonOpps
       .filter((o) => o.updatedAt.getMonth() === m)
       .reduce((s, o) => s + (o.amount || 0), 0);
-    return { month, won, target: 55_000 + Math.random() * 10_000 };
+    return { month: MONTH_LABELS[m], won };
   });
 
   // ---- Lead sources (LEADS — the reference's `x` memo, unfiltered) ----

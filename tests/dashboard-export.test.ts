@@ -8,16 +8,24 @@ import { describe, expect, it } from "vitest";
 // the s29 re-scope (export/route.ts answers type=report only; every entity
 // click NAVIGATED the browser to the raw 400 JSON body). The reference's
 // own header trio is dead (no onClick — bundle-verified); ours is the
-// DOCUMENTED functional superset (dashboard-contracts.test.ts:284-297,
-// the session-33 filter-bar/trio comment block — s64 refresh),
-// now wired to the CLIENT-SIDE entity-export family — the pages' own
-// s26/s29 conventions verbatim: the builders, the filenames, the
-// zero-guards. Zero e2e coverage is how 18 green sessions missed it (one
-// new e2e closes the gap).
+// DOCUMENTED functional superset (dashboard-contracts.test.ts, the
+// session-33 filter-bar/trio comment block — s64 refresh), now wired to
+// the CLIENT-SIDE entity-export family — the pages' own s26/s29
+// conventions verbatim: the builders, the filenames, the zero-guards.
+//
+// Session-142 (D-142b0) RE-SCOPE: the reference's index-Dc6wvGtA.js bundle
+// retired the s33 header trio — its header row carries exactly ONE button
+// (the blue primary Export; live-censused at 1440 + 390, no Add anywhere
+// on the page). Our export-menu dropdown + the three entity builders
+// (contacts/accounts/activities) retired with the reference's own
+// buttons; the ONE-CLICK LEADS EXPORT stays (the primary button's job
+// since s47). Those entity builders' conventions live on their OWN pages
+// (contacts/accounts/settings) — pinned there; the dashboard's remaining
+// export surface is the leads builder alone.
 
 function read(rel: string): string | null {
   const p = path.resolve(import.meta.dirname, "..", rel);
-  return existsSync(p) ? readFileSync(p, "utf-8") : null;
+  return existsSync(p) ? readFileSync(p, "utf8") : null;
 }
 
 function stripComments(src: string) {
@@ -26,7 +34,7 @@ function stripComments(src: string) {
     .replace(/\/\/[^\n]*/g, "");
 }
 
-const page = () => stripComments(read("src/app/(app)/page.tsx") ?? "");
+const page = () => stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
 
 /** Slice a bounded region at an anchor (a failed anchor fails the pin). */
 function regionAt(src: string, anchor: string, span: number): string {
@@ -35,7 +43,7 @@ function regionAt(src: string, anchor: string, span: number): string {
   return src.slice(at, at + span);
 }
 
-describe("session-47: the dashboard export rewire (S47-P1, F-47a)", () => {
+describe("session-47+142: the dashboard export — the single-affordance re-scope (S47-P1 / D-142b0)", () => {
   it("the page carries ZERO /api/export references and ZERO downloadFile calls", () => {
     const src = page();
     expect(src).not.toMatch(/\/api\/export/);
@@ -44,22 +52,16 @@ describe("session-47: the dashboard export rewire (S47-P1, F-47a)", () => {
     expect(src).toMatch(/downloadBlob/);
   });
 
-  it("the four menu items call the four builder functions (no inline wiring)", () => {
+  it("the retired entity builders NEVER return (contacts/accounts/activities gone with the s33 trio)", () => {
     const src = page();
-    // The onClick precedes the JSX children — slice BACKWARD from each
-    // item's text node to its opening tag.
-    const itemRegion = (text: string): string => {
-      const at = src.indexOf(`>${text}</DropdownItem>`);
-      expect(at).toBeGreaterThanOrEqual(0);
-      return src.slice(Math.max(0, src.lastIndexOf("<DropdownItem", at)), at + text.length);
-    };
-    expect(itemRegion("Leads")).toMatch(/onClick=\{exportLeadsCsv\}/);
-    expect(itemRegion("Contacts")).toMatch(/onClick=\{exportContactsCsv\}/);
-    expect(itemRegion("Accounts")).toMatch(/onClick=\{exportAccountsCsv\}/);
-    expect(itemRegion("Activities")).toMatch(/onClick=\{exportActivitiesCsv\}/);
+    expect(src).not.toMatch(/function exportContactsCsv/);
+    expect(src).not.toMatch(/function exportAccountsCsv/);
+    expect(src).not.toMatch(/function exportActivitiesCsv/);
+    // the export-menu dropdown itself is gone
+    expect(src).not.toMatch(/<DropdownItem onClick=\{exportContactsCsv\}/);
   });
 
-  it("the primary Export is the one-click leads export (the documented job)", () => {
+  it("the primary Export is the one-click leads export (the s47 job, the s142 survivor)", () => {
     const src = page();
     const at = src.indexOf("DASHBOARD_HEADER.primaryExportLabel");
     expect(at).toBeGreaterThanOrEqual(0);
@@ -81,33 +83,18 @@ describe("session-47: the dashboard export rewire (S47-P1, F-47a)", () => {
     // The rows come from the store's leads slice.
     expect(region).toMatch(/leads\.map\(/);
   });
+});
 
-  it("the contacts builder = the contacts-page convention verbatim (toQuotedCsv, 7 columns, zero-guard)", () => {
+describe("session-142: the Export disabled state (D-142b0)", () => {
+  it("the Export is DISABLED at zero leads — the reference's own data-driven guard (the stock opacity-50 face)", () => {
     const src = page();
-    const region = regionAt(src, "function exportContactsCsv", 800);
-    expect(region).toMatch(/toQuotedCsv\(/);
-    expect(region).toMatch(/csvFilename\("contacts"\)/);
-    expect(region).toMatch(/contacts\.length === 0\) return/);
-    for (const col of ["Name", "Email", "Phone", "Company", "Position", "Status", "Source"]) {
-      expect(region).toContain(`"${col}"`);
-    }
-    expect(region).toMatch(/contacts\.map\(/);
-  });
-
-  it("the accounts + activities builders = the page/settings conventions (10 columns / the raw dump)", () => {
-    const src = page();
-    const accounts = regionAt(src, "function exportAccountsCsv", 900);
-    expect(accounts).toMatch(/toQuotedCsv\(/);
-    expect(accounts).toMatch(/csvFilename\("accounts"\)/);
-    expect(accounts).toMatch(/accounts\.length === 0\) return/);
-    for (const col of ["Name", "Industry", "Phone", "Email", "Website", "Annual Revenue", "Employees", "Status", "Tier", "Health"]) {
-      expect(accounts).toContain(`"${col}"`);
-    }
-    // The activities export = the settings raw-dump family (the repo's only
-    // activities-CSV convention): entityDumpCsv + activity_ISO.csv.
-    const activities = regionAt(src, "function exportActivitiesCsv", 500);
-    expect(activities).toMatch(/entityDumpCsv\(activities\)/);
-    expect(activities).toMatch(/entityExportFilename\("Activity"\)/);
-    expect(activities).toMatch(/activities\.length === 0\) return/);
+    // Live-censused on the reference's new bundle: its Export renders
+    // disabled=true + opacity 0.5 at its standing zero-data state (the
+    // half-blue (142,173,242) face the sweep's phone cluster decoded);
+    // the stock disabled:opacity-50 arm does the rendering.
+    const at = src.indexOf("DASHBOARD_HEADER.primaryExportLabel");
+    expect(at).toBeGreaterThanOrEqual(0);
+    const region = src.slice(Math.max(0, src.lastIndexOf("<Button", at)), at + 300);
+    expect(region).toMatch(/disabled=\{leads\.length === 0\}/);
   });
 });

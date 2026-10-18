@@ -21,7 +21,11 @@
 // route's page.js import in Next's generated validator, and compiles
 // identically through SWC. The lowercase page.tsx stays canonical.
 
-import DashboardPage from "../page";
+// Session-142 (D-142a0): the import re-anchored — the dashboard source
+// moved from (app)/page.tsx to (app)/dashboard/page.tsx (the root `/`
+// became the PUBLIC landing page; the reference's marketing layer — see
+// the session-142 plan).
+import DashboardPage from "../dashboard/page";
 
 export default function DashboardCapitalRoute() {
   return <DashboardPage />;

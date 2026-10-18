@@ -159,6 +159,15 @@ describe("session-18: sitemap.xml + robots.txt (S18-P4)", () => {
     expect(src).not.toContain('"/Accounts"');
   });
 
+  it("session-142: the marketing layer's two routes join the sitemap (D-142a3)", () => {
+    const src = sitemapSrc();
+    // The reference's s142 URL surface adds /About + /Contact (its new
+    // marketing-layer app pages); ours mirrors them at the lowercase
+    // canonicals — `/` stays 1.0 (now the public landing page).
+    expect(src).toContain('{ path: "/about", priority: "0.8" }');
+    expect(src).toContain('{ path: "/contact", priority: "0.8" }');
+  });
+
   it("serves robots.txt in the reference's byte format", () => {
     // The reference's robots.txt (byte-verified): "User-agent" with a
     // LOWERCASE a, LF-only, no trailing newline, one blank line before

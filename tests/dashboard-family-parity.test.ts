@@ -52,7 +52,7 @@ function stripComments(src: string): string {
     .replace(/\/\/[^\n]*/g, "");
 }
 
-const dashPage = () => stripComments(read("src/app/(app)/page.tsx") ?? "");
+const dashPage = () => stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
 const dashRoute = () => stripComments(read("src/app/api/dashboard/route.ts") ?? "");
 const pageParts = () => stripComments(read("src/components/shared/page-parts.tsx") ?? "");
 const accountsPage = () => stripComments(read("src/app/(app)/accounts/accounts-page.tsx") ?? "");
@@ -378,26 +378,65 @@ describe("session-78: the KPI_SPARK record (N-78c8)", () => {
 // F-139c1 the target rounding + F-139c2 the area-spark stroke-width.
 // ---------------------------------------------------------------------------
 
-describe("session-139: the revenue target value form (F-139c1)", () => {
-  it("the target series carries NO rounding — the reference's own formula is the raw 55k+random float (the tooltip's toLocaleString renders the 3-fraction-digit default with trailing trims)", () => {
+describe("session-142: the revenue target retirement (D-142b0 — the reference's index-Dc6wvGtA.js re-derivation)", () => {
+  it("the synthetic target series is RETIRED — no 55k+random formula, no Math.random in the route, no target member in the wire type", () => {
     const src = dashRoute();
-    // The reference's revenue chart recomputes target per render as the
-    // bare float (the s31 Eke decode's "55k±random"; the s139 maiden
-    // tooltip lens LIVE-decoded the ref's form — $57,824.88 / $63,694.472
-    // / $56,795.191 across fresh loads — toLocaleString's default
-    // maximumFractionDigits=3 with trailing-zero trims, NO
-    // quantization). Our former Math.round rendered integer-only tooltip
-    // values ("Target : $60,977") — the value-FORM divergence the
-    // number-masked diff hid and the raw record exposed.
-    expect(src).toMatch(/target:\s*55_000\s*\+\s*Math\.random\(\)\s*\*\s*10_000/);
-    // the rounding never returns
-    expect(src).not.toMatch(/Math\.round\(\s*55_000/);
-    // the provenance comment carries the s139 decode note (the raw
-    // comment stream — the F-126c1 discipline: comments count as
-    // construction)
+    // Session-142 (D-142b0): the reference's new bundle renders ONE area
+    // series ("Won") with NO legend — the synthetic target series
+    // (live-censused since s31 as "55k±random", the s139 F-139c1
+    // no-rounding decode) is GONE from its index-Dc6wvGtA.js revenue
+    // chart. The zero-data face now renders the flat area + the
+    // "0,1,2,3,4" y-quirk domain + the "Won : $0" dollar-formatter
+    // tooltip face. The formula (and its rounding question) retired
+    // with the series itself.
+    expect(src).not.toMatch(/target:\s*55_000/);
+    expect(src).not.toMatch(/Math\.random/);
+    expect(src).not.toMatch(/55_000/);
+    // the s142 re-derivation note (the raw comment stream — the F-126c1
+    // discipline: comments count as construction)
     const raw = read("src/app/api/dashboard/route.ts") ?? "";
-    expect(raw).toMatch(/session-139/i);
-    expect(raw).toMatch(/no rounding/i);
+    expect(raw).toMatch(/session-142/i);
+    expect(raw).toMatch(/D-142b0/);
+    expect(raw).toMatch(/ROLLING last-7-months/);
+  });
+
+  it("the revenue window is the ROLLING last-7-months (the fixed Nov..May quirk retired) — the labels agree with the data months", () => {
+    const src = dashRoute();
+    // The old quirk: REVENUE_LABELS fixed ["Nov".."May"] while the data
+    // indexed the rolling months (the s31 mirror of the reference's then
+    // hardcoded labels). The new reference derives the labels rolling
+    // (live-censused Apr..Oct on 2026-10-18) — the MONTH_LABELS array +
+    // the Array.from({length: 7}) construction.
+    expect(src).not.toMatch(/REVENUE_LABELS/);
+    expect(src).toMatch(/MONTH_LABELS\[m\]/);
+    expect(src).toMatch(/Array\.from\(\{\s*length:\s*7\s*\}/);
+    // the wire type: the won series only
+    const types = read("src/types/index.ts") ?? "";
+    expect(types).not.toMatch(/revenueOverTime: Array<\{\s*month: string;\s*won: number;\s*target: number\s*\}>/);
+    expect(types).toMatch(/revenueOverTime: Array<\{\s*month: string;\s*won: number\s*\}>/);
+  });
+
+  it("the page renders the ONE won series (the target arm retired from the call site)", () => {
+    const page = stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
+    // the CALL SITE (not the import — indexOf hits the import line first)
+    const region = page.slice(page.indexOf("<RevenueLineChart"), page.indexOf("<RevenueLineChart") + 700);
+    expect(region).toMatch(/key: "won", label: "Won", color: CHART_COLORS\.emerald, fillOpacity: 0\.6/);
+    expect(region).not.toMatch(/key: "target"/);
+    expect(region).not.toMatch(/label: "Target"/);
+  });
+
+  it("the RevenueLineChart carries NO Legend (the reference's new bundle ships zero legend wrappers on the revenue chart)", () => {
+    const src = stripComments(read("src/components/charts/charts.tsx") ?? "");
+    const fn = src.slice(
+      src.indexOf("export function RevenueLineChart"),
+      src.indexOf("export function ConversionFunnel"),
+    );
+    expect(fn).not.toMatch(/<Legend\s*\/>/);
+    expect(fn).not.toMatch(/\{legend && <Legend \/>\}/);
+    // the GroupedBars family KEEPS its stock legend arm (s98 F-98c2 —
+    // the leads-page wonlost construction, unchanged by the s142 event)
+    const grouped = src.slice(src.indexOf("export function GroupedBarsChart"), src.indexOf("export function TrendLineChart"));
+    expect(grouped).toMatch(/\{legend && <Legend \/>\}/);
   });
 });
 

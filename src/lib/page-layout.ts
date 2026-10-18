@@ -525,20 +525,18 @@ export const MOBILE_NAV_LAYOUT = {
  *  whose label hides below sm. `primaryExportLabelClass: ""` pins the
  *  absence of a hiding class. */
 export const DASHBOARD_HEADER = {
-  /** Session-33 (S33-P2): the reference's dashboard header ships THREE
-   *  adjacent buttons — Add (outline), Export (outline), Export (the
-   *  blue bg-blue-600 hover:bg-blue-700 primary) — and ALL THREE are
-   *  DEAD there (the s33 bundle decode: no onClick on any; the §16c-era
-   *  dead-list covered only the Exports + the login Sign up link). Ours
-   *  keeps the exact visual with the documented functional superset
-   *  jobs: quick-create menu / export menu / one-click leads export. */
-  addLabel: "Add",
-  addLabelClass: "hidden sm:inline",
-  outlineExportLabel: "Export",
-  outlineExportLabelClass: "hidden sm:inline",
+  /** Session-142 (D-142b0): the s33 header TRIO retired on the
+   *  reference's index-Dc6wvGtA.js bundle — its header row
+   *  (`flex gap-2 w-full sm:w-auto`) now carries exactly ONE button:
+   *  the blue primary Export (live-censused at 1440 AND 390: x 1313/x 16,
+   *  bg rgb(37,99,235), radius 6px, w 95, h 32; no Add button anywhere
+   *  on the page). The addLabel/outlineExportLabel pair + their
+   *  hidden-sm classes retired with the reference's own buttons —
+   *  the s33 dead-trio decode + the s47 functional-superset rewire are
+   *  historical records now (the one-click leads export stays). */
   primaryExportLabel: "Export",
   /** S8-1: the primary Export renders its label as a BARE always-visible
-   *  text node (not hidden below sm like the outline pair). */
+   *  text node. */
   primaryExportLabelClass: "",
 } as const;
 

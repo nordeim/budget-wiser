@@ -77,7 +77,7 @@ function stripComments(src: string): string {
 }
 
 const pageParts = () => stripComments(read("src/components/shared/page-parts.tsx") ?? "");
-const dashPage = () => stripComments(read("src/app/(app)/page.tsx") ?? "");
+const dashPage = () => stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
 const reportsPage = () => stripComments(read("src/app/(app)/reports/reports-page.tsx") ?? "");
 const apiRobustness = () => read("tests/api-robustness.test.ts") ?? "";
 
@@ -337,43 +337,37 @@ describe("session-134: the dashboard KPI row + quick-create + filter-bar freeze"
 
   it("the five quick-create menu items as an ordered set + the five dialog mounts (the s134 walk census)", () => {
     const src = dashPage();
-    // The Add dropdown's five items in the census order (walk25b:
-    // Lead,Contact,Account,Event,Activity — 160x170 popover, 14px/400).
-    const items = ["lead", "contact", "account", "event", "activity"];
+    // Session-142 (D-142b0): the header dropdown retired with the
+    // reference's s33 trio — the quick-create vocabulary narrowed to
+    // the TWO card-level ghost Adds (the Lead Sources card → lead; the
+    // Upcoming Activities card → activity). The contact/account/event
+    // members + their dialogs retired (their only entry points).
+    const items = ["lead", "activity"];
     let prev = -1;
     for (const item of items) {
       const marker = `setQuickCreate("${item}")`;
       const i = src.indexOf(marker);
       expect(i, `the ${item} quick-create item must exist`).toBeGreaterThan(-1);
-      expect(i, `the ${item} item must keep the menu order`).toBeGreaterThan(prev);
+      expect(i, `the ${item} item must keep the source order`).toBeGreaterThan(prev);
       prev = i;
     }
-    // exactly FIVE menu items (the DropdownItem-wrapped call sites) + the
-    // TWO card Add-ghost rides (the Lead Sources + Upcoming Activities
-    // addBtn onClick arms — the walk25 ls1/ls2 censuses)
-    expect(src.match(/<DropdownItem onClick=\{\(\) => setQuickCreate\("/g) ?? []).toHaveLength(5);
-    expect(src.match(/setQuickCreate\("/g) ?? []).toHaveLength(7);
-    // the five dialog mounts (the L-134a7 battery — the LeadDialog walked
-    // 512x640 with the 7-label set + the Cancel hover pair at s134)
+    // ZERO DropdownItem quick-create call sites (the menu retired) +
+    // exactly TWO setQuickCreate call sites (the card ghosts)
+    expect(src.match(/<DropdownItem onClick=\{\(\) => setQuickCreate\("/g) ?? []).toHaveLength(0);
+    expect(src.match(/setQuickCreate\("/g) ?? []).toHaveLength(2);
+    // the two dialog mounts (the narrowed set — the s142 retirement)
     const mounts = [
       "<LeadDialog open={quickCreate === \"lead\"}",
-      "<ContactDialog open={quickCreate === \"contact\"}",
-      "<AccountDialog open={quickCreate === \"account\"}",
-      "<EventDialog open={quickCreate === \"event\"}",
       "<ActivityDialog open={quickCreate === \"activity\"}",
     ];
     for (const m of mounts) {
       expect(src).toContain(m);
     }
-    // the icons ride the icon-adjacency census (Target/Users/TrendingUp/
-    // Phone/Zap — the s134 Add-menu item texts byte-equal the walk25b)
-    const iconSeq = ["Target", "Users", "TrendingUp", "Phone", "Zap"];
-    prev = -1;
-    for (const icon of iconSeq) {
-      const i = src.indexOf(`<${icon} className="h-4 w-4 text-muted" />`);
-      expect(i, `the ${icon} menu icon must exist`).toBeGreaterThan(-1);
-      expect(i, `the ${icon} icon must keep the menu order`).toBeGreaterThan(prev);
-      prev = i;
+    // Session-142 (D-142b0): the Add-menu's lucide icon set (Target/
+    // Users/TrendingUp/Phone/Zap) retired with the dropdown — the only
+    // remaining icons on the page's Buttons are Plus + Download.
+    for (const icon of ["Target", "Users", "TrendingUp", "Phone", "Zap"]) {
+      expect(src).not.toContain(`<${icon} className="h-4 w-4 text-muted" />`);
     }
   });
 

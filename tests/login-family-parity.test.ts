@@ -380,7 +380,7 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // 5 labels at 390, the recharts-upgrade sentinel; the retired form
     // joins its negatives, the doctrine unchanged).
     expect(src).not.toContain("**E2E (Playwright, 137 checks)**");
-    expect(src).toContain("**E2E (Playwright, 138 checks)**");
+    expect(src).toContain("**E2E (Playwright, 146 checks)**");
   });
 });
 

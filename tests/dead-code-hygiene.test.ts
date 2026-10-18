@@ -37,7 +37,7 @@ const accounts = () => stripComments(read("src/app/(app)/accounts/accounts-page.
 const activities = () => stripComments(read("src/app/(app)/activities/activities-page.tsx") ?? "");
 const calendar = () => stripComments(read("src/app/(app)/calendar/calendar-page.tsx") ?? "");
 const contacts = () => stripComments(read("src/app/(app)/contacts/contacts-page.tsx") ?? "");
-const dashboard = () => stripComments(read("src/app/(app)/page.tsx") ?? "");
+const dashboard = () => stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
 const profilePage = () => stripComments(read("src/app/(app)/profile/profile-page.tsx") ?? "");
 const leads = () => stripComments(read("src/app/(app)/leads/leads-page.tsx") ?? "");
 const reports = () => stripComments(read("src/app/(app)/reports/reports-page.tsx") ?? "");
@@ -594,16 +594,18 @@ describe("session-60: the dead-surface narrowing (S60-P2)", () => {
     // BAR_BG_GM/BAR_BG_ZV keys — the s60 guard's accounts/activities
     // assertions re-derived with them).
     const src = stripComments(read("src/lib/constants.ts") ?? "");
-    expect(src).toMatch(/red: "#ef4444"/);
+    // Session-142 (D-142b0): red retired — its last consumer was the
+    // revenue target series (gone with the reference's new bundle).
     expect(src).toMatch(/violet: "#8b5cf6"/);
     expect(src).toMatch(/emerald: "#10b981"/);
     // the retired members are gone
+    expect(src).not.toMatch(/red: "#ef4444"/);
     expect(src).not.toMatch(/gray: "#9ca3af"/);
     expect(src).not.toMatch(/blue400:/);
     expect(src).not.toMatch(/amber400:/);
     expect(dashboard()).toMatch(/CHART_COLORS\.emerald/);
     expect(dashboard()).toMatch(/CHART_COLORS\.violet/);
-    expect(dashboard()).toMatch(/CHART_COLORS\.red\b/);
+    expect(dashboard()).not.toMatch(/CHART_COLORS\.red\b/);
     // the stat-card bars consume the CLASS maps, never the hex palette
     const parts = stripComments(read("src/components/shared/page-parts.tsx") ?? "");
     expect(parts).toMatch(/BAR_BG_GM/);

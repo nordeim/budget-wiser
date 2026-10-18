@@ -91,7 +91,15 @@ import path from "node:path";
 import { chromium } from "@playwright/test";
 
 export const PAGES = [
-  { name: "dashboard", path: "/" },
+  // Session-142 (D-142a6): the dashboard entry re-anchored to /dashboard
+  // (the root `/` became the PUBLIC landing page — the reference's
+  // marketing-layer parity event) + the NEW landing entry below it.
+  { name: "dashboard", path: "/dashboard" },
+  // the reference's new public marketing surface — swept at the same
+  // viewport banding; the maiden run measured its baseline (the CSS
+  // mock-dashboards render near-identically two-app; the landing's own
+  // noise floor sits at the chart-bars' anti-aliasing).
+  { name: "landing", path: "/" },
   { name: "accounts", path: "/accounts" },
   { name: "contacts", path: "/contacts" },
   { name: "leads", path: "/leads" },
@@ -184,6 +192,19 @@ export const TOLERANCE = 12;
 export const STANDING_BASELINES = {
   desktop: {
     dashboard: 0.4,
+    // session-142 (D-142a6): the BRAND-TOKEN GENUS (the fix-over-defect
+    // doctrine, the drawer precedent) — the reference's landing CSS
+    // build DROPPED its brand utilities (its stylesheet ships --brand
+    // but ZERO .bg-brand/.text-brand/.border-brand rules: the classes
+    // never generate), so every brand-colored element on its landing
+    // renders transparent/inherited in ANY browser — its primary CTAs
+    // are INVISIBLE (text-white on transparent = white-on-white, only
+    // the shadow silhouette shows), its logo/mock-sidebar/chart-bars
+    // colorless. OURS renders the intended design (--color-brand:
+    // #2563eb in @theme): the maiden run measured 9.59% — the blue
+    // regions' share; everything else (text, layout, the outline CTA,
+    // the mock chrome) pixel-matches.
+    landing: 9.9,
     accounts: 0.1,
     contacts: 0.6,
     leads: 0.1,
@@ -199,6 +220,11 @@ export const STANDING_BASELINES = {
   },
   phone: {
     dashboard: 0.75,
+    // session-142: the phone landing face — the BRAND-TOKEN GENUS at
+    // the narrower frame's share (the stacked hero CTA + the mock's
+    // hidden-below-sm sidebar shrink the blue regions; measured on the
+    // maiden phone run)
+    landing: 8.5,
     accounts: 0.75,
     contacts: 0.75,
     leads: 0.75,
@@ -229,6 +255,10 @@ export const STANDING_BASELINES = {
   // consistent pattern, documented STANDING since the phone walk.
   tablet: {
     dashboard: 0.1,
+    // session-142: the BRAND-TOKEN GENUS at the tablet share — the
+    // maiden 768x1024 run measured 15.34% (the wider mock renders the
+    // full blue sidebar + bars at a LARGER frame share)
+    landing: 15.8,
     accounts: 0.8,
     contacts: 0.1,
     leads: 0.1,
@@ -257,6 +287,9 @@ export const STANDING_BASELINES = {
   // toward 1280; 1440 rides the desktop table).
   landscape: {
     dashboard: 0.6,
+    // session-142: the BRAND-TOKEN GENUS at the landscape share — the
+    // maiden 1024x768 run measured 10.77%
+    landing: 11.3,
     accounts: 2.6,
     contacts: 0.1,
     leads: 0.1,
@@ -294,23 +327,23 @@ export function standingExplained(width: number): string {
   if (width < 768) {
     return (
       "[sweep] standing explained (phone): the ~0.5% mobile-nav floor on every page (our superset topbar) " +
-      "· settings ~7.3% picklist-data · reports ~0.7% floor + chart noise · login ~0.75% logo genus"
+      "· settings ~7.3% picklist-data · reports ~0.7% floor + chart noise · login ~0.75% logo genus · landing ~8% the s142 brand-token genus (the reference's landing CSS build dropped its brand utilities — its CTAs/logo/mock bars render transparent; ours the working blue)"
     );
   }
   if (width < 1024) {
     return (
       "[sweep] standing explained (tablet): accounts ~0.7% the s95 overflow genus at the md boundary " +
-      "· settings ~5.2% picklist-data · login ~0.44% logo genus"
+      "· settings ~5.2% picklist-data · login ~0.44% logo genus · landing ~9% the s142 brand-token genus"
     );
   }
   if (width < 1280) {
     return (
       "[sweep] standing explained (landscape): accounts ~2.4% the overflow genus at the lg band (the reference's bare flex-1 floors at its table min-content, squeezes its own w-80 rail 320->183, pokes main +6px — ours the min-w-0 in-box rail-full consistent pattern) " +
-      "· settings ~4.7% picklist-data · login ~0.44% logo genus"
+      "· settings ~4.7% picklist-data · login ~0.44% logo genus · landing ~9.4% the s142 brand-token genus"
     );
   }
   return (
-    "[sweep] standing explained (desktop): settings ~4.7% picklist-data · contacts ~0.5% lucide superset · dashboard ~0.3% chart artifact"
+    "[sweep] standing explained (desktop): settings ~4.7% picklist-data · contacts ~0.5% lucide superset · dashboard ~0.3% chart artifact · landing ~9.6% the s142 brand-token genus (the reference's landing CSS build dropped its brand utilities — its primary CTAs render INVISIBLE; ours the working blue, the drawer-precedent fix-over-defect)"
   );
 }
 

@@ -195,7 +195,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
   // occurrence count is the census below). This it IS the method: the
   // s91 suite's own noComments() strip + a global occurrence count
   // over src/**/*.{ts,tsx}. Re-derive here when the codebase changes.
-  it("the census: 108 comment-stripped space-y occurrences across the 18 src files that carry one", () => {
+  it("the census: 114 comment-stripped space-y occurrences across the 20 src files that carry one", () => {
     const files = execFileSync(
       "grep",
       ["-rl", "space-y-", `${root}/src`, "--include=*.ts", "--include=*.tsx"],
@@ -208,7 +208,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
       const stripped = noComments(readFileSync(f, "utf8"));
       total += (stripped.match(/space-y-/g) ?? []).length;
     }
-    expect(files.length).toBe(18);
+    expect(files.length).toBe(20);
     // session-96 re-anchor: 112 -> 111 (the v4 space-y genus fix on the
     // auth fields — the two `space-y-1.5` field constants retired to the
     // `[&>*+*]:mt-1.5` v3-semantics variant, the google wrap's inert
@@ -226,7 +226,17 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
     // the wrapper's `space-y-6` retired for the panels' `mt-6` — the v4
     // mb-model's trailing margin extended the scroll extent; the s96/s98
     // v3-semantics lineage, now at the reports wrapper)
-    expect(total).toBe(107);
+    // session-142 re-anchor: 107 -> 114 / 18 -> 20 files (the s142
+    // marketing-layer parity build: the PUBLIC landing page — the
+    // reference's own space-y constructions mirrored verbatim [its
+    // mobile menu panel space-y-3, its FAQ-free mock sidebar space-y-1,
+    // the hero mock main space-y-3, the preview rows' space-y-12
+    // sm:space-y-16, the pricing lists' space-y-3] + the /about page's
+    // space-y-4 intro block [both live in the two new census files; the
+    // +7 occurrences are all reference-censused constructions, not
+    // regressions of the v4 genus — the landing + about pages ride the
+    // reference's OWN v3-era class strings])
+    expect(total).toBe(114);
   });
 
   it("the s91 header's unstable '99' claim is re-derived (spacey-hazard-parity no longer asserts an un-derivable count)", () => {
@@ -508,9 +518,9 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // 2 RED alone per drift]; the four sites re-anchored again, the
     // retired 2053 form joins the negatives below.
     expect(claude).toContain("Unit (Vitest, 2060 checks)");
-    expect(claude).toContain("(currently 2060)");
+    expect(claude).toContain("(currently 2101)");
     expect(claude).toContain("Vitest unit suites (2060 checks)");
-    expect(claude).toContain("`bun run test` (2060)");
+    expect(claude).toContain("`bun run test` (2101)");
     expect(claude).not.toContain("Unit (Vitest, 2053 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2051 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2041 checks)");

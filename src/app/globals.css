@@ -36,6 +36,16 @@
   --color-sidebar-active: #4d7ef5;
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
+  /* Session-142 (D-142a1): the reference's MARKETING token — its landing
+     page ships `--brand: 221 83% 53%` (computed #2563eb, live-probed on
+     its new index-Dc6wvGtA.js bundle), consumed by the landing surface's
+     bg-brand / text-brand / border-brand / ring-brand utilities (with
+     alpha modifiers: bg-brand/5, bg-brand/10, bg-brand/80, hover:bg-
+     brand/90, border-brand/20, ring-brand/20). Same blue as --color-
+     primary; the separate token keeps the marketing family byte-shaped
+     like the reference (its landing classes carry `brand`, not
+     `primary`). */
+  --color-brand: #2563eb;
   /* Session-119 (D-119a1, the 119-c contacts-family walk's systemic
      find F-119c2): the reference's --primary-foreground is the shadcn
      stock hsl(0 0% 98%) = #fafafa — live-computed rgb(250,250,250) on

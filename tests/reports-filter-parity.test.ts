@@ -75,7 +75,7 @@ const reportsSrc = () => stripComments(read("src/app/(app)/reports/reports-page.
 const reportsRaw = () => read("src/app/(app)/reports/reports-page.tsx") ?? "";
 const constantsSrc = () => stripComments(read("src/lib/constants.ts") ?? "");
 const pageLayoutRaw = () => read("src/lib/page-layout.ts") ?? "";
-const dashboardSrc = () => stripComments(read("src/app/(app)/page.tsx") ?? "");
+const dashboardSrc = () => stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
 const activitiesSrc = () => stripComments(read("src/app/(app)/activities/activities-page.tsx") ?? "");
 const saveDialogSrc = () => stripComments(read("src/components/shared/save-report-dialog.tsx") ?? "");
 const agentsRaw = () => read("AGENTS.md") ?? "";

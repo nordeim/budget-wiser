@@ -111,16 +111,49 @@ export function demoDataVerdict(rowsByPage: Record<string, number>): "ZERO" | "S
   return seeded ? "SEEDED" : "ZERO";
 }
 
+export interface LandingCensus {
+  navLinks: number;
+  sections: number;
+}
+
+/** PURE: the s142 LANDING census — STANDING at the marketing layer's
+ *  7 header links + 5 sections (any drift is a landing-content change
+ *  worth a re-walk of the marketing surface). */
+export function landingNavVerdict(
+  landing: LandingCensus,
+  standing: { navLinks: number; sections: number } = STANDING.landing,
+): "STANDING" | "CHANGED" {
+  return landing.navLinks === standing.navLinks && landing.sections === standing.sections
+    ? "STANDING"
+    : "CHANGED";
+}
+
 /** The standing reference fingerprint + census the probe reports
  *  against (re-anchor deliberately — every value here is a decoded,
- *  repeatedly-re-measured constant, not a guess). */
+ *  repeatedly-re-measured constant, not a guess).
+ *  Session-142 (D-142a4): the re-anchor after the MARKETING-LAYER parity
+ *  event — the reference's first bundle change in 82 sessions. The
+ *  standing fingerprint moves to index-Dc6wvGtA.js (the landing page +
+ *  /About + /Contact + the post-login redirect to `/`). The TRUE-390
+ *  census is RETARGETED from `/` (now the reference's LANDING page — its
+ *  own hamburger made the old 390 census read "NAV-FIXED" while the CRM
+ *  shell kept the defect) to /Dashboard, restoring the app-shell
+ *  mobile-defect tracker. The landing census (step 6b) guards the NEW
+ *  surface. */
 export const STANDING = {
-  bundle: { md5: "a70a637fcf1d4291da8e0d965676dc11", bytes: 1_631_071 },
+  bundle: { md5: "2731a47fced41044fd524fa0e0a9f71c", bytes: 1_696_901 },
   desktopNav: { width: 256, visibleLinks: 8 },
+  // the reference's landing page at `/` (the s142 marketing layer):
+  // the sticky header's 7 visible nav links + the 5 sections
+  landing: { navLinks: 7, sections: 5 },
   // the walked demo-data surfaces (data rows on each; the zero-data
   // empty-state rows are single-cell colspan rows — excluded by the
   // >1-cells predicate)
   censusPages: ["/contacts", "/leads", "/accounts"],
+  // the TRUE-390 census target: the CRM SHELL (not the landing) — the
+  // app pages carry the standing mobile-nav defect; the landing's own
+  // hamburger is censused by the landing check
+  mobileCensusPage: "/Dashboard",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -221,9 +254,12 @@ async function main(): Promise<void> {
     const desktopVerdict = desktopNavVerdict(desktop);
     log(`desktop census: nav ${desktop.width}px · ${desktop.visibleLinks} visible links — ${desktopVerdict}`);
 
-    // 6. the TRUE-390 mobile-nav census (the reference's own defect)
+    // 6. the TRUE-390 mobile-nav census (the reference's own defect —
+    //    s142: measured on the CRM SHELL at STANDING.mobileCensusPage;
+    //    the landing page's own working hamburger is no longer conflated
+    //    with the app shell's missing navigation)
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(`${REF_URL}/`, { waitUntil: "domcontentloaded" });
+    await page.goto(`${REF_URL}${STANDING.mobileCensusPage}`, { waitUntil: "domcontentloaded" });
     await page.locator("main").first().waitFor({ state: "visible", timeout: 15000 }).catch(() => undefined);
     await page.waitForTimeout(1500);
     const mobile: NavCensus = await page.evaluate(() => {
@@ -241,16 +277,40 @@ async function main(): Promise<void> {
     });
     const mobileVerdict = mobileNavVerdict(mobile);
     log(
-      `TRUE 390 census: nav w=${mobile.width} · ${mobile.visibleLinks} visible links · ${mobile.menuButtons} menu buttons — ${mobileVerdict}`,
+      `TRUE 390 census (${STANDING.mobileCensusPage}): nav w=${mobile.width} · ${mobile.visibleLinks} visible links · ${mobile.menuButtons} menu buttons — ${mobileVerdict}`,
+    );
+
+    // 6b. the LANDING census (s142: the new public marketing surface —
+    //     its header link count + section count; any drift here is a
+    //     landing-content change worth a re-walk)
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`${REF_URL}/`, { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(1500);
+    const landing = await page.evaluate(() => {
+      const nav = document.querySelector("nav");
+      return {
+        navLinks: nav
+          ? Array.from(nav.querySelectorAll("a")).filter((a) => a.getClientRects().length > 0).length
+          : 0,
+        sections: document.querySelectorAll("section").length,
+      };
+    });
+    const landingVerdict = landingNavVerdict(landing, STANDING.landing);
+    log(
+      `landing census: nav ${landing.navLinks} links · ${landing.sections} sections — ${landingVerdict}`,
     );
 
     // 7. the report + the gate
     const changed =
-      stability === "CHANGED" || desktopVerdict === "CHANGED" || mobileVerdict === "NAV-FIXED" || demo === "SEEDED";
+      stability === "CHANGED" ||
+      desktopVerdict === "CHANGED" ||
+      landingVerdict === "CHANGED" ||
+      mobileVerdict === "NAV-FIXED" ||
+      demo === "SEEDED";
     if (json) {
       console.log(
         JSON.stringify(
-          { reference: REF_URL, bundle: { url: bundleUrl, ...fingerprint, verdict: stability }, demoData: { rowsByPage, verdict: demo }, desktopNav: { ...desktop, verdict: desktopVerdict }, mobileNav: { ...mobile, verdict: mobileVerdict } },
+          { reference: REF_URL, bundle: { url: bundleUrl, ...fingerprint, verdict: stability }, demoData: { rowsByPage, verdict: demo }, desktopNav: { ...desktop, verdict: desktopVerdict }, mobileNav: { ...mobile, verdict: mobileVerdict }, landing: { ...landing, verdict: landingVerdict } },
           null,
           2,
         ),

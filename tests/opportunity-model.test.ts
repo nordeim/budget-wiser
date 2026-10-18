@@ -183,7 +183,7 @@ describe("session-31: the dashboard KPI derivations (the bundle's Eke memo)", ()
     // stage/source-filtered opps) for BOTH members — the derivation moved
     // client-side with the filter re-derivation; the route's copies
     // retired (zero consumers).
-    const page = stripComments(read("src/app/(app)/page.tsx") ?? "");
+    const page = stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
     expect(page).toMatch(/filteredOpps/);
     const wonBlock = page.slice(page.indexOf("closed_won"), page.indexOf("closed_won") + 900);
     expect(wonBlock).toMatch(/filteredOpps|filteredWon/);
@@ -202,15 +202,22 @@ describe("session-31: the dashboard KPI derivations (the bundle's Eke memo)", ()
     expect(route()).toMatch(/dashboardKpis\(/);
   });
 
-  it("the revenue chart window is the FIXED Nov..May labels (the reference's hardcoded quirk)", () => {
+  it("the revenue chart window is the ROLLING last-7-months (session-142 D-142b0: the reference's new bundle retired its fixed Nov..May quirk)", () => {
     const src = route();
-    expect(src).toMatch(/"Nov",\s*"Dec",\s*"Jan",\s*"Feb",\s*"Mar",\s*"Apr",\s*"May"/);
+    // The s31-era fixed labels (Nov..May hardcoded while the data
+    // indexed the rolling months) retired with the reference's
+    // index-Dc6wvGtA.js bundle — live-censused Apr..Oct on 2026-10-18.
+    // The construction: the MONTH_LABELS calendar array + the
+    // Array.from({length: 7}) window ending at the current month.
+    expect(src).not.toMatch(/"Nov",\s*"Dec",\s*"Jan",\s*"Feb",\s*"Mar",\s*"Apr",\s*"May"/);
+    expect(src).toMatch(/MONTH_LABELS\[m\]/);
+    expect(src).toMatch(/Array\.from\(\{\s*length:\s*7\s*\}/);
   });
 
   it("the pipeline chart + topReps + recentDeals derive from the page's filtered opportunities (the s78 m/y/_ memos)", () => {
     // Session-78 (M-78c2): the three derivations moved client-side onto
     // the p memo; the route's copies retired (zero consumers).
-    const page = stripComments(read("src/app/(app)/page.tsx") ?? "");
+    const page = stripComments(read("src/app/(app)/dashboard/page.tsx") ?? "");
     const pipelineMemo = page.slice(page.indexOf("const filteredPipeline"), page.indexOf("const filteredPipeline") + 600);
     expect(pipelineMemo).toMatch(/PIPELINE_STAGES/);
     expect(pipelineMemo).toMatch(/PIPELINE_LABELS/);

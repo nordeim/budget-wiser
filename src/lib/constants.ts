@@ -520,10 +520,12 @@ export const CHART_COLORS = {
   // Session-90 (L-90c4): the -400 family + gray RETIRED — the
   // stat-card mini bars ride the bg-CLASS color maps in page-parts.tsx
   // now (BAR_BG_GM/BAR_BG_ZV keyed by the reference's own color
-  // strings), leaving these keys with zero key-reads. The live read
-  // set: the dashboard KPI sparklines + the lost-bar trio (red/violet/
-  // emerald).
-  red: "#ef4444",
+  // strings), leaving these keys with zero key-reads.
+  // Session-142 (D-142b0): red RETIRED — its last consumer was the
+  // dashboard revenue chart's target series (the s31 construction),
+  // which the reference's index-Dc6wvGtA.js bundle retired (the one
+  // "Won" area series, no legend). The live read set: the dashboard
+  // KPI sparklines + the won-series area (violet/emerald).
   violet: "#8b5cf6",
   emerald: "#10b981",
 };

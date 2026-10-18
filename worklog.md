@@ -5503,3 +5503,27 @@ E2E 138 UNCHANGED · badge 2195 → 2198.
 
 **The ship**: the two-commit pattern (the feat + the session log) pushed
 to git@github.com:nordeim/neo-crm.git main via the SSH wrapper.
+
+---
+Task ID: 142
+Agent: main (Super Z)
+Task: Session-142 — the marketing-layer parity build (the probe:ref #114 parity event)
+
+Work Log:
+- Refreshed the workspace (re-clone at 0956d28), re-stood the environment (bun install, .env, db push+seed, census MATCH), ran the baseline gate GREEN (the exact s141-ship match: 113/2060 + 138/138)
+- probe:ref #114 = THE PARITY EVENT: the reference's first bundle change in 82 sessions (index-Dc6wvGtA.js, +65KB) — the marketing layer (the public landing at `/` + /About + /Contact + the post-login redirect); eight investigation probes decoded the full census (the landing anatomy, the mobile disclosure menu, the FAQ single-open, the pricing tiers, the mock constructions, the About/Contact content, the head metadata)
+- Verified the CRM shell's mobile defect STILL STANDS (/Dashboard at TRUE 390: nav 0/0/no menu buttons) — the probe's old "NAV-FIXED" verdict was the landing's own hamburger; retargeted the probe's 390 census to the CRM page
+- D-142a0: the route move (the dashboard to (app)/dashboard, the landing PUBLIC at `/`, the alias re-import, the 14 test-path carriers, the e2e re-anchors)
+- D-142a1: built the landing page (the full censused construction + the --color-brand token + the mobile disclosure menu + the single-open FAQ with the a11y superset) — the mutation-proof (3 drifts → exactly their pins RED)
+- D-142a2/a3/a4: the /About + /Contact pages + the capital aliases; the sitemap +2; the probe re-anchor (STABLE on the new fingerprint + the landing census)
+- D-142b0 (the sweep-decoded re-derivation): the revenue chart rolling-window + the one-Won-series (the Target + Legend retired); the s33 header trio retired (the quick-create narrowed, the three CSV builders retired, CHART_COLORS.red retired); the disabled-at-zero Export
+- D-142a6: the landing e2e spec (+8 checks); the sweep PAGES + the brand-token baselines; the four drift gates CLEAN ×4 (the dashboard 0.03% at 1440 — pixel-perfect)
+- D-142a7: the captures 296-303 + the VLM battery clean
+- D-142a8: the docs realignment (the count ladder 2101/146/2247, SKILL v1.139.0, the AGENTS/README/CLAUDE/PAD/session_302/plan-record updates, the lockstep GREEN)
+- The final gate: lint 0/0 · tsc 0 · 114/2101 · build · e2e 146/146 · drift ×4 CLEAN · census MATCH
+
+Stage Summary:
+- The marketing layer fully mirrored (the landing + About + Contact + the route move) with the CRM shell's mobile defect re-verified standing (our drawer remains the headline fix)
+- The landing brand-token genus decoded + documented (the reference's broken utilities; ours the working blue — the drawer-precedent fix-over-defect)
+- The dashboard re-derived to the new reference (the rolling window, the single Won series, the singleton Export)
+- The ship: the two-commit pattern → the SSH wrapper push

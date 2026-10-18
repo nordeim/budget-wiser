@@ -90,7 +90,9 @@ describe("session-24: the capital-route render aliases (S24-P1)", () => {
     const src = read(`${APP}/(app)/Dashboard/page.jsx`);
     expect(src, "src/app/(app)/Dashboard/page.jsx must exist").not.toBeNull();
     const code = stripComments(src!);
-    expect(code).toMatch(/import DashboardPage from "\.\.\/page"/);
+    // Session-142 (D-142a0): the dashboard source moved to
+    // (app)/dashboard/page.tsx (the root `/` became the PUBLIC landing).
+    expect(code).toMatch(/import DashboardPage from "\.\.\/dashboard\/page"/);
     expect(code).toMatch(/return <DashboardPage \/>/);
     expect(code).not.toMatch(/redirect\(/);
     // The reference's /Dashboard serves the ROOT head (og:url/canonical at
@@ -178,7 +180,7 @@ describe("session-24: the nav href byte-contract + case-insensitive active state
 });
 
 describe("session-24: the dashboard More... button is the reference's dead affordance (S24-P3)", () => {
-  const dash = stripComments(read("src/app/(app)/page.tsx")!);
+  const dash = stripComments(read("src/app/(app)/dashboard/page.tsx")!);
 
   it("carries NO router.push (the reference's button is a live-verified no-op)", () => {
     expect(dash).not.toMatch(/router\.push\("\/leads"\)/);
