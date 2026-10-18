@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Bell, ChevronDown, Mail, Search } from "lucide-react";
+import { Bell, ChevronDown, Mail, Menu as MenuIcon, Search } from "lucide-react";
 import {
   // Session-47 (S47-P4, N-47g): the Popover-based Dropdown family left
   // when the account menu migrated to the stock Menu* primitives. The
@@ -14,9 +14,9 @@ import {
   MenuItem,
   MenuTrigger,
 } from "@/components/ui/dropdown";
-import { MobileNavTrigger } from "./mobile-nav";
+import { DialogTrigger } from "@/components/ui/dialog";
 import { useCrmStore } from "@/stores/crm-store";
-import { SEARCH_INPUT, TOPBAR_LAYOUT } from "@/lib/page-layout";
+import { MOBILE_NAV_TRIGGER, SEARCH_INPUT, TOPBAR_LAYOUT } from "@/lib/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { STAGE_META } from "@/lib/constants";
@@ -25,8 +25,6 @@ import type { User as AppUser } from "@/types";
 
 interface TopbarProps {
   user: AppUser | null;
-  onOpenMobileNav: () => void;
-  mobileNavOpen: boolean;
 }
 
 /**
@@ -36,24 +34,16 @@ interface TopbarProps {
  * reference; ours keeps the functional results dropdown and the e2e-pinned
  * aria-label. The hamburger is our mobile-nav fix (visible below `md`).
  *
- * Session-93 standing genus (documented, NOT a defect): at 390px the
- * reference's account button renders at the LEFT edge — its topbar is
- * [search wrapper `hidden sm:flex flex-1 max-w-xl`] + [right group
- * `flex items-center gap-2 sm:gap-4`] in a `justify-between` row, and
- * with the search wrapper display:none below sm the right group becomes
- * the SOLE flex item, so justify-between places it at flex-start. That
- * left placement is an accident of the reference's own construction
- * (live-verified at TRUE 390, census #89). Ours inserts the hamburger
- * as an additional first child, so the row resolves [hamburger LEFT] +
- * [account RIGHT] — the natural mobile pattern and the direct
- * second-order effect of the deliberate mobile-nav superset. The
- * construction is otherwise byte-equivalent (same classes, same DOM
- * order, same group membership, `hidden sm:flex` Messages/Notifications
- * matched, the account trigger 84px on both). Do NOT restructure this
- * row to chase the reference's accidental left-placement — that would
- * imitate a defect-side artifact at the cost of a correct construction.
+ * Session-147 (the s93 genus COLLAPSED upstream): the reference's new
+ * bundle ships its own hamburger as the row's FIRST child (the
+ * mobile-nav fix, walk37) — its topbar now resolves [hamburger LEFT] +
+ * [account RIGHT] exactly like ours always did, so the phone floor
+ * genus (the displaced account glyphs, ~0.5% per page) retired with
+ * the reference's own construction. The row stays byte-equivalent (same
+ * classes, same DOM order, same group membership, `hidden sm:flex`
+ * Messages/Notifications matched, the account trigger 84px on both).
  */
-export function Topbar({ user, onOpenMobileNav, mobileNavOpen }: TopbarProps) {
+export function Topbar({ user }: TopbarProps) {
   const router = useRouter();
   const logout = useCrmStore((s) => s.logout);
   const [query, setQuery] = React.useState("");
@@ -142,8 +132,22 @@ export function Topbar({ user, onOpenMobileNav, mobileNavOpen }: TopbarProps) {
   return (
     <header className={TOPBAR_LAYOUT.header}>
       <div className={TOPBAR_LAYOUT.inner}>
-        {/* Our mobile-nav fix — the reference ships no navigation below md. */}
-        <MobileNavTrigger onClick={onOpenMobileNav} expanded={mobileNavOpen} />
+        {/* Session-147: the mobile-nav trigger — the reference's own
+            construction (walk37, its parity-event bundle): the STOCK ghost
+            icon Button + md:hidden text-gray-600, the lucide-menu glyph.
+            The Radix DialogTrigger wires aria-haspopup/aria-expanded/
+            aria-controls + data-state; the sheet itself lives in
+            mobile-nav.tsx (the AppShell-owned Dialog.Root). */}
+        <DialogTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={MOBILE_NAV_TRIGGER.className}
+            aria-label={MOBILE_NAV_TRIGGER.label}
+          >
+            <MenuIcon className={MOBILE_NAV_TRIGGER.icon} />
+          </Button>
+        </DialogTrigger>
 
         {/* Global search — hidden below sm (reference behavior). */}
         <div className={TOPBAR_LAYOUT.searchBlock}>

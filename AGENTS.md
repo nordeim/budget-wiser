@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2115 checks)      | `bun run test`                         |
-|  Browser E2E (150 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (2132 checks)      | `bun run test`                         |
+|  Browser E2E (151 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2115) → `bun run build` → `bun run test:e2e` (150) — or the
+`bun run test` (2132) → `bun run build` → `bun run test:e2e` (151) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -165,7 +165,7 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   hidden` element SILENTLY NO-OPS (keyboard users Tabbed through the
   background behind the aria-modal dialog). The panel also uses
   `h-dvh` (not `h-full`) so it tracks the dynamic viewport on mobile
-  browsers. `tests/e2e/mobile-navigation.spec.ts` (10 checks, 390/700px
+  browsers. `tests/e2e/mobile-navigation.spec.ts` (11 checks, 390/700px
   viewports — the focus-entry test + the ten-route zero-overflow sweep
   included) is the
   regression suite — do not weaken it.
@@ -6807,3 +6807,68 @@ compounds silently, 3.2 points in 4 sessions here) · **L-146c2 the
 genus comment must name the MECHANISM, not the value** (the s91 comment
 attributed a DOM-level superset to a pixel diff — when the pixels
 retired, the comment kept documenting a genus that never was).
+
+### Session-147 (2026-10-19) — the mobile-nav parity event (probe:ref #119's event)
+
+**THE SECOND BUNDLE CHANGE EVER** (after 5 stable sessions at the s142
+fingerprint): the reference shipped `index-n8TZHw0K.js` (md5 `46bc2d9c…`,
++2,675 bytes) and the TRUE-390 census flipped DEFECT-STANDS → NAV-FIXED.
+Two posture changes rode the one bundle:
+
+- **F-147c1 THE REFERENCE'S MOBILE-NAV FIX (the standing ledger's #1
+  RETIRED)**: its CRM-shell mobile defect (100+ censused sessions) is
+  fixed upstream — a stock ghost-button trigger (`aria-label="Open
+  navigation"`, lucide-menu, `md:hidden text-gray-600`) + a Radix Sheet
+  (the shadcn pattern: `w-72` `bg-[#2563eb]`, the "CRM" wordmark h2 +
+  sr-only description, the stock DialogClose, the drawer's own link
+  styles — white/80 inactive, `bg-white/20` active — the mt-4 border-t
+  Settings group, the `bg-black/80` overlay, the 500/300ms slide). The
+  clone's drawer was RE-DERIVED onto the same construction (the repo's
+  own Radix primitives + the MOBILE_NAV_SHEET contracts), keeping the
+  behavioral supersets (the S8-P1 resize auto-close, the main-scroller
+  lock, the route-change close). The desktop shell stayed byte-stable.
+- **F-147c2 THE GUEST RE-GATING (the s144 posture REVERSED)**: the
+  reference's /About + /Contact now login-wall guests — a client-side
+  guard to `/login?from_url=<absolute-url>` with the post-login return
+  (walk-verified). The clone mirrors it: the GuestLoginRedirect shim on
+  BOTH route groups (the session decision stays server-side — the guest
+  never receives the page's HTML) + the login card's from_url round-trip
+  behind the same-origin open-redirect guard. APP_GUEST_USER retired.
+- **F-147c3 THE DESKTOP-INTERIOR FAMILY (the s148 mirror target —
+  baselined, not yet mirrored)**: the same bundle removed the
+  reference's KPI delta chips (accounts' +4.2%/-1.8%/+5.1%/+3.0%,
+  contacts' "+0", activities' "+23%" + "2h overdue"), its accounts
+  toolbar trio (the Table switcher + the empty density select + More) +
+  the in-search magnifier + the rail's Save All/Filter, re-morphed its
+  landing mock (5 bars, +Reports, taller window, no CTA arrow), FIXED
+  its invisible-CTA landing genus (the CTAs now render blue), and
+  re-populated its settings picklist data (Won/Lost/converted +
+  LinkedIn). The sweep baselines re-anchored with these as
+  standing-explained (the phone floor genus RETIRED — the reference's
+  topbar now matches ours; the phone landing genus COLLAPSED 6.0 →
+  0.01).
+
+**THE REMEDIATION**: D-147a0 the sheet contracts + the mobile-nav
+rebuild (the Radix construction) · D-147a1 the isNavActive extraction
+(nav-config, both navs) · D-147a2 the guest re-gating + from_url ·
+D-147a3 the probe STANDING re-anchor (the new fingerprint + the mobile
+standing triple {0,0,1} — drift in EITHER direction trips) · D-147a4
+the e2e + battery re-anchors (the trigger label, the dialog name "CRM",
+the closed-state unmount semantics, the guest-wall family, the exit-
+animation release polls) · D-147a5 the sweep re-derivation (all four
+classes re-measured; the baselines + the standingExplained lines + the
+pins re-anchored; the mutation-proof ×3) · D-147a6 the captures
+313-325 + the VLM battery · D-147a7 the docs realignment (the count
+ladder 2112 → 2132 · E2E 150 → 151 · badge 2265 → 2283 · SKILL v1.144.0
++ the session-147 layer · the mobile-defect claim retirement across
+README/CLAUDE/PAD/SKILL). **THE VERIFICATION**: 147-a 11/11 spot-
+verified · 147-b 11/11 PASS · probe:ref #120 STABLE at the new
+fingerprint · lint 0/0 · tsc 0 · **115/2132** (+17) · build · **e2e
+151/151** · the four drift gates CLEAN ×4 · census MATCH. The
+walk-harness lessons: **L-147c1 the defect ledger is a snapshot too**
+(the standing "reference mobile defect" drove five sessions of framing;
+its fix arrived without notice and every carrier of the claim needed
+the same re-derivation as a pixel baseline) · **L-147c2 the parity
+event lands as a CLUSTER** (one bundle carried two posture flips + a
+page-interior family — decode the WHOLE delta before choosing the
+remediation scope, or the second change rides the first's ticket).

@@ -238,14 +238,11 @@ export const APP_FOOTER = {
  *  CRM links still hit the (app) login wall (the reference renders its
  *  data pages to guests too — its platform face, not a behavior we
  *  mirror; the (app) guard is the documented fix-over-defect). */
-export const APP_GUEST_USER = {
-  id: "",
-  email: "",
-  name: "Guest",
-  avatarColor: "",
-  photoUrl: null,
-  role: "",
-} as const;
+// Session-147 (F-147c2): the guest-user face contract RETIRED — the
+// reference's new bundle login-walls its marketing pages (guest
+// /About → /login?from_url=<abs>, walk37), so no layout feeds a guest
+// face to AppShell anymore. The Topbar's own fallback chain
+// (user?.name || user?.email || "Guest") stays as null-safety.
 
 /** S16-P2: the page-ROOT model — every page owns its padding (the
  *  reference renders NO shell-level wrapper; its page roots carry the
@@ -560,6 +557,16 @@ export const SETTINGS_DANGER = {
 export const MOBILE_NAV_LAYOUT = {
   drawerRange: "md:hidden",
   autoCloseQuery: "(min-width: 768px)",
+} as const;
+
+/** Session-147: the trigger — the reference's construction is the STOCK
+ *  ghost icon Button (the topbar-icon sibling pattern) + the range pair
+ *  + the lucide-menu glyph (three EQUAL lines; our old custom svg's
+ *  short third line retired). The label is its exact string. */
+export const MOBILE_NAV_TRIGGER = {
+  label: "Open navigation",
+  className: "md:hidden text-gray-600",
+  icon: "h-5 w-5",
 } as const;
 
 /** Session-8: dashboard header — the primary Export button renders its
@@ -887,6 +894,44 @@ export const DIALOG_FOOTER_WIDE = "flex justify-end gap-3 pt-4";
  *  it would pin away. */
 export const DIALOG_CLOSE =
   "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground";
+
+/** Session-147 (probe:ref #119's parity event, walk37-decoded): the
+ *  reference FIXED its CRM-shell mobile defect — the drawer is now its
+ *  own Radix Dialog (the shadcn Sheet pattern). These contracts are the
+ *  byte-decoded strings from its live DOM (the s91-era hand-rolled
+ *  drawer retired with the defect it fixed). bg-sidebar is their
+ *  bg-[#2563eb] literal (the same token the desktop sidebar rides);
+ *  the close reuses DIALOG_CLOSE (their data-[state=open]:bg-secondary
+ *  literal computes the same #f5f5f5 family as our bg-accent — the
+ *  computed-contract rule, never the copied string). */
+export const MOBILE_NAV_SHEET = {
+  content:
+    "fixed z-50 gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out inset-y-0 left-0 h-full data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm w-72 border-0 bg-sidebar p-0 text-white",
+  // the SheetHeader rhythm (space-y-2 — the sheet family's own, not the
+  // entity dialogs' space-y-1.5)
+  header: "flex flex-col space-y-2 text-center sm:text-left p-6",
+  // the WORDMARK replaces the BrandMark circle in the drawer (the h2
+  // the Radix aria-labelledby points at — the reference's own swap)
+  title: "text-left text-2xl font-bold text-white",
+  titleText: "CRM",
+  // sr-only on the reference — the description never paints
+  description: "text-sm text-muted-foreground sr-only",
+  descriptionText: "Navigate between your CRM pages",
+  // the stock DialogClose (computed-equal; see the block comment)
+  close: DIALOG_CLOSE,
+  // the drawer's OWN nav containers: gap-1 (the sheet family), the
+  // settings group mt-4 (NOT the sidebar's mt-auto bottom pin)
+  nav: "flex flex-col gap-1 px-3",
+  navFooter: "mt-4 flex flex-col gap-1 border-t border-white/10 px-3 pt-4",
+  // the drawer link styles (NOT the desktop sidebar's — the surfaces
+  // diverged upstream): text-sm font-medium explicit, white/80 inactive,
+  // the BRIGHTER white/20 active
+  link: "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors text-white/80 hover:bg-white/10 hover:text-white",
+  linkActive:
+    "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors bg-white/20 text-white",
+  icon: "h-5 w-5",
+} as const;
+
 
 /** Session-15 (S15-P7): the max-w-lg family's field groups are the
  *  reference's `space-y-2` divs — computed 12px label->control gap /

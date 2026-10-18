@@ -153,15 +153,22 @@ describe("session-24: the nav href byte-contract + case-insensitive active state
     expect(nav).not.toMatch(/href: "\/"/);
   });
 
-  it("sidebar isActive is CASE-INSENSITIVE with the Dashboard root special case", () => {
-    const sidebar = stripComments(read("src/components/layout/sidebar.tsx")!);
+  it("the shared isNavActive is CASE-INSENSITIVE with the Dashboard root special case (s147: extracted to nav-config)", () => {
+    const navConfig = stripComments(read("src/components/layout/nav-config.ts")!);
     // The reference highlights Reports (href /Reports) at lowercase
-    // /reports, and Dashboard at BOTH / and /Dashboard.
-    expect(sidebar).toMatch(/const isActive = \(href: string\) =>/);
-    expect(sidebar).toMatch(/pathname\.toLowerCase\(\)/);
-    expect(sidebar).toMatch(/href\.toLowerCase\(\)/);
-    expect(sidebar).toMatch(/h === "\/dashboard"/);
-    expect(sidebar).toMatch(/p === "\/" \|\| p === "\/dashboard"/);
+    // /reports, and Dashboard at BOTH / and /Dashboard. Session-147
+    // (D-147a1): the predicate moved from SidebarNav's closure to the
+    // shared isNavActive — the desktop sidebar AND the mobile Sheet
+    // drawer resolve the same active state (its unit pins:
+    // tests/nav-config.test.ts).
+    expect(navConfig).toMatch(/export function isNavActive/);
+    expect(navConfig).toMatch(/pathname\.toLowerCase\(\)/);
+    expect(navConfig).toMatch(/href\.toLowerCase\(\)/);
+    expect(navConfig).toMatch(/h === "\/dashboard"/);
+    expect(navConfig).toMatch(/p === "\/" \|\| p === "\/dashboard"/);
+    // the sidebar delegates to the shared predicate
+    const sidebar = stripComments(read("src/components/layout/sidebar.tsx")!);
+    expect(sidebar).toMatch(/isNavActive\(pathname, href\)/);
     // The old case-SENSITIVE one-liner contract is gone.
     expect(sidebar).not.toMatch(/href === "\/" \? pathname === "\/"/);
   });
@@ -208,7 +215,15 @@ describe("session-24: URL-state parity holds (the s39 pointer, CLOSED)", () => {
       // the NINE capital-route .jsx RENDER aliases too (the loading-layer
       // tsx?|jsx? precedent) — a .tsx-only filter left them invisible to
       // the zero-URL-state claim.
-      (f) => /\.(tsx|jsx)$/.test(f) && /useSearchParams|history\.pushState|history\.replaceState/.test(readFileSync(f, "utf8")),
+      // Session-147 (F-147c2): the login card READS ?from_url — the
+      // reference's own auth-wall round-trip (guest /About → the wall →
+      // back to /About). An auth-flow INPUT read, never filter/view
+      // state serialization: the s39 contract is "no page WRITES UI
+      // state to the URL", and the login card never writes it.
+      (f) =>
+        /\.(tsx|jsx)$/.test(f) &&
+        !f.endsWith("login-card.tsx") &&
+        /useSearchParams|history\.pushState|history\.replaceState/.test(readFileSync(f, "utf8")),
     );
     expect(offenders).toEqual([]);
   });

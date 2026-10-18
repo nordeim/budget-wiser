@@ -41,3 +41,19 @@ export const NAV_ITEMS: NavItem[] = [
 /** Rendered below a thin divider and pinned to the sidebar's bottom via the
  * flex column's `mt-auto` footer group (NAV_LAYOUT.footerGroup — session-7). */
 export const NAV_FOOTER_ITEMS: NavItem[] = [{ href: "/Settings", label: "Settings", icon: Settings }];
+
+/** Session-147 (D-147a1): the shared nav-active predicate — extracted
+ *  from SidebarNav so the desktop sidebar AND the mobile Sheet drawer
+ *  (the s147 parity re-derivation) resolve the same active state. The
+ *  rules are the s24 live decode: CASE-INSENSITIVE matching (the
+ *  reference's sidebar links carry the capitalized hrefs while its
+ *  router serves both casings — it highlights Reports at lowercase
+ *  /reports), the Dashboard root special case (its post-login redirect
+ *  lands on / while its Dashboard link points at /Dashboard — both are
+ *  the dashboard), and the prefix rule for nested segments. */
+export function isNavActive(pathname: string, href: string): boolean {
+  const p = pathname.toLowerCase();
+  const h = href.toLowerCase();
+  if (h === "/dashboard") return p === "/" || p === "/dashboard";
+  return p === h || p.startsWith(`${h}/`);
+}

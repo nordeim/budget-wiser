@@ -29,15 +29,20 @@ describe("session-96 (S96-P1): the drawer battery tool — the F-96a1 reopen fix
     const between = before.slice(escapeIdx);
     expect(between).toMatch(/trigger\.click\(\)/);
     // and the drawer must be verified OPEN again before resizing (the
-    // panel locator re-resolves)
-    expect(between).toMatch(/h-dvh/);
+    // panel probe re-resolves — the s147 data-state form)
+    expect(between).toMatch(/data-state="open"|panelOpen/);
   });
 
-  it("the exact-selector protocol: the panel is the div.h-dvh.w-72 INSIDE the dialog root (not the root itself — the s94 probe-trap lesson)", () => {
+  it("the exact-selector protocol (s147 re-anchor): the panel IS the open dialog content — [role=\"dialog\"][data-state=\"open\"] (the Radix sheet has no inner wrapper)", () => {
     const src = read("scripts/drawer-battery-390.ts");
-    // the panel selector rides the dialog root + the panel class pair
-    expect(src).toMatch(/\[role=?.?dialog.?\][\s\S]*?h-dvh/);
-    expect(src).toContain("w-72");
+    // the s94 probe-trap lesson survives in the s147 form: probe the
+    // CONTENT element (data-state open), never a stale wrapper — and
+    // the closed state is UNMOUNTED (Radix), so closed-probes count
+    // dialogs instead of reading visibility
+    expect(src).toContain('[role="dialog"][data-state="open"]');
+    expect(src).not.toContain("h-dvh");
+    expect(src).toContain('button[aria-label="Open navigation"]');
+    expect(src).not.toContain('Open navigation menu');
   });
 
   it("the navigate-close wait is URL-based on the CAPITAL /Leads route (the s24 route-case construction — the dev server compiles it on first visit)", () => {
@@ -64,7 +69,7 @@ describe("session-96 (S96-P1): the drawer battery tool — the F-96a1 reopen fix
     // expectation when a route moves, not just the failing carriers).
     const loginIdx = src.indexOf("waitForURL((u) => !u.pathname.endsWith");
     expect(loginIdx).toBeGreaterThan(0);
-    const triggerIdx = src.indexOf('button[aria-label="Open navigation menu"]');
+    const triggerIdx = src.indexOf('button[aria-label="Open navigation"]');
     expect(triggerIdx).toBeGreaterThan(loginIdx);
     const between = src.slice(loginIdx, triggerIdx);
     expect(between).toMatch(/goto\([^)]*Dashboard/);

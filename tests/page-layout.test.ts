@@ -39,13 +39,14 @@ import {
   KPI_SPARK,
   KPI_VALUE,
   APP_FOOTER,
-  APP_GUEST_USER,
   LEADS_FILTERS_POPOVER,
   LEADS_TOOLBAR,
   LOGIN_LAYOUT,
   MENU_CONTENT,
   MENU_ITEM,
   MOBILE_NAV_LAYOUT,
+  MOBILE_NAV_SHEET,
+  MOBILE_NAV_TRIGGER,
   NAV_LAYOUT,
   NOT_FOUND_LAYOUT,
   PAGE_HEADER,
@@ -289,50 +290,39 @@ describe("session-143: the app-shell footer (F-143c1 — the 11-page main-level 
   });
 });
 
-describe("session-144: the guest chrome + the marketing group (F-144c1 — the public About/Contact)", () => {
-  it("APP_GUEST_USER — the guest topbar face (walk34: the reference's 'Hi, Guest' + the gray-200 'G')", () => {
-    // The reference renders the full app chrome to SESSIONLESS visitors on
-    // its public marketing pages (walk34, rendered-level on /About): the
-    // topbar shows "Hi, Guest" + the avatar fallback (bg-gray-200, the
-    // "G" initial — text-gray-600 font-semibold per the live census). The
-    // Topbar's own fallback chain (user.name || user.email || "Guest")
-    // renders this object's face with ZERO Topbar changes; the contract
-    // exists so the (marketing) layout can feed it when getSessionUser()
-    // resolves null. Chrome-only: an empty id/email can never resolve a
-    // session — the store stays user:null (hydrate's else branch), the CRM
-    // links still hit the (app) login wall.
-    expect(APP_GUEST_USER.name).toBe("Guest");
-    expect(APP_GUEST_USER.photoUrl).toBeNull();
-    expect(APP_GUEST_USER.id).toBe("");
-    expect(APP_GUEST_USER.email).toBe("");
-    // the Topbar's avatar-fallback formula computes the reference's "G"
-    expect((APP_GUEST_USER.name || APP_GUEST_USER.email || "G").charAt(0).toUpperCase()).toBe("G");
+describe("session-144 → session-147: the guest chrome + the marketing group (F-144c1 → F-147c2 — the posture REVERSED upstream)", () => {
+  it("APP_GUEST_USER — the guest topbar contract retired with the re-gating (the reference now login-walls its marketing pages)", () => {
+    // Session-147 (F-147c2): the reference's new bundle client-redirects
+    // guests on /About + /Contact to /login?from_url=<abs> (walk37,
+    // reproduced 3 passes + the from_url round-trip verified). The s144
+    // guest-serving posture — the full app chrome + "Hi, Guest" + the
+    // gray-200 "G" avatar fed by APP_GUEST_USER — retired with it: no
+    // layout feeds the contract anymore. The Topbar's own fallback
+    // chain (user?.name || user?.email || "Guest") stays as null-safety.
+    const pageLayout = read("src/lib/page-layout.ts");
+    expect(pageLayout).not.toContain("APP_GUEST_USER");
+    const marketing = read("src/app/(marketing)/layout.tsx");
+    expect(marketing).not.toContain("APP_GUEST_USER");
   });
 
-  it("the (marketing) layout is SESSION-OPTIONAL — no redirect, the guest fallback feeds AppShell (the F-144c1 contract)", () => {
-    const src = readFileSync(
-      path.resolve(import.meta.dirname, "../src/app/(marketing)/layout.tsx"),
-      "utf8",
-    );
+  it("the (marketing) layout GUARDS — the GuestLoginRedirect shim (the F-147c2 mirror; the s144 no-redirect contract retired)", () => {
+    const src = read("src/app/(marketing)/layout.tsx");
     expect(src).toContain("getSessionUser()");
-    expect(src).toContain("APP_GUEST_USER");
-    expect(src).toMatch(/user=\{user \?\? APP_GUEST_USER\}/);
-    // THE F-144c1 CONTRACT: the marketing group NEVER redirects — the
-    // reference serves /About + /Contact to guests (the public marketing
-    // family: landing → footer → About → Contact, all 200).
-    expect(src).not.toMatch(/redirect\(/);
+    expect(src).toContain("GuestLoginRedirect");
+    // THE F-147c2 CONTRACT: guests get the shim, never the shell
+    expect(src).toMatch(/if \(!user\)\s*return\s*<GuestLoginRedirect \/>/);
+    expect(src).not.toMatch(/user \?\? APP_GUEST_USER/);
   });
 
-  it("the (app) group KEEPS its guard — the CRM data pages stay auth-gated (the posture freeze)", () => {
-    const src = readFileSync(
-      path.resolve(import.meta.dirname, "../src/app/(app)/layout.tsx"),
-      "utf8",
-    );
-    // the contrast pin: the reference renders its CRM DATA pages to
-    // guests too (its platform face — "Hi, Guest" on /Dashboard); our
-    // server-guarded (app) group is the documented fix-over-defect and
-    // MUST survive the marketing group going public.
-    expect(src).toContain('redirect("/login")');
+  it("the (app) group's guard — the SAME shim (the from_url mirror on both groups; the 307 retired)", () => {
+    const src = read("src/app/(app)/layout.tsx");
+    // Session-147: the reference's client guard carries from_url on the
+    // CRM pages too (guest /Dashboard → /login?from_url=…/Dashboard,
+    // post-login → /Dashboard). The server 307 became the shim — the
+    // session decision stays server-side (guests never receive the CRM
+    // page HTML; the shim renders instead of the shell).
+    expect(src).toContain("GuestLoginRedirect");
+    expect(src).not.toContain('redirect("/login")');
   });
 });
 
@@ -2597,5 +2587,150 @@ describe("session-145: the logout transition (walk35)", () => {
     );
     expect(logoutBlock).not.toMatch(/router\.push\("\/"\)/);
     expect(logoutBlock).not.toMatch(/router\.push\("\/[Dd]ashboard"\)/);
+  });
+});
+
+// Session-147 (probe:ref #119's parity event — the reference's mobile-nav
+// fix decoded, walk37): the drawer re-derived onto the repo's own Radix
+// dialog primitives (the shadcn Sheet pattern the reference itself now
+// ships), the guest re-gating + the from_url round-trip (F-147c2).
+describe("session-147: the mobile-nav parity event (the reference's Sheet drawer, walk37-decoded)", () => {
+  it("MOBILE_NAV_SHEET — the byte-decoded sheet contracts (the reference's new drawer)", () => {
+    // the content: the Radix Dialog sheet — left-anchored, w-72 (288px),
+    // the brand-blue sidebar token (their bg-[#2563eb] literal), the
+    // 500ms-in/300ms-out slide, NO radius, NO border, p-0
+    expect(MOBILE_NAV_SHEET.content).toBe(
+      "fixed z-50 gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out inset-y-0 left-0 h-full data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm w-72 border-0 bg-sidebar p-0 text-white",
+    );
+    // the header: the reference's SheetHeader (space-y-2 — the sheet
+    // family's own rhythm, NOT the entity dialogs' space-y-1.5)
+    expect(MOBILE_NAV_SHEET.header).toBe(
+      "flex flex-col space-y-2 text-center sm:text-left p-6",
+    );
+    // the title: the WORDMARK replaces the BrandMark circle in the
+    // drawer — the h2 the Radix aria-labelledby points at
+    expect(MOBILE_NAV_SHEET.title).toBe("text-left text-2xl font-bold text-white");
+    expect(MOBILE_NAV_SHEET.titleText).toBe("CRM");
+    // the description: sr-only on the reference — "Navigate between
+    // your CRM pages" never paints
+    expect(MOBILE_NAV_SHEET.description).toBe("text-sm text-muted-foreground sr-only");
+    expect(MOBILE_NAV_SHEET.descriptionText).toBe("Navigate between your CRM pages");
+    // the close: the STOCK DialogClose (computed-equal to the
+    // reference's — its data-[state=open]:bg-secondary literal is the
+    // same #f5f5f5 family our bg-accent computes)
+    expect(MOBILE_NAV_SHEET.close).toBe(DIALOG_CLOSE);
+  });
+
+  it("MOBILE_NAV_SHEET — the drawer's own nav contracts (NOT the desktop sidebar's link styles)", () => {
+    // the drawer's navs: gap-1 (the sheet family), the settings group
+    // mt-4 (NOT the sidebar's mt-auto pin) behind the border-t
+    expect(MOBILE_NAV_SHEET.nav).toBe("flex flex-col gap-1 px-3");
+    expect(MOBILE_NAV_SHEET.navFooter).toBe(
+      "mt-4 flex flex-col gap-1 border-t border-white/10 px-3 pt-4",
+    );
+    // the drawer link styles: text-sm font-medium EXPLICIT, the
+    // white/80 inactive + the BRIGHTER white/20 active (the desktop
+    // sidebar ships bg-white/10 — the two surfaces diverged upstream)
+    expect(MOBILE_NAV_SHEET.link).toBe(
+      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors text-white/80 hover:bg-white/10 hover:text-white",
+    );
+    expect(MOBILE_NAV_SHEET.linkActive).toBe(
+      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors bg-white/20 text-white",
+    );
+    expect(MOBILE_NAV_SHEET.icon).toBe("h-5 w-5");
+  });
+
+  it("MOBILE_NAV_TRIGGER — the reference's construction: the stock ghost Button + md:hidden text-gray-600 + the lucide-menu glyph", () => {
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "../src/components/layout/topbar.tsx"),
+      "utf8",
+    );
+    // the label is the reference's EXACT string (no "menu" — the
+    // walk37 decode; the e2e + battery re-anchored with it)
+    expect(MOBILE_NAV_TRIGGER.label).toBe("Open navigation");
+    expect(src).toContain('aria-label={MOBILE_NAV_TRIGGER.label}');
+    // the trigger: the STOCK ghost icon Button (the reference's own
+    // construction — its topbar-icon sibling pattern) + the range pair
+    expect(MOBILE_NAV_TRIGGER.className).toBe("md:hidden text-gray-600");
+    expect(src).toContain('variant="ghost"');
+    // the glyph: lucide-menu (three EQUAL lines — our old custom svg's
+    // short third line retired with the reference's own glyph)
+    expect(src).toMatch(/<Menu\b/);
+    expect(src).not.toMatch(/M3 15h9/);
+    // the Radix wiring: the DialogTrigger (aria-controls/data-state)
+    expect(src).toMatch(/DialogTrigger|Dialog\.Trigger/);
+  });
+
+  it("the drawer rides the repo's Radix dialog primitives (the reference's own Sheet mechanism) with our kept behavioral supersets", () => {
+    const src = read("src/components/layout/mobile-nav.tsx");
+    // the Radix construction: the sheet composes the raw primitives
+    // (Portal/Overlay/Content/Close/Title/Description); the Root lives
+    // in AppShell (the pin below)
+    expect(src).toMatch(/DialogPrimitive\./);
+    expect(src).toMatch(/DialogPrimitive\.Content/);
+    // the stock overlay — byte-equal to the reference's bg-black/80
+    // fade (our DIALOG_OVERLAY, the same string our entity dialogs
+    // ship)
+    expect(src).toMatch(/DialogOverlay|DIALOG_OVERLAY/);
+    // OUR SUPERSETS (invisible to pixels, e2e-pinned): the S8-P1
+    // resize-past-md auto-close + the main-scroller lock (Radix locks
+    // body via react-remove-scroll; the main lock is ours)
+    expect(src).toContain("autoCloseQuery");
+    expect(src).toMatch(/querySelector.*main/);
+    // the SHEET contracts ride page-layout (the single-source
+    // discipline)
+    expect(src).toContain("MOBILE_NAV_SHEET");
+  });
+
+  it("the AppShell wires the Root around the shell (the controlled open state + the route-change close)", () => {
+    const src = read("src/components/layout/app-shell.tsx");
+    // the Radix Root is controlled by AppShell's state — the
+    // route-change adjust-during-render close survives
+    expect(src).toMatch(/onOpenChange/);
+    expect(src).toMatch(/setMobileNavOpen\(false\)/);
+    // the drawer nav links close on click (the reference's sheet does
+    // the same — its nav links are onClick-closers)
+    const navSrc = read("src/components/layout/mobile-nav.tsx");
+    expect(navSrc).toMatch(/onNavigate/);
+  });
+});
+
+describe("session-147: F-147c2 — the guest re-gating + the from_url round-trip (the s144 posture REVERSED)", () => {
+  it("the (marketing) group now GUARDS guests — the GuestLoginRedirect shim replaces the APP_GUEST_USER feed", () => {
+    const src = read("src/app/(marketing)/layout.tsx");
+    // the reference's new bundle login-walls /About + /Contact (walk37:
+    // guest /About → /login?from_url=<abs> → post-login → /About). The
+    // s144 session-optional posture is RETIRED — the layout renders the
+    // shim INSTEAD of the shell for guests (the decision stays
+    // SERVER-side: the marketing content never reaches a guest).
+    expect(src).toContain("GuestLoginRedirect");
+    expect(src).toMatch(/if \(!user\)/);
+    // the s144 feed retired
+    expect(src).not.toContain("APP_GUEST_USER");
+  });
+
+  it("the (app) group's guard becomes the SAME shim — the reference's client-side mechanism (from_url on BOTH groups)", () => {
+    const src = read("src/app/(app)/layout.tsx");
+    // walk37: the reference's client guard carries from_url on the CRM
+    // pages too (guest /Dashboard → /login?from_url=…/Dashboard). The
+    // server 307 retired with it — the session decision stays
+    // server-side (the guest never receives the page HTML, only the
+    // shim), the navigation rides the reference's own mechanism.
+    expect(src).toContain("GuestLoginRedirect");
+    expect(src).not.toMatch(/redirect\("\/login"\)/);
+    // the CRM content stays unreachable for guests — the shim renders
+    // INSTEAD of the shell
+    expect(src).toMatch(/if \(!user\)\s*return\s*<GuestLoginRedirect \/>/);
+  });
+
+  it("the GuestLoginRedirect shim — the reference's own mechanism (JS replace + the absolute from_url)", () => {
+    const src = read("src/components/layout/guest-login-redirect.tsx");
+    expect(src.length).toBeGreaterThan(0);
+    // the mirror of the reference's client guard: router.replace to
+    // /login?from_url=<location.href urlencoded>
+    expect(src).toMatch(/router\.replace/);
+    expect(src).toMatch(/from_url=/);
+    expect(src).toContain("encodeURIComponent");
+    expect(src).toContain("window.location.href");
   });
 });

@@ -1,27 +1,36 @@
 import { expect, test } from "@playwright/test";
 
-// REGRESSION: the reference (base44) app ships NO mobile navigation — the
-// sidebar simply disappears below `md` and phone users cannot reach any page.
-// This suite pins the clone's working mobile drawer.
+// REGRESSION: the mobile navigation sheet. The reference app shipped NO
+// mobile navigation for 100+ censused sessions (its sidebar simply
+// disappears below `md`) — our hand-rolled drawer was the documented
+// fix-over-defect. Session-147 (probe:ref #119's parity event): the
+// reference FIXED the defect itself (a Radix Sheet, walk37-decoded), and
+// our drawer was re-derived onto the same construction (the repo's own
+// Radix dialog primitives + the byte-decoded MOBILE_NAV_SHEET
+// contracts). This suite now pins the mirrored sheet + the kept
+// behavioral supersets (the resize-past-md auto-close, the dual
+// body+main lock, the focus contracts).
 
-test.describe("mobile navigation drawer", () => {
-  test("hamburger opens the drawer with every nav destination", async ({ page }) => {
+test.describe("mobile navigation sheet", () => {
+  test("hamburger opens the sheet with every nav destination", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
 
     // No desktop sidebar at 390px.
     await expect(page.locator("aside").first()).toBeHidden();
 
-    // Hamburger is visible and labelled.
-    const trigger = page.getByRole("button", { name: "Open navigation menu" });
+    // The trigger: the reference's exact label + the stock ghost
+    // construction (walk37).
+    const trigger = page.getByRole("button", { name: "Open navigation" });
     await expect(trigger).toBeVisible();
 
-    // Open the drawer.
+    // Open the sheet — the accessible name is the h2 title "CRM" (the
+    // Radix aria-labelledby wiring; the reference's own name).
     await trigger.click();
-    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    const dialog = page.getByRole("dialog", { name: "CRM" });
     await expect(dialog).toBeVisible();
 
-    // Every destination is reachable from the drawer.
+    // Every destination is reachable from the sheet.
     for (const label of [
       "Dashboard",
       "Accounts",
@@ -36,63 +45,59 @@ test.describe("mobile navigation drawer", () => {
     }
   });
 
-  test("tapping a drawer link navigates and closes the drawer", async ({ page }) => {
+  test("tapping a sheet link navigates and closes the sheet", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
 
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    const dialog = page.getByRole("dialog", { name: "CRM" });
     await dialog.getByRole("link", { name: "Leads", exact: true }).click();
 
     // Session-24 (S24-P2): the nav hrefs are the reference's CAPITALIZED
-    // paths — the drawer's Leads link lands on /Leads (rendered in place
+    // paths — the sheet's Leads link lands on /Leads (rendered in place
     // per S24-P1, never normalized to the lowercase canonical).
     await page.waitForURL("**/Leads");
     await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
     await expect(dialog).toBeHidden();
   });
 
-  test("Escape closes the drawer and restores focus", async ({ page }) => {
+  test("Escape closes the sheet and restores focus", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
 
-    const trigger = page.getByRole("button", { name: "Open navigation menu" });
+    const trigger = page.getByRole("button", { name: "Open navigation" });
     await trigger.click();
-    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    const dialog = page.getByRole("dialog", { name: "CRM" });
     await expect(dialog).toBeVisible();
 
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
-    // Session-65 (N-65h): the RESTORE half of the title, now asserted —
-    // the drawer's close effect returns focus to the element that opened
-    // it (mobile-nav.tsx previouslyFocused), the WCAG 2.4.3 contract.
+    // Session-65 (N-65h): the RESTORE half of the title — the sheet's
+    // close returns focus to the trigger (Radix's onCloseAutoFocus, the
+    // WCAG 2.4.3 contract — the reference's own behavior, live-verified
+    // on both apps at walk37).
     await expect(trigger).toBeFocused();
   });
 
-  test("opening the drawer moves focus INTO the drawer (S12-P1)", async ({ page }) => {
-    // S12-P1 regression: the drawer's rAF focus fired while the
-    // transition-[visibility] class flip had not applied yet — focus() on
-    // the still-hidden Close button silently no-opped, so focus stayed on
-    // the burger and keyboard users Tabbed through the BACKGROUND page
-    // behind the aria-modal dialog (WCAG 2.4.3). The fix retries focus
-    // across frames until activeElement lands inside the panel.
+  test("opening the sheet moves focus INTO the sheet (S12-P1)", async ({ page }) => {
+    // S12-P1 regression (kept contract, now Radix's own FocusScope): the
+    // open sheet must hold focus inside the panel — keyboard users never
+    // Tab through the background page behind the dialog.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
 
-    const trigger = page.getByRole("button", { name: "Open navigation menu" });
+    const trigger = page.getByRole("button", { name: "Open navigation" });
     await trigger.click();
-    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    const dialog = page.getByRole("dialog", { name: "CRM" });
     await expect(dialog).toBeVisible();
 
-    // Focus must land inside the dialog (retry happens within a few frames;
-    // the assertion itself allows the transition to settle).
+    // Radix focuses the first focusable (the sheet's Close button — the
+    // reference's own behavior, walk37-censused on both apps).
     await expect
       .poll(
         async () =>
           page.evaluate(() => {
-            const dialog = document.querySelector(
-              '[role=dialog][aria-label="Navigation menu"]',
-            );
+            const dialog = document.querySelector('[role="dialog"][data-state="open"]');
             return dialog ? dialog.contains(document.activeElement) : false;
           }),
         { timeout: 3000 },
@@ -100,41 +105,54 @@ test.describe("mobile navigation drawer", () => {
       .toBe(true);
   });
 
-  test("body scroll is locked while the drawer is open", async ({ page }) => {
+  test("body scroll is locked while the sheet is open (react-remove-scroll + our main lock)", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
 
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    expect(await page.evaluate(() => document.body.style.overflow)).toBe("hidden");
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    // Radix's react-remove-scroll locks body (the data-scroll-locked
+    // marker, the reference's own mechanism); OUR superset clamps the
+    // main scroller too (body alone never covered it — the shell's main
+    // is the ONLY scroller).
+    expect(await page.evaluate(() => getComputedStyle(document.body).overflow)).toBe("hidden");
+    expect(await page.evaluate(() => document.querySelector("main")?.style.overflow)).toBe("hidden");
 
     await page.keyboard.press("Escape");
-    expect(await page.evaluate(() => document.body.style.overflow)).not.toBe("hidden");
+    // The release rides the exit animation: Radix keeps the scroll lock
+    // until the 300ms slide-out completes (the reference's own sheet
+    // behaves the same — its data-[state=closed]:duration-300), so the
+    // unlocked state lands asynchronously.
+    await expect
+      .poll(async () => page.evaluate(() => getComputedStyle(document.body).overflow))
+      .not.toBe("hidden");
+    await expect
+      .poll(async () => page.evaluate(() => document.querySelector("main")?.style.overflow))
+      .not.toBe("hidden");
   });
 
-  test("growing past md auto-closes the drawer AND releases both scroll locks", async ({ page }) => {
-    // S8-P1 regression: session-7 moved the drawer from lg to md (768px) but
+  test("growing past md auto-closes the sheet AND releases both scroll locks", async ({ page }) => {
+    // S8-P1 regression (OUR kept superset — the reference does not
+    // auto-close): session-7 moved the drawer from lg to md (768px) but
     // left the auto-close media listener at 1024px. Resizing from 700 to
-    // 800px with the drawer open hid the drawer (md:hidden) while body AND
-    // main stayed overflow:hidden — the app became unscrollable. The drawer
-    // must close and unlock at the SAME breakpoint it hides (symmetrical
-    // breakpoint strategy).
+    // 800px with the sheet open hid it (md:hidden) while body AND main
+    // stayed overflow:hidden — the app became unscrollable. The sheet
+    // must close and unlock at the SAME breakpoint it hides.
     await page.setViewportSize({ width: 700, height: 844 });
     await page.goto("/dashboard");
 
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    const dialog = page.getByRole("dialog", { name: "CRM" });
     await expect(dialog).toBeVisible();
-    expect(await page.evaluate(() => document.body.style.overflow)).toBe("hidden");
+    expect(await page.evaluate(() => getComputedStyle(document.body).overflow)).toBe("hidden");
     expect(await page.evaluate(() => document.querySelector("main")?.style.overflow)).toBe("hidden");
 
-    // Grow past md (768px): the drawer element hides via CSS — the state
-    // must close too, releasing the locks.
+    // Grow past md (768px): the sheet must close too, releasing the locks.
     await page.setViewportSize({ width: 800, height: 844 });
 
     await expect(dialog).toBeHidden();
     // Both locks released (the desktop sidebar is now the nav).
     await expect
-      .poll(async () => page.evaluate(() => document.body.style.overflow))
+      .poll(async () => page.evaluate(() => getComputedStyle(document.body).overflow))
       .not.toBe("hidden");
     await expect
       .poll(async () => page.evaluate(() => document.querySelector("main")?.style.overflow))
@@ -147,48 +165,40 @@ test.describe("mobile navigation drawer", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/dashboard");
     await expect(page.locator("aside").first()).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Open navigation menu" }),
-    ).toBeHidden();
+    await expect(page.getByRole("button", { name: "Open navigation" })).toBeHidden();
   });
 
-  test("the closed drawer is inert; open, Tab wraps inside the panel (N-66f)", async ({ page }) => {
-    // Session-66 (N-66f — the N-65p note (a) closed): the closed-state
-    // `inert` attribute and the Tab focus-trap WRAP arms (mobile-nav.tsx)
-    // were pinned at NO layer before this — the unit pins cover only the
-    // 768px auto-close query, and no e2e in the suite presses Tab. Two
-    // contracts: (1) closed, the panel carries inert so background-page
-    // focus NEVER lands inside it even though it stays in the DOM (the
-    // accessibility-inert browser contract); (2) open, Tab from the LAST
-    // focusable wraps to the panel's own Close button (the wrap arm), and
-    // Shift+Tab returns to the last focusable — focus never escapes the
-    // aria-modal panel while it is open.
+  test("the closed sheet is UNMOUNTED (the s112 permanently-mounted trap retired with the Radix construction); open, Tab wraps inside the panel (N-66f)", async ({ page }) => {
+    // Session-66 (N-66f) re-anchored for the Radix construction: closed,
+    // the sheet is NOT in the DOM at all (Radix unmounts the portal when
+    // closed — a strictly stronger contract than the old hand-rolled
+    // inert attribute, and the permanently-mounted drawer that shadowed
+    // [role="dialog"] CSS selectors (the s112 walk's third iteration) is
+    // gone structurally). Open, Radix's FocusScope wraps Tab inside the
+    // content — focus never escapes the dialog while it is open.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
 
-    const panel = page.locator('[role=dialog][aria-label="Navigation menu"]');
-    // (1) CLOSED: the panel is inert (the attribute, not just invisible).
-    expect(await panel.evaluate((el) => (el as HTMLElement).inert === true)).toBe(true);
+    // (1) CLOSED: no dialog in the DOM.
+    expect(await page.locator('[role="dialog"]').count()).toBe(0);
 
-    // Open and settle focus entry.
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
+    // Open and settle focus entry (the Close button focuses first).
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    const panel = page.locator('[role="dialog"][data-state="open"]');
     await expect(panel).toBeVisible();
-    expect(await panel.evaluate((el) => (el as HTMLElement).inert === false)).toBe(true);
 
-    // (2) The wrap arms: the trap queries panelRef (the PANEL div — the
-    // overlay Close is a sibling OUTSIDE the trap set), so the focusable
-    // order is [panelClose, 8 links] — the LAST focusable is the Settings
-    // link, the FIRST is the panel's X Close.
+    // (2) The wrap arms: the focusable order inside the content is
+    // [Close button, 8 links] — the LAST focusable is the Settings
+    // link, the FIRST is the Close.
     const settingsLink = panel.getByRole("link", { name: "Settings", exact: true });
     await settingsLink.focus();
     await expect(settingsLink).toBeFocused();
 
-    // Tab from the last focusable WRAPS to the panel's FIRST focusable
-    // (the X Close inside the panel — the dialog-scoped locator's second
-    // match; the overlay's Close is DOM-first), never past the panel edge.
+    // Tab from the last focusable WRAPS to the sheet's FIRST focusable
+    // (the Close button), never past the panel edge.
     await page.keyboard.press("Tab");
-    const panelClose = panel.getByRole("button", { name: "Close navigation menu" }).nth(1);
-    await expect(panelClose).toBeFocused();
+    const closeBtn = panel.getByRole("button", { name: "Close", exact: true });
+    await expect(closeBtn).toBeFocused();
 
     // Shift+Tab from the first wraps BACK to the last.
     await page.keyboard.press("Shift+Tab");
@@ -199,10 +209,10 @@ test.describe("mobile navigation drawer", () => {
     // Session-69 (the 69-c rotation's coverage catalog): the ten-route
     // zero-overflow sweep ran LIVE-only every session — never e2e-
     // pinned. Both Dashboard casings covered (the root "/" and the
-    // "/Dashboard" alias — the S24-P1 capital-route pair). The drawer
+    // "/Dashboard" alias — the S24-P1 capital-route pair). The sheet
     // stays CLOSED here: the closed state's scrollW contract is the
     // regression surface (a re-broken sidebar would push scrollWidth
-    // past the viewport exactly like the reference's defect).
+    // past the viewport exactly like the reference's pre-fix defect).
     await page.setViewportSize({ width: 390, height: 844 });
     const routes = [
       "/",
@@ -226,52 +236,49 @@ test.describe("mobile navigation drawer", () => {
     }
   });
 
-  test("the drawer OPEN never overflows the 390px viewport (the seeded-state open-drawer guard)", async ({ page }) => {
-    // Session-104 (S104-P2): the ten-route sweep above pins the CLOSED
-    // state only — its own comment documents "the drawer stays CLOSED
-    // here". The OPEN state's 390px contract was never pinned: a drawer
-    // regression that overflows the phone viewport WITH THE PANEL OUT
-    // (a panel wider than its w-72/max-w-[85vw] budget, or content
-    // poking past the overlay) would sail through the closed-state
-    // sweep. This runs against the SEEDED e2e.db (the global setup
-    // pushes + seeds db/e2e.db) — the seeded-state mobile face the
-    // zero-data drift sweep cannot see.
+  test("the sheet OPEN never overflows the 390px viewport (the seeded-state open-sheet guard)", async ({ page }) => {
+    // Session-104 (S104-P2) re-anchored for the Radix construction: the
+    // ten-route sweep above pins the CLOSED state only. The OPEN state's
+    // 390px contract: the sheet content (the w-72 dialog itself — no
+    // inner panel wrapper in the Radix construction) never overflows.
+    // This runs against the SEEDED e2e.db (the global setup pushes +
+    // seeds db/e2e.db) — the seeded-state mobile face the zero-data
+    // drift sweep cannot see.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
     await page.waitForLoadState("domcontentloaded");
 
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    const dialog = page.getByRole("dialog", { name: "CRM" });
     await expect(dialog).toBeVisible();
-    // the s94 exact-selector protocol: the PANEL div.h-dvh.w-72 inside
-    // the dialog root, never the root itself.
-    const panel = dialog.locator("div.h-dvh.w-72");
-    await expect(panel).toBeVisible();
+    // the s94 exact-selector protocol, s147-re-anchored: the CONTENT is
+    // the [role="dialog"][data-state="open"] element itself (w-72), no
+    // inner panel div.
+    const panel = page.locator('[role="dialog"][data-state="open"]');
 
     const openProbe = await page.evaluate(() => {
-      const root = document.querySelector(
-        '[role=dialog][aria-label="Navigation menu"]',
-      );
-      const panelEl = root?.querySelector("div.h-dvh.w-72") as HTMLElement | null;
+      const panelEl = document.querySelector(
+        '[role="dialog"][data-state="open"]',
+      ) as HTMLElement | null;
       return {
-        // (a) the OPEN state's document-level contract: nothing — panel,
+        // (a) the OPEN state's document-level contract: nothing — sheet,
         // overlay, or the locked main behind — may push past the frame.
         docScrollW: document.documentElement.scrollWidth,
-        // (b) the panel's INTERNAL contract: no horizontal overflow
+        // (b) the content's INTERNAL contract: no horizontal overflow
         // inside the 288px column (long labels, badges, or a future
         // nav-section regression would show up here first).
         panelClientW: panelEl?.clientWidth ?? -1,
         panelScrollW: panelEl?.scrollWidth ?? -1,
         // (c) the design geometry: w-72 computes 288px at 390 — the
-        // max-w-[85vw] clamp (331.5px) stays inactive at this width.
+        // sm:max-w-sm cap (384px) stays inert at this width.
         panelRectW: panelEl ? Math.round(panelEl.getBoundingClientRect().width) : -1,
-        // (d) every destination reachable with the panel out.
+        // (d) every destination reachable with the sheet out.
         linkCount: panelEl ? panelEl.querySelectorAll("a").length : -1,
       };
     });
-    expect(openProbe.docScrollW, "the OPEN drawer overflows the 390px frame").toBeLessThanOrEqual(390);
-    expect(openProbe.panelScrollW, "the panel content overflows its own column").toBeLessThanOrEqual(openProbe.panelClientW);
-    expect(openProbe.panelRectW, "the panel left its w-72 budget (288px at 390)").toBe(288);
-    expect(openProbe.linkCount, "the open panel must expose every destination").toBe(8);
+    expect(openProbe.docScrollW, "the OPEN sheet overflows the 390px frame").toBeLessThanOrEqual(390);
+    expect(openProbe.panelScrollW, "the content overflows its own column").toBeLessThanOrEqual(openProbe.panelClientW);
+    expect(openProbe.panelRectW, "the sheet left its w-72 budget (288px at 390)").toBe(288);
+    expect(openProbe.linkCount, "the open sheet must expose every destination").toBe(8);
   });
 });

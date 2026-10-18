@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Lock, Mail, ShieldCheck } from "lucide-react";
 import { LOGIN_LAYOUT } from "@/lib/page-layout";
 import {
@@ -23,6 +23,23 @@ import {
 import { toast } from "@/components/ui/toast";
 
 type Mode = "signin" | "signup";
+
+/** Session-147 (F-147c2 — walk37): the reference's from_url round-trip.
+ *  Its new auth wall lands guests on /login?from_url=<absolute-url> and
+ *  returns them to the target after a successful sign-in. THE
+ *  OPEN-REDIRECT GUARD: the param is untrusted query input — only a
+ *  SAME-ORIGIN URL navigates (relative values resolve against our own
+ *  origin, foreign origins fall back to the plain-login target "/",
+ *  malformed values too). Never router.push(<the raw param>). */
+function resolveFromUrl(raw: string): string {
+  try {
+    const u = new URL(raw, window.location.origin);
+    if (u.origin !== window.location.origin) return "/";
+    return `${u.pathname}${u.search}` || "/";
+  } catch {
+    return "/";
+  }
+}
 
 /** The info banner's auto-dismiss (live-bounded 1.6–3.2s on the reference). */
 const INFO_BANNER_MS = 3000;
@@ -51,6 +68,9 @@ const INFO_BANNER_MS = 3000;
  */
 export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
   const router = useRouter();
+  // Session-147: the auth wall's return target (null on a plain /login —
+  // the s142/s145 plain-login post-submit stays "/")
+  const fromUrl = useSearchParams().get("from_url");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
@@ -109,7 +129,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
         setError(body?.error?.message ?? "Sign in failed. Try again.");
         return;
       }
-      router.push("/");
+      router.push(resolveFromUrl(fromUrl ?? "/"));
       router.refresh();
     } catch {
       setError("Network error — check your connection and try again.");

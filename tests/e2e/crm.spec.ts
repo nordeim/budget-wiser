@@ -2983,9 +2983,10 @@ test("the logout round-trip: the menu Logout clears the session + protects the a
   await page.waitForURL("**/login");
   await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
   // The session is CLEARED server-side: a protected route now redirects
-  // (the storageState's cookie no longer authorizes).
+  // (the storageState's cookie no longer authorizes). Session-147: the
+  // (app) guard's wall carries ?from_url= — the glob widens.
   await page.goto("/settings");
-  await page.waitForURL("**/login");
+  await page.waitForURL(/\/login\?from_url=/);
 });
 
 test("the contact upload negative trio: the client alert + the two server rejections (S73-P7c)", async ({ page }) => {

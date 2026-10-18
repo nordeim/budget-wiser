@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_ITEMS, NAV_FOOTER_ITEMS } from "./nav-config";
+import { NAV_ITEMS, NAV_FOOTER_ITEMS, isNavActive } from "./nav-config";
 import { NAV_LAYOUT } from "@/lib/page-layout";
 import { cn } from "@/lib/utils";
 
@@ -19,20 +19,10 @@ import { cn } from "@/lib/utils";
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
 
-  // Session-24 (S24-P2): the reference's active-state matching is
-  // CASE-INSENSITIVE — its sidebar links carry the capitalized hrefs
-  // (/Reports) while its router serves both casings, and at lowercase
-  // /reports the Reports item still carries the active background
-  // (live-probed: rgba(255,255,255,0.1)). The Dashboard item is active
-  // at BOTH "/" and "/Dashboard" (its link points at /Dashboard but the
-  // post-login redirect lands on the root — both paths are the
-  // dashboard), so it keeps the root special case on the folded compare.
-  const isActive = (href: string) => {
-    const p = pathname.toLowerCase();
-    const h = href.toLowerCase();
-    if (h === "/dashboard") return p === "/" || p === "/dashboard";
-    return p === h || p.startsWith(`${h}/`);
-  };
+  // Session-147 (D-147a1): the s24 rules moved to the shared
+  // isNavActive (nav-config) — the desktop sidebar and the mobile
+  // Sheet drawer resolve the same active state.
+  const isActive = (href: string) => isNavActive(pathname, href);
 
   const renderLink = (item: (typeof NAV_ITEMS)[number], active: boolean) => (
     <Link

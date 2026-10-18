@@ -1,9 +1,13 @@
 // Session-95: the mobile-nav drawer battery at TRUE 390x844 — the
 // standing mobile-nav verification, productized as a tool (the s94
-// corrected exact-selector protocol: the PANEL `div.h-dvh.w-72` inside
-// `[role="dialog"]`, never the root; exact aria-labels; a REAL user
+// corrected exact-selector protocol; exact aria-labels; a REAL user
 // click; the URL-based wait — the /Leads route is the s24 CAPITAL-route
 // construction and the dev server compiles it on first visit).
+// Session-147 (the parity-event re-anchor): the drawer is the Radix
+// Sheet now (the reference's own fix, mirrored) — the PANEL is the
+// `[role="dialog"][data-state="open"]` CONTENT itself (w-72, no inner
+// wrapper), the trigger label is the reference's "Open navigation", and
+// the closed state is UNMOUNTED (Radix), not inert.
 // Run: bun scripts/drawer-battery-390.ts
 // (Session-123: the platform DATABASE_URL override is now guarded at the
 // boot site — the `env -u` prefix is no longer required, though it stays
@@ -96,7 +100,7 @@ async function main() {
     await page.waitForTimeout(2000);
 
     // 1. the trigger: exact aria-label, geometry at TRUE 390
-    const trigger = page.locator('button[aria-label="Open navigation menu"]');
+    const trigger = page.locator('button[aria-label="Open navigation"]');
     const tBox = await trigger.boundingBox();
     console.log("[battery] trigger:", JSON.stringify(tBox));
 
@@ -105,8 +109,7 @@ async function main() {
     await page.waitForTimeout(700);
 
     const openProbe = await page.evaluate(() => {
-      const root = document.querySelector('[role="dialog"][aria-label="Navigation menu"]') as HTMLElement | null;
-      const panel = root ? (root.querySelector("div.h-dvh.w-72") as HTMLElement | null) : null;
+      const panel = document.querySelector('[role="dialog"][data-state="open"]') as HTMLElement | null;
       const links = panel ? Array.from(panel.querySelectorAll("a")) : [];
       const cs = panel ? getComputedStyle(panel) : null;
       const body = getComputedStyle(document.body);
@@ -123,8 +126,11 @@ async function main() {
         activeEl: document.activeElement?.tagName + "/" + (document.activeElement?.textContent || "").slice(0, 12),
         bodyOverflow: body.overflow,
         mainOverflow: mainCs ? mainCs.overflow : null,
-        rootAriaModal: root?.getAttribute("aria-modal"),
-        rootInert: root?.inert ?? null,
+        // Session-147: Radix renders NO aria-modal (the stock 1.1.23
+        // behavior, the reference's own) — the census field kept for the
+        // walk comparability; the closed state is UNMOUNTED (below)
+        rootAriaModal: panel?.getAttribute("aria-modal"),
+        rootInert: null,
       };
     });
     console.log("[battery] OPEN:", JSON.stringify(openProbe, null, 1));
@@ -134,15 +140,13 @@ async function main() {
     await page.waitForURL((u) => u.pathname.includes("Leads"), { timeout: 30000 }).catch(() => undefined);
     await page.waitForTimeout(800);
     const afterNav = await page.evaluate(() => {
-      const root = document.querySelector('[role="dialog"]') as HTMLElement | null;
+      // Session-147: the closed Radix sheet UNMOUNTS — the probe is the
+      // dialog count + the released locks (the s147 construction has no
+      // permanently-mounted hidden root)
       const main = document.querySelector("main");
       return {
         pathname: location.pathname,
-        rootExists: !!root,
-        rootInert: root?.inert ?? null,
-        rootHidden: root?.hasAttribute("hidden") ?? null,
-        rootVisibility: root ? getComputedStyle(root).visibility : null,
-        rootPointerEvents: root ? getComputedStyle(root).pointerEvents : null,
+        dialogCount: document.querySelectorAll('[role="dialog"]').length,
         bodyOverflow: getComputedStyle(document.body).overflow,
         mainOverflow: main ? getComputedStyle(main).overflow : null,
       };
@@ -150,17 +154,13 @@ async function main() {
     console.log("[battery] NAV-CLOSE:", JSON.stringify(afterNav));
 
     // 4. reopen + Escape-close
-    await page.locator('button[aria-label="Open navigation menu"]').click();
+    await page.locator('button[aria-label="Open navigation"]').click();
     await page.waitForTimeout(600);
     await page.keyboard.press("Escape");
     await page.waitForTimeout(700);
     const afterEsc = await page.evaluate(() => {
-      const root = document.querySelector('[role="dialog"]') as HTMLElement | null;
       return {
-        rootInert: root?.inert ?? null,
-        rootHidden: root?.hasAttribute("hidden") ?? null,
-        rootVisibility: root ? getComputedStyle(root).visibility : null,
-        rootPointerEvents: root ? getComputedStyle(root).pointerEvents : null,
+        dialogCount: document.querySelectorAll('[role="dialog"]').length,
         bodyOverflow: getComputedStyle(document.body).overflow,
       };
     });
@@ -175,10 +175,9 @@ async function main() {
     await trigger.click();
     await page.waitForTimeout(700);
     const openBeforeGrow = await page.evaluate(() => {
-      const root = document.querySelector('[role="dialog"][aria-label="Navigation menu"]') as HTMLElement | null;
-      const panel = root ? (root.querySelector("div.h-dvh.w-72") as HTMLElement | null) : null;
+      const panel = document.querySelector('[role="dialog"][data-state="open"]') as HTMLElement | null;
       return {
-        panelVisible: panel ? getComputedStyle(panel).visibility : null,
+        panelOpen: !!panel,
         bodyOverflow: getComputedStyle(document.body).overflow,
         mainOverflow: document.querySelector("main") ? getComputedStyle(document.querySelector("main")!).overflow : null,
       };
@@ -188,7 +187,10 @@ async function main() {
     await page.waitForTimeout(600);
     const afterGrow = await page.evaluate(() => ({
       bodyOverflow: getComputedStyle(document.body).overflow,
-      rootInert: (document.querySelector('[role="dialog"]') as HTMLElement)?.inert ?? null,
+      // OUR kept superset: the auto-close listener releases both locks
+      // (the S8-P1 regression the battery was born to guard)
+      mainOverflow: document.querySelector("main") ? getComputedStyle(document.querySelector("main")!).overflow : null,
+      dialogCount: document.querySelectorAll('[role="dialog"]').length,
     }));
     console.log("[battery] RESIZE-PAST-MD:", JSON.stringify(afterGrow));
 

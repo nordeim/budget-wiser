@@ -10,9 +10,11 @@ NEO CRM is a production-grade clone of the reference CRM workspace
 (`https://neo-crm-8ab2c17c.base44.app/`) built as a single Next.js 16
 application. It gives a small sales team everything the reference offers —
 dashboard KPIs, pipeline analytics, accounts, contacts, leads, calendar,
-activities, reports and settings — plus one deliberate upgrade: a fully
-working mobile navigation drawer (the reference app leaves phone users
-without navigation). Maintained by the repo owner (nordeim); agents work
+activities, reports and settings. The mobile navigation sheet mirrors the
+reference's own 2026-10 fix (probe #119's parity event; its pre-fix defect
+drove this clone's original drawer), with kept behavioral supersets: the
+resize-past-md auto-close, the main-scroller lock, the route-change close.
+Maintained by the repo owner (nordeim); agents work
 directly on `main`.
 
 Key technical decisions that shape everything else: Next.js 16 App Router
@@ -35,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2115) → `bun run build` → `bun run test:e2e` (150) — or the
+   `bun run test` (2132) → `bun run build` → `bun run test:e2e` (151) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -111,8 +113,8 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2115 checks)            |
-| `bun run test:e2e`  | Playwright E2E (150 checks, needs build first) |
+| `bun run test`      | Vitest unit suites (2132 checks)            |
+| `bun run test:e2e`  | Playwright E2E (151 checks, needs build first) |
 | `bun run gate`      | The full gate in one command (lint → typecheck → test → build → e2e) |
 | `bun run db:push`   | Push Prisma schema (no migrations folder)     |
 | `bun run db:seed`   | Reseed demo data in place                     |
@@ -122,7 +124,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2115 checks)** — pure seams: `tests/db-path.test.ts`,
+- **Unit (Vitest, 2132 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -296,7 +298,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   TABLE_CARD plain-div rule, CALENDAR_CARD, SETTINGS_GRID + the
   design-tokens `th, td { padding: 1px }` platform reset). Node
   environment; `@` alias resolved.
-- **E2E (Playwright, 150 checks)** — `tests/e2e/`: `auth.spec.ts`
+- **E2E (Playwright, 151 checks)** — `tests/e2e/`: `auth.spec.ts`
   (logged-out surface + session-11's login reset-password flow +
   session-21's in-place funnel: the Callout banner with zero toasts,
   the signup view swap + mismatch guard, the verify-email ladder +
@@ -306,7 +308,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   session-10 per-page-titles and reports tab 2-4 structure tests, plus
   session-13's account-menu role=menu, reports-funnel bar-chart and
   by-type card structure tests),
-  `mobile-navigation.spec.ts` (10-check regression suite for the drawer —
+  `mobile-navigation.spec.ts` (11-check regression suite for the drawer —
   pinned because the reference app ships NO mobile navigation; includes the
   resize-past-md lock-release regression, the session-12 focus-entry test,
   the s104 ten-route zero-390px-overflow sweep + the s104 drawer-OPEN
@@ -385,7 +387,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2115).
+the seam (currently 2132).
 
 ## Code Quality Standards
 

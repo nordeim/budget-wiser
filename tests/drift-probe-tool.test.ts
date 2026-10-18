@@ -11,6 +11,11 @@
 // drawer the superset). These pins exercise the PURE seams the tool's
 // Playwright main() consumes — the same node-side contract the live
 // probe run reports.
+// Session-147 (probe:ref #119 — the second parity event): the
+// reference FIXED the mobile defect (its Radix Sheet, walk37); the
+// STANDING anchors moved (the new bundle fingerprint + the
+// menu-button-1 mobile triple), and the mobile verdict became a
+// standing comparison (drift in EITHER direction is the event).
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -65,14 +70,20 @@ describe("session-101 (S101-P1): the drift probe — the reference-stability too
     expect(mobileNavVerdict({ width: 0, visibleLinks: 0, menuButtons: 0 })).toBe("DEFECT-STANDS");
   });
 
-  it("mobileNavVerdict: NAV-FIXED when ANY phone navigation appears (the parity re-evaluation trigger — our superset drawer must be re-compared)", async () => {
+  it("mobileNavVerdict (s147): STANDING at the menu-button-1 triple — the reference's own fix; CHANGED on any drift in EITHER direction", async () => {
     const { mobileNavVerdict } = await probe();
-    // a drawer + hamburger (our own construction, at the reference's width)
-    expect(mobileNavVerdict({ width: 288, visibleLinks: 8, menuButtons: 1 })).toBe("NAV-FIXED");
-    // just a menu button
-    expect(mobileNavVerdict({ width: 0, visibleLinks: 0, menuButtons: 1 })).toBe("NAV-FIXED");
-    // just a visible nav
-    expect(mobileNavVerdict({ width: 256, visibleLinks: 0, menuButtons: 0 })).toBe("NAV-FIXED");
+    // the s147 standing state: the reference's menu button at 390 (the
+    // defect retired at its parity-event bundle)
+    expect(mobileNavVerdict({ width: 0, visibleLinks: 0, menuButtons: 1 })).toBe("STANDING");
+    // the anatomy changing (the drawer becoming visible, more buttons)
+    expect(mobileNavVerdict({ width: 288, visibleLinks: 8, menuButtons: 1 })).toBe("CHANGED");
+    expect(mobileNavVerdict({ width: 0, visibleLinks: 0, menuButtons: 2 })).toBe("CHANGED");
+    // the defect returning is ALSO a change (the historical vocabulary)
+    expect(mobileNavVerdict({ width: 0, visibleLinks: 0, menuButtons: 0 })).toBe("DEFECT-STANDS");
+    // the standing comparison is parameterizable (the future re-anchor)
+    expect(
+      mobileNavVerdict({ width: 288, visibleLinks: 8, menuButtons: 1 }, { width: 288, visibleLinks: 8, menuButtons: 1 }),
+    ).toBe("STANDING");
   });
 
   it("demoDataVerdict: ZERO when every walked surface reports 0 data rows; SEEDED the moment any does (the standing state since the s3 wipe)", async () => {
@@ -83,11 +94,13 @@ describe("session-101 (S101-P1): the drift probe — the reference-stability too
 
   it("STANDING: the pinned constants — the bundle md5 + bytes · the desktop nav 256/8 (the census contract the probe reports against)", async () => {
     const { STANDING } = await probe();
-    // Session-142 (D-142a4): the re-anchored constants — the
-    // MARKETING-LAYER parity event (index-Dc6wvGtA.js: the landing page
-    // + /About + /Contact; the first bundle change in 82 sessions).
-    expect(STANDING.bundle).toEqual({ md5: "2731a47fced41044fd524fa0e0a9f71c", bytes: 1_696_901 });
+    // Session-147 (probe:ref #119): the re-anchored constants — the
+    // MOBILE-NAV-FIX parity event (index-n8TZHw0K.js: the Radix Sheet
+    // drawer + the guest re-gating; the second bundle change, 5 stable
+    // sessions after the s142 event).
+    expect(STANDING.bundle).toEqual({ md5: "46bc2d9c6bfa2c0ec13e2e5cef61d5b6", bytes: 1_699_576 });
     expect(STANDING.desktopNav).toEqual({ width: 256, visibleLinks: 8 });
+    expect(STANDING.mobileNav).toEqual({ width: 0, visibleLinks: 0, menuButtons: 1 });
   });
 
   it("landingNavVerdict: STANDING at the marketing layer's 7 header links + 5 sections (the s142 landing census)", async () => {

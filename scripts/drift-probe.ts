@@ -21,6 +21,15 @@
 // and re-evaluate the standing baselines before trusting any
 // drift-gate result. The probe exits 1 on any CHANGED — gateable.
 //
+// Session-147 (probe:ref #119 — the second parity event): the standing
+// fingerprint moved to the mobile-nav-fix bundle (index-n8TZHw0K.js ·
+// 46bc2d9c… · 1,699,576) and the TRUE-390 census anchor RETIRED the
+// defect triple-zero: the reference now ships a working menu button
+// (nav w=0 · 0 links · 1 menu button — its Radix Sheet, walk37-decoded;
+// our drawer was re-derived onto the same construction). The mobile
+// verdict is a STANDING comparison now: drift in EITHER direction (the
+// defect returning, the anatomy changing) is the event.
+//
 // Run: bun run probe:ref   (or: bun scripts/drift-probe.ts)
 //   --json   machine-readable output (one verdict object per check)
 // Env:  REF_URL (default https://neo-crm-8ab2c17c.base44.app)
@@ -92,14 +101,26 @@ export function desktopNavVerdict(
     : "CHANGED";
 }
 
-/** PURE: the reference's own mobile-nav bug at TRUE 390 — DEFECT-STANDS
- *  only at the triple-zero (nav w=0 · 0 visible links · 0 menu
- *  buttons). ANY phone navigation = NAV-FIXED: the parity
- *  re-evaluation trigger (our superset drawer must be re-compared,
- *  the sweep baselines re-walked). */
-export function mobileNavVerdict(nav: NavCensus): "DEFECT-STANDS" | "NAV-FIXED" {
+/** PURE: the reference's mobile-nav state at TRUE 390 — the s91–s146
+ *  era tracked the DEFECT (DEFECT-STANDS at the triple-zero: nav w=0 ·
+ *  0 visible links · 0 menu buttons; ANY phone navigation = NAV-FIXED,
+ *  the parity re-evaluation trigger). Session-147: the reference FIXED
+ *  the defect (its Radix Sheet, probe #119) — the standing state is
+ *  now the menu-button-1 triple, and the verdict compares AGAINST it:
+ *  STANDING when the triple matches, CHANGED when it drifts in EITHER
+ *  direction (the defect returning, or the anatomy changing again).
+ *  The historical vocabulary stays for the walk records. */
+export function mobileNavVerdict(
+  nav: NavCensus,
+  standing: { width: number; visibleLinks: number; menuButtons: number } = STANDING.mobileNav,
+): "DEFECT-STANDS" | "STANDING" | "CHANGED" {
   const defect = nav.width === 0 && nav.visibleLinks === 0 && nav.menuButtons === 0;
-  return defect ? "DEFECT-STANDS" : "NAV-FIXED";
+  if (defect) return "DEFECT-STANDS";
+  return nav.width === standing.width &&
+    nav.visibleLinks === standing.visibleLinks &&
+    nav.menuButtons === standing.menuButtons
+    ? "STANDING"
+    : "CHANGED";
 }
 
 /** PURE: the demo-data census — ZERO when every walked surface
@@ -141,8 +162,17 @@ export function landingNavVerdict(
  *  mobile-defect tracker. The landing census (step 6b) guards the NEW
  *  surface. */
 export const STANDING = {
-  bundle: { md5: "2731a47fced41044fd524fa0e0a9f71c", bytes: 1_696_901 },
+  // Session-147 (probe:ref #119 — the second parity event, the first
+  // since s142): the mobile-nav-fix bundle (index-n8TZHw0K.js: the
+  // Radix Sheet drawer + the guest re-gating, walk37-decoded; +2,675
+  // bytes over the s142 fingerprint).
+  bundle: { md5: "46bc2d9c6bfa2c0ec13e2e5cef61d5b6", bytes: 1_699_576 },
   desktopNav: { width: 256, visibleLinks: 8 },
+  // Session-147: the reference's mobile-nav state — the s91–s146
+  // DEFECT triple-zero RETIRED (its own fix: the menu button at 390).
+  // Drift in EITHER direction (the defect returning · the anatomy
+  // changing) is a parity event.
+  mobileNav: { width: 0, visibleLinks: 0, menuButtons: 1 },
   // the reference's landing page at `/` (the s142 marketing layer):
   // the sticky header's 7 visible nav links + the 5 sections
   landing: { navLinks: 7, sections: 5 },
@@ -151,8 +181,9 @@ export const STANDING = {
   // >1-cells predicate)
   censusPages: ["/contacts", "/leads", "/accounts"],
   // the TRUE-390 census target: the CRM SHELL (not the landing) — the
-  // app pages carry the standing mobile-nav defect; the landing's own
-  // hamburger is censused by the landing check
+  // s147 standing state: the reference's own menu button (the defect
+  // retired at its parity-event bundle); the landing's own hamburger
+  // is censused by the landing check
   mobileCensusPage: "/Dashboard",
 } as const;
 
@@ -305,7 +336,7 @@ async function main(): Promise<void> {
       stability === "CHANGED" ||
       desktopVerdict === "CHANGED" ||
       landingVerdict === "CHANGED" ||
-      mobileVerdict === "NAV-FIXED" ||
+      mobileVerdict !== "STANDING" ||
       demo === "SEEDED";
     if (json) {
       console.log(

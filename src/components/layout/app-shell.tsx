@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SidebarNav, BrandMark } from "./sidebar";
 import { MobileNav } from "./mobile-nav";
 import { Topbar } from "./topbar";
+import { Dialog } from "@/components/ui/dialog";
 import { useCrmStore } from "@/stores/crm-store";
 import { APP_FOOTER, SHELL_LAYOUT } from "@/lib/page-layout";
 import type { User as AppUser } from "@/types";
@@ -14,18 +15,21 @@ import type { User as AppUser } from "@/types";
  * a `flex h-screen` row holds the sidebar as an IN-FLOW flex child
  * (visible from `md`) and a `flex-1 … overflow-hidden` main column whose
  * `main` is the ONLY scroller (the window never scrolls). The mobile
- * drawer covers `< md` — it remains the deliberate fix for the reference
- * app's missing phone navigation.
+ * sheet covers `< md` — since session-147 it is the reference's OWN
+ * mobile-nav fix mirrored (the Radix Sheet it shipped in its
+ * parity-event bundle), with our kept behavioral supersets (the
+ * resize-past-md auto-close, the main-scroller lock, the route-change
+ * close).
  */
 export function AppShell({ user, children }: { user: AppUser; children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   const hydrate = useCrmStore((s) => s.hydrate);
 
-  // Close the drawer on navigation — adjust-during-render for this
+  // Close the sheet on navigation — adjust-during-render for this
   // component's OWN state (the sanctioned React pattern). Session-35:
   // moved here from MobileNav — adjusting the parent's state from the
   // child's render body tripped React's cross-component render warning
-  // on non-link navigations (browser back/forward with the drawer open).
+  // on non-link navigations (browser back/forward with the sheet open).
   const pathname = usePathname();
   const [prevPathname, setPrevPathname] = React.useState(pathname);
   if (prevPathname !== pathname) {
@@ -38,48 +42,53 @@ export function AppShell({ user, children }: { user: AppUser; children: React.Re
     void hydrate();
   }, [hydrate]);
 
-
   return (
-    <div className={SHELL_LAYOUT.root}>
-      {/* Desktop sidebar — in-flow flex child, visible from md (768px). */}
-      <aside className={SHELL_LAYOUT.sidebar}>
-        <BrandMark />
-        <div className="min-h-0 flex-1">
-          <SidebarNav />
+    // The Radix Dialog Root (no DOM) wraps the whole shell so the
+    // Topbar's DialogTrigger and the portal'd sheet share the
+    // AppShell-owned controlled open state (session-147).
+    <Dialog open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+      <div className={SHELL_LAYOUT.root}>
+        {/* Desktop sidebar — in-flow flex child, visible from md (768px). */}
+        <aside className={SHELL_LAYOUT.sidebar}>
+          <BrandMark />
+          <div className="min-h-0 flex-1">
+            <SidebarNav />
+          </div>
+        </aside>
+
+        {/* Mobile sheet (< md) — the reference's own drawer, mirrored
+            (session-147). */}
+        <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
+
+        {/* Main column: topbar + main scroller. The column is
+            overflow-hidden so `main` owns all scrolling. Session-16
+            (S16-P1/P2): NO shell-level padding wrapper — the reference's
+            PAGES own their padding (PAGE_ROOT.standard/bare; contacts
+            ships the full-height layout as its root), and a blanket
+            wrapper here double-padded the contacts h-calc box (16px extra
+            per side at 390, main scrolling 37px instead of the 5px
+            mirrored quirk). Sticky bars (reports) still stick to main's
+            top. */}
+        <div className={SHELL_LAYOUT.mainColumn}>
+          <Topbar user={user} />
+          {/* Session-143 (D-143a0/F-143c1): the footer follows the page
+              children INSIDE main — the reference's placement on all 11 app
+              pages (walk33-censused; the contract rides APP_FOOTER in
+              page-layout.ts, pinned by tests/page-layout.test.ts). */}
+          <main className={SHELL_LAYOUT.main}>
+            {children}
+            <footer className={APP_FOOTER.footer}>
+              <span>{APP_FOOTER.copyright}</span>
+              <a className={APP_FOOTER.link} href={APP_FOOTER.about.href}>
+                {APP_FOOTER.about.label}
+              </a>
+              <a className={APP_FOOTER.link} href={APP_FOOTER.contact.href}>
+                {APP_FOOTER.contact.label}
+              </a>
+            </footer>
+          </main>
         </div>
-      </aside>
-
-      {/* Mobile drawer (< md) — the reference ships no phone navigation. */}
-      <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
-
-      {/* Main column: topbar + main scroller. The column is
-          overflow-hidden so `main` owns all scrolling. Session-16
-          (S16-P1/P2): NO shell-level padding wrapper — the reference's
-          PAGES own their padding (PAGE_ROOT.standard/bare; contacts
-          ships the full-height layout as its root), and a blanket
-          wrapper here double-padded the contacts h-calc box (16px extra
-          per side at 390, main scrolling 37px instead of the 5px
-          mirrored quirk). Sticky bars (reports) still stick to main's
-          top. */}
-      <div className={SHELL_LAYOUT.mainColumn}>
-        <Topbar user={user} onOpenMobileNav={() => setMobileNavOpen(true)} mobileNavOpen={mobileNavOpen} />
-        {/* Session-143 (D-143a0/F-143c1): the footer follows the page
-            children INSIDE main — the reference's placement on all 11 app
-            pages (walk33-censused; the contract rides APP_FOOTER in
-            page-layout.ts, pinned by tests/page-layout.test.ts). */}
-        <main className={SHELL_LAYOUT.main}>
-          {children}
-          <footer className={APP_FOOTER.footer}>
-            <span>{APP_FOOTER.copyright}</span>
-            <a className={APP_FOOTER.link} href={APP_FOOTER.about.href}>
-              {APP_FOOTER.about.label}
-            </a>
-            <a className={APP_FOOTER.link} href={APP_FOOTER.contact.href}>
-              {APP_FOOTER.contact.label}
-            </a>
-          </footer>
-        </main>
       </div>
-    </div>
+    </Dialog>
   );
 }

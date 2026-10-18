@@ -209,6 +209,11 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
       total += (stripped.match(/space-y-/g) ?? []).length;
     }
     expect(files.length).toBe(20);
+    // session-147 re-anchor: 114 -> 115 (the s147 sheet re-derivation: the
+    // mobile drawer's SheetHeader carries the reference's own
+    // `flex flex-col space-y-2` rhythm — the sheet family's header, live-
+    // censused on its parity-event bundle; page-layout.ts already a census
+    // file, the count +1 occurrence, the file set unchanged)
     // session-96 re-anchor: 112 -> 111 (the v4 space-y genus fix on the
     // auth fields — the two `space-y-1.5` field constants retired to the
     // `[&>*+*]:mt-1.5` v3-semantics variant, the google wrap's inert
@@ -236,7 +241,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
     // +7 occurrences are all reference-censused constructions, not
     // regressions of the v4 genus — the landing + about pages ride the
     // reference's OWN v3-era class strings])
-    expect(total).toBe(114);
+    expect(total).toBe(115);
   });
 
   it("the s91 header's unstable '99' claim is re-derived (spacey-hazard-parity no longer asserts an un-derivable count)", () => {
@@ -535,18 +540,19 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // mechanism-comment source pins).
     expect(claude).not.toContain("Unit (Vitest, 2108 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2112 checks)");
-    expect(claude).toContain("Unit (Vitest, 2115 checks)");
+    expect(claude).toContain("Unit (Vitest, 2132 checks)");
     // session-145 lockstep carry-forward: the coverage line 2108 ->
     // 2112 (the walk35 transition pins); s146: 2112 -> 2115.
     expect(claude).not.toContain("(currently 2108)");
     expect(claude).not.toContain("(currently 2112)");
-    expect(claude).toContain("(currently 2115)");
+    expect(claude).toContain("(currently 2132)");
     expect(claude).not.toContain("Vitest unit suites (2108 checks)");
     expect(claude).not.toContain("Vitest unit suites (2112 checks)");
-    expect(claude).toContain("Vitest unit suites (2115 checks)");
+    expect(claude).toContain("Vitest unit suites (2132 checks)");
     expect(claude).not.toContain("`bun run test` (2108)");
     expect(claude).not.toContain("`bun run test` (2112)");
-    expect(claude).toContain("`bun run test` (2115)");
+    expect(claude).not.toContain("`bun run test` (2115)");
+    expect(claude).toContain("`bun run test` (2132)");
     expect(claude).not.toContain("Unit (Vitest, 2060 checks)");
     expect(claude).not.toContain("Vitest unit suites (2060 checks)");
     expect(claude).not.toContain("(currently 2101)");

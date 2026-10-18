@@ -1,30 +1,26 @@
 import { getSessionUser } from "@/lib/auth";
 import { AppShell } from "@/components/layout/app-shell";
-import { APP_GUEST_USER } from "@/lib/page-layout";
+import { GuestLoginRedirect } from "@/components/layout/guest-login-redirect";
 
 export const dynamic = "force-dynamic";
 
-// Session-144 (D-144a1/F-144c1): THE MARKETING ROUTE GROUP — the
-// reference's /About + /Contact are PUBLIC pages (walk34, rendered-level:
-// the full marketing content + the app chrome served to sessionless
-// visitors — the "Hi, Guest" topbar + the gray-200 "G" avatar + the app
-// footer; the s142 build's (app)-group placement login-walled the guest
-// funnel: landing footer → 307, while the reference renders the pages).
+// Session-144 → Session-147 (F-144c1 → F-147c2 — the posture REVERSED
+// upstream): the (marketing) route group went public at s144 because the
+// reference then served /About + /Contact to GUESTS (walk34,
+// rendered-level: the full marketing content + the app chrome + the
+// "Hi, Guest" topbar). The reference's parity-event bundle (probe:ref
+// #119, walk37) REVERSED that: its marketing pages now LOGIN-WALL
+// guests — a client-side guard redirects to
+// /login?from_url=<absolute-url> and returns them post-login.
 //
-// The group layout is SESSION-OPTIONAL: a real session renders the
-// normal shell (the user's own topbar); a guest renders the same chrome
-// with APP_GUEST_USER. The four route files moved here unchanged
-// (about/contact + the capital .jsx aliases — the s24 dual-casing). The
-// CRM DATA pages stay auth-gated — the (app) group's redirect is
-// untouched (our documented fix-over-defect; the reference renders its
-// data pages to guests too, its platform face, not a behavior we
-// mirror).
-//
-// The store stays user:null for guests: AppShell's hydrate() resolves
-// /api/auth/me → data:null → the else branch (no slice fetches, no
-// crash) — the CRM links in the sidebar still lead to the (app) login
-// wall.
+// The layout is GUARDED again: the session decision stays SERVER-side
+// (a guest never receives the marketing page's HTML — the shim renders
+// INSTEAD of the shell), and the navigation rides the reference's own
+// client-side mechanism (GuestLoginRedirect). The landing page at `/`
+// stays public (the reference's marketing root — outside this group).
+// The s144 guest-chrome feed retired with the posture.
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const user = await getSessionUser();
-  return <AppShell user={user ?? APP_GUEST_USER}>{children}</AppShell>;
+  if (!user) return <GuestLoginRedirect />;
+  return <AppShell user={user}>{children}</AppShell>;
 }

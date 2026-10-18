@@ -5649,3 +5649,22 @@ Work Log:
 Stage Summary:
 - The drift-sweep tripwires recalibrated: the dead slack retired (3.2 points at the phone landing; the stale s91 genera named and re-anchored); every byte-stable genus confirmed (the tablet/landscape reproductions EXACT)
 - The walk-harness lessons L-146c1/c2 recorded (the baseline is a snapshot of its sandbox; the genus comment must name the mechanism)
+
+---
+Task ID: 147
+Agent: main (Super Z)
+Task: Session-147 — the mobile-nav parity event (probe:ref #119's event) — full maintenance cycle on nordeim/neo-crm
+
+Work Log:
+- Re-cloned at 195fea9 (the sandbox was reset); the environment re-stood (bun install, .env from .env.example, db push+seed, census MATCH, the Playwright chromium); the baseline gate GREEN (the exact s146-ship match: 114/2115 + 150/150)
+- 147-a: 11/11 spot-verified, zero findings; 147-b: 11/11 PASS; probe:ref #119 CHANGED — THE PARITY EVENT (the bundle index-n8TZHw0K.js + the TRUE-390 verdict NAV-FIXED)
+- walk37 (11 passes): F-147c1 the reference's mobile-nav fix decoded (the stock ghost trigger + the Radix Sheet — the standing defect #1 retired) + F-147c2 the guest re-gating (the from_url round-trip, the s144 posture reversed) + F-147c3 the desktop-interior family (the removed KPI chips/toolbar trio/rail buttons + the landing mock morph + the CTA genus fixed + the picklist data re-populated)
+- D-147a0/a1: the MOBILE_NAV_SHEET contracts + the mobile-nav rebuild on the Radix primitives (the kept supersets) + the isNavActive extraction; D-147a2: the GuestLoginRedirect shim + the from_url round-trip with the open-redirect guard; D-147a3: the probe STANDING re-anchor + the mobile standing triple; D-147a4: the e2e + battery re-anchors (the mobile-nav spec 10→11 checks, the landing guest family flipped, the from_url globs)
+- D-147a5: the sweep re-derivation (all four classes; the phone floor genus RETIRED, the phone landing genus COLLAPSED 6.0→0.01, F-147c3 baselined as the s148 mirror target; the mutation-proof ×3; the four drift gates GREEN); D-147a6: the captures 313-325 + the VLM battery 3/3; D-147a7: the docs realignment (2132/151/2283/115, the SKILL v1.144.0 layer, the mobile-defect claim retirement)
+- D-147a8: the final gate + the two-commit ship via the SSH wrapper
+
+Stage Summary:
+- The reference's 100+-session mobile defect retired upstream — the clone's drawer re-derived onto the reference's own Radix Sheet construction (byte-decoded contracts, the behavioral supersets kept and e2e-pinned)
+- The guest boundary re-mirrored (the from_url round-trip with the same-origin guard; the server-side session decision preserved)
+- The parity event's desktop-interior family decoded + baselined as the s148 mirror target (the KPI chips family, the accounts controls, the landing mock)
+- The walk-harness lessons L-147c1/c2 recorded (the defect ledger is a snapshot too; the parity event lands as a cluster)

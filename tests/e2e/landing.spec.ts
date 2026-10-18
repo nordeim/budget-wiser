@@ -111,11 +111,22 @@ test.describe("the public landing (logged-out)", () => {
     await expect(page.locator("div.md\\:hidden.border-t")).toBeVisible();
   });
 
-  test("the guest CTA login-walls at the (app) guard (OUR security posture)", async ({ page }) => {
+  test("the guest CTA login-walls with the from_url round-trip (the s147 mirror of the reference's client guard)", async ({ page }) => {
+    // Session-147 (F-147c2): the reference's new bundle login-walls
+    // guests behind /login?from_url=<abs> (walk37) — OUR mirror: the
+    // landing's "Open dashboard" CTA enters the (app) group, the
+    // GuestLoginRedirect shim lands on the wall, and a login RETURNS
+    // to the CTA's target.
     await page.goto("/");
     await page.getByRole("link", { name: "Open dashboard" }).first().click();
-    await page.waitForURL("**/login");
+    await page.waitForURL(/\/login\?from_url=/);
     await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
+    // the round-trip: log in from the wall → land on the aimed page
+    await page.fill('input[type="email"]', "sepnetflix2023@outlook.com");
+    await page.fill('input[type="password"]', "$Abcd1234");
+    await page.click('button[type="submit"]');
+    await page.waitForURL((u) => !u.pathname.includes("login"), { timeout: 30000 });
+    await expect(page.locator("aside").first()).toBeVisible();
   });
 
   test("the login flow lands on the landing (the reference's post-login redirect)", async ({ page }) => {
@@ -147,56 +158,64 @@ test.describe("the public landing (logged-out)", () => {
   });
 });
 
-test.describe("the marketing app pages for a GUEST (session-144 — F-144c1, the public family)", () => {
-  // Session-144 (D-144a1/F-144c1): the reference serves /About + /Contact
-  // to GUESTS — rendered-level (walk34: the full content + the app chrome,
-  // the "Hi, Guest" topbar + the gray-200 "G" avatar). The s142 build's
-  // (app)-group placement login-walled the guest funnel (the landing
-  // footer → 307); the (marketing) group is session-optional now.
+test.describe("the marketing app pages for a GUEST (session-144 → session-147 — the wall, the posture REVERSED upstream)", () => {
+  // Session-144 (F-144c1) built the guest-serving (marketing) group
+  // because the reference then served /About + /Contact to guests
+  // (walk34). Session-147 (F-147c2): the reference's parity-event
+  // bundle REVERSED that — its marketing pages now login-wall guests
+  // behind /login?from_url=<absolute-url> (a client-side guard,
+  // walk37), returning them post-login. OUR mirror: the
+  // GuestLoginRedirect shim (the session decision stays server-side —
+  // the guest never receives the page's HTML).
   test.use({ storageState: { cookies: [], origins: [] } });
 
-  test("the guest /About renders the full page with the app chrome — no login wall", async ({ page }) => {
+  test("the guest /About login-walls with the from_url round-trip (the reference's new posture)", async ({ page }) => {
     await page.goto("/About");
-    await expect(page).toHaveURL(/\/About$/);
-    // the censused content (byte-identical to the authenticated face)
+    await page.waitForURL(/\/login\?from_url=/);
+    await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
+    // the from_url carries the absolute URL (the reference's own form)
+    const from = new URL(page.url()).searchParams.get("from_url");
+    expect(from).toBeTruthy();
+    expect(from!.endsWith("/About")).toBe(true);
+    // the round-trip: log in → back to /About with the app shell
+    await page.fill('input[type="email"]', "sepnetflix2023@outlook.com");
+    await page.fill('input[type="password"]', "$Abcd1234");
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/About$/);
     await expect(page.getByRole("heading", { name: "About NEO CRM" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Accounts & Contacts" })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Get in touch with us/ })).toHaveAttribute("href", "/Contact");
-    // the app chrome: the "Hi, Guest" topbar (the reference's guest face)
-    await expect(page.getByText("Hi, Guest")).toBeVisible();
-    // the app-shell footer (the s143 contract) renders for guests too
-    await expect(page.getByText("© 2026 NEO CRM")).toBeVisible();
+    await expect(page.locator("aside").first()).toBeVisible();
   });
 
-  test("the guest /Contact renders + the lowercase canonicals serve the same faces", async ({ page }) => {
+  test("the guest /Contact + the lowercase canonicals wall the same way", async ({ page }) => {
     await page.goto("/Contact");
-    await expect(page).toHaveURL(/\/Contact$/);
-    await expect(page.getByRole("heading", { name: "Contact Us" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Email" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "hello@example.com" })).toHaveAttribute(
-      "href",
-      "mailto:hello@example.com",
-    );
-    await expect(page.getByText("Hi, Guest")).toBeVisible();
-    // the dual-casing (the s24 parity) holds in the guest state
+    await page.waitForURL(/\/login\?from_url=/);
     await page.goto("/about");
-    await expect(page.getByRole("heading", { name: "About NEO CRM" })).toBeVisible();
+    await page.waitForURL(/\/login\?from_url=/);
     await page.goto("/contact");
-    await expect(page.getByRole("heading", { name: "Contact Us" })).toBeVisible();
+    await page.waitForURL(/\/login\?from_url=/);
   });
 
-  test("the guest funnel: the landing footer links reach the marketing pages (no login wall)", async ({ page }) => {
-    // the funnel the reference actually ships: public landing → footer →
-    // About → Contact — every hop 200 for a sessionless visitor
+  test("the guest funnel: the landing footer links reach the wall (the s144 no-wall funnel retired)", async ({ page }) => {
+    // the funnel the reference now ships: public landing → footer →
+    // About → the login wall (the s144 guest funnel's terminal hop
+    // changed from the content page to the wall)
     await page.goto("/");
     const footer = page.getByRole("contentinfo").first();
     await footer.getByRole("link", { name: "About" }).click();
-    await expect(page).toHaveURL(/\/About$/);
-    await expect(page.getByRole("heading", { name: "About NEO CRM" })).toBeVisible();
-    // About's own tail link → Contact
-    await page.getByRole("link", { name: /Get in touch with us/ }).click();
-    await expect(page).toHaveURL(/\/Contact$/);
-    await expect(page.getByRole("heading", { name: "Contact Us" })).toBeVisible();
+    await page.waitForURL(/\/login\?from_url=/);
+    await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
+  });
+
+  test("the from_url OPEN-REDIRECT guard: a foreign-origin param falls back to the landing", async ({ page }) => {
+    // the security-critical negative: the param is untrusted query
+    // input — a foreign origin never navigates cross-site post-login
+    await page.goto("/login?from_url=https%3A%2F%2Fevil.example.net%2Fphish");
+    await page.fill('input[type="email"]', "sepnetflix2023@outlook.com");
+    await page.fill('input[type="password"]', "$Abcd1234");
+    await page.click('button[type="submit"]');
+    await page.waitForURL((u) => !u.pathname.includes("login"), { timeout: 30000 });
+    // the guarded target: the plain landing, never the foreign origin
+    await expect(page).toHaveURL(/\/$/);
   });
 });
 
@@ -237,50 +256,21 @@ test.describe("the marketing app pages (authenticated)", () => {
 // headline fix-over-defect extends to the guest marketing family (the
 // s144 (marketing)-group decision). The test pins the drawer's presence
 // + its full link set for a sessionless visitor.
-test.describe("the guest marketing pages at 390 (session-145 — the fix extends to the guest family)", () => {
+test.describe("the guest marketing pages at 390 (session-145 → session-147 — the wall at phone width)", () => {
+  // Session-145 walked the guest /About at 390 with the drawer working
+  // (the s144 fix-over-defect extending to the guest family). Session-
+  // 147 (F-147c2): the reference's parity-event bundle login-walls its
+  // marketing pages — the guest phone face is the WALL now (the drawer
+  // surface retired with the guest chrome).
   test.use({ storageState: { cookies: [], origins: [] } });
 
-  test("the guest /About at 390: the drawer works — the hamburger + all 8 links (the reference ships NO nav affordance there)", async ({ page }) => {
+  test("the guest /About at 390: the login wall (the reference's reversed posture)", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/About");
-
-    // the guest chrome + content still render (the s144 contract at
-    // phone width — capture 309's face). The greeting TEXT is hidden
-    // below sm on BOTH apps (walk35's pixel census: the reference's
-    // "Hi, Guest" span measures w=0 at 390, ours the same) — the G
-    // avatar is the phone-width greeting
-    await expect(page.getByRole("heading", { name: "About NEO CRM" })).toBeVisible();
-    await expect(page.getByText("Hi, Guest")).toBeHidden();
-    await expect(page.getByRole("button", { name: "Account menu" })).toBeVisible();
-
-    // no desktop sidebar at 390px
-    await expect(page.locator("aside").first()).toBeHidden();
-
-    // the drawer: hamburger → open → every destination reachable
-    const trigger = page.getByRole("button", { name: "Open navigation menu" });
-    await expect(trigger).toBeVisible();
-    await trigger.click();
-    const dialog = page.getByRole("dialog", { name: "Navigation menu" });
-    await expect(dialog).toBeVisible();
-    for (const label of [
-      "Dashboard",
-      "Accounts",
-      "Contacts",
-      "Leads",
-      "Calendar",
-      "Activities",
-      "Reports",
-      "Settings",
-    ]) {
-      await expect(dialog.getByRole("link", { name: label, exact: true })).toBeVisible();
-    }
-
-    // a guest drawer link login-walls at the (app) guard — the drawer's
-    // Dashboard link enters the guarded group, which 307s a sessionless
-    // visitor (the posture; the reference's guest would land on its
-    // open platform face instead — the genus)
-    await dialog.getByRole("link", { name: "Dashboard", exact: true }).click();
-    await page.waitForURL("**/login**");
+    await page.waitForURL(/\/login\?from_url=/);
+    // the login card's phone face (the s96 family): the card renders
+    // clean, nothing overflows
     await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Continue with Google" })).toBeVisible();
   });
 });

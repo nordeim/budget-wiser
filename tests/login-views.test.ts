@@ -376,14 +376,18 @@ describe("session-96: the form-family walk remediation (the v4 space-y genus on 
 // ---------------------------------------------------------------------------
 
 describe("session-145: the auth-transition targets (walk35)", () => {
-  it("the post-login redirect lands on the PUBLIC landing — router.push(\"/\") on BOTH submit sites (the s142 re-anchor, source-frozen)", () => {
+  it("the post-login redirect lands on the PUBLIC landing — BOTH submit sites (the s142 re-anchor; s147 re-anchored: the sign-in site routes through the from_url resolver whose DEFAULT is the plain \"/\")", () => {
     const src = loginCardSrc()
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/\/\/[^\n]*/g, "");
-    // the two sites: the signin success (S21-P2) + the reset-completion
+    // the two sites: the signin success (S21-P2 — s147: the resolver's
+    // "/" default when no from_url rides the query) + the reset-completion
     // return to the signin view — both land on the landing
     const pushes = src.match(/router\.push\("\/"\)/g) ?? [];
-    expect(pushes.length).toBe(2);
+    expect(pushes.length).toBe(1);
+    // the from_url resolver's plain-login default: the sign-in site
+    // routes through resolveFromUrl(fromUrl ?? "/") — the "/" fallback
+    expect(src).toMatch(/fromUrl \?\? "\/"/);
     // negatives: never the CRM dashboard (the pre-s142 target) and
     // never a deep page
     expect(src).not.toMatch(/router\.push\("\/[Dd]ashboard"\)/);
@@ -408,5 +412,40 @@ describe("session-145: the auth-transition targets (walk35)", () => {
       expect(src, `${label}: no redirect call`).not.toMatch(/redirect\(/);
       expect(src, `${label}: no layout guard import`).not.toMatch(/from "next\/navigation"/);
     }
+  });
+});
+
+// Session-147 (F-147c2): the from_url round-trip — the reference's new
+// auth wall (guest /About → /login?from_url=<abs> → post-login → /About).
+// The sign-in submit navigates to the SAME-ORIGIN-VALIDATED target.
+describe("session-147: the from_url round-trip (walk37 — the reference's auth-wall return)", () => {
+  it("the sign-in submit reads from_url and navigates to the VALIDATED target (the open-redirect guard)", () => {
+    const src = loginCardSrc()
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    // the param is read client-side (the login page is force-dynamic —
+    // no Suspense boundary needed)
+    expect(src).toMatch(/useSearchParams\(\)/);
+    expect(src).toMatch(/get\("from_url"\)/);
+    // THE OPEN-REDIRECT GUARD: same-origin validation before the push —
+    // never router.push(<raw param>)
+    expect(src).toMatch(/origin\s*[!=]==\s*window\.location\.origin/);
+    expect(src).not.toMatch(/router\.push\((fromUrl|from_url)\)/);
+    // the fallback stays "/" (the s142/s145 plain-login pin)
+    expect(src).toMatch(/resolveFromUrl|safeFromUrl|fromUrlTarget/);
+  });
+
+  it("the post-login redirect target pin re-anchored: the plain default STAYS / (the s145 pin) + the from_url override", () => {
+    const src = loginCardSrc()
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    // the sign-in site: push(target) where target = resolveFromUrl(...) —
+    // the "/" default inside the resolver; the reset-completion site
+    // keeps its bare "/"
+    const pushes = src.match(/router\.push\(/g) ?? [];
+    expect(pushes.length).toBeGreaterThanOrEqual(2);
+    // negatives stand: never a hardcoded CRM page
+    expect(src).not.toMatch(/router\.push\("\/[Dd]ashboard"\)/);
+    expect(src).not.toMatch(/router\.push\("\/(accounts|contacts|leads|reports|settings|profile)"/);
   });
 });
