@@ -242,21 +242,21 @@ export default function ActivitiesPage() {
       />
 
       {/* Reference: six stat cards, value + colored bar strip side by side
-          (delta rows carry trending icons — DOM-verified). Session-76
-          (M-76c6, bundle-decoded from gm): the deltas/subtexts/bars are
-          the reference's STATIC literals (ACTIVITY_KPI_STATICS) — the
-          KPI_STATICS "NEVER feed these cards real" rule extends here;
-          only the VALUES stay live. */}
+          (delta rows carry trending icons — DOM-verified, the pre-s147
+          face). Session-76 (M-76c6, bundle-decoded from gm): the
+          subtexts/bars are the reference's STATIC literals
+          (ACTIVITY_KPI_STATICS) — the KPI_STATICS "NEVER feed these
+          cards real" rule extends here; only the VALUES stay live.
+          Session-148 (F-147c3): the DELTA arms retired (walk38). */}
       <div className={PAGE_KPI_GRIDS.activities}>
         {/* Session-90 (L-90c4/c6, bundle-decoded from the reference's gm
-            call sites): the color KEY + the trend/trendValue pair —
-            trend="up" trendValue="+23%" on Activities Today, the DOWN
-            arm on Overdue, none on the middle four. */}
+            call sites): the color KEY. Session-148 (F-147c3): the
+            trend/trendValue pair RETIRED — the reference removed its
+            KPI delta chips family-wide (walk38: no "+23%", no "2h
+            overdue"; the SUB-TEXTS stay on the middle cards). */}
         <BarStatCard
           label="Activities Today"
           value={activitiesToday}
-          trend="up"
-          trendValue={ACTIVITY_KPI_STATICS.activitiesToday.delta}
           bars={[...ACTIVITY_KPI_STATICS.activitiesToday.bars]}
           color="blue"
         />
@@ -264,8 +264,6 @@ export default function ActivitiesPage() {
           label="Overdue Activities"
           value={overdue.length}
           subValue={ACTIVITY_KPI_STATICS.overdue.sub}
-          trend="down"
-          trendValue={ACTIVITY_KPI_STATICS.overdue.delta}
           bars={[...ACTIVITY_KPI_STATICS.overdue.bars]}
           color="red"
         />
@@ -317,10 +315,11 @@ export default function ActivitiesPage() {
             <div className={TABLE_CARD.toolbar}>
               {/* Session-7 (S7-17): h2 text-lg title + mb-4 row (live pins). */}
               <div className={ACTIVITY_CARD.priorityRow}>
+                {/* Session-148 (F-147c3): the plain More ghost RETIRED —
+                    the reference's toolbar is the h2 alone (walk38: its
+                    priority row 28px vs our 32px; the Timeline/by-Type
+                    "•••" buttons survive). */}
                 <h2 className={ACTIVITY_CARD.title}>Priority Activities</h2>
-                <Button variant="ghost" size="sm">
-                  More
-                </Button>
               </div>
               {/* Session-23 (S23-P1 + S23-P3): the reference's priority card
                   is ONE p-4 border-b region — title row, tab strip, and the

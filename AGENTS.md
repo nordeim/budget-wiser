@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2132 checks)      | `bun run test`                         |
-|  Browser E2E (151 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (2153 checks)      | `bun run test`                         |
+|  Browser E2E (152 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2132) → `bun run build` → `bun run test:e2e` (151) — or the
+`bun run test` (2153) → `bun run build` → `bun run test:e2e` (152) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6872,3 +6872,74 @@ the same re-derivation as a pixel baseline) · **L-147c2 the parity
 event lands as a CLUSTER** (one bundle carried two posture flips + a
 page-interior family — decode the WHOLE delta before choosing the
 remediation scope, or the second change rides the first's ticket).
+
+### Session-148 (2026-10-19) — the desktop-interior mirror (the F-147c3 family)
+
+**The F-147c3 family MIRRORED** (probe:ref #122 STABLE at the s147
+fingerprint — no new event; the session_312 "next" hint executed). The
+walk38 re-decode corrected TWO stale s147 handoff notes before
+implementing (the L-148c1 lesson): the accounts search magnifier is
+KEPT (only the trio retired), and the desktop hero CTA KEEPS its
+ArrowRight (only the mobile-menu/footer CTAs are arrow-less). Two
+further decodes the s147 handoff missed entirely: the dashboard's
+Recent-Deals bar retired BOTH its blank middle select AND its "More..."
+dead ghost (walk38k: [Filter][All Stages][All Sources][search]), and
+the Priority card's plain "More" is gone with the activities chips
+family (walk38).
+
+- **THE KPI DELTA-CHIP FAMILY (every core page)**: the chips retired —
+  dashboard (KPI_STATICS.deltas), accounts (4 trend pairs), contacts
+  (the "+0"), activities (the "+23%" + "2h overdue" — the SUB-texts
+  "Due now"/"+7 today"/"+4 today"/"+1h 12m" KEPT), calendar (the four
+  static trends — CALENDAR_KPI_STATICS retired with them).
+- **THE ACCOUNTS TOOLBAR TRIO + RAIL**: the switcher/density/More trio
+  retired (the magnifier + Export CSV keep the byte-equal construction);
+  the rail's Save All + Filter retired — ACCOUNTS-SCOPED: the
+  activities rail KEEPS its pair (the L-148c2 asymmetric-removal
+  lesson). The Cards view + the `view` state retired with the switcher.
+- **THE DASHBOARD BAR**: the middle view-switcher + the More... ghost
+  retired; the dealsView state + its Cards branch retired with them
+  (VIEW_SWITCHER + TABLE_TOOLBAR.select/densityOptions retired from
+  page-layout.ts — TABLE_TOOLBAR.row/moreBtn stay, the Export's class).
+- **THE LANDING MOCK MORPH (walk38d/e/f byte-decoded)**: the Accounts
+  preview renders a 4-row micro-table (Northwind/Vertex/Bluepeak/
+  Harbour — the grid-cols-3 construction verbatim), the Reports preview
+  renders "Revenue by month" with 7 bars [42,64,50,82,60,94,71], the
+  middle row flips at lg (`lg:[&>*:first-child]:order-2`), and the
+  hero's ≥sm line-heights pin the reference's COMPUTED values
+  (`sm:leading-none` + `sm:leading-[28px]` — its leading utilities are
+  inert at ≥sm in its build; phone stays the working 1.08/relaxed,
+  byte-equal on both apps).
+- **THE SWEEP RE-DERIVATION**: the family COLLAPSED to the 0.00-0.01
+  floor at EVERY class (desktop accounts 1.97→0.00 · contacts 2.50→
+  0.00 · activities 4.52→0.01 · landing 7.26→0.00; tablet landing
+  10.77→0.01; phone contacts 5.51→0.00; landscape accounts 3.36→1.67 —
+  the PURE s95 overflow genus). All four baseline tables + the
+  standingExplained lines + the sweep-tool pins re-anchored; the
+  mutation-proof ×3; the four drift gates CLEAN ×4. The standing genera
+  left: the settings picklist-DATA genus (volatile workspace data, not
+  for mirroring) + the login logo genus + the s95 landscape overflow
+  genus.
+
+**THE TDD LEDGER**: 21 new pins RED at birth (the constants retirement
++ the per-page mirror pins) + 9 flipped legacy pins (the s8 trio freeze
+→ the trimmed stack; the s117 trend census; the s133 order; the s27
+deltas; the s76 statics; the s119 "+0"; the s134/s87 bar freezes; the
+route-case More...) → the implementation → GREEN; the e2e re-anchors
+(the Cards-view test retired with its switcher, the "+5.3%" assertion
+flipped negative, the More... no-op test retired, the NEW landing
+mock-variant spec). **THE VERIFICATION**: lint 0/0 · tsc 0 ·
+**115/2153** (+21) · build · **e2e 152/152** (+1) · the four drift
+gates CLEAN ×4 · census MATCH · the VLM battery 3/3 (accounts trio/rail
+/KPI · the preview family · the dashboard bar) · the live two-app smoke
+byte-equal (dashboard + landing construction; the accounts h=102
+compact cards). **THE DOCS REALIGNMENT**: the count ladder (2132 → 2153
+· E2E 151 → 152 · badge 2283 → 2305) · the page-layout line census
+(1698/205 → 1687/210) · SKILL v1.145.0 + the session-148 layer · the
+PAD row · the session_314/315 records + the plan execution record.
+The walk-harness lessons: **L-148c1 the stale handoff decode** (the
+s147 handoff's landing decodes were wrong at the live re-walk — the
+next round's mirror must re-decode every handoff finding live) ·
+**L-148c2 the asymmetric removal** (the accounts rail lost its buttons
+while the activities rail kept them — the per-page scope check is part
+of the decode).

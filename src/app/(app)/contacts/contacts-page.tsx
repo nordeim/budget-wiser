@@ -412,11 +412,12 @@ export default function ContactsPage() {
           gradient
           iconColor="bg-blue-500"
         />
+        {/* Session-148 (F-147c3): the trend row RETIRED — the reference's
+            contacts KPI cards render no delta chips (walk38: no "+0"; the
+            s119 "+0" green trend decode is a historical record). */}
         <IconStatCard
           label="New This Month"
           value={newThisMonth}
-          trend={`+${newThisMonth}`}
-          trendDir="up"
           icon={<TrendingUp className="w-6 h-6 text-white" />}
           gradient
           iconColor="bg-green-500"

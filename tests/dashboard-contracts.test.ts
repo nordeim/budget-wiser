@@ -80,12 +80,12 @@ describe("session-27: the dashboard pipeline legend chips (the O-map)", () => {
   });
 });
 
-describe("session-27: the KPI static deltas + sparklines (the hardcoded family)", () => {
-  it("KPI_STATICS pins the reference's static deltas: +5.3% (Total Leads), +15% (Revenue This Month)", () => {
+describe("session-27: the KPI sparklines (the hardcoded family — s148-RE-ANCHORED: the deltas arm retired)", () => {
+  it("KPI_STATICS carries NO deltas arm (the F-147c3 delta retirement — the reference's cards render no chips)", () => {
     const src = layout();
     const block = src.slice(src.indexOf("KPI_STATICS"), src.indexOf("KPI_STATICS") + 900);
-    expect(block).toMatch(/\+5\.3%/);
-    expect(block).toMatch(/\+15%/);
+    expect(block).not.toMatch(/\+5\.3%/);
+    expect(block).not.toMatch(/deltas:/);
   });
 
   it("the six static spark arrays are pinned verbatim (the reference hardcodes them)", () => {
@@ -99,12 +99,11 @@ describe("session-27: the KPI static deltas + sparklines (the hardcoded family)"
     expect(block).toContain("[30, 28, 29, 27, 26, 26]"); // Avg cycle line #10b981
   });
 
-  it("the page wires the static deltas (no computed totalLeadsDelta / revenueDelta)", () => {
+  it("the page wires NO deltas (the F-147c3 retirement — no computed totalLeadsDelta / revenueDelta either)", () => {
     const src = page();
     expect(src).not.toMatch(/totalLeadsDelta/);
     expect(src).not.toMatch(/revenueDelta/);
-    const totalLeads = src.slice(src.indexOf('label="Total Leads"'), src.indexOf('label="Total Leads"') + 400);
-    expect(totalLeads).toMatch(/KPI_STATICS\.deltas\.totalLeads/);
+    expect(src).not.toMatch(/KPI_STATICS\.deltas/);
   });
 
   it("the Sales Target progress renders NEUTRAL text-gray-600 (not a green/red delta)", () => {
@@ -326,13 +325,56 @@ describe("session-33: the filter-bar search + the header trio render (S33-P1/P2)
     expect(src).not.toMatch(/DASHBOARD_HEADER\.outlineExportLabelClass/);
   });
 
-  it("the dead-affordance pair stays no-op: Filter + More... carry NO onClick (the reference's dead controls mirrored)", () => {
+  it("the dead-affordance survivor: the Filter button carries NO onClick (the More... ghost retired with F-147c3)", () => {
     const src = page();
     const filterAt = src.indexOf(">Filter</span>");
     const filterBtn = src.slice(Math.max(0, src.lastIndexOf("<Button", filterAt)), filterAt + 14);
     expect(filterBtn).not.toMatch(/onClick/);
-    const moreAt = src.indexOf("More...");
-    const moreBtn = src.slice(Math.max(0, src.lastIndexOf("<Button", moreAt)), moreAt + 8);
-    expect(moreBtn).not.toMatch(/onClick/);
+    expect(src).not.toMatch(/More\.\.\./);
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Session-148 (F-147c3): the dashboard interior mirror — the KPI delta
+// chips + the Recent-Deals bar's middle view-switcher + the More... ghost
+// all retired upstream (walk38k: the reference's bar is exactly [Filter]
+// [All Stages][All Sources][search] — BOTH the blank middle select AND the
+// More... ghost are gone).
+// ---------------------------------------------------------------------------
+describe("session-148: the dashboard KPI delta + the Recent-Deals bar retirement", () => {
+  it("ZERO delta wiring on the KPI cards (no KPI_STATICS.deltas reads; KpiCard renders no delta chip)", () => {
+    const src = page();
+    expect(src).not.toMatch(/KPI_STATICS\.deltas/);
+    expect(src).not.toMatch(/delta=\{/);
+  });
+
+  it("the Recent-Deals middle view-switcher retires (no dealsView state, no blank select)", () => {
+    const src = page();
+    expect(src).not.toMatch(/dealsView/);
+    expect(src).not.toContain('aria-label="Recent deals view"');
+    expect(src).not.toMatch(/VIEW_SWITCHER/);
+  });
+
+  it("the More... ghost retires (walk38k: the reference's bar ends with the search)", () => {
+    const src = page();
+    expect(src).not.toMatch(/More\.\.\./);
+  });
+
+  it("the bar's survivors: Filter + the two real selects + the search (walk38k byte-order)", () => {
+    const src = page();
+    const order = [
+      '<FilterPolygon className="w-4 h-4 mr-2" />',
+      '<SelectValue placeholder="Stage" />',
+      '<SelectValue placeholder="Source" />',
+      'aria-label="Filter deals"',
+    ];
+    let prev = -1;
+    for (const marker of order) {
+      const i = src.indexOf(marker);
+      expect(i, `the ${marker} control must exist`).toBeGreaterThan(-1);
+      expect(i, `the ${marker} control must keep the stack order`).toBeGreaterThan(prev);
+      prev = i;
+    }
   });
 });

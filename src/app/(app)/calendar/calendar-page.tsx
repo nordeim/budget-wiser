@@ -49,7 +49,6 @@ import { cn } from "@/lib/utils";
 import {
   CALENDAR_CELL,
   CALENDAR_CARD,
-  CALENDAR_KPI_STATICS,
   FILTER_RAIL,
   PAGE_KPI_GRIDS,
   PAGE_ROOT,
@@ -250,12 +249,12 @@ export default function CalendarPage() {
       />
 
       {/* Session-7 stat-card re-pin: 40px -50 chips, h-5 w-5 icons,
-          green-600 trends, label under the value. Session-76
-          (M-76c6 + L-76c3, bundle-decoded from Mx/jAe): the trend texts
-          are the reference's STATIC literals (+3/+34/+2/+3) and the four
-          values derive from the RAW events array (the reference's $
-          memo reads `p`, not the filtered set — its cards never move
-          under filters). Session-90 (L-90c5 + M-90c1, bundle-decoded
+          label under the value. Session-148 (F-147c3): the trend texts
+          RETIRED — the reference's calendar cards render no trend rows
+          (walk38; the s76 +3/+34/+2/+3 statics decode is a historical
+          record). The four values derive from the RAW events array (the
+          reference's $ memo reads `p`, not the filtered set — its cards
+          never move under filters). Session-90 (L-90c5 + M-90c1, bundle-decoded
           from the Mx component itself): the icon arrives as a
           COMPONENT REFERENCE + the color as a KEY (the component
           applies the w-5 h-5 ${text-600} classes itself); the value
@@ -264,32 +263,24 @@ export default function CalendarPage() {
         <TrendStatCard
           label="Today's Events"
           value={todaysEvents.length}
-          trend="up"
-          trendValue={CALENDAR_KPI_STATICS.todaysEvents}
           icon={Calendar}
           color="blue"
         />
         <TrendStatCard
           label="Total Events"
           value={events.length}
-          trend="up"
-          trendValue={CALENDAR_KPI_STATICS.totalEvents}
           icon={Target}
           color="green"
         />
         <TrendStatCard
           label="Meetings This Week"
           value={meetingsThisWeek}
-          trend="up"
-          trendValue={CALENDAR_KPI_STATICS.meetingsThisWeek}
           icon={Users}
           color="purple"
         />
         <TrendStatCard
           label="Calls This Week"
           value={callsThisWeek}
-          trend="up"
-          trendValue={CALENDAR_KPI_STATICS.callsThisWeek}
           icon={Phone}
           color="orange"
         />

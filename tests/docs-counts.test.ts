@@ -119,7 +119,9 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 // Session-145: E2E 149 -> 150 (+1 — the guest 390 drawer e2e: the
 // hamburger + the 8 links on the guest /About, the fix extending to
 // the guest marketing family).
-const E2E = 151;
+// Session-148: E2E 151 -> 152 (+1 — the landing mock-variant spec: the
+// content-varied preview family e2e [the micro-table + the 7-bar card]).
+const E2E = 152;
 const SUITES = 115;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
@@ -429,7 +431,15 @@ const SUITES = 115;
 // byte-stable confirmations + the mechanism-comment source pins;
 // SUITES + E2E unchanged [114 / 150 — the its land in the EXISTING
 // sweep-tool suite]).
-const UNIT = 2132;
+// Session-147: 2115 -> 2132 (+17 — the parity-event pins: nav-config
+// +4, page-layout s147 +5 (2 flipped s144 re-anchors), login-views +2,
+// sweep-tool +3, route-case re-derived).
+// Session-148: 2132 -> 2153 (+21 — the F-147c3 mirror pins: page-layout
+// +5 (the constants retirement), account-contacts +4, dashboard-contracts
+// +4, landing-page +5, activities-calendar +3; the flipped s8/s117/s133/
+// s27/s76/s119/s134/s87/route-case pins re-anchored in place; SUITES
+// stays 115 [every it lands in an EXISTING file]; E2E 151 -> 152).
+const UNIT = 2153;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -852,13 +862,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-147 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-148 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s146 layer now beneath the s147 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s147 layer now beneath the s148 head)",
     ).toContain(
-      "+ beneath it 2115 unit checks + 150 e2e checks green; the session-146 layer (THE DRIFT-SWEEP BASELINES RE-DERIVATION",
+      "+ beneath it 2132 unit checks + 151 e2e checks green; the session-147 layer (THE MOBILE-NAV PARITY EVENT",
     );
   });
 
@@ -968,14 +978,16 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(skill).not.toContain("test-pinned module (1653 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 197 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1698 lines; `tests/page-layout.test.ts`, 205 checks",
+      "test-pinned module (1687 lines; `tests/page-layout.test.ts`, 210 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1698 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1687 |");
+    // Session-148: the retired 1698 form joins the negatives ladder.
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1698 |");
     // Session-143: the retired 1600 form joins the negatives ladder.
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1600 |");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1530 |");

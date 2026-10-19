@@ -94,14 +94,14 @@ describe("session-75: the accounts KPI family", () => {
   // comment-stripped source pins the SITE TOTALS: a fifth trend site or a
   // seventh color site is a parity event, not a growth (the sixth color
   // site is the Cards-view Avatar's hex prop).
-  it("the five KPI labels + the per-card trend/color pairs (the s117 census pin)", () => {
+  it("the five KPI labels + the per-card color keys (the s117 census pin, s148-re-anchored)", () => {
     const src = accountsPage();
-    const cards: Array<{ label: string; trend: string | null; color: string }> = [
-      { label: "Total Accounts", trend: "up", color: "blue" },
-      { label: "Active Accounts", trend: "up", color: "green" },
-      { label: "Key Accounts", trend: "up", color: "cyan" },
-      { label: "Total Revenue", trend: "up", color: "purple" },
-      { label: "Overdue Activities", trend: null, color: "red" },
+    const cards: Array<{ label: string; color: string }> = [
+      { label: "Total Accounts", color: "blue" },
+      { label: "Active Accounts", color: "green" },
+      { label: "Key Accounts", color: "cyan" },
+      { label: "Total Revenue", color: "purple" },
+      { label: "Overdue Activities", color: "red" },
     ];
     for (let i = 0; i < cards.length; i += 1) {
       const card = cards[i]!;
@@ -113,17 +113,13 @@ describe("session-75: the accounts KPI family", () => {
           : src.indexOf('color="red"', start) + 12;
       expect(end).toBeGreaterThan(start);
       const slice = src.slice(start, end);
-      if (card.trend) {
-        expect(slice, `${card.label}: the trend arm`).toContain(`trend="${card.trend}"`);
-      } else {
-        expect(slice, "Overdue: NO trend arm (the reference's own quirk)").not.toContain(`trend="up"`);
-      }
+      expect(slice, `${card.label}: NO trend arm (the F-147c3 delta retirement)`).not.toMatch(/trend=/);
       expect(slice, `${card.label}: the color KEY`).toContain(`color="${card.color}"`);
     }
-    // The arm census (comment-stripped): trend="up" at EXACTLY four
-    // sites; color= at EXACTLY six (the five KPI keys + the Avatar hex).
-    expect(src.match(/trend="up"/g) ?? []).toHaveLength(4);
-    expect(src.match(/color="/g) ?? []).toHaveLength(6);
+    // The arm census (comment-stripped): trend="up" at EXACTLY ZERO
+    // sites; color= at EXACTLY five (the Cards-view Avatar hex retired).
+    expect(src.match(/trend="up"/g) ?? []).toHaveLength(0);
+    expect(src.match(/color="/g) ?? []).toHaveLength(5);
   });
 
   it("the trailing TableHead is w-12 (the reference's literal)", () => {
@@ -354,32 +350,87 @@ describe("session-133: the accounts table + toolbar freeze", () => {
     expect(src.match(/<TableHead className="w-12" \/>/g) ?? []).toHaveLength(1);
   });
 
-  it("the toolbar construction freeze (the s8 stack + the s133 walk census)", () => {
+  it("the toolbar construction freeze (the s8 stack — s148-RE-ANCHORED: the trio retired)", () => {
     const src = accountsPage();
-    // The reference's stack: [Table/Cards switcher][density (empty label,
-    // dead)][More outline h-8 dead] BEFORE the search, then Export CSV —
-    // the s8-3 re-pin, walk-verified s117 + s133 (both apps stack the
-    // children flex-col below sm, the rows exactly 220px @390).
+    // walk38j: the reference's post-F-147c3 stack: [search + its absolute
+    // magnifier][Export CSV] — the Table/Cards switcher, the dead density
+    // select and the dead More outline are ALL retired. The search keeps
+    // the N-86c6/N-86c7 construction; the Export keeps the
+    // TABLE_TOOLBAR.moreBtn outline class (93x32 live-measured).
+    const toolbarAt = src.indexOf("TABLE_CARD.toolbar");
+    const toolbarRegion = src.slice(toolbarAt, toolbarAt + 2600);
     const order = [
-      'aria-label="Accounts view"', // the Table/Cards switcher trigger
-      "VIEW_SWITCHER.options.map", // the Table/Cards options ride
-      'aria-label="Row density"', // the dead density select
-      "TABLE_TOOLBAR.densityOptions.map", // the Standard/Detailed pair
-      'aria-label="More"', // the dead More outline
       'placeholder="Search accounts..."', // the search input
+      "onClick={exportAccounts}", // the toolbar's Export button
     ];
     let prev = -1;
     for (const marker of order) {
-      const i = src.indexOf(marker);
+      const i = toolbarRegion.indexOf(marker);
       expect(i, `the ${marker} control must exist`).toBeGreaterThan(-1);
       expect(i, `the ${marker} control must keep the stack order`).toBeGreaterThan(prev);
       prev = i;
     }
+    // the retired trio: NONE of the three controls remain
+    expect(src).not.toContain('aria-label="Accounts view"');
+    expect(src).not.toContain('aria-label="Row density"');
+    expect(src).not.toContain('aria-label="More"');
     // the export pair: the header's icon+hidden-span button + the
     // toolbar's text-only button — both ride onClick={exportAccounts}
     // (exactly TWO sites; the header label is the hidden sm:inline span,
     // icon-only @390 — the L-132c3 discipline).
     expect(src.match(/onClick=\{exportAccounts\}/g) ?? []).toHaveLength(2);
     expect(src).toContain('<span className="hidden sm:inline">Export CSV</span>');
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Session-148 (F-147c3): the accounts interior mirror — the KPI delta
+// chips, the toolbar trio (the Table/Cards switcher + the density select +
+// the More outline) and the rail's Save All/Filter all retired upstream
+// (walk38: the reference's toolbar is exactly [search+magnifier][Export
+// CSV], its rail header the Filters title alone — while its ACTIVITIES
+// rail KEEPS Save All + Filter, the asymmetric removal).
+// ---------------------------------------------------------------------------
+describe("session-148: the accounts KPI delta retirement + the toolbar trio retirement", () => {
+  it("ZERO trend props on the accounts KPI cards (the reference's cards render no delta chips — walk38 h=102 compact cards)", () => {
+    const src = accountsPage();
+    expect(src.match(/trend="up"/g) ?? []).toHaveLength(0);
+    expect(src.match(/trendValue=/g) ?? []).toHaveLength(0);
+    expect(src.match(/color="/g) ?? []).toHaveLength(5);
+  });
+
+  it("the toolbar is exactly [search + magnifier][Export CSV] — the trio retired", () => {
+    const src = accountsPage();
+    expect(src).not.toContain('aria-label="Accounts view"');
+    expect(src).not.toContain('aria-label="Row density"');
+    expect(src).not.toContain('aria-label="More"');
+    expect(src).not.toMatch(/VIEW_SWITCHER/);
+    expect(src).not.toMatch(/TABLE_TOOLBAR\.densityOptions/);
+    const toolbarAt = src.indexOf("TABLE_CARD.toolbar");
+    const toolbarRegion = src.slice(toolbarAt, toolbarAt + 2600);
+    const searchAt = toolbarRegion.indexOf('placeholder="Search accounts..."');
+    const exportAt = toolbarRegion.indexOf("onClick={exportAccounts}");
+    expect(searchAt).toBeGreaterThan(-1);
+    expect(exportAt).toBeGreaterThan(searchAt);
+    expect(src).toMatch(/<Search className="pointer-events-none absolute left-3 top-1\/2/);
+    expect(src.match(/onClick=\{exportAccounts\}/g) ?? []).toHaveLength(2);
+  });
+
+  it("the Cards view retires with the switcher (no view state, no Cards branch)", () => {
+    const src = accountsPage();
+    expect(src).not.toMatch(/useState.*view|const \[view/);
+    expect(src).not.toMatch(/view === "Cards"/);
+    expect(src).not.toMatch(/grid gap-3 sm:grid-cols-2 xl:grid-cols-3/);
+  });
+
+  it("the rail's Save All + Filter retire (the header row = the Filters title alone; the activities rail KEEPS its pair — the asymmetric removal)", () => {
+    const src = accountsPage();
+    expect(src).not.toMatch(/>Save All</);
+    expect(src).not.toMatch(/void hydrate\(\)/);
+    expect(src).toMatch(/>Owner<\/Label>/);
+    expect(src).toMatch(/>Industry<\/Label>/);
+    expect(src).toMatch(/>Revenue Range<\/Label>/);
+    expect(src).toContain('label="Key Account"');
   });
 });

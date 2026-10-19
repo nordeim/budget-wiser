@@ -300,17 +300,11 @@ describe("session-90: the call sites (twenty — the color KEYS + the icon compo
     expect(src).toMatch(/color="purple"/);
   });
 
-  it("the calendar page passes the icon component refs + the trend/trendValue split", () => {
-    const src = calendarSrc();
-    expect((src.match(/<TrendStatCard/g) ?? []).length).toBe(4);
-    expect(src).toMatch(/icon=\{Calendar\}/);
-    expect(src).toMatch(/icon=\{Target\}/);
-    expect(src).toMatch(/icon=\{Users\}/);
-    expect(src).toMatch(/icon=\{Phone\}/);
-    expect(src).toMatch(/trend="up"/);
-    expect(src).toMatch(/trendValue=\{/);
-    expect(src).not.toContain("chipBg=");
-    expect(src).not.toContain("chipIconClass=");
+  it("the calendar page passes the icon component refs — ZERO trend props (s148/F-147c3: the trend texts retired)", () => {
+    const src = read("src/app/(app)/calendar/calendar-page.tsx") ?? "";
+    expect(src).toMatch(/Calendar/);
+    expect(src).not.toMatch(/trend="up"/);
+    expect(src).not.toMatch(/trendValue=/);
   });
 
   it("the reports page passes the icon component refs + the color keys (no element-form icons)", () => {

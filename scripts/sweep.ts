@@ -207,56 +207,42 @@ export const TOLERANCE = 12;
  * PAGES/TOLERANCE/diffPixels/parsePagesArg. */
 export const STANDING_BASELINES = {
   desktop: {
-    // session-146 (the baselines re-derivation): re-anchored 0.4 → 0.15
-    // — the s91-era "2px zero-area chart-baseline artifact" genus
-    // RETIRED (0.03 at every gate since s142; the artifact left with
-    // the s139/s142 chart re-derivations). 0.15 trips at 0.65 vs the
-    // stale 0.9.
-    dashboard: 0.15,
-    // session-147 (probe:ref #119's parity event): re-anchored 9.9 →
-    // 8.0. The reference's new bundle FIXED its invisible-CTA genus
-    // (its "Open dashboard" CTA now computes rgb(36,99,235) — VISIBLE
-    // blue, live-censused), collapsing the genus's CTA share; the
-    // residual 7.26% (measured, byte-stable ×2 runs) is the LANDING
-    // MOCK MORPH: its mock chart now renders 5 narrower bars (ours 3
-    // wide), its mock sidebar gained the Reports item, the mock window
-    // is taller, its hero CTA lost the arrow glyph — F-147c3, the
-    // desktop-interior family documented for the s148 mirror rotation.
-    landing: 8.0,
+    // session-148 (the F-147c3 mirror): re-anchored 0.15 → 0.1 — the
+    // reference's KPI delta chips + its Recent-Deals middle select +
+    // its More... ghost are MIRRORED now (walk38k); the dashboard
+    // measures 0.00 (byte-stable). The family floor.
+    dashboard: 0.1,
+    // session-148 (the F-147c3 mirror): re-anchored 8.0 → 0.1 — the
+    // landing mock morph is MIRRORED (the Accounts 4-row micro-table
+    // + the Reports 7-bar "Revenue by month" card + the middle-row
+    // lg:order-2 flip + the sm: leading pins — walk38d/e/f/h); the
+    // landing measures 0.00, the genus COLLAPSED. 0.1 trips at 0.6.
+    landing: 0.1,
     // session-144 (D-144a2): the marketing pair — the maiden runs
     // measured 0.00% (the app chrome + the censused content
     // pixel-identical logged-in); the 0.1 entry rides the family floor
     about: 0.1,
     contact: 0.1,
-    // session-147 (F-147c3, the parity-event desktop-interior family):
-    // re-anchored 0.1 → 2.5 — the reference REMOVED its accounts-page
-    // controls: the four KPI delta chips (+4.2%/-1.8%/+5.1%/+3.0%), the
-    // table toolbar's trio (the Table view-switcher + the empty density
-    // select + the More outline), the in-search magnifier icon, and the
-    // Filters rail's Save All link + blue Filter button. Ours still
-    // ships them (the s8/s47/s130-pinned constructions); the s148
-    // mirror rotation retires them. 1.97 measured, byte-stable ×2.
-    accounts: 2.5,
-    // session-147 (F-147c3): re-anchored 0.1 → 3.0 — the reference
-    // REMOVED its contacts "New This Month" KPI card's "+0" delta chip
-    // (the same KPI-chips family). 2.50 measured.
-    contacts: 3.0,
+    // session-148 (the F-147c3 mirror): re-anchored 2.5 → 0.1 — the
+    // accounts interior is MIRRORED (the KPI chips + the toolbar trio
+    // + the rail's Save All/Filter retired, the magnifier KEPT —
+    // walk38j); the page measures 0.00. The family floor.
+    accounts: 0.1,
+    // session-148 (the F-147c3 mirror): re-anchored 3.0 → 0.1 — the
+    // contacts "+0" chip retired (mirrored); 0.00 measured.
+    contacts: 0.1,
     leads: 0.1,
     calendar: 0.1,
-    // session-147 (F-147c3): re-anchored 0.1 → 5.2 — the reference
-    // REMOVED the activities KPI trend chips (the "Activities Today"
-    // "+23%" and the "Overdue Activities" "2h overdue" delta — its
-    // cards now carry only the sub texts: "Due now"/"+7 today"/"+4
-    // today"/"+1h 12m"). 4.52 measured.
-    activities: 5.2,
+    // session-148 (the F-147c3 mirror): re-anchored 5.2 → 0.1 — the
+    // activities KPI chips + the Priority card's plain "More" ghost
+    // retired (mirrored, walk38); 0.01 measured.
+    activities: 0.1,
     reports: 0.1,
-    // session-147: re-anchored 4.9 → 3.2 — the reference's settings
-    // picklists now CARRY values (its Lead Stages: Won/Lost/converted,
-    // its Contact Sources gained LinkedIn — its workspace's Setting
-    // lists re-populated), so the s91-era "picklists wiped" genus share
-    // DROPPED 4.73 → 2.65 (the data genus at its new shape; the L-146c1
-    // dead-slack rule).
-    settings: 3.2,
+    // session-148: re-anchored 3.2 → 2.9 — the picklist-DATA genus
+    // (the reference's workspace Setting lists, re-populated at s147:
+    // Won/Lost/converted + LinkedIn) — 2.65 measured; volatile
+    // workspace data, NOT for mirroring (the s143-s146 precedent).
+    settings: 2.9,
     profile: 0.1,
     // the maiden 10-page run measured 0.27% — the CSS brand-mark logo
     // genus (the reference hotlinks a screenshot; ours draws the
@@ -264,14 +250,9 @@ export const STANDING_BASELINES = {
     login: 0.3,
   },
   phone: {
-    // session-147: the PHONE FLOOR FAMILY RETIRED — the reference's own
-    // mobile-nav fix (its hamburger as the topbar row's first child)
-    // collapsed the s93 genus (our [hamburger LEFT] + [account RIGHT]
-    // construction is now ITS construction too). The floor family
-    // entries re-anchor from the 0.75-0.95 band to their measured
-    // 0.00-0.20 values; the residual small shares are the F-147c3
-    // KPI-chips/toolbar family at the phone share.
-    dashboard: 0.2,
+    // session-148 (the F-147c3 mirror): the chips family collapsed at
+    // the phone share too — 0.01 measured; the family floor.
+    dashboard: 0.1,
     // session-146 (F-146c1, the baselines re-derivation): RE-ANCHORED
     // 8.5 → 6.0. The s142 maiden (the PRIOR sandbox) measured 8.5; the
     // s146 re-measurement measures 5.32 — byte-stable ×3 runs, the
@@ -295,17 +276,19 @@ export const STANDING_BASELINES = {
     // floor
     about: 0.1,
     contact: 0.1,
-    // 0.50 measured (the F-147c3 chips family at the phone share)
-    accounts: 0.6,
-    // session-147 (F-147c3): 5.51 measured — the removed KPI delta chip
-    // + the contacts-page family at the narrow frame's larger KPI share
-    contacts: 6.0,
+    // session-148 (the F-147c3 mirror): 0.05 measured — the family
+    // floor (the chips/toolbar family collapsed).
+    accounts: 0.1,
+    // session-148 (the F-147c3 mirror): 0.00 measured — the "+0" chip
+    // retired; the family floor.
+    contacts: 0.1,
     leads: 0.1,
-    calendar: 0.2,
-    activities: 0.2,
+    calendar: 0.1,
+    activities: 0.1,
     reports: 0.25,
-    // 3.63 measured (the picklist data genus at its new shape)
-    settings: 4.0,
+    // 3.63 measured (the picklist data genus at its new shape) —
+    // session-148: re-anchored 4.0 → 3.8
+    settings: 3.8,
     profile: 0.1,
     // the phone login entry rides the CLASS CEILING (s103): the CSS
     // brand-mark logo genus is constant-ABSOLUTE (~2,500px — the
@@ -328,32 +311,32 @@ export const STANDING_BASELINES = {
   // in-box (min-w-0) — the th distribution differs downstream; ours the
   // consistent pattern, documented STANDING since the phone walk.
   tablet: {
-    // session-147: 0.30 measured (the F-147c3 chips family at the
-    // tablet share) — re-anchored 0.1 → 0.4
-    dashboard: 0.4,
-    // session-142: the BRAND-TOKEN GENUS at the tablet share — the
-    // maiden 768x1024 run measured 15.34% (the wider mock renders the
-    // full blue sidebar + bars at a LARGER frame share)
-    // session-147: the CTA visibility collapsed the genus share
-    // (10.77 measured, down from the s142 maiden 15.34); the residual
-    // is the F-147c3 mock morph. Re-anchored 15.8 → 11.3.
-    landing: 11.3,
+    // session-148 (the F-147c3 mirror): 0.06 measured — the chips
+    // family collapsed; the family floor.
+    dashboard: 0.1,
+    // session-148 (the F-147c3 mirror): the mock morph is MIRRORED —
+    // 0.01 measured; the genus COLLAPSED. The family floor (0.1 trips
+    // at 0.6).
+    landing: 0.1,
     // session-144: the marketing pair — 0.00% measured (the maiden
     // tablet run)
     about: 0.1,
     contact: 0.1,
-    // 0.39 measured — re-anchored 0.8 → 0.5
-    accounts: 0.5,
-    // session-147 (F-147c3): 3.87 measured (the chips family)
-    contacts: 4.4,
+    // session-148: 0.14 measured — re-anchored 0.5 → 0.2 (the chips
+    // share retired; the md-boundary overflow residue)
+    accounts: 0.2,
+    // session-148 (the F-147c3 mirror): 0.00 measured — the "+0" chip
+    // retired; the family floor.
+    contacts: 0.1,
     leads: 0.1,
     calendar: 0.1,
-    // session-147 (F-147c3): 5.13 measured (the chips family)
-    activities: 5.6,
+    // session-148 (the F-147c3 mirror): 0.01 measured — the chips
+    // family + the Priority "More" retired; the family floor.
+    activities: 0.1,
     reports: 0.1,
     // 3.92 measured (the picklist data genus at its new shape) —
-    // re-anchored 5.5 → 4.4
-    settings: 4.4,
+    // session-148: re-anchored 4.4 → 4.2
+    settings: 4.2,
     profile: 0.1,
     // the maiden tablet run measured 0.44% — the logo genus at the
     // tablet share
@@ -374,29 +357,31 @@ export const STANDING_BASELINES = {
   // genus at its lg-band maximum (the squeeze shrinks as width grows
   // toward 1280; 1440 rides the desktop table).
   landscape: {
-    // session-147: 0.33 measured — re-anchored 0.6 → 0.4
-    dashboard: 0.4,
-    // session-142: the BRAND-TOKEN GENUS at the landscape share — the
-    // maiden 1024x768 run measured 10.77%
-    // session-147: 9.38 measured (the CTA visibility + the mock morph)
-    // — re-anchored 11.3 → 9.9
-    landing: 9.9,
+    // session-148 (the F-147c3 mirror): 0.07 measured — the chips
+    // family collapsed; the family floor.
+    dashboard: 0.1,
+    // session-148 (the F-147c3 mirror): the mock morph is MIRRORED —
+    // 0.01 measured; the genus COLLAPSED. The family floor.
+    landing: 0.1,
     // session-144: the marketing pair — 0.00% measured (the maiden
     // landscape run)
     about: 0.1,
     contact: 0.1,
-    // session-147: 3.36 measured (the s95 overflow genus + the F-147c3
-    // chips at the lg band) — re-anchored 2.6 → 3.9
-    accounts: 3.9,
+    // session-148 (the F-147c3 mirror): 1.67 measured — the chips
+    // share RETIRED (mirrored); the residual is the PURE s95 overflow
+    // genus (the reference's bare flex-1 poke-out vs our min-w-0
+    // in-box scroll). Re-anchored 3.9 → 1.9.
+    accounts: 1.9,
     contacts: 0.1,
     leads: 0.1,
     calendar: 0.1,
-    // session-147 (F-147c3): 5.73 measured (the chips family)
-    activities: 6.2,
+    // session-148 (the F-147c3 mirror): 0.01 measured — the chips
+    // family + the Priority "More" retired; the family floor.
+    activities: 0.1,
     reports: 0.1,
     // 1.91 measured (the picklist data genus at its new shape) —
-    // re-anchored 4.9 → 2.4
-    settings: 2.4,
+    // session-148: re-anchored 2.4 → 2.1
+    settings: 2.1,
     profile: 0.1,
     // the maiden landscape run measured 0.44% — the logo genus at
     // the landscape share
@@ -427,40 +412,40 @@ export function standingBaseline(width: number): BaselineTable {
  * contacts + dashboard genera retired (0.00/0.03 measured — the s91
  * entries were stale); the phone landing share re-anchored 8.5 → 5.32
  * (the same brand-token genus, the prior-sandbox share).
- * Session-147 (probe:ref #119's parity event): the F-147c3
- * desktop-interior family (the reference REMOVED its KPI delta chips
- * [accounts' +4.2%/-1.8%/+5.1%/+3.0%, contacts' "+0", activities'
- * "+23%" + "2h overdue"], its accounts toolbar trio + in-search icon +
- * rail's Save All/Filter, and re-morphed its landing mock [5 bars,
- * +Reports, taller window, no CTA arrow]) + the settings picklist DATA
- * genus at its new shape (the reference's lists re-populated:
- * Won/Lost/converted + LinkedIn) + the phone floor genus RETIRED (the
- * reference's own hamburger) + the landing brand-token genus COLLAPSED
- * (its CTAs now visible). The F-147c3 family is the s148 mirror
- * rotation's target; the baselines carry it as standing-explained
- * until then (the s143-s146 settings-genus precedent). */
+ * Session-148 (the F-147c3 MIRROR): the desktop-interior family is
+ * MIRRORED — the reference's KPI delta chips (all five core pages),
+ * its accounts toolbar trio + rail buttons, its dashboard middle
+ * select + More... ghost, its activities Priority "More", and its
+ * landing mock morph (the Accounts micro-table + the Reports 7-bar
+ * card + the middle-row flip + the ≥sm leading inertness) all
+ * retired/decoded and re-derived on our side (walk38). The whole
+ * family COLLAPSED to the 0.00-0.01 floor at every class; the only
+ * standing genera left: the settings picklist-DATA genus (volatile
+ * workspace data — NOT for mirroring, the s143-s146 precedent), the
+ * login logo genus (constant-absolute px), and the s95 landscape
+ * accounts overflow genus (the reference's own table poke-out). */
 export function standingExplained(width: number): string {
   if (width < 768) {
     return (
-      "[sweep] standing explained (phone): the s93 mobile-nav floor genus RETIRED (the reference ships its own hamburger now) " +
-      "· contacts ~5.5% + accounts ~0.5% the F-147c3 chips family (the reference removed its KPI delta chips — s148's mirror target) · settings ~3.6% the picklist-data genus at its new shape (the reference's lists re-populated) · login ~0.75% logo genus · landing 0.01% the brand-token genus COLLAPSED (the reference's CTAs now visible)"
+      "[sweep] standing explained (phone): the F-147c3 chips/toolbar family MIRRORED (s148 — every page at the 0.00-0.20 floor) " +
+      "· settings ~3.6% the picklist-data genus (volatile workspace data, not for mirroring) · login ~0.78% the logo genus (constant-absolute px)"
     );
   }
   if (width < 1024) {
     return (
-      "[sweep] standing explained (tablet): contacts ~3.9% + activities ~5.1% the F-147c3 chips family (s148's mirror target) " +
-      "· settings ~3.9% the picklist-data genus at its new shape · login ~0.44% logo genus · landing ~10.8% the CTA-visibility collapse + the F-147c3 mock morph"
+      "[sweep] standing explained (tablet): the F-147c3 family MIRRORED (s148 — the chips + the landing mock morph collapsed; every page at the floor) " +
+      "· settings ~3.9% the picklist-data genus (volatile workspace data) · login ~0.46% the logo genus"
     );
   }
   if (width < 1280) {
     return (
-      "[sweep] standing explained (landscape): accounts ~3.4% the s95 overflow genus + the F-147c3 chips family (s148's mirror target) " +
-      "· activities ~5.7% the chips family · settings ~1.9% the picklist-data genus at its new shape · login ~0.44% logo genus · landing ~9.4% the CTA-visibility collapse + the mock morph"
+      "[sweep] standing explained (landscape): accounts ~1.7% the PURE s95 overflow genus (the reference's bare flex-1 table poke-out — the F-147c3 chips share retired with the mirror) " +
+      "· settings ~1.9% the picklist-data genus (volatile workspace data) · login ~0.46% the logo genus · every other page at the floor (the F-147c3 family MIRRORED, s148)"
     );
   }
   return (
-    "[sweep] standing explained (desktop): accounts ~2.0% + contacts ~2.5% + activities ~4.5% the F-147c3 desktop-interior family (the reference REMOVED its KPI delta chips, its accounts toolbar trio + search icon + rail's Save All/Filter — s148's mirror target) " +
-      "· settings ~2.7% the picklist-data genus at its new shape (the reference's lists re-populated: Won/Lost/converted + LinkedIn) · landing ~7.3% the CTA-visibility collapse + the mock morph (5 bars, +Reports, taller window, no CTA arrow) · login ~0.28% logo genus"
+    "[sweep] standing explained (desktop): the F-147c3 desktop-interior family MIRRORED (s148 — the KPI delta chips + the accounts toolbar trio/rail buttons + the dashboard middle select/More... + the landing mock morph all retired on our side; every page at the 0.00-0.01 floor) " +
+      "· settings ~2.7% the picklist-data genus (volatile workspace data — the reference's re-populated lists, not for mirroring) · login ~0.28% the logo genus (constant-absolute px)"
   );
 }
 

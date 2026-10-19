@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 // row menus, all with stock text-only $s items).
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/dropdown";
 import { BarStatCard, PageHeader, TableEmptyRow } from "@/components/shared/page-parts";
-import { FILTER_RAIL, PAGE_KPI_GRIDS, PAGE_ROOT, RAIL_LAYOUT, TABLE_CARD, TABLE_TOOLBAR, VIEW_SWITCHER } from "@/lib/page-layout";
+import { FILTER_RAIL, PAGE_KPI_GRIDS, PAGE_ROOT, RAIL_LAYOUT, TABLE_CARD, TABLE_TOOLBAR } from "@/lib/page-layout";
 import { cn } from "@/lib/utils";
 import { AccountDialog } from "@/components/shared/entity-dialogs";
 import { EntityEditDialog, ACCOUNT_EDIT_FIELDS } from "@/components/shared/entity-edit-dialog";
@@ -83,7 +83,6 @@ export default function AccountsPage() {
   // S8-3: the reference's toolbar view-switcher — dead there, functional
   // here. The reference's trigger DISPLAYS "Table" (its value is set),
   // unlike the dashboard's middle select which renders empty.
-  const [view, setView] = React.useState<string>("Table");
   // Session-78 (L-78c5, the M-77c3 missed sibling): the reference's accounts
   // tbody renders a colSpan-8 "Loading..." row while the first fetch is in
   // flight (bundle-decoded: `b ? Loading... : E.length===0 ? "No accounts
@@ -233,18 +232,16 @@ export default function AccountsPage() {
       />
 
       {/* KPI cards — the zv (accounts) arm of the gm/zv family
-          (DOM-verified): label + trending-icon delta on top, bold value
-          left + h-10 w-24 mini-bar strip right. Session-90 (L-90c4):
-          the color KEY + the trend/trendValue pair (the reference's
-          own call-site vocabulary — trend="up" on the first four, none
-          on Overdue). */}
+          (DOM-verified): label + bold value left + h-10 w-24 mini-bar
+          strip right. Session-90 (L-90c4): the color KEY. Session-148
+          (F-147c3): the trend/trendValue pair RETIRED — the reference
+          removed its KPI delta chips family-wide (walk38: the cards
+          compact to h=102). */}
       <div className={PAGE_KPI_GRIDS.accounts}>
         <BarStatCard
           arm="accounts"
           label="Total Accounts"
           value={accounts.length}
-          trend="up"
-          trendValue="+2%"
           bars={[50, 60, 55, 70, 65, 75]}
           color="blue"
         />
@@ -252,8 +249,6 @@ export default function AccountsPage() {
           arm="accounts"
           label="Active Accounts"
           value={accounts.filter((a) => a.status === "active").length}
-          trend="up"
-          trendValue="+2%"
           bars={[55, 60, 58, 68, 65, 72]}
           color="green"
         />
@@ -261,8 +256,6 @@ export default function AccountsPage() {
           arm="accounts"
           label="Key Accounts"
           value={accounts.filter((a) => accountTierFromRevenue(a.annualRevenue) === "Key").length}
-          trend="up"
-          trendValue="+5%"
           bars={[40, 45, 50, 55, 58, 62]}
           color="cyan"
         />
@@ -270,8 +263,6 @@ export default function AccountsPage() {
           arm="accounts"
           label="Total Revenue"
           value={formatCompactCurrency(totalRevenue, { scale: "M" })}
-          trend="up"
-          trendValue="+3.6%"
           bars={[60, 65, 70, 75, 78, 82]}
           color="purple"
         />
@@ -297,40 +288,14 @@ export default function AccountsPage() {
             shadow`; ours computed a 1px border + an invented
             overflow-hidden). */}
         <div className={TABLE_CARD.card}>
-          {/* Toolbar — session-8 (S8-3) re-pinned from the live DOM:
-              [Table/Cards switcher][Standard/Detailed density select (empty
-              label)][More outline h-8] BEFORE the search, then Export CSV.
-              The switcher is functional here (dead on the reference); the
-              density select and More button are mirrored dead affordances
-              (same treatment as the topbar mail/bell buttons — quirk
-              register). */}
+          {/* Toolbar — session-148 (F-147c3) re-anchored: the reference's
+              post-change stack is exactly [search + its absolute
+              magnifier][Export CSV] — the Table/Cards switcher, the
+              Standard/Detailed density select and the More outline h-8
+              all retired upstream (walk38j; the s8-3 trio freeze is a
+              historical record). */}
           <div className={TABLE_CARD.toolbar}>
             <div className={TABLE_TOOLBAR.row}>
-              <Select value={view} onValueChange={setView}>
-                <SelectTrigger className={VIEW_SWITCHER.trigger} aria-label="Accounts view">
-                  <SelectValue placeholder={VIEW_SWITCHER.emptyLabel} />
-                </SelectTrigger>
-                <SelectContent>
-                  {VIEW_SWITCHER.options.map((o) => (
-                    <SelectItem key={o} value={o}>{o}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {/* Dead density switcher — the reference renders it with an
-                  empty label and never sets a value. */}
-              <Select value="" onValueChange={() => {}}>
-                <SelectTrigger className={TABLE_TOOLBAR.select} aria-label="Row density">
-                  <SelectValue placeholder="" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TABLE_TOOLBAR.densityOptions.map((o) => (
-                    <SelectItem key={o} value={o}>{o}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button variant="outline" size="sm" className={TABLE_TOOLBAR.moreBtn} aria-label="More">
-                More
-              </Button>
               <div className="relative flex-1">
                 {/* Session-86 (N-86c6 + N-86c7): the reference's icon is
                     `absolute left-3 top-1/2 transform -translate-y-1/2
@@ -353,56 +318,8 @@ export default function AccountsPage() {
               </Button>
             </div>
           </div>
-          {view === "Cards" ? (
-            /* S8-3 functional superset: the reference's switcher is dead;
-               Cards renders the account list as a card grid at all widths. */
-            <CardContent className="p-4">
-              {filtered.length === 0 ? (
-                <p className="py-8 text-center text-sm text-muted">No accounts found</p>
-              ) : (
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                  {filtered.map((a) => (
-                    <div key={a.id} className="rounded-lg border border-line bg-surface p-4 transition-colors hover:bg-line-soft/40">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <Avatar name={a.name} color="#e5e7eb" size="md" className="!text-gray-600" />
-                          <div className="min-w-0">
-                            <p className="truncate font-medium text-foreground">{a.name}</p>
-                            <p className="truncate text-xs text-muted">{a.industry ?? "—"}</p>
-                          </div>
-                        </div>
-                        <Badge className={
-                          a.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
-                        }>
-                          {a.status}
-                        </Badge>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between">
-                        <span className="flex items-center gap-1.5">
-                          <Badge className={ACCOUNT_TIER_BADGE[accountTierFromRevenue(a.annualRevenue)] ?? ACCOUNT_TIER_BADGE.C}>
-                            {accountTierFromRevenue(a.annualRevenue)}
-                          </Badge>
-                        </span>
-                        <span className="text-sm font-semibold text-foreground">
-                          {/* Session-32 (S32-P3): the M-scale form — the
-                              reference's revenue convention (its table cell
-                              renders the literal `$${(v/1e6).toFixed(1)}M`). */}
-                          {a.annualRevenue != null ? formatCompactCurrency(a.annualRevenue, { scale: "M" }) : "—"}
-                        </span>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between border-t border-line pt-3 text-xs text-muted">
-                        <span className="flex items-center gap-1.5">
-                          {a.owner && <Avatar name={a.owner.name} color={a.owner.avatarColor} size="sm" />}
-                          {a.owner?.name ?? "Unassigned"}
-                        </span>
-                        <span>{timeAgo(a.lastActivityAt ?? a.createdAt)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          ) : (
+          {/* Session-148 (F-147c3): the Cards view RETIRED with the
+              toolbar switcher — the table is the only view. */}
           <div className={TABLE_CARD.scrollArea}>
           <CardContent className="px-0 py-0">
             <Table>
@@ -562,40 +479,20 @@ export default function AccountsPage() {
             </Table>
           </CardContent>
           </div>
-          )}
         </div>
         </div>
 
-        {/* Filter rail — session-6: reference renders a persistent w-80 rail
-            (hidden below lg) as a Card with a Filters/Save-All header row,
-            plain-div groups (select labels mb-2, checkbox label mb-3), and
-            a full-width primary Filter button in a pt-2 wrapper. */}
+        {/* Filter rail — session-148 (F-147c3) re-anchored: the reference
+            renders a persistent w-80 rail (hidden below lg) as a Card with
+            a Filters-title header row ALONE (its Save All ghost + its
+            blue Filter button retired — walk38, accounts-scoped; the
+            ACTIVITIES rail keeps its pair), plain-div groups (select
+            labels mb-2, checkbox label mb-3). */}
         <div className={RAIL_LAYOUT.rail}>
           <Card>
             <CardHeader className={FILTER_RAIL.headerPad}>
               <div className={FILTER_RAIL.headerRow}>
                 <CardTitle className={FILTER_RAIL.title}>Filters</CardTitle>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    // Session-86 (N-86c7, documented superset): the
-                    // reference's Save All has NO onClick — a dead button
-                    // (the Oce bundle decode). OURS resets the filters to
-                    // their defaults (fix-over-defect — a control that
-                    // looks like an action should do something; the
-                    // dashboard view-switcher precedent).
-                    setOwnerId("all");
-                    setIndustry("all");
-                    setRevenue("all");
-                    setTierKey(false);
-                    setTierA(false);
-                    setTierB(false);
-                    setTierC(false);
-                  }}
-                >
-                  Save All
-                </Button>
               </div>
             </CardHeader>
             <CardContent className={FILTER_RAIL.body}>
@@ -652,14 +549,6 @@ export default function AccountsPage() {
                   <Checkbox checked={tierB} onCheckedChange={setTierB} label="B" />
                   <Checkbox checked={tierC} onCheckedChange={setTierC} label="C" />
                 </div>
-              </div>
-              {/* Full-width primary Filter button (reference anatomy —
-                  Session-28: the reference's explicit bg-blue-600
-                  hover:bg-blue-700 pair). With live filtering it re-hydrates
-                  the data under the current filters — a real refresh action
-                  (fix-over-defect). */}
-              <div className={FILTER_RAIL.filterButtonWrap}>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => void hydrate()}>Filter</Button>
               </div>
             </CardContent>
           </Card>

@@ -146,9 +146,10 @@ describe("session-28: the Ece Account Insights dialog", () => {
 });
 
 describe("session-28: the Oce filter sidebar alignment", () => {
-  it("the Filters header + the Save All ghost", () => {
+  it("the Filters header alone (s148-re-anchored: the Save All ghost retired with F-147c3)", () => {
     const src = page();
-    expect(src).toContain("Save All");
+    expect(src).not.toContain("Save All");
+    expect(src).toContain('CardTitle className={FILTER_RAIL.title}>Filters');
   });
 
   it("the Owner / Industry / Revenue selects", () => {
@@ -165,10 +166,10 @@ describe("session-28: the Oce filter sidebar alignment", () => {
     expect(src).toContain("Key Account");
   });
 
-  it("the full-width blue Filter button", () => {
+  it("the rail's Filter button RETIRED (s148/F-147c3 — accounts-scoped; the activities rail keeps its pair)", () => {
     const src = page();
-    expect(src).toMatch(/w-full bg-blue-600 hover:bg-blue-700/);
-    expect(src).toContain("Filter");
+    expect(src).not.toMatch(/w-full bg-blue-600 hover:bg-blue-700/);
+    expect(src).toContain("All Owners");
   });
 });
 
@@ -192,12 +193,9 @@ describe("session-32: the accounts revenue formats (S32-P3)", () => {
     expect(src).toMatch(/a\.annualRevenue \? `\$\$\{\(a\.annualRevenue \/ 1e6\)\.toFixed\(1\)\}M` : "-"/);
   });
 
-  it("the Cards-view revenue cell uses the fixed M scale too (the S8-3 superset stays format-consistent)", () => {
+  it("the Cards-view RETIRED (s148/F-147c3) — the table cell stays the M scale's only accounts surface", () => {
     const src = page();
-    // The cards view renders a.annualRevenue via the seam's M scale —
-    // the same convention the reference's table cell uses. Anchor: the
-    // `view === "Cards"` conditional (the comment anchor is stripped).
-    const cardsRegion = src.slice(src.indexOf('view === "Cards"'), src.indexOf('view === "Cards"') + 8000);
-    expect(cardsRegion).toMatch(/scale: "M"/);
+    expect(src).not.toMatch(/view === "Cards"/);
+    expect(src).toMatch(/scale: "M"/);
   });
 });

@@ -43,6 +43,23 @@ test.describe("the public landing (logged-out)", () => {
     await expect(page.getByText("Sales pipeline by stage").first()).toBeVisible();
   });
 
+  test("the preview mocks are content-varied (F-147c3 — the Accounts micro-table + the Reports 7-bar card)", async ({ page }) => {
+    // s148: the reference content-varied its three "See the app itself"
+    // mocks — the Dashboard mock keeps the 5-bar pipeline; the Accounts
+    // mock renders a 4-row micro table; the Reports mock renders
+    // "Revenue by month" with 7 bars (walk38d/f byte-decoded).
+    await page.goto("/");
+    const preview = page.locator("#preview");
+    await expect(preview.getByText("Sales pipeline by stage").first()).toBeVisible();
+    await expect(preview.getByText("Northwind Trading").first()).toBeVisible();
+    await expect(preview.getByText("Vertex Group").first()).toBeVisible();
+    await expect(preview.getByText("Bluepeak Health").first()).toBeVisible();
+    await expect(preview.getByText("Harbour & Co").first()).toBeVisible();
+    await expect(preview.getByText("$1.2M").first()).toBeVisible();
+    await expect(preview.getByText("$3.4M").first()).toBeVisible();
+    await expect(preview.getByText("Revenue by month").first()).toBeVisible();
+  });
+
   test("the pricing tiers render the censused cards ($9/$19/$39 + the Pro highlight)", async ({ page }) => {
     await page.goto("/");
     const pricing = page.locator("#pricing");

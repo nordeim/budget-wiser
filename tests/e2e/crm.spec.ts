@@ -173,15 +173,15 @@ test("accounts page lists seeded accounts and supports search", async ({ page })
   await expect(overdueRows.first()).toHaveClass(/border-l-4/);
   await expect(overdueRows.first()).toHaveClass(/border-l-red-500/);
 
-  // The Cards view (the functional superset over the reference's dead
-  // switcher — S8-3): the switch swaps the table for the 3-col card
-  // grid with all 10 accounts.
-  await page.getByRole("combobox").first().click();
-  await page.getByRole("option", { name: "Cards" }).click();
-  await expect(page.locator("main table")).toHaveCount(0);
-  const cardEls = page.locator('main div.grid [class*="rounded-lg"]');
-  await expect(cardEls).toHaveCount(10);
-  await expect(cardEls.first()).toBeVisible();
+  // s148 (F-147c3): the Cards view retired with the toolbar trio —
+  // the accounts toolbar is [search][Export CSV] and the table stays.
+  // The THREE surviving comboboxes are the RAIL's selects (Owner/
+  // Industry/Revenue — walk38: the rail keeps its selects); the
+  // toolbar's view-switcher trigger is gone (no "Accounts view"
+  // combobox anywhere).
+  await expect(page.getByRole("combobox")).toHaveCount(3);
+  await expect(page.getByRole("button", { name: "More", exact: true })).toHaveCount(0);
+  await expect(page.locator("main table")).toHaveCount(1);
 });
 
 test("contacts page renders seeded contacts", async ({ page }) => {
@@ -830,20 +830,18 @@ test("capital AUTH routes still 404 (the reference case-folds only its app route
   await expect(page.getByRole("heading", { name: "404", exact: true })).toBeVisible();
 });
 
-test("the dashboard More... button is the reference's dead affordance (S24-P3)", async ({ page }) => {
-  // Live-verified on the reference: clicking More... changes NOTHING —
-  // zero DOM delta, zero dialogs, zero navigation. Ours pushed /leads
-  // (an invention); the no-op is now pinned.
+test("the dashboard Recent-Deals bar retired its More... ghost + its middle view-switcher (F-147c3, walk38k)", async ({ page }) => {
+  // The reference's post-F-147c3 bar: [Filter][All Stages][All
+  // Sources][search] — BOTH the blank middle select AND the dead
+  // More... ghost are gone (the S24-P3 dead affordance retired
+  // upstream; the no-op contract moot).
   await page.goto("/dashboard");
-  await page.getByRole("button", { name: "More...", exact: true }).click();
-  // Session-49 (S49-P3): a BOUNDED no-op-contract wait — the pinned
-  // contract is "nothing happens" (no navigation, no dialog), so there
-  // is no positive signal to poll; the following auto-retrying
-  // assertions would pass vacuously at t≈0. The 300ms window is the
-  // window in which a wrong navigation would have started.
-  await page.waitForTimeout(300);
-  await expect(page).toHaveURL(/\/[Dd]ashboard/);
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "More...", exact: true })).toHaveCount(0);
+  const combos = page.locator("main [role='combobox']");
+  await expect(combos).toHaveCount(2);
+  await expect(combos.first()).toHaveText(/All Stages/);
+  await expect(combos.last()).toHaveText(/All Sources/);
 });
 
 test("global search finds a seeded account", async ({ page }) => {
@@ -2231,8 +2229,10 @@ test("the dashboard KPI sparklines render the STATIC arrays (S27-P7)", async ({ 
   const kpiRow = page.locator("main .grid").first();
   const sparklineCharts = kpiRow.locator(".recharts-wrapper");
   await expect(sparklineCharts.first()).toBeVisible();
-  const delta = page.getByText("+5.3%");
-  await expect(delta).toBeVisible();
+  // s148 (F-147c3): the delta chips RETIRED — the reference's cards
+  // render no "+5.3%"; ours now matches (zero delta text on the page).
+  await expect(page.getByText("+5.3%")).toHaveCount(0);
+  await expect(page.getByText("+15%")).toHaveCount(0);
 });
 
 test("the calendar day chips open the EDIT dialog (S27-P11, seeded events)", async ({ page }) => {

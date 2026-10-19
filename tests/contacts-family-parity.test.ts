@@ -251,13 +251,12 @@ describe("session-119: the four-label + adjacency census pin (D-119a3) + the mob
     expect(icons).toEqual(["Users", "TrendingUp", "Award", "CircleAlert"]);
     const chipCls = [...grid.matchAll(/iconColor="([^"]+)"/g)].map((m) => m[1]);
     expect(chipCls).toEqual(["bg-blue-500", "bg-green-500", "bg-amber-500", "bg-red-500"]);
-    // the trend row on EXACTLY the second card (New This Month) —
-    // trend={`+${newThisMonth}`} + trendDir="up", no other card
-    // carries a trend prop
-    const trendSites = [...grid.matchAll(/trend=\{/g)].length;
-    expect(trendSites).toBe(1);
-    expect(grid).toMatch(/trend=\{`\+\$\{newThisMonth\}`\}/);
-    expect(grid.match(/trendDir="up"/g)?.length).toBe(1);
+    // s148 (F-147c3): the trend row RETIRED — the reference's contacts
+    // KPI cards render no delta chips (walk38: no "+0", h=122); ZERO
+    // trend/trendDir props on the grid.
+    const trendSites = [...grid.matchAll(/trend=/g)].length;
+    expect(trendSites).toBe(0);
+    expect((grid.match(/trendDir="up"/g) ?? []).length).toBe(0);
     // the gradient flag: all four cards (the walk's linear-gradient
     // white->gray-50 cards, byte-equal modulo the documented oklab
     // serialization genus) — the bare prop on its own line, never the

@@ -589,32 +589,22 @@ export const DASHBOARD_HEADER = {
   primaryExportLabelClass: "",
 } as const;
 
-/** Session-8: the reference's Table/Cards view-switcher select. Both live
- *  instances (dashboard filter-bar middle slot, accounts table toolbar)
- *  render with an EMPTY placeholder label and are DEAD — picking "Cards"
- *  changes nothing. Ours keeps the empty default label (mirror) and makes
- *  the switch real (functional superset). */
-export const VIEW_SWITCHER = {
-  trigger: "w-full sm:w-32",
-  /** Session-87 (N-87c4): the reference's middle select carries a DEAD
-   *  `placeholder="Format"` — dead because its value is the FIXED
-   *  no-match constant "format" (Radix renders EMPTY for a non-empty
-   *  value with no matching item). OURS is the functional superset
-   *  (value "" + onValueChange): an empty-string placeholder is what
-   *  keeps OUR default trigger rendering EMPTY like the reference's —
-   *  a "Format" placeholder would RENDER at our "" default (the
-   *  s8-2 empty-trigger mirror, mechanism now documented). */
-  emptyLabel: "",
-  options: ["Table", "Cards"] as const,
-} as const;
+/** Session-8 → session-148 (F-147c3): the Table/Cards view-switcher
+ *  select RETIRED — the reference removed BOTH live instances (the
+ *  dashboard filter-bar middle slot + the accounts table toolbar
+ *  trigger, walk38j/walk38k-decoded); the contract retired with them
+ *  (the s8-2 dead-switcher mirror + the functional superset are
+ *  historical records now). */
 
-/** Session-8: accounts table toolbar — the reference stacks
- *  [Table switcher][density switcher (Standard/Detailed, empty label, dead)]
- *  [More outline h-8 dead button] BEFORE the search, then Export CSV. */
+/** Session-8 → session-148 (F-147c3): accounts table toolbar — the
+ *  reference REMOVED the [Table switcher][density switcher][More
+ *  outline] trio before the search (walk38j: the post-change stack is
+ *  exactly [search + magnifier][Export CSV]); `row` survives (it wraps
+ *  the search + Export), `moreBtn` survives as the toolbar Export
+ *  button's class (h-8 rounded-md px-3 text-xs — 93x32 live-measured),
+ *  and `select`/`densityOptions` retired with the density switcher. */
 export const TABLE_TOOLBAR = {
   row: "flex flex-col sm:flex-row gap-3",
-  select: "w-full sm:w-32",
-  densityOptions: ["Standard", "Detailed"] as const,
   moreBtn: "h-8 rounded-md px-3 text-xs",
 } as const;
 
@@ -1313,7 +1303,6 @@ export function allLayoutClasses(): string[] {
     SETTINGS_DATA,
     SETTINGS_DANGER,
     MOBILE_NAV_LAYOUT,
-    VIEW_SWITCHER,
     TABLE_TOOLBAR,
     LEADS_TOOLBAR,
     LEADS_FILTERS_POPOVER,
@@ -1631,10 +1620,6 @@ export const PIPELINE_LEGEND = {
  * Sales Target progress text is NEUTRAL text-gray-600 (never a delta).
  */
 export const KPI_STATICS = {
-  deltas: {
-    totalLeads: "+5.3%",
-    revenueThisMonth: "+15%",
-  },
   sparks: {
     totalLeads: [10, 12, 11, 14, 13, 15], // line #10b981
     dealsClosed: [40, 55, 45, 70, 60, 80, 75], // bars bg-cyan-400
@@ -1643,17 +1628,25 @@ export const KPI_STATICS = {
     conversionRate: [25, 28, 30, 29, 32, 31], // area #8b5cf6
     avgSalesCycle: [30, 28, 29, 27, 26, 26], // line #10b981
   },
+  /** Session-148 (F-147c3): the deltas arm RETIRED — the reference
+   *  removed its KPI delta chips family-wide (walk38: the dashboard
+   *  cards render no "+5.3%"/"+15%" chips; the s27 hardcoded-literals
+   *  decode is a historical record). The Sales Target progress stays
+   *  NEUTRAL text-gray-600 (never a delta). */
   /** The reports KPI cards' static spark (all four sparkline cards share it). */
   reportsSpark: [65, 72, 68, 85, 78, 92],
 } as const;
 
 /** Session-76 (M-76c6, bundle-decoded from the reference's gm/Mx cards):
  *  the activities/calendar stat cards ship the reference's HARDCODED
- *  STATIC deltas, subtexts and bar arrays — the same class as the
+ *  STATIC subtexts and bar arrays — the same class as the
  *  dashboard's KPI_STATICS above (its "NEVER feed these cards real"
- *  rule extends here). The gm literals, verbatim from the bundle:
- *  Activities Today trend "+23%" + [60,70,65,80,75,85] blue; Overdue
- *  sub "Due now" + trend "2h overdue" + [40,50,45,60,55,50] red;
+ *  rule extends here). Session-148 (F-147c3): the reference REMOVED
+ *  its KPI delta chips family-wide — the "+23%" and "2h overdue" trend
+ *  literals retired (walk38), the SUBTEXTS stay. The gm literals,
+ *  verbatim from the bundle:
+ *  Activities Today [60,70,65,80,75,85] blue; Overdue
+ *  sub "Due now" + [40,50,45,60,55,50] red;
  *  Emails Sent sub "+7 today" + [30,40,50,60,70,80] cyan; Calls
  *  Logged sub "+4 today" + [50,55,60,65,70,75] green; Meetings
  *  Scheduled sub "+1h 12m" + [40,50,55,60,70,65] — the gm color map has
@@ -1663,25 +1656,21 @@ export const KPI_STATICS = {
  *  rendered bars; the s90 L-90c4 mirror — the retired CHART_COLORS
  *  hex-key mechanism no longer carries this); WhatsApp
  *  [30,35,40,45,50,55] green (green-400 — the same
- *  green as Calls Logged, NOT green-500). The Mx calendar cards ship
- *  static trends "+3"/"+34"/"+2"/"+3" (all up). The VALUES stay live —
- *  only the deltas/subtexts/bars are static. */
+ *  green as Calls Logged, NOT green-500). The VALUES stay live —
+ *  only the subtexts/bars are static. */
 export const ACTIVITY_KPI_STATICS = {
-  activitiesToday: { delta: "+23%", bars: [60, 70, 65, 80, 75, 85] },
-  overdue: { sub: "Due now", delta: "2h overdue", bars: [40, 50, 45, 60, 55, 50] },
+  activitiesToday: { bars: [60, 70, 65, 80, 75, 85] },
+  overdue: { sub: "Due now", bars: [40, 50, 45, 60, 55, 50] },
   emailsSent: { sub: "+7 today", bars: [30, 40, 50, 60, 70, 80] },
   callsLogged: { sub: "+4 today", bars: [50, 55, 60, 65, 70, 75] },
   meetingsScheduled: { sub: "+1h 12m", bars: [40, 50, 55, 60, 70, 65] },
   whatsapp: { bars: [30, 35, 40, 45, 50, 55] },
 } as const;
 
-/** Session-76 (M-76c6): the calendar Mx cards' static trend texts. */
-export const CALENDAR_KPI_STATICS = {
-  todaysEvents: "+3",
-  totalEvents: "+34",
-  meetingsThisWeek: "+2",
-  callsThisWeek: "+3",
-} as const;
+/** Session-148 (F-147c3): the calendar Mx cards' static trend texts
+ *  RETIRED — the reference removed them family-wide with the other KPI
+ *  delta chips (walk38: the calendar cards render no trend rows at
+ *  all; the constants retired with the chips). */
 
 /** Session-77 (L-77c6, bundle-decoded — the reference's Sm): the LEADS
  *  KPI chip map — the class PAIRS verbatim (`s={blue:"bg-blue-50

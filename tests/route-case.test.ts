@@ -186,12 +186,11 @@ describe("session-24: the nav href byte-contract + case-insensitive active state
   });
 });
 
-describe("session-24: the dashboard More... button is the reference's dead affordance (S24-P3)", () => {
+describe("session-24 → session-148: the dashboard More... button RETIRED (S24-P3 → F-147c3)", () => {
   const dash = stripComments(read("src/app/(app)/dashboard/page.tsx")!);
 
-  it("carries NO router.push (the reference's button is a live-verified no-op)", () => {
-    expect(dash).not.toMatch(/router\.push\("\/leads"\)/);
-    expect(dash).not.toMatch(/onClick=\{\(\) => router\.push/);
+  it("the ghost is GONE (walk38k: the reference's bar ends with the search)", () => {
+    expect(dash).not.toMatch(/More\.\.\./);
   });
 
   it("retires the now-unused useRouter import + hook", () => {

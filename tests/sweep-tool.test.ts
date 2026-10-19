@@ -329,12 +329,12 @@ describe("session-97 (S97-P0): the TABLET baseline class — the md/lg banding",
   it("standingBaseline: the tablet table carries the maiden 768x1024 genera (accounts overflow · settings picklist · login logo)", async () => {
     const { standingBaseline } = await sweep();
     const b = standingBaseline(768);
-    // s147: the parity event moved the shares — accounts 0.39 (the
-    // s95 overflow genus + the F-147c3 chips at the tablet share),
-    // settings 3.92 (the picklist genus at its new shape), login 0.46
-    // (the logo genus at the tablet share)
-    expect(b.accounts).toBeGreaterThanOrEqual(0.3);
-    expect(b.accounts).toBeLessThanOrEqual(0.6);
+    // s148 (the F-147c3 mirror): accounts 0.14 measured — the chips
+    // share RETIRED with the mirror; the residue is the md-boundary
+    // overflow sliver. settings 3.92 (the picklist genus at its new
+    // shape), login 0.46 (the logo genus at the tablet share)
+    expect(b.accounts).toBeGreaterThanOrEqual(0.1);
+    expect(b.accounts).toBeLessThanOrEqual(0.3);
     expect(b.settings).toBeGreaterThanOrEqual(3.7);
     expect(b.settings).toBeLessThanOrEqual(4.7);
     expect(b.login).toBeGreaterThanOrEqual(0.4);
@@ -344,14 +344,14 @@ describe("session-97 (S97-P0): the TABLET baseline class — the md/lg banding",
     for (const p of PAGES) expect(b[p.name]).toBeDefined();
   });
 
-  it("driftVerdict: the tablet contacts row passes ITS OWN class where the desktop table is tighter (why the class exists — s147 re-derived: the F-147c3 family carries different shares per class)", async () => {
+  it("driftVerdict: the tablet settings row passes ITS OWN class where the desktop table is tighter (why the class exists — s148 re-derived: the picklist genus carries different shares per class)", async () => {
     const { driftVerdict, standingBaseline } = await sweep();
-    // the measured s147 row: contacts 3.87 at 768x1024 (the F-147c3
-    // chips family at the tablet share — 4.4 baseline)
-    const rows = [["contacts", 3.87]] as Array<[string, number]>;
+    // the measured s148 row: settings 3.92 at 768x1024 (the picklist
+    // data genus at the tablet share — 4.2 baseline)
+    const rows = [["settings", 3.92]] as Array<[string, number]>;
     expect(driftVerdict(rows, standingBaseline(768), 0.5).ok).toBe(true);
-    // judged against the DESKTOP table (contacts 3.0) it FAILS — the
-    // family's share is class-specific, not drift
+    // judged against the DESKTOP table (settings 2.9 + 0.5) it FAILS —
+    // the genus's share is class-specific, not drift
     expect(driftVerdict(rows, standingBaseline(1440), 0.5).ok).toBe(false);
   });
 });
@@ -367,29 +367,31 @@ describe("session-99 (S99-P0): the LANDSCAPE baseline class — the lg/xl bandin
     // + the full 320 rail — the documented consistent pattern), settings
     // 4.74 (the picklist genus at the landscape share), login 0.44 (the
     // logo genus), dashboard 0.47 (the chart artifact at its lg share)
-    // s147: accounts 3.36 (the overflow genus + the F-147c3 chips at
-    // the lg band), settings 1.91 (the picklist genus at its new
-    // shape), dashboard 0.33
-    expect(b.accounts).toBeGreaterThanOrEqual(3.1);
-    expect(b.accounts).toBeLessThanOrEqual(4.3);
+    // s148 (the F-147c3 mirror): accounts 1.67 measured — the chips
+    // share RETIRED; the residual is the PURE s95 overflow genus.
+    // settings 1.91 (the picklist genus at its new shape), dashboard
+    // 0.07 (the family floor)
+    expect(b.accounts).toBeGreaterThanOrEqual(1.5);
+    expect(b.accounts).toBeLessThanOrEqual(2.1);
     expect(b.settings).toBeGreaterThanOrEqual(1.7);
     expect(b.settings).toBeLessThanOrEqual(2.7);
     expect(b.login).toBeGreaterThanOrEqual(0.4);
     expect(b.login).toBeLessThanOrEqual(0.7);
-    expect(b.dashboard).toBeGreaterThanOrEqual(0.2);
-    expect(b.dashboard).toBeLessThanOrEqual(0.5);
+    expect(b.dashboard).toBeGreaterThanOrEqual(0.05);
+    expect(b.dashboard).toBeLessThanOrEqual(0.15);
     // every PAGES name has a landscape baseline (the fail-fast doctrine)
     const { PAGES } = await sweep();
     for (const p of PAGES) expect(b[p.name]).toBeDefined();
   });
 
-  it("driftVerdict: the landscape accounts row passes ITS OWN class where the desktop/tablet tables would fail it (s147 re-derived: the 3.36 row — the overflow genus + the F-147c3 chips at the lg band)", async () => {
+  it("driftVerdict: the landscape accounts row passes ITS OWN class where the desktop/tablet tables would fail it (s148 re-derived: the 1.67 row — the PURE s95 overflow genus, the chips share retired with the mirror)", async () => {
     const { driftVerdict, standingBaseline } = await sweep();
-    // the measured s147 row: accounts 3.36 at 1024x768 (3.9 baseline)
-    const rows = [["accounts", 3.36]] as Array<[string, number]>;
+    // the measured s148 row: accounts 1.67 at 1024x768 (the pure
+    // overflow genus — 1.9 baseline)
+    const rows = [["accounts", 1.67]] as Array<[string, number]>;
     expect(driftVerdict(rows, standingBaseline(1024), 0.5).ok).toBe(true);
-    // judged against the DESKTOP table (accounts 2.5) it would FAIL —
-    // and against the TABLET table (accounts 0.5) too
+    // judged against the DESKTOP table (accounts 0.1) it would FAIL —
+    // and against the TABLET table (accounts 0.2) too
     expect(driftVerdict(rows, standingBaseline(1440), 0.5).ok).toBe(false);
     expect(driftVerdict(rows, standingBaseline(768), 0.5).ok).toBe(false);
   });
@@ -481,27 +483,25 @@ describe("session-98 (F-98a1/B-98a1/N-98a1): the sweep docs + the per-class prin
     const phone = standingExplained(390);
     const tablet = standingExplained(768);
     const landscape = standingExplained(1024);
-    // s147: the desktop line carries the F-147c3 family + the picklist
-    // genus at its new shape + the CTA-visibility collapse; the s142
-    // invisible-CTA decode is RETIRED (the reference fixed it upstream)
-    expect(desktop).toMatch(/F-147c3/);
+    // s148 (the F-147c3 mirror): the desktop line carries the MIRRORED
+    // family + the picklist genus; the s142 invisible-CTA decode is
+    // RETIRED (the reference fixed it upstream at s147)
+    expect(desktop).toMatch(/MIRRORED/);
     expect(desktop).toMatch(/picklist/);
     expect(desktop).not.toMatch(/brand-token/);
     expect(desktop).not.toMatch(/lucide superset/);
     expect(desktop).not.toMatch(/chart artifact/);
-    // the phone line: the floor genus RETIRED (the reference's own
-    // hamburger) + the collapsed landing genus + the chips family
-    expect(phone).toMatch(/floor genus RETIRED/);
-    expect(phone).toMatch(/COLLAPSED/);
+    // the phone line: the mirrored family + the two standing genera
+    expect(phone).toMatch(/MIRRORED/);
     expect(phone).toMatch(/3\.6/);
-    // the tablet line carries the chips family + the new settings share
-    expect(tablet).toMatch(/F-147c3/);
+    // the tablet line carries the mirrored family + the settings share
+    expect(tablet).toMatch(/MIRRORED/);
     expect(tablet).toMatch(/3\.9/);
-    // the landscape line carries the lg-band overflow genus (the rail
-    // squeeze decode) + its shares
+    // the landscape line carries the PURE overflow genus (the chips
+    // share retired with the mirror)
     expect(landscape).toMatch(/overflow/);
-    expect(landscape).toMatch(/chips family/);
-    expect(landscape).toMatch(/3\.4/);
+    expect(landscape).toMatch(/PURE s95/);
+    expect(landscape).toMatch(/1\.7/);
     expect(landscape).not.toEqual(desktop);
     // the class boundaries mirror standingBaseline
     expect(standingExplained(767)).toEqual(phone);
@@ -540,17 +540,17 @@ describe("session-146: the re-anchored standing baselines (the quarterly re-deri
     const { standingBaseline } = await sweep();
     const phone = standingBaseline(390);
     const desktop = standingBaseline(1440);
-    // s146's re-anchors, superseded at s147 by the parity event: the
-    // phone landing genus COLLAPSED (the reference's CTAs now visible —
-    // 0.01 measured, the entry now 0.1) and the desktop contacts picked
-    // up the F-147c3 chips family (2.50 measured, the entry now 3.0 —
-    // the s148 mirror target)
+    // s146's re-anchors, superseded at s147 (the parity event) and at
+    // s148 (the MIRROR): the phone landing genus collapsed at s147 and
+    // the desktop family entries collapsed at s148 — every F-147c3
+    // carrier now rides the family floor
     expect(phone.landing).toBe(0.1);
-    // the desktop dashboard: 0.4 → 0.15 (the chart-artifact genus retired —
-    // byte-stable through s147)
-    expect(desktop.dashboard).toBe(0.15);
-    // the desktop contacts: 0.1 → 3.0 at s147 (the F-147c3 family)
-    expect(desktop.contacts).toBe(3.0);
+    // the desktop dashboard: 0.4 → 0.15 (s146) → 0.1 (s148 — the
+    // mirrored KPI delta chips + middle select + More... ghost)
+    expect(desktop.dashboard).toBe(0.1);
+    // the desktop contacts: 0.1 → 3.0 (s147) → 0.1 (s148 — the "+0"
+    // chip mirrored)
+    expect(desktop.contacts).toBe(0.1);
   });
 
   it("the byte-stable genera stay untouched (s147 re-anchored: the parity event moved the landing/settings families + collapsed the phone floor — the s147 describe below)", async () => {
@@ -559,16 +559,17 @@ describe("session-146: the re-anchored standing baselines (the quarterly re-deri
     const phone = standingBaseline(390);
     const tablet = standingBaseline(768);
     const landscape = standingBaseline(1024);
-    // the s147 re-anchors (the parity event's CTA-visibility collapse +
-    // the mock morph + the picklist data genus at its new shape)
-    expect(tablet.landing).toBe(11.3);
-    expect(landscape.landing).toBe(9.9);
-    expect(desktop.landing).toBe(8.0);
-    // the settings picklist genus family at its new shape
-    expect(desktop.settings).toBe(3.2);
-    expect(phone.settings).toBe(4.0);
-    expect(tablet.settings).toBe(4.4);
-    expect(landscape.settings).toBe(2.4);
+    // the s148 re-anchors (the F-147c3 MIRROR — the landing mock morph
+    // mirrored: the genus collapsed at every class)
+    expect(tablet.landing).toBe(0.1);
+    expect(landscape.landing).toBe(0.1);
+    expect(desktop.landing).toBe(0.1);
+    // the settings picklist genus family at its new shape (the s148
+    // dead-slack tightening)
+    expect(desktop.settings).toBe(2.9);
+    expect(phone.settings).toBe(3.8);
+    expect(tablet.settings).toBe(4.2);
+    expect(landscape.settings).toBe(2.1);
     // the login logo genus family (the TRUE byte-stable genus)
     expect(desktop.login).toBe(0.3);
     expect(phone.login).toBe(1.4);
@@ -579,10 +580,11 @@ describe("session-146: the re-anchored standing baselines (the quarterly re-deri
 
   it("the sweep source documents the re-derivation (the L-146c2 mechanism-named comments)", () => {
     const src = read("scripts/sweep.ts");
-    // the re-derivation markers at the three re-anchored entries
+    // the re-derivation markers at the re-anchored entries (s146's
+    // markers superseded by the s148 mirror comments; the L-146c2
+    // mechanism-named-comment doctrine holds)
     expect(src).toMatch(/session-146 \(F-146c1, the baselines re-derivation\): RE-ANCHORED/);
-    expect(src).toMatch(/session-146 \(the baselines re-derivation\): re-anchored 0\.4 → 0\.15/);
-    expect(src).toMatch(/session-146 \(F-146c1, the baselines re-derivation\): RE-ANCHORED/);
+    expect(src).toMatch(/session-148 \(the F-147c3 mirror\): re-anchored/);
     // the retired s91 genera no longer ride the runtime print's desktop
     // line; the s147 print retired the s142 invisible-CTA decode with it
     expect(src).not.toMatch(/contacts ~0\.5% lucide superset · dashboard ~0\.3% chart artifact/);
@@ -591,24 +593,24 @@ describe("session-146: the re-anchored standing baselines (the quarterly re-deri
 });
 
 describe("session-147: the parity-event baseline re-derivation (probe:ref #119 — the mobile-nav fix + the desktop interiors)", () => {
-  it("the F-147c3 desktop-interior family: accounts 2.5 · contacts 3.0 · activities 5.2 (the reference REMOVED its KPI delta chips + accounts controls — the s148 mirror target)", async () => {
+  it("the F-147c3 desktop-interior family COLLAPSED at s148: accounts 0.1 · contacts 0.1 · activities 0.1 at every class (the mirror retired the whole family)", async () => {
     const { standingBaseline } = await sweep();
     const desktop = standingBaseline(1440);
-    // the measured 1.97/2.50/4.52, byte-stable ×2 runs; the baselines
-    // carry the family as standing-explained until the s148 mirror
-    expect(desktop.accounts).toBe(2.5);
-    expect(desktop.contacts).toBe(3.0);
-    expect(desktop.activities).toBe(5.2);
-    // the family at the other classes
+    // the measured 0.00/0.00/0.01 post-mirror; every family carrier
+    // rides the floor
+    expect(desktop.accounts).toBe(0.1);
+    expect(desktop.contacts).toBe(0.1);
+    expect(desktop.activities).toBe(0.1);
+    // the family at the other classes — all collapsed
     const phone = standingBaseline(390);
-    expect(phone.contacts).toBe(6.0);
-    expect(phone.accounts).toBe(0.6);
+    expect(phone.contacts).toBe(0.1);
+    expect(phone.accounts).toBe(0.1);
     const tablet = standingBaseline(768);
-    expect(tablet.contacts).toBe(4.4);
-    expect(tablet.activities).toBe(5.6);
+    expect(tablet.contacts).toBe(0.1);
+    expect(tablet.activities).toBe(0.1);
     const landscape = standingBaseline(1024);
-    expect(landscape.activities).toBe(6.2);
-    expect(landscape.accounts).toBe(3.9);
+    expect(landscape.activities).toBe(0.1);
+    expect(landscape.accounts).toBe(1.9);
   });
 
   it("the COLLAPSED genera: the phone landing 0.1 (the reference's CTAs now VISIBLE — the s142 brand-token genus fixed upstream) + the phone floor family retired (the reference's own hamburger)", async () => {
@@ -618,22 +620,24 @@ describe("session-147: the parity-event baseline re-derivation (probe:ref #119 �
     // collapsed the genus; the tightest tripwire in the table at 0.6)
     expect(phone.landing).toBe(0.1);
     // the floor family: 0.75-0.95 → 0.1-0.25 (the s93 genus retired —
-    // the reference's topbar now matches ours byte-for-byte)
-    expect(phone.dashboard).toBe(0.2);
+    // the reference's topbar now matches ours byte-for-byte; s148: the
+    // F-147c3 chips family collapsed the 0.2 entries to the floor)
+    expect(phone.dashboard).toBe(0.1);
     expect(phone.leads).toBe(0.1);
-    expect(phone.calendar).toBe(0.2);
-    expect(phone.activities).toBe(0.2);
+    expect(phone.calendar).toBe(0.1);
+    expect(phone.activities).toBe(0.1);
     expect(phone.reports).toBe(0.25);
     expect(phone.profile).toBe(0.1);
   });
 
-  it("the sweep source documents the parity-event re-derivation (the mechanism-named comments + the retired floor genus)", () => {
+  it("the sweep source documents the parity-event re-derivation + the s148 mirror (the mechanism-named comments)", () => {
     const src = read("scripts/sweep.ts");
-    expect(src).toMatch(/session-147 \(F-147c3, the parity-event desktop-interior family\)/);
     expect(src).toMatch(/session-147: the phone landing genus COLLAPSED/);
-    expect(src).toMatch(/session-147: the PHONE FLOOR FAMILY RETIRED/);
-    // the runtime print's phone line carries the retired floor genus
-    expect(src).toMatch(/s93 mobile-nav floor genus RETIRED/);
+    // the s148 mirror markers replaced the s147 family comments
+    expect(src).toMatch(/session-148 \(the F-147c3 mirror\)/);
+    expect(src).toMatch(/the F-147c3 MIRROR\): the desktop-interior family is/);
+    // the runtime print's class lines carry the MIRRORED wording
+    expect(src).toMatch(/MIRRORED \(s148/);
     // the s142 invisible-CTA decode retired from the desktop print
     expect(src).not.toMatch(/landing ~9\.6% the s142 brand-token genus/);
   });

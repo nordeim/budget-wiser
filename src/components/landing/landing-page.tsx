@@ -218,6 +218,19 @@ const MOCK_KPIS = [
 
 const MOCK_BARS = [72, 54, 40, 26, 15] as const;
 
+// Session-148 (F-147c3, walk38d/f byte-decoded): the reference
+// content-varied its three preview mocks — the Accounts window renders a
+// 4-row micro table, the Reports window renders "Revenue by month" with
+// SEVEN bars. The literals verbatim from the live DOM.
+const MOCK_ACCOUNT_ROWS = [
+  { name: "Northwind Trading", industry: "Wholesale", revenue: "$1.2M" },
+  { name: "Vertex Group", industry: "Software", revenue: "$3.4M" },
+  { name: "Bluepeak Health", industry: "Healthcare", revenue: "$780k" },
+  { name: "Harbour & Co", industry: "Logistics", revenue: "$450k" },
+] as const;
+
+const MOCK_REPORT_BARS = [42, 64, 50, 82, 60, 94, 71] as const;
+
 function MockDashboard({ title, active }: { title: string; active: string }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden">
@@ -243,7 +256,8 @@ function MockDashboard({ title, active }: { title: string; active: string }) {
             </div>
           ))}
         </div>
-        {/* the mock main: the 4 KPI cells + the 5-bar pipeline */}
+        {/* the mock main: the 4 KPI cells + the per-mock body (the
+            F-147c3 content-varied family — walk38d/f) */}
         <div className="flex-1 p-3 lg:p-4 bg-gray-50 space-y-3 min-w-0">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
             {MOCK_KPIS.map((kpi) => (
@@ -255,16 +269,50 @@ function MockDashboard({ title, active }: { title: string; active: string }) {
               </div>
             ))}
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="text-[9px] lg:text-[11px] font-medium text-gray-500 mb-2">
-              Sales pipeline by stage
-            </div>
-            <div className="flex items-end gap-1.5 lg:gap-2 h-16 lg:h-24">
-              {MOCK_BARS.map((height) => (
-                <div key={height} className="flex-1 bg-brand/80 rounded-t" style={{ height: `${height}%` }} />
+          {active === "Accounts" ? (
+            /* the Accounts window's 4-row micro table (byte-decoded:
+               overflow-hidden card, the gray-50 header row, the
+               font-medium/truncate/tabular-nums cells) */
+            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+              <div className="grid grid-cols-3 gap-2 px-3 py-2 bg-gray-50 border-b border-gray-200 text-[9px] font-semibold text-gray-500">
+                <span>Account</span>
+                <span>Industry</span>
+                <span className="text-right">Revenue</span>
+              </div>
+              {MOCK_ACCOUNT_ROWS.map((row) => (
+                <div key={row.name} className="grid grid-cols-3 gap-2 px-3 py-2 border-b border-gray-100 last:border-0 text-[9px] lg:text-[11px] text-gray-700">
+                  <span className="font-medium truncate">{row.name}</span>
+                  <span className="truncate text-gray-500">{row.industry}</span>
+                  <span className="text-right tabular-nums">{row.revenue}</span>
+                </div>
               ))}
             </div>
-          </div>
+          ) : active === "Reports" ? (
+            /* the Reports window's "Revenue by month" 7-bar card */
+            <div className="bg-white rounded-lg border border-gray-200 p-3">
+              <div className="text-[9px] lg:text-[11px] font-medium text-gray-500 mb-2">
+                Revenue by month
+              </div>
+              <div className="flex items-end gap-1.5 lg:gap-2 h-16 lg:h-24">
+                {MOCK_REPORT_BARS.map((height) => (
+                  <div key={height} className="flex-1 bg-brand/80 rounded-t" style={{ height: `${height}%` }} />
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* the Dashboard window's 5-bar pipeline (byte-equal, the
+               unchanged member of the family) */
+            <div className="bg-white rounded-lg border border-gray-200 p-3">
+              <div className="text-[9px] lg:text-[11px] font-medium text-gray-500 mb-2">
+                Sales pipeline by stage
+              </div>
+              <div className="flex items-end gap-1.5 lg:gap-2 h-16 lg:h-24">
+                {MOCK_BARS.map((height) => (
+                  <div key={height} className="flex-1 bg-brand/80 rounded-t" style={{ height: `${height}%` }} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -371,10 +419,16 @@ function Hero() {
           <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-3 py-1 text-xs font-semibold text-brand">
             Customer relationship management, simplified
           </span>
-          <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.08]">
+          {/* Session-148 (F-147c3): the ≥sm line-heights pin the
+              reference's COMPUTED values — its leading utilities are
+              inert at ≥sm in its build (the h1 renders the text-6xl
+              pairing 60/60, the p the text-lg pairing 18/28; walk38h
+              measured both apps at 390/700/768/1440). Phone stays the
+              working 1.08/relaxed (identical on both apps). */}
+          <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.08] sm:leading-none">
             Every account, contact and deal in one calm workspace
           </h1>
-          <p className="mt-5 text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl">
+          <p className="mt-5 text-base sm:text-lg text-gray-600 leading-relaxed sm:leading-[28px] max-w-2xl">
             NEO CRM keeps your pipeline, your follow-ups and your reporting in a single fast
             workspace — built for people who sell on their own or in a small team, without the
             enterprise bloat.
@@ -455,8 +509,17 @@ function Preview() {
           </p>
         </div>
         <div className="mt-12 space-y-12 sm:space-y-16">
-          {PREVIEW_ROWS.map((row) => (
-            <div key={row.title} className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-center">
+          {PREVIEW_ROWS.map((row, i) => (
+            /* Session-148 (F-147c3): the MIDDLE row flips at lg — the
+               reference's own `lg:[&>*:first-child]:order-2` (walk38e:
+               mock RIGHT + text LEFT on the Accounts row only). */
+            <div
+              key={row.title}
+              className={cn(
+                "grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-center",
+                i === 1 && "lg:[&>*:first-child]:order-2",
+              )}
+            >
               <div className="lg:col-span-3">
                 <MockDashboard title={row.title} active={row.active} />
               </div>

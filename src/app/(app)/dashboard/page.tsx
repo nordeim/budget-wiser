@@ -13,7 +13,6 @@ import {
   PAGE_KPI_GRIDS,
   PAGE_ROOT,
   FILTER_BAR,
-  VIEW_SWITCHER,
   TOP_REPS,
   CARD_TITLE_OVERRIDE,
   KPI_SPARK,
@@ -69,7 +68,6 @@ export default function DashboardPage() {
   // view-switcher rendered with an EMPTY label. Ours keeps the empty default
   // (mirror) and actually switches the Recent Deals section (functional
   // superset). "" behaves as Table until the user picks one.
-  const [dealsView, setDealsView] = React.useState<string>("");
 
   React.useEffect(() => {
     if (hydrated) fetchDashboard();
@@ -239,7 +237,7 @@ export default function DashboardPage() {
             `$${(v/1e3).toFixed(0)}k` (the "$0k" hardcoded-target quirk) —
             expressed via the format seam's fixed k scale; NEVER the
             magnitude-branching compact default. */}
-        <KpiCard label="Total Leads" value={k?.totalLeads ?? 0} delta={KPI_STATICS.deltas.totalLeads}>
+        <KpiCard label="Total Leads" value={k?.totalLeads ?? 0}>
           <Sparkline values={[...KPI_STATICS.sparks.totalLeads]} color={CHART_COLORS.emerald} variant="line" />
         </KpiCard>
         <KpiCard label="Deals Closed" value={formatCompactCurrency(dealsClosedValue, { scale: "k" })} sparkClassName={KPI_SPARK.dashboardBarsContainer}>
@@ -248,7 +246,7 @@ export default function DashboardPage() {
               hex retired with the span bars. */}
           <Sparkline values={[...KPI_STATICS.sparks.dealsClosed]} barClassName="bg-cyan-400" />
         </KpiCard>
-        <KpiCard label="Revenue This Month" value={formatCompactCurrency(revenueThisMonth, { scale: "k" })} delta={KPI_STATICS.deltas.revenueThisMonth} sparkClassName={KPI_SPARK.dashboardBarsContainer}>
+        <KpiCard label="Revenue This Month" value={formatCompactCurrency(revenueThisMonth, { scale: "k" })} sparkClassName={KPI_SPARK.dashboardBarsContainer}>
           <Sparkline values={[...KPI_STATICS.sparks.revenueThisMonth]} barClassName="bg-green-400" />
         </KpiCard>
         <KpiCard
@@ -310,21 +308,6 @@ export default function DashboardPage() {
             ))}
           </SelectContent>
         </Select>
-        {/* Session-8 (S8-2): the reference's middle select is a dead
-            Table/Cards view-switcher with an EMPTY label (the session-2
-            "All Owners" reading was a misinterpretation of that empty
-            trigger). Mirror the empty default; make the switch real for
-            the Recent Deals section below. */}
-        <Select value={dealsView} onValueChange={setDealsView}>
-          <SelectTrigger className={VIEW_SWITCHER.trigger} aria-label="Recent deals view">
-            <SelectValue placeholder={VIEW_SWITCHER.emptyLabel} />
-          </SelectTrigger>
-          <SelectContent>
-            {VIEW_SWITCHER.options.map((o) => (
-              <SelectItem key={o} value={o}>{o}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
         <Select value={source} onValueChange={setSource}>
           <SelectTrigger className="w-full sm:w-32"><SelectValue placeholder="Source" /></SelectTrigger>
           <SelectContent>
@@ -344,16 +327,10 @@ export default function DashboardPage() {
               mirrored (the N-86c6 accounts-search precedent). */}
           <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={FILTER_BAR.searchPlaceholder} className="pl-9 h-9" aria-label="Filter deals" />
         </div>
-        {/* Session-6: "More..." is a ghost h-8 button on the reference
-            (hover:bg-accent h-8 px-3 text-xs) — not a text link.
-            Session-24 (S24-P3): it is also a complete NO-OP there —
-            live-clicked with zero DOM delta, zero dialogs and zero
-            navigation (the same dead-affordance family as the reference's
-            mail/bell buttons). Our onClick router.push("/leads") was an
-            invention; retired. */}
-        <Button variant="ghost" size="sm" className="sm:ml-auto">
-          More...
-        </Button>
+        {/* Session-148 (F-147c3): the More... ghost RETIRED — the
+            reference's bar is now [Filter][All Stages][All Sources]
+            [search] (walk38k; the S24-P3 dead-affordance decode is a
+            historical record — the button is gone upstream). */}
         </div>
       </div>
 
@@ -611,32 +588,6 @@ export default function DashboardPage() {
                 </thead>
                 <tbody />
               </table>
-            </div>
-          ) : dealsView === "Cards" ? (
-            /* S8-2 functional superset: the reference's view-switcher is
-               dead; picking Cards here renders a compact card grid instead
-               of the compact table. Session-31: the rows are opportunities. */
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredDeals.map((o) => (
-                <div
-                  key={o.id}
-                  className="rounded-lg border border-line bg-surface p-4 transition-colors hover:bg-line-soft/40"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-medium text-foreground">{o.name}</p>
-                    <Badge variant="outline" className={OPP_STAGE_META[o.stage]?.badge}>
-                      {o.stage === "closed_won" ? "Won" : o.stage}
-                    </Badge>
-                  </div>
-                  <p className="mt-1 text-xs text-muted">{o.accountName ?? "—"}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-foreground">
-                      ${(o.amount || 0).toLocaleString()}
-                    </span>
-                    <span className="text-xs text-muted">{o.owner ?? "Unassigned"}</span>
-                  </div>
-                </div>
-              ))}
             </div>
           ) : (
             <div className="overflow-x-auto">

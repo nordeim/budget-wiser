@@ -6,7 +6,6 @@ import {
   KPI_CARD,
   KPI_SPARK,
   KPI_VALUE,
-  VIEW_SWITCHER,
 } from "@/lib/page-layout";
 
 // Session-87 pins: the dashboard KPI-FAMILY parity suite (the 87-c
@@ -262,23 +261,13 @@ describe("session-87: the chart-card headers (N-87c7, bundle-decoded Ht)", () =>
 // ---------------------------------------------------------------------------
 
 describe("session-87: the filter bar chrome (N-87c4/c5/c6, bundle-decoded)", () => {
-  it("the stage + source dead SelectValue placeholders mirror the reference; the view switcher's stays the documented empty adaptation", () => {
+  it("the middle view-switcher is RETIRED (s148/F-147c3 — the s87 N-87c4 Format decode is a historical record)", () => {
     const src = dashPage();
-    expect(src).toMatch(/<SelectValue placeholder="Stage" \/>/);
-    expect(src).toMatch(/<SelectValue placeholder="Source" \/>/);
-    // The view switcher: the reference's placeholder "Format" is dead
-    // because its value is the FIXED no-match constant "format" (Radix
-    // renders EMPTY for a non-empty value with no item). OURS is the
-    // functional superset (value "" + onValueChange) — an empty-string
-    // placeholder is what keeps OUR default trigger rendering EMPTY
-    // like the reference's; a "Format" placeholder would RENDER at our
-    // "" default (a regression). The emptyLabel stays "" + the
-    // mechanism documented in the token comment.
-    expect(VIEW_SWITCHER.emptyLabel).toBe("");
+    expect(src).not.toMatch(/aria-label="Recent deals view"/);
     const layout = read("src/lib/page-layout.ts") ?? "";
-    const vw = layout.slice(layout.indexOf("export const VIEW_SWITCHER"), layout.indexOf("export const VIEW_SWITCHER") + 900);
-    expect(vw).toMatch(/Format/);
+    expect(layout).not.toMatch(/export const VIEW_SWITCHER/);
   });
+
 
   it("the Filter button carries the BARE sm:w-auto (the flex-col stretch full-widths it at mobile)", () => {
     const src = dashPage();
@@ -371,21 +360,18 @@ describe("session-134: the dashboard KPI row + quick-create + filter-bar freeze"
     }
   });
 
-  it("the filter-bar construction order freeze (the s6/s8 stack + the s134 walk census)", () => {
+  it("the filter-bar construction order freeze (the s6/s8 stack — s148-RE-ANCHORED: the middle switcher + the More... ghost retired)", () => {
     const src = dashPage();
-    // The reference's stack: [Filter outline][Stage select][the dead
-    // Table/Cards view-switcher][Source select][search][the dead More...
-    // ghost] — walk-verified byte-equal at BOTH viewports (the walk25b
-    // decisive probe: the Filter 88x32 @1440 / 326x32 @390; the selects
-    // ink rgb(10,10,10) incl. the s133 placeholderState retirement on
-    // the view-switcher — the L-134a1 maiden census).
+    // walk38k: the reference's post-F-147c3 stack: [Filter outline][Stage
+    // select][Source select][search] — BOTH the blank middle
+    // view-switcher AND the dead More... ghost are retired (the
+    // reference's bar ends with the search; the search wrap converges
+    // to 708px).
     const order = [
       '<FilterPolygon className="w-4 h-4 mr-2" />', // the Filter outline icon
       '<SelectValue placeholder="Stage" />', // the Stage select
-      'aria-label="Recent deals view"', // the view-switcher trigger
       '<SelectValue placeholder="Source" />', // the Source select
       'aria-label="Filter deals"', // the search input
-      "More...", // the dead ghost
     ];
     let prev = -1;
     for (const marker of order) {
@@ -394,9 +380,10 @@ describe("session-134: the dashboard KPI row + quick-create + filter-bar freeze"
       expect(i, `the ${marker} control must keep the stack order`).toBeGreaterThan(prev);
       prev = i;
     }
-    // exactly ONE More... ghost + exactly THREE filter-bar selects
-    expect(src.match(/More\.\.\./g) ?? []).toHaveLength(1);
-    expect(src.match(/aria-label="Recent deals view"/g) ?? []).toHaveLength(1);
+    // ZERO More... ghosts + ZERO view-switcher triggers (both retired)
+    expect(src.match(/More\.\.\./g) ?? []).toHaveLength(0);
+    expect(src.match(/aria-label="Recent deals view"/g) ?? []).toHaveLength(0);
+    expect(src.match(/<SelectValue placeholder="(Stage|Source)"/g) ?? []).toHaveLength(2);
   });
 });
 

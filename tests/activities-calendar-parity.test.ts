@@ -69,7 +69,7 @@ const formatSrc = () => stripComments(read("src/lib/format.ts") ?? "");
 const eventsRoute = () => stripComments(read("src/app/api/events/route.ts") ?? "");
 
 describe("session-76: the KPI STATICS family (gm/Mx literals)", () => {
-  it("the six activities chartData literals + static deltas/subtexts ship as constants", () => {
+  it("the six activities chartData literals + static SUBTEXTS ship as constants (s148-re-anchored: the deltas retired)", () => {
     const src = pageLayoutSrc();
     const block = src.slice(src.indexOf("ACTIVITY_KPI_STATICS"), src.indexOf("ACTIVITY_KPI_STATICS") + 1400);
     expect(src).toMatch(/ACTIVITY_KPI_STATICS/);
@@ -82,9 +82,10 @@ describe("session-76: the KPI STATICS family (gm/Mx literals)", () => {
     expect(compact).toContain("[50,55,60,65,70,75]");
     expect(compact).toContain("[40,50,55,60,70,65]");
     expect(compact).toContain("[30,35,40,45,50,55]");
-    expect(block).toMatch(/delta:\s*"\+23%"/);
+    // s148 (F-147c3): the delta chips retired — the constants keep
+    // the SUBS + bars only (walk38: "Due now"/"+7 today" stay).
+    expect(block).not.toMatch(/delta:/);
     expect(block).toMatch(/sub:\s*"Due now"/);
-    expect(block).toMatch(/delta:\s*"2h overdue"/);
     expect(block).toMatch(/sub:\s*"\+7 today"/);
     expect(block).toMatch(/sub:\s*"\+4 today"/);
     expect(block).toMatch(/sub:\s*"\+1h 12m"/);
@@ -98,17 +99,11 @@ describe("session-76: the KPI STATICS family (gm/Mx literals)", () => {
     }
   });
 
-  it("the calendar trend texts are the static +3/+34/+2/+3 literals", () => {
+  it("the calendar trend texts are RETIRED (s148/F-147c3 — walk38: the calendar cards render no trend rows)", () => {
     const src = calendarPage();
-    // The four Mx cards render CALENDAR_KPI_STATICS (the +3/+34/+2/+3
-    // literals) — never a computed trend.
-    expect((src.match(/CALENDAR_KPI_STATICS\./g) ?? []).length).toBe(4);
-    expect(src).not.toMatch(/trend=\{trend\(/);
-    const layout = pageLayoutSrc();
-    const block = layout.slice(layout.indexOf("CALENDAR_KPI_STATICS"), layout.indexOf("CALENDAR_KPI_STATICS") + 300);
-    expect(block).toContain('"+3"');
-    expect(block).toContain('"+34"');
-    expect(block).toContain('"+2"');
+    expect(src).not.toMatch(/CALENDAR_KPI_STATICS/);
+    expect(src).not.toMatch(/trend=/);
+    expect(pageLayoutSrc()).not.toMatch(/CALENDAR_KPI_STATICS/);
   });
 
   it("the TrendStatCard swaps TrendingDown on the down direction", () => {
@@ -716,5 +711,41 @@ describe("session-141: the by-type chips palette + the static subtitle (the walk
     // the chips render the windowed counts: "{t.label} {t.count}" off
     // the FILTERED baseFiltered set
     expect(page).toMatch(/\{t\.label\} \{t\.count\}/);
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Session-148 (F-147c3): the activities + calendar KPI delta retirement.
+// walk38: the reference renders NO trend chips on either page — activities
+// keeps its SUB-texts ("Due now" / "+7 today" / "+4 today" / "+1h 12m") but
+// not the "+23%" / "2h overdue" deltas; the calendar cards render no trend
+// texts at all. The Priority card's plain "More" ghost is also gone (its
+// toolbar = the h2 alone; the Timeline/by-Type "•••" survive).
+// ---------------------------------------------------------------------------
+describe("session-148: the activities + calendar trend retirement (F-147c3)", () => {
+  it("the activities KPI cards pass ZERO trend props — the sub-texts stay", () => {
+    const src = activitiesPage();
+    expect(src.match(/trend="up"/g) ?? []).toHaveLength(0);
+    expect(src.match(/trend="down"/g) ?? []).toHaveLength(0);
+    expect(src.match(/trendValue=/g) ?? []).toHaveLength(0);
+    expect(src).toMatch(/ACTIVITY_KPI_STATICS\.overdue\.sub/);
+  });
+
+  it("the Priority card's plain More ghost retires (its toolbar = the h2 alone); the Timeline ••• survives", () => {
+    const src = activitiesPage();
+    expect(src).not.toMatch(/>\s*More\s*</);
+    expect(src).toContain('aria-label="More actions"');
+    // the rail's Save All + Filter STAY (the asymmetric removal —
+    // accounts lost them, activities keeps them, walk38 live-verified)
+    expect(src).toMatch(/>\s*Save All\s*</);
+    expect(src).toMatch(/FILTER_RAIL\.filterButtonWrap/);
+  });
+
+  it("the calendar KPI cards pass ZERO trend props — the static trends retire", () => {
+    const src = calendarPage();
+    expect(src.match(/trend="up"/g) ?? []).toHaveLength(0);
+    expect(src.match(/trendValue=/g) ?? []).toHaveLength(0);
+    expect(src).not.toMatch(/CALENDAR_KPI_STATICS/);
   });
 });

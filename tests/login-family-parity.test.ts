@@ -389,7 +389,7 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // 149 -> 150 (the guest 390 drawer e2e — the hamburger + the 8
     // links on the guest /About; the retired form joins its negatives).
     expect(src).not.toContain("**E2E (Playwright, 149 checks)**");
-    expect(src).toContain("**E2E (Playwright, 151 checks)**");
+    expect(src).toContain("**E2E (Playwright, 152 checks)**");
   });
 });
 

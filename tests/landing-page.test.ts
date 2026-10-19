@@ -134,12 +134,12 @@ describe("session-142: the hero construction (the censused copy + classes)", () 
     );
     expect(src).toContain("Every account, contact and deal in one calm workspace");
     expect(src).toContain(
-      'className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.08]"',
+      'className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.08] sm:leading-none"',
     );
     expect(src).toContain(
       "NEO CRM keeps your pipeline, your follow-ups and your reporting in a single fast workspace — built for people who sell on their own or in a small team, without the enterprise bloat.",
     );
-    expect(src).toContain('className="mt-5 text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl"');
+    expect(src).toContain('className="mt-5 text-base sm:text-lg text-gray-600 leading-relaxed sm:leading-[28px] max-w-2xl"');
   });
 
   it("the CTA pair: Open the dashboard (brand + arrow) + See pricing (outline, h-10 px-8)", () => {
@@ -239,7 +239,11 @@ describe("session-142: the features + preview sections", () => {
     expect(src).toContain('title: "NEO CRM · Dashboard"');
     expect(src).toContain('title: "NEO CRM · Accounts"');
     expect(src).toContain('title: "NEO CRM · Reports"');
-    expect(src).toContain('className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-center"');
+    // s148 (F-147c3): the middle row's flip — the className is now the
+    // cn() form carrying the reference's lg:[&>*:first-child]:order-2 on
+    // the SECOND row only (walk38e).
+    expect(src).toContain('"grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-center"');
+    expect(src).toMatch(/i === 1 && "lg:\[&>\*:first-child\]:order-2"/);
     expect(src).toContain('className="lg:col-span-3"');
     expect(src).toContain('className="lg:col-span-2"');
     expect(src).toContain("See the app itself");
@@ -565,5 +569,60 @@ describe("session-145: the landing is SESSION-STATIC (walk35, the maiden logged-
     // too (its post-login redirect target IS this page)
     expect(src).toMatch(/Open dashboard/);
     expect(src).not.toMatch(/Sign out|Log out|My account|View profile/);
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Session-148 (F-147c3): the landing preview-mock morph — the reference
+// content-varied its three "See the app itself" mocks (walk38d/f, byte-
+// decoded): the Dashboard mock keeps the 5-bar pipeline; the Accounts mock
+// renders a 4-ROW MICRO-TABLE; the Reports mock renders "Revenue by month"
+// with SEVEN bars. The MIDDLE row flips at lg (lg:[&>*:first-child]:
+// order-2). The hero's ≥sm line-heights pin the reference's COMPUTED values
+// (its leading utilities are inert at ≥sm in its build — the h1 renders
+// 48/48 + 60/60, the p 18/28; phone stays the working 1.08/relaxed).
+// ---------------------------------------------------------------------------
+describe("session-148: the preview-mock morph (the content-varied mocks)", () => {
+  it("the Accounts mock renders the 4-row micro table (Northwind/Vertex/Bluepeak/Harbour, the censused literals)", () => {
+    const src = landing();
+    expect(src).toMatch(/Northwind Trading/);
+    expect(src).toMatch(/Vertex Group/);
+    expect(src).toMatch(/Bluepeak Health/);
+    expect(src).toMatch(/Harbour & Co/);
+    expect(src).toContain(
+      'className="grid grid-cols-3 gap-2 px-3 py-2 bg-gray-50 border-b border-gray-200 text-[9px] font-semibold text-gray-500"',
+    );
+    expect(src).toContain(
+      'className="grid grid-cols-3 gap-2 px-3 py-2 border-b border-gray-100 last:border-0 text-[9px] lg:text-[11px] text-gray-700"',
+    );
+    expect(src).toContain('className="bg-white rounded-lg border border-gray-200 overflow-hidden"');
+  });
+
+  it("the Reports mock renders Revenue by month with SEVEN bars (the censused array)", () => {
+    const src = landing();
+    expect(src).toMatch(/Revenue by month/);
+    expect(src).toMatch(/MOCK_REPORT_BARS = \[42, 64, 50, 82, 60, 94, 71\]/);
+  });
+
+  it("the Dashboard mock keeps the 5-bar pipeline (byte-equal — the only un-changed mock)", () => {
+    const src = landing();
+    expect(src).toMatch(/MOCK_BARS = \[72, 54, 40, 26, 15\]/);
+    expect(src).toContain("Sales pipeline by stage");
+  });
+
+  it("the MIDDLE preview row flips at lg (the reference's lg:[&>*:first-child]:order-2)", () => {
+    const src = landing();
+    expect(src).toMatch(/lg:\[&>\*:first-child\]:order-2/);
+  });
+
+  it("the hero h1 + paragraph pin the reference's COMPUTED ≥sm line-heights (sm:leading-none + sm:leading-[28px])", () => {
+    const src = flat(landing());
+    expect(src).toContain(
+      "mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.08] sm:leading-none",
+    );
+    expect(src).toContain(
+      "mt-5 text-base sm:text-lg text-gray-600 leading-relaxed sm:leading-[28px] max-w-2xl",
+    );
   });
 });

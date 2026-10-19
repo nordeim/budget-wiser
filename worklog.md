@@ -5668,3 +5668,23 @@ Stage Summary:
 - The guest boundary re-mirrored (the from_url round-trip with the same-origin guard; the server-side session decision preserved)
 - The parity event's desktop-interior family decoded + baselined as the s148 mirror target (the KPI chips family, the accounts controls, the landing mock)
 - The walk-harness lessons L-147c1/c2 recorded (the defect ledger is a snapshot too; the parity event lands as a cluster)
+
+---
+Task ID: 148
+Agent: main (Super Z)
+Task: Session-148 — the desktop-interior mirror (the F-147c3 family, the 148-c rotation) — full maintenance cycle on nordeim/neo-crm
+
+Work Log:
+- Re-cloned at 488ef79 (the sandbox reset TWICE mid-round — a prior attempt lost mid-docs-phase, a second lost at the e2e; the final pass re-applied the verified change-set from durable patch scripts); the environment re-stood each time; the baseline gate GREEN (the exact s147-ship match: 115/2132 + 151/151)
+- 148-a: 11/11 spot-verified, zero findings; 148-b: PASS (the four drift gates CLEAN ×4 — the racy reference states settled); probe:ref #122 STABLE at the s147 fingerprint; the reference's demo data ZERO rows (volatile, not for mirroring)
+- walk38 (8 passes): the F-147c3 ground-truth decode — TWO stale s147 handoff decodes CORRECTED (the magnifier KEPT, the desktop CTA arrow KEPT) + TWO s147-missed decodes found (the dashboard More... ghost retired with the middle select, the activities Priority "More" retired) + the KPI delta-chip family family-wide (the activities SUB-texts kept) + the accounts-scoped rail removal (the activities rail KEEPS its pair) + the landing mock morph (the Accounts 4-row micro-table + the Reports 7-bar card + the middle-row lg flip + the ≥sm line-height computed-pairing genus)
+- D-148a0/a1/a2/a3/a4: the constants retirement + the call-site drops + the toolbar trio + the Cards branches + the rail buttons + the dashboard bar + the Priority More + the landing morph — TDD (21 new pins + 9 flipped legacy pins, all GREEN)
+- D-148a5: the sweep re-derivation — the family COLLAPSED to the 0.00-0.01 floor at every class (landscape accounts 1.67 = the PURE s95 overflow genus); the four baseline tables + the standingExplained lines + the sweep-tool pins re-anchored; the mutation-proof ×3; the four drift gates CLEAN ×4
+- D-148a6: the captures 326-334 + the VLM battery 3/3 + the live two-app construction smoke byte-equal
+- D-148a7: the docs realignment (2153/152/2305 + the page-layout line census 1687/210 + SKILL v1.145.0 + the session-148 layer + the AGENTS section + the PAD row + the session_314/315 records + the plan execution record + this worklog)
+- D-148a8: the final gate (lint 0/0 · tsc 0 · 115/2153 · build · e2e 152/152 · the four drift gates CLEAN ×4 · census MATCH) + the two-commit ship via the SSH wrapper
+
+Stage Summary:
+- The F-147c3 desktop-interior family fully mirrored: the KPI delta chips family-wide, the accounts toolbar trio + rail buttons, the dashboard middle select + More... ghost, the activities Priority "More", and the landing mock morph (with the computed-equal leading pins) — every family carrier at the 0.00-0.01 sweep floor
+- The two stale s147 handoff decodes corrected + the two missed decodes found — the L-148c1 lesson recorded (re-decode every handoff finding live) + the L-148c2 asymmetric-removal lesson
+- The standing genera left: the settings picklist-DATA genus (volatile workspace data), the login logo genus, the s95 landscape accounts overflow genus

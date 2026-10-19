@@ -77,7 +77,6 @@ import {
   TABLE_TOOLBAR,
   TOP_REPS,
   TOPBAR_LAYOUT,
-  VIEW_SWITCHER,
   allLayoutClasses,
 } from "@/lib/page-layout";
 
@@ -543,22 +542,22 @@ describe("session-8 parity pins (DOM-verified 2026-09-30)", () => {
     expect(DASHBOARD_HEADER.primaryExportLabelClass).toBe("");
   });
 
-  it("view switcher: w-full sm:w-32 trigger, empty default label, Table/Cards", () => {
-    // S8-2/S8-3: the reference's Table/Cards switcher renders with an EMPTY
-    // placeholder (never set — dead on the reference); ours keeps the empty
-    // default but switches the view for real.
-    expect(VIEW_SWITCHER.trigger).toBe("w-full sm:w-32");
-    expect(VIEW_SWITCHER.emptyLabel).toBe("");
-    expect(VIEW_SWITCHER.options).toEqual(["Table", "Cards"]);
+  it("view switcher RETIRED (s148/F-147c3): the contract is gone with both its consumers", () => {
+    // S8-2/S8-3 (historical): the reference's Table/Cards switcher
+    // rendered with an EMPTY placeholder. Session-148: the reference
+    // removed BOTH live instances (the accounts toolbar trigger + the
+    // dashboard middle slot — walk38j/walk38k); the contract retired.
+    expect(read("src/lib/page-layout.ts")).not.toMatch(/export const VIEW_SWITCHER/);
   });
 
-  it("accounts table toolbar: switcher + density select + More before the search", () => {
-    // S8-3: [Table select][Standard/Detailed select (empty, dead)][More
-    // outline h-8 dead] then the search and Export CSV.
+  it("accounts table toolbar (s148-re-anchored): row + moreBtn only — the Export's class; select/densityOptions retired", () => {
+    // walk38j: the post-F-147c3 stack is [search + magnifier][Export
+    // CSV] — the trio before the search retired; the Export button
+    // keeps the h-8 rounded-md px-3 text-xs outline class.
     expect(TABLE_TOOLBAR.row).toBe("flex flex-col sm:flex-row gap-3");
-    expect(TABLE_TOOLBAR.select).toBe("w-full sm:w-32");
-    expect(TABLE_TOOLBAR.densityOptions).toEqual(["Standard", "Detailed"]);
     expect(TABLE_TOOLBAR.moreBtn).toBe("h-8 rounded-md px-3 text-xs");
+    expect(TABLE_TOOLBAR).not.toHaveProperty("select");
+    expect(TABLE_TOOLBAR).not.toHaveProperty("densityOptions");
   });
 
   it("leads search uses the contacts anatomy: w-5 icon + pl-10 input", () => {
@@ -2732,5 +2731,50 @@ describe("session-147: F-147c2 — the guest re-gating + the from_url round-trip
     expect(src).toMatch(/from_url=/);
     expect(src).toContain("encodeURIComponent");
     expect(src).toContain("window.location.href");
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// Session-148 (F-147c3): the desktop-interior mirror — the constants
+// retirement. The reference removed its KPI delta chips family-wide, its
+// accounts toolbar trio + rail buttons, and its dashboard middle select +
+// More... ghost; the constants that existed ONLY for those surfaces retire
+// (walk38-decoded, live-verified on both apps).
+// ---------------------------------------------------------------------------
+describe("session-148: the F-147c3 constants retirement (the delta-chip family + the view-switcher)", () => {
+  const layoutSrc = () => read("src/lib/page-layout.ts");
+  it("KPI_STATICS loses its deltas arm — the sparks + the reports spark stay (the reference's dashboard cards render no delta chips)", () => {
+    const src = layoutSrc();
+    const block = src.slice(src.indexOf("export const KPI_STATICS"), src.indexOf("} as const;", src.indexOf("export const KPI_STATICS")));
+    expect(block).not.toMatch(/\bdeltas:\s*\{/);
+    expect(block).toMatch(/sparks:\s*\{/);
+    expect(block).toMatch(/reportsSpark:/);
+  });
+
+  it("ACTIVITY_KPI_STATICS loses its delta fields — the subs + the bar arrays stay (the reference kept 'Due now' / '+7 today' / '+4 today' / '+1h 12m', walk38)", () => {
+    const src = layoutSrc();
+    const block = src.slice(src.indexOf("export const ACTIVITY_KPI_STATICS"), src.indexOf("} as const;", src.indexOf("export const ACTIVITY_KPI_STATICS")));
+    expect(block).not.toMatch(/delta:/);
+    expect(block).toMatch(/sub:\s*"Due now"/);
+    expect(block).toMatch(/sub:\s*"\+7 today"/);
+    expect(block).toMatch(/bars:/);
+  });
+
+  it("CALENDAR_KPI_STATICS retires (the reference's calendar cards render no trend texts — walk38: zero trend rows, h=138)", () => {
+    expect(layoutSrc()).not.toMatch(/export const CALENDAR_KPI_STATICS/);
+  });
+
+  it("VIEW_SWITCHER retires (both its consumers — the accounts toolbar trio + the dashboard middle select — are gone)", () => {
+    expect(layoutSrc()).not.toMatch(/export const VIEW_SWITCHER/);
+  });
+
+  it("TABLE_TOOLBAR keeps row + moreBtn (the accounts Export CSV rides moreBtn) but loses select + densityOptions (the density select's only consumers)", () => {
+    expect(TABLE_TOOLBAR.row).toBe("flex flex-col sm:flex-row gap-3");
+    expect(TABLE_TOOLBAR.moreBtn).toBe("h-8 rounded-md px-3 text-xs");
+    const src = layoutSrc();
+    const block = src.slice(src.indexOf("TABLE_TOOLBAR ="), src.indexOf("} as const;", src.indexOf("TABLE_TOOLBAR =")));
+    expect(block).not.toMatch(/select:/);
+    expect(block).not.toMatch(/densityOptions:/);
   });
 });

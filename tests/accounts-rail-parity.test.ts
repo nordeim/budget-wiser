@@ -169,13 +169,13 @@ describe("session-86: the computed-tier derivation (M-86c2)", () => {
     expect(block).toMatch(/accountTierFromRevenue\(a\.annualRevenue\)/);
   });
 
-  it("the Cards badge derives from revenue", () => {
+  it("the tier derivation survives the Cards-view retirement (the table cell's own derivation)", () => {
     const src = page();
-    const i = src.indexOf("ACCOUNT_TIER_BADGE[accountTierFromRevenue");
-    expect(i).toBeGreaterThan(-1);
-    const block = src.slice(i, i + 240);
-    expect(block).toMatch(/accountTierFromRevenue\(a\.annualRevenue\)/);
-    expect(block).not.toMatch(/a\.isKey/);
+    // s148/F-147c3: the Cards branch retired — the table's Tier cell
+    // keeps the derivation + the badge map (ONE remaining site).
+    expect((src.match(/ACCOUNT_TIER_BADGE\[/g) ?? []).length).toBe(1);
+    expect(src).toMatch(/accountTierFromRevenue\(a\.annualRevenue\)/);
+    expect(src).not.toMatch(/a\.isKey/);
   });
 
   it("the dashboard's accounts CSV export is RETIRED with the s33 header trio (the computed Tier column lives on the accounts page's own export)", () => {
@@ -273,29 +273,30 @@ describe("session-86: the rail placeholders + the superset documentation (N-86c5
     expect(src).toMatch(/placeholder="\$1M to \$5M"/);
   });
 
-  it("the rail superset comments document the dead reference controls (raw source)", () => {
+  it("the rail superset comments document the LIVE filtering (raw source — s148-re-anchored: the Save All/Filter buttons retired)", () => {
     const raw = read("src/app/(app)/accounts/accounts-page.tsx");
     // The Owner/Revenue live-filtering superset (the reference's memo
-    // reads name/industry/tiers only) + the Save All reset (the
-    // reference's has no onClick).
+    // reads name/industry/tiers only); the F-147c3 retirement note.
     expect(raw).toMatch(/\+ Revenue Range selects are DEAD/);
-    expect(raw).toMatch(/Save All has NO onClick/);
   });
 
-  it("the green anchors: the rail anatomy rides the FILTER_RAIL records", () => {
+  it("the green anchors: the rail anatomy rides the FILTER_RAIL records (s148-re-anchored: the accounts Filter button retired — the filterButtonWrap site is the ACTIVITIES rail's)", () => {
     const src = railRegion();
     expect(src).toMatch(/FILTER_RAIL\.headerPad/);
     expect(src).toMatch(/FILTER_RAIL\.headerRow/);
     expect(src).toMatch(/FILTER_RAIL\.groupLabelSelect\}>Owner/);
     expect(src).toMatch(/FILTER_RAIL\.groupLabel\}>Tier/);
     expect(src).toMatch(/FILTER_RAIL\.checkboxStack/);
-    expect(src).toMatch(/FILTER_RAIL\.filterButtonWrap/);
-    expect(src).toMatch(/w-full bg-blue-600 hover:bg-blue-700/);
+    // F-147c3: the accounts rail's Save All + Filter retired — the
+    // header row carries the Filters title ALONE; the blue Filter
+    // button + its pt-2 wrap live on the ACTIVITIES rail only.
+    expect(src).not.toMatch(/>Save All</);
+    expect(src).not.toMatch(/w-full bg-blue-600 hover:bg-blue-700/);
   });
 
-  it("the green anchors: the Save All ghost sm + the tier checkbox labels + the revenue ranges", () => {
+  it("the green anchors: the tier checkbox labels + the revenue ranges (s148-re-anchored: Save All retired)", () => {
     const src = page();
-    expect(src).toMatch(/Save All/);
+    expect(src).not.toMatch(/Save All/);
     expect(src).toContain('label="Key Account"');
     expect(src).toContain('label="A"');
     expect(src).toContain('label="B"');
