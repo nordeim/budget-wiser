@@ -871,4 +871,37 @@ describe("session-123: the dev-server spawn guards the platform DATABASE_URL ove
       /delete devEnv\.DATABASE_URL;[\s\S]*?spawned = spawn\("bun", \["run", "dev"\],[\s\S]*?env: devEnv/,
     );
   });
+
+  it("session-150 (walk40): the settings phone share is the LIVE-EDITED-INTRADAY picklist-data genus — the ref-vs-ref adjudication idiom documented on the phone line (a settings-class trip is FIRST adjudicated by the ref-vs-ref re-capture before any defect claim)", async () => {
+    const { standingExplained } = await sweep();
+    const phone = standingExplained(390);
+    // the LIVE-INTRADAY note (walk40: ref-vs-ref drifted 2.65% within
+    // ~40 min — the owner edits the reference's picklists during the
+    // day; the ours-vs-ref share wobbled 3.63 → 6.08 across the same
+    // window)
+    expect(phone).toMatch(/LIVE-EDITED INTRADAY/);
+    expect(phone).toMatch(/ref-vs-ref/);
+    // the share + the genus attribution stay (3.6 measured at the
+    // s150 gate run — within the 3.8 baseline)
+    expect(phone).toMatch(/3\.6/);
+    expect(phone).toMatch(/picklist-data genus/);
+  });
+
+  it("session-150 (walk40): the STANDING_BASELINES phone settings comment carries the ref-vs-ref adjudication idiom (the tripwire stays TIGHT — the s146 doctrine; the wobble is absorbed by the decode protocol, not the margin)", () => {
+    const src = read("scripts/sweep.ts");
+    const at = src.indexOf("phone: {");
+    expect(at).toBeGreaterThan(-1);
+    const phoneTable = src.slice(at, src.indexOf("tablet: {", at));
+    const settingsAt = phoneTable.indexOf("settings:");
+    expect(settingsAt).toBeGreaterThan(-1);
+    const entry = phoneTable.slice(settingsAt, settingsAt + 700);
+    // the comment block above the settings entry documents the
+    // intraday wobble + the adjudication order
+    const doc = phoneTable.slice(Math.max(0, settingsAt - 900), settingsAt);
+    expect(doc).toMatch(/LIVE-EDITED INTRADAY/);
+    expect(doc).toMatch(/ref-vs-ref/);
+    // the value itself unchanged — 3.8 (the s148 re-anchor; the wobble
+    // documented, the margin NOT widened)
+    expect(entry).toMatch(/settings:\s*3\.8,/);
+  });
 });

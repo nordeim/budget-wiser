@@ -287,7 +287,15 @@ export const STANDING_BASELINES = {
     activities: 0.1,
     reports: 0.25,
     // 3.63 measured (the picklist data genus at its new shape) —
-    // session-148: re-anchored 4.0 → 3.8
+    // session-148: re-anchored 4.0 → 3.8. Session-150 (walk40): the
+    // genus is LIVE-EDITED INTRADAY by the owner — the ref-vs-ref
+    // re-capture (the same reference page minutes apart) drifted
+    // 2.65% within ~40 min, and the ours-vs-ref share wobbled
+    // 3.63 → 6.08 across the same window. A settings-class trip is
+    // FIRST adjudicated by the ref-vs-ref idiom (re-capture the
+    // reference; if IT moved, the trip is data volatility, not a
+    // defect) — the tripwire stays TIGHT (the s146 doctrine: the
+    // wobble is absorbed by the decode protocol, never the margin).
     settings: 3.8,
     profile: 0.1,
     // the phone login entry rides the CLASS CEILING (s103): the CSS
@@ -428,7 +436,7 @@ export function standingExplained(width: number): string {
   if (width < 768) {
     return (
       "[sweep] standing explained (phone): the F-147c3 chips/toolbar family MIRRORED (s148 — every page at the 0.00-0.20 floor) " +
-      "· settings ~3.6% the picklist-data genus (volatile workspace data, not for mirroring) · login ~0.78% the logo genus (constant-absolute px)"
+      "· settings ~3.6% the picklist-data genus (volatile workspace data, not for mirroring; LIVE-EDITED INTRADAY by the owner — walk40: the ref-vs-ref re-capture drifted 2.65% within 40 min; a settings trip is FIRST adjudicated ref-vs-ref before any defect claim) · login ~0.78% the logo genus (constant-absolute px)"
     );
   }
   if (width < 1024) {

@@ -121,8 +121,8 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 // the guest marketing family).
 // Session-148: E2E 151 -> 152 (+1 — the landing mock-variant spec: the
 // content-varied preview family e2e [the micro-table + the 7-bar card]).
-const E2E = 152;
-const SUITES = 116;
+const E2E = 153;
+const SUITES = 117;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -439,7 +439,17 @@ const SUITES = 116;
 // +4, landing-page +5, activities-calendar +3; the flipped s8/s117/s133/
 // s27/s76/s119/s134/s87/route-case pins re-anchored in place; SUITES
 // stays 115 [every it lands in an EXISTING file]; E2E 151 -> 152).
-const UNIT = 2167;
+// Session-149: 2153 -> 2167 (+14 — the below-the-fold mirror pins:
+// landing-page +5 [the flipped s142 price pins + the 6th-li + the
+// F-149c1/c2/c3 describes], fullpage-sweep-tool NEW +11; SUITES
+// 115 -> 116; E2E stays 152).
+// Session-150: 2167 -> 2173 (+6 — the walk40 pin-only ledger:
+// leading-inert-genus NEW +4 [the family-closure invariant + the
+// enumerated-three + the s148/s149 pin re-asserts + the about/contact
+// exemption], sweep-tool +2 [the LIVE-EDITED-INTRADAY phone-line pin +
+// the STANDING_BASELINES comment pin]; SUITES 116 -> 117; E2E
+// 152 -> 153 [the marketing-mobile spec, the walk40 scroll model]).
+const UNIT = 2173;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -508,7 +518,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
   it("PAD HEAD line carries the live counts (the site-form anchor)", () => {
     const pad = read("Project_Architecture_Document.md");
     expect(pad).toContain(
-      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 8 spec`,
+      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 9 spec`,
     );
   });
 
@@ -862,13 +872,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-149 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-150 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s148 layer now beneath the s149 head)",
     ).toContain(
-      "+ beneath it 2153 unit checks + 152 e2e checks green; the session-148 layer (THE DESKTOP-INTERIOR MIRROR",
+      "+ beneath it 2167 unit checks + 152 e2e checks green; the session-149 layer (THE BELOW-THE-FOLD LANDING MIRROR",
     );
   });
 
@@ -896,7 +906,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B e2e-total row must carry the live spec-file + check counts",
-    ).toContain(`| **e2e total** | 8 spec files + the setup project | **${E2E}** |`);
+    ).toContain(`| **e2e total** | 9 spec files + the setup project | **${E2E}** |`);
     // Session-111 (F-111a1): the Appendix B wall-clock PROSE line is a
     // live-tense count site — the s110 realignment updated the table
     // rows but missed the phrase (it read "108 suites" for one session

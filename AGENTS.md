@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2167 checks)      | `bun run test`                         |
-|  Browser E2E (152 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (2173 checks)      | `bun run test`                         |
+|  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2167) → `bun run build` → `bun run test:e2e` (152) — or the
+`bun run test` (2173) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7004,3 +7004,74 @@ been pixel-compared end-to-end (the L-149c1 blind spot).
   pair — $8/$14/$20 + the Data-tools row; the preview pair — the
   three rows, the flip preserved, the line-heights equal). The
   captures 335–340.
+
+### Session-150 (2026-10-19) — the marketing phone-state walk + the leading-genus family closure (the pin-only rotation)
+
+The workspace RESET (re-cloned at `9127928`; the environment re-stood:
+install/.env/db push+seed/census MATCH/chromium/dev server). **The s149
+worklog gap filled first** — the prior session was interrupted at its
+final step (the repo worklog ended at the s148 record; the Task ID 149
+record appended). probe:ref **#124 STABLE** at the s147/s148/s149
+fingerprint — a rotation round on the session_317 candidates: (a) the
+settings picklist family's phone state + (c) the full-page axis past
+the landing.
+
+- **150-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **116/2167**
+  · build · **e2e 152/152** — the EXACT s149-ship match.
+- **150-b**: the drawer battery GREEN (the mobile-nav contract) · the
+  four viewport gates CLEAN ×4 · the fullpage gate CLEAN (0.093/0.316
+  at equal heights 4990/7259) · sitemap 11 routes + robots + the SEO
+  meta · the tree clean · zero dep changes.
+- **walk40 (6 passes) — THE LEADING-GENUS FAMILY CENSUS (PASS 1)**:
+  the s148/s149 v4 genus (a base `leading-*` loses to a responsive
+  `sm:text-*` on the reference's build — the text-PAIRING renders at
+  ≥sm) is **CLOSED**: exactly **3** responsive-text + base-leading
+  combos exist in src/ (the landing hero h1/p + the preview-row p),
+  all carrying the computed-equal pins (`sm:leading-none` ·
+  `sm:leading-[28px]` · `sm:leading-6`). The about/contact
+  `leading-relaxed` carriers are OUT of the family BY MECHANISM (no
+  responsive text-size token — the value computes at every width on
+  both apps, verified live byte-equal at 1920+390).
+- **THE INTERNAL-SCROLLER BLIND SPOT (PASS 2 — L-150c1)**: /about +
+  /contact do NOT scroll at desktop (scrollH=1080), but at phone they
+  scroll INSIDE the shell's `main.overflow-auto` (doc scrollH=844 on
+  both; content to y≈1614) — the surface a fullPage capture
+  structurally cannot see. The full-geometry census: **/about
+  main.scrollHeight 1731 = BOTH** (24 vs 24 elements, 0 diffs) ·
+  **/contact 897 = BOTH** (18 vs 18, 0 diffs) — geometry-equal +
+  classes-equal ⇒ pixel-equal (the walk39 pattern). The marketing
+  phone-state axis is CLEAN.
+- **THE SETTINGS PHONE-SHARE DECOMPOSITION (PASS 3/3b/3c)**: the
+  standing 3.8% share is the PURE picklist-DATA genus — **all 7 bands
+  = row-text/row-count differences** (the reference's live values:
+  Call/Email/Website/Partner/Referral/New/Contacted/Qualified/
+  Technology/…), ZERO layout bands (the census indices 0-19 aligned
+  EQUAL; the card template identical — the 62px row spacing, the
+  add-row, the 53px footer). The sweep's own gate pair: 3.633%. **THE
+  NEW FINDING — the reference's picklist data is LIVE-EDITED
+  INTRADAY**: the ref-vs-ref re-capture (the 07:45 gate capture vs a
+  fresh one ~40 min later) drifted **2.653%** — the ours-vs-ref share
+  wobbled 3.63 → 6.08 across the same window (the L-150c2 lesson: a
+  settings-class trip is FIRST adjudicated by the ref-vs-ref idiom;
+  the tripwire stays TIGHT — the s146 doctrine).
+- **THE PINS (the s134/s137/s145 pin-only pattern)**:
+  `tests/leading-inert-genus.test.ts` NEW +4 (the family-closure
+  invariant scanner — a new combo without its pin REDs the suite;
+  mutation-proof ×2: the planted about-h1 combo → 3 RED, the stripped
+  preview pin → 2 RED, both reverted) · `tests/e2e/marketing-mobile.
+  spec.ts` NEW +1 (the walk40 scroll model + the s142 census at 390;
+  the intro-paragraph selector re-derived live after the text-filter
+  false-RED — the class-derived `.space-y-4 > p` census idiom) ·
+  sweep-tool +2 (the LIVE-EDITED-INTRADAY phone-line pin + the
+  STANDING_BASELINES comment pin) · the CLAUDE-carrier pins flipped
+  (dialog-geometry ×4 + login-family +1) · the docs-counts ladder
+  (2173/117/153, badge 2326, the 8→9 spec-file pins, the layer-axis
+  to the s150 head).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **117/2173** · build ·
+  **e2e 153/153** · the four viewport gates CLEAN ×4 · the fullpage
+  gate CLEAN (the fresh-dev-server house order — the s149
+  dev-indicator lesson) · census MATCH · **the VLM battery 2/2** (the
+  about pair + the contact pair — both identical except the
+  "Edit with Base 44" pill, the standing genus; the pill rides FRESH
+  page loads — the SPA-navigating sweeps structurally never see it).
+  The captures 341-344.
