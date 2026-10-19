@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2153 checks)      | `bun run test`                         |
+|  Unit tests (2167 checks)      | `bun run test`                         |
 |  Browser E2E (152 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2153) → `bun run build` → `bun run test:e2e` (152) — or the
+`bun run test` (2167) → `bun run build` → `bun run test:e2e` (152) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -6943,3 +6943,64 @@ next round's mirror must re-decode every handoff finding live) ·
 **L-148c2 the asymmetric removal** (the accounts rail lost its buttons
 while the activities rail kept them — the per-page scope check is part
 of the decode).
+
+### Session-149 (2026-10-19) — the below-the-fold landing mirror (the 149-c rotation + the full-page gate)
+
+**The owner's new signal executed**: `d532c56` brought the
+full-page-screenshot skill bundle (the quality-gated G1–G6 capture
+methodology) + `8a6b0e5` the `neo-crm-homepage.png` (the 1920×4986
+full-page capture of our deployed landing — the skill's reference
+run). probe:ref #123 STABLE at the s147/s148 fingerprint — a
+rotation round on the NEW AXIS: the four viewport sweeps structurally
+clip at y≈900, so the landing's below-the-fold sections had NEVER
+been pixel-compared end-to-end (the L-149c1 blind spot).
+
+- **THE WALK39 FULL-PAGE DECODE** (both apps' landing full-page at
+  1920 + 390, the skill's phases): the height delta is ALL #pricing
+  (ref 4990/ours 4986 desktop · 7259/7207 phone — every other section
+  byte-equal) — **F-149c1 THE REPRICED TIERS** (ref $8/$14/$20 vs our
+  stale s142 census $9/$19/$39) + **F-149c2 THE ADVANCED CARD'S SIXTH
+  LI** ("Data tools, templates and guarded reset" — the live order,
+  after the defaults row) + **F-149c3 THE PREVIEW ROWS' ≥sm LEADING
+  GENUS** (ours computed leading-relaxed at 26px; the reference's
+  leading utilities inert at ≥sm — 24px, the text-base pairing — the
+  SAME genus the s148 hero fix pinned; phone byte-equal, the
+  leading-relaxed ACTIVE at <sm on both apps). The corrected-diff
+  validation (shift +4/+52 below the pricing anchors) closed the
+  FAQ/footer as pure shift — the decode complete. Pre-fix full-page
+  diff: 0.901%/2.455%.
+- **THE PLATFORM PILL (standing genus, NOT mirrored)**: the "Edit
+  with Base 44" pill — bottom-right fixed chrome, GUEST-only (the
+  logged-in sweeps measured landing 0.00 through s146–s148; the
+  fresh-context walk39 captures exposed it — the L-149c2 lesson).
+- **THE FULLPAGE-SWEEP TOOL** (D-149a3): `scripts/fullpage-sweep.ts`
+  — the FIFTH gate, wired into `gate:full`; guest contexts (the
+  landing is public, no login); the landing pair at 1920×1080 +
+  390×844; the pad-then-diff for unequal heights (the PURE `padTo`
+  seam + the browser canvas twin, the no-bundling doctrine);
+  `STANDING_FULLPAGE_BASELINES` {desktop 0.14 · phone 0.49} absorb
+  the pill genus + the raster floor; `--fail-on-drift` at the
+  standing 0.5pct margin. The maiden + post-fix runs: **EQUAL heights
+  (4990/7259) at 0.093–0.144% / 0.316–0.487%** — CLEAN.
+- **THE DEV-INDICATOR DECODE** (the sweep-order lesson): the
+  verification-phase phone gate tripped landing 1.49% — OUR side's
+  Next.js dev-server "1 Issue" pill (bottom-left), a per-process
+  CUMULATIVE issue counter fed by the e2e error-path tests
+  (lockout/400 probes) that ran between the audit-phase gates and the
+  verification gates; a fresh dev server reproduces 0.00. The gates
+  run before e2e (the house order) or after a dev-server restart.
+- **THE TDD LEDGER**: 5 landing pins + 11 fullpage-tool pins RED at
+  birth (the flipped s142 price pins + the 6th-li feature pin + the
+  F-149c1/c2/c3 describes + the tool wiring/padTo/doctrine pins) →
+  the implementation → GREEN; the e2e pricing test flipped + the 6th
+  li assertion; the s97 gate-script composite re-anchored to the
+  FIVE-gate chain; the docs-counts layer-axis flipped to the s149
+  head (2167/116/152, badge 2319).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **116/2167** (+14) ·
+  build · **e2e 152/152** (the definitive re-run after the known
+  settings-Defaults flake passed in isolation) · the four viewport
+  gates CLEAN ×4 (the fresh-server phone re-run) · **the fullpage
+  gate CLEAN** (maiden + final) · the VLM battery 2/2 (the pricing
+  pair — $8/$14/$20 + the Data-tools row; the preview pair — the
+  three rows, the flip preserved, the line-heights equal). The
+  captures 335–340.

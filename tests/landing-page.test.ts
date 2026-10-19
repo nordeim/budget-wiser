@@ -261,11 +261,13 @@ describe("session-142: the pricing section (3 tiers + the Pro highlight)", () =>
     expect(src).toContain("Most popular");
   });
 
-  it("the prices ($9/$19/$39 + / month) + the tier subs + the CTAs", () => {
+  it("the prices ($8/$14/$20 + / month) + the tier subs + the CTAs", () => {
     const src = flat(landing());
-    expect(src).toContain('price: "$9"');
-    expect(src).toContain('price: "$19"');
-    expect(src).toContain('price: "$39"');
+    // s149 (F-149c1, walk39): the reference repriced the tiers — the
+    // stale $9/$19/$39 (the s142 marketing-build census) retired.
+    expect(src).toContain('price: "$8"');
+    expect(src).toContain('price: "$14"');
+    expect(src).toContain('price: "$20"');
     expect(src).toContain('className="mt-5 flex items-baseline gap-1.5"');
     expect(src).toContain('className="text-4xl font-bold text-gray-900"');
     expect(src).toContain('className="text-sm text-gray-500">/ month');
@@ -306,9 +308,48 @@ describe("session-142: the pricing section (3 tiers + the Pro highlight)", () =>
       "Account health report",
       "Configurable sources, stages, types and tiers",
       "Default values and preferences",
+      // s149 (F-149c2, walk39): the reference's Advanced card grew a
+      // SIXTH feature row — the literal verbatim from the live DOM.
+      "Data tools, templates and guarded reset",
     ]) {
       expect(src).toContain(`"${feature}"`);
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-149 — the below-the-fold landing mirror (the F-149c family)
+// ---------------------------------------------------------------------------
+
+describe("session-149: the below-the-fold landing mirror (the full-page walk)", () => {
+  it("F-149c1: the repriced tiers ($8/$14/$20 — walk39's price-row decode)", () => {
+    const src = flat(landing());
+    expect(src).toContain('price: "$8"');
+    expect(src).toContain('price: "$14"');
+    expect(src).toContain('price: "$20"');
+    // the stale s142 prices are GONE (the walk39 live census)
+    expect(src).not.toContain('price: "$9"');
+    expect(src).not.toContain('price: "$19"');
+    expect(src).not.toContain('price: "$39"');
+  });
+
+  it("F-149c2: the Advanced card's SIXTH feature (the 6-li Advanced list)", () => {
+    const src = landing();
+    const advanced = src.slice(src.indexOf("Advanced"), src.indexOf("Start with Advanced"));
+    // the live order: the data-tools row is LAST (after the defaults row)
+    expect(advanced).toContain('"Default values and preferences",');
+    expect(advanced).toMatch(/"Default values and preferences",\s*"Data tools, templates and guarded reset",/);
+  });
+
+  it("F-149c3: the preview rows' p pins the reference's ≥sm computed 24px (the s148 hero-genus family)", () => {
+    const src = landing();
+    // walk39: ours computed leading-relaxed (26px) at ≥sm while the
+    // reference's leading utilities are inert at ≥sm in its build —
+    // it renders the text-base pairing (24px = leading-6). Phone
+    // keeps the working leading-relaxed on BOTH apps (byte-equal).
+    expect(src).toContain(
+      'className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed sm:leading-6"',
+    );
   });
 });
 

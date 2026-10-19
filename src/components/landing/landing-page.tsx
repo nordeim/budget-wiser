@@ -117,7 +117,7 @@ const PRICING = [
   {
     name: "Standard",
     sub: "The core CRM",
-    price: "$9",
+    price: "$8",
     popular: false,
     features: [
       "Dashboard and accounts",
@@ -131,7 +131,7 @@ const PRICING = [
   {
     name: "Pro",
     sub: "Adds pipeline intelligence",
-    price: "$19",
+    price: "$14",
     popular: true,
     features: [
       "Everything in Standard",
@@ -145,13 +145,16 @@ const PRICING = [
   {
     name: "Advanced",
     sub: "Adds account health and control",
-    price: "$39",
+    price: "$20",
     popular: false,
     features: [
       "Everything in Pro",
       "Account health report",
       "Configurable sources, stages, types and tiers",
       "Default values and preferences",
+      // s149 (F-149c2, walk39): the reference's Advanced card grew a
+      // SIXTH feature row — the literal verbatim from the live DOM.
+      "Data tools, templates and guarded reset",
     ],
     cta: "Start with Advanced",
   },
@@ -524,8 +527,12 @@ function Preview() {
                 <MockDashboard title={row.title} active={row.active} />
               </div>
               <div className="lg:col-span-2">
+                {/* s149 (F-149c3, walk39): the sm:leading-6 pins the */}
+                {/* reference's >=sm COMPUTED 24px (its leading utilities */}
+                {/* are inert at >=sm — the s148 hero-genus family); phone */}
+                {/* keeps the working leading-relaxed on both apps. */}
                 <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">{row.heading}</h3>
-                <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed">{row.body}</p>
+                <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed sm:leading-6">{row.body}</p>
               </div>
             </div>
           ))}

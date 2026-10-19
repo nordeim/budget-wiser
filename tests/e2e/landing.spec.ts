@@ -60,7 +60,7 @@ test.describe("the public landing (logged-out)", () => {
     await expect(preview.getByText("Revenue by month").first()).toBeVisible();
   });
 
-  test("the pricing tiers render the censused cards ($9/$19/$39 + the Pro highlight)", async ({ page }) => {
+  test("the pricing tiers render the censused cards ($8/$14/$20 + the Pro highlight + the 6-li Advanced)", async ({ page }) => {
     await page.goto("/");
     const pricing = page.locator("#pricing");
     await expect(pricing.getByRole("heading", { name: "Simple monthly pricing" })).toBeVisible();
@@ -68,9 +68,13 @@ test.describe("the public landing (logged-out)", () => {
     await expect(pricing.getByRole("heading", { name: "Pro" })).toBeVisible();
     await expect(pricing.getByRole("heading", { name: "Advanced" })).toBeVisible();
     await expect(pricing.getByText("Most popular")).toBeVisible();
-    await expect(pricing.getByText("$9")).toBeVisible();
-    await expect(pricing.getByText("$19")).toBeVisible();
-    await expect(pricing.getByText("$39")).toBeVisible();
+    // s149 (F-149c1/c2, walk39): the reference repriced the tiers and
+    // grew the Advanced card's list — the live census $8/$14/$20 + the
+    // sixth feature row.
+    await expect(pricing.getByText("$8")).toBeVisible();
+    await expect(pricing.getByText("$14")).toBeVisible();
+    await expect(pricing.getByText("$20")).toBeVisible();
+    await expect(pricing.getByText("Data tools, templates and guarded reset")).toBeVisible();
     // the tier CTAs all point at the dashboard
     await expect(pricing.getByRole("link", { name: "Start with Standard" })).toHaveAttribute("href", "/Dashboard");
     await expect(pricing.getByRole("link", { name: "Start with Pro" })).toHaveAttribute("href", "/Dashboard");

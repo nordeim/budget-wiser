@@ -122,7 +122,7 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 // Session-148: E2E 151 -> 152 (+1 — the landing mock-variant spec: the
 // content-varied preview family e2e [the micro-table + the 7-bar card]).
 const E2E = 152;
-const SUITES = 115;
+const SUITES = 116;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -439,7 +439,7 @@ const SUITES = 115;
 // +4, landing-page +5, activities-calendar +3; the flipped s8/s117/s133/
 // s27/s76/s119/s134/s87/route-case pins re-anchored in place; SUITES
 // stays 115 [every it lands in an EXISTING file]; E2E 151 -> 152).
-const UNIT = 2153;
+const UNIT = 2167;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -862,13 +862,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-148 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-149 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s147 layer now beneath the s148 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s148 layer now beneath the s149 head)",
     ).toContain(
-      "+ beneath it 2132 unit checks + 151 e2e checks green; the session-147 layer (THE MOBILE-NAV PARITY EVENT",
+      "+ beneath it 2153 unit checks + 152 e2e checks green; the session-148 layer (THE DESKTOP-INTERIOR MIRROR",
     );
   });
 
