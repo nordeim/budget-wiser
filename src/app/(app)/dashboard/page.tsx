@@ -29,7 +29,6 @@ import {
   Download,
   MoreHorizontal,
   Phone,
-  Plus,
   Search,
   Target,
   TrendingUp,
@@ -46,24 +45,23 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/label";
 import { KpiCard, PageHeader, Sparkline } from "@/components/shared/page-parts";
 import { RevenueLineChart, SingleBarChart, dollarFormatter } from "@/components/charts/charts";
-import { ActivityDialog, LeadDialog } from "@/components/shared/entity-dialogs";
 import { useCrmStore } from "@/stores/crm-store";
 import { OPP_STAGE_META, CHART_COLORS, LEAD_SOURCE_OPTIONS, PIPELINE_STAGES, PIPELINE_LABELS } from "@/lib/constants";
 import { formatCompactCurrency } from "@/lib/format";
 
 // Session-142 (D-142b0): the header trio's retirement narrowed the
-// quick-create vocabulary — only the two card-level ghost Adds remain
-// (the Lead Sources card → the Lead dialog; the Upcoming Activities
-// card → the Activity dialog). The contact/account/event members
-// retired with the header dropdown (their only entry points).
-type QuickCreate = "lead" | "activity" | null;
+// Session-151 (F-151c1, walk41): the quick-create vocabulary is EMPTY
+// on the dashboard — the two card-level ghost Adds (the Lead Sources +
+// Upcoming Activities S7-18 extraction) retired against the CURRENT
+// reference bundle, which renders title-only headers there (rowH 24
+// @390 · 28 @1440, live-decoded on both apps at both widths). The
+// dialogs stay reachable on the Leads/Activities pages.
 
 export default function DashboardPage() {
   const { dashboard, hydrated, fetchDashboard, leads, contacts, accounts, activities, opportunities } = useCrmStore();
   const [stage, setStage] = React.useState("all");
   const [source, setSource] = React.useState("all");
   const [search, setSearch] = React.useState("");
-  const [quickCreate, setQuickCreate] = React.useState<QuickCreate>(null);
   // S8-2: the reference's middle filter-bar select is a dead Table/Cards
   // view-switcher rendered with an EMPTY label. Ours keeps the empty default
   // (mirror) and actually switches the Recent Deals section (functional
@@ -474,15 +472,9 @@ export default function DashboardPage() {
           <CardHeader>
             <div className={DASHBOARD_CARD.headerRow}>
               <CardTitle className={CARD_TITLE_OVERRIDE.dashboard}>Lead Sources</CardTitle>
-              {/* Session-7 (S7-18): ghost h-8 blue-text Add with mr-1 plus. */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className={DASHBOARD_CARD.addBtn}
-                onClick={() => setQuickCreate("lead")}
-              >
-                <Plus className={DASHBOARD_CARD.addIcon} /> Add
-              </Button>
+              {/* Session-151 (F-151c1, walk41): the s7-era ghost Add retired —
+                  the current reference bundle renders this header TITLE-ONLY
+                  (live-decoded at 390 + 1440 on both apps). */}
             </div>
           </CardHeader>
           <CardContent>
@@ -509,14 +501,8 @@ export default function DashboardPage() {
           <CardHeader>
             <div className={DASHBOARD_CARD.headerRow}>
               <CardTitle className={CARD_TITLE_OVERRIDE.dashboard}>Upcoming Activities</CardTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={DASHBOARD_CARD.addBtn}
-                onClick={() => setQuickCreate("activity")}
-              >
-                <Plus className={DASHBOARD_CARD.addIcon} /> Add
-              </Button>
+              {/* Session-151 (F-151c1, walk41): the s7-era ghost Add retired
+                  here too — the title-only mirror. */}
             </div>
           </CardHeader>
           <CardContent>
@@ -675,13 +661,10 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      {/* Quick-create dialogs */}
-      {/* Session-142 (D-142b0): the three unreachable dialogs (contact/
-          account/event — their only entry points were the retired header
-          dropdown's menu items) retired with the trio; the two reachable
-          dialogs stay. */}
-      <LeadDialog open={quickCreate === "lead"} onOpenChange={(o) => !o && setQuickCreate(null)} />
-      <ActivityDialog open={quickCreate === "activity"} onOpenChange={(o) => !o && setQuickCreate(null)} />
+      {/* Session-151 (F-151c1, walk41): the dashboard's create-dialog
+          mounts retired with their last two entry points (the card-header
+          ghost Adds); the components stay mounted on the Leads/Activities
+          pages, their live edit surfaces unchanged. */}
     </div>
   );
 }

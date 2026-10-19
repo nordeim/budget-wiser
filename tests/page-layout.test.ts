@@ -494,9 +494,13 @@ describe("stat/card header parity (session-7 DOM-verified)", () => {
     expect(ACTIVITY_CARD.emptyPanel).toBe("text-center py-8 text-muted");
   });
 
-  it("dashboard card-header buttons: blue ghost h-8 Adds, h-8 w-8 ellipsis", () => {
-    expect(DASHBOARD_CARD.addBtn).toBe("h-8 px-3 text-xs text-primary");
-    expect(DASHBOARD_CARD.addIcon).toBe("h-4 w-4 mr-1");
+  it("dashboard card-header buttons: the ellipsis pair only (the F-151c1 retirement)", () => {
+    // Session-151 (F-151c1, walk41): the s7-era ghost Add buttons (the
+    // Lead Sources / Upcoming Activities CardHeaders) retired against
+    // the CURRENT reference bundle — title-only headers there,
+    // live-decoded on both apps at 390 + 1440. The addBtn/addIcon
+    // members retired with them; the dashboard-interior-parity suite
+    // owns the object-shape freeze + the zero-wiring census.
     expect(DASHBOARD_CARD.ellipsisBtn).toBe("h-8 w-8");
   });
 

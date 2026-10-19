@@ -121,8 +121,10 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 // the guest marketing family).
 // Session-148: E2E 151 -> 152 (+1 — the landing mock-variant spec: the
 // content-varied preview family e2e [the micro-table + the 7-bar card]).
+// Session-150: E2E 152 -> 153 (+1 — the marketing-mobile spec: the
+// walk40 scroll model + the census).
 const E2E = 153;
-const SUITES = 117;
+const SUITES = 118;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -449,7 +451,12 @@ const SUITES = 117;
 // exemption], sweep-tool +2 [the LIVE-EDITED-INTRADAY phone-line pin +
 // the STANDING_BASELINES comment pin]; SUITES 116 -> 117; E2E
 // 152 -> 153 [the marketing-mobile spec, the walk40 scroll model]).
-const UNIT = 2173;
+// Session-151: 2173 -> 2177 (+4 — the walk41 F-151c1 remediation:
+// dashboard-interior-parity NEW +4 [the zero-wiring census + the
+// ellipsis-family census + the DASHBOARD_CARD object-shape freeze +
+// the dead-constants negatives]; SUITES 117 -> 118; E2E stays 153
+// [the e2e 3035 test flipped in place — the title-only headers decode]).
+const UNIT = 2177;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -872,13 +879,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-150 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-151 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s148 layer now beneath the s149 head)",
     ).toContain(
-      "+ beneath it 2167 unit checks + 152 e2e checks green; the session-149 layer (THE BELOW-THE-FOLD LANDING MIRROR",
+      "+ beneath it 2173 unit checks + 153 e2e checks green; the session-150 layer (THE MARKETING PHONE-STATE WALK",
     );
   });
 

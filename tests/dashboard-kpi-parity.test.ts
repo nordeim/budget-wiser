@@ -324,37 +324,25 @@ describe("session-134: the dashboard KPI row + quick-create + filter-bar freeze"
     expect(target.slice(0, 400)).toMatch(/valueNote=/);
   });
 
-  it("the five quick-create menu items as an ordered set + the five dialog mounts (the s134 walk census)", () => {
+  it("the quick-create vocabulary is EMPTY — zero wiring, zero dialog mounts (F-151c1)", () => {
     const src = dashPage();
-    // Session-142 (D-142b0): the header dropdown retired with the
-    // reference's s33 trio — the quick-create vocabulary narrowed to
-    // the TWO card-level ghost Adds (the Lead Sources card → lead; the
-    // Upcoming Activities card → activity). The contact/account/event
-    // members + their dialogs retired (their only entry points).
-    const items = ["lead", "activity"];
-    let prev = -1;
-    for (const item of items) {
-      const marker = `setQuickCreate("${item}")`;
-      const i = src.indexOf(marker);
-      expect(i, `the ${item} quick-create item must exist`).toBeGreaterThan(-1);
-      expect(i, `the ${item} item must keep the source order`).toBeGreaterThan(prev);
-      prev = i;
-    }
-    // ZERO DropdownItem quick-create call sites (the menu retired) +
-    // exactly TWO setQuickCreate call sites (the card ghosts)
-    expect(src.match(/<DropdownItem onClick=\{\(\) => setQuickCreate\("/g) ?? []).toHaveLength(0);
-    expect(src.match(/setQuickCreate\("/g) ?? []).toHaveLength(2);
-    // the two dialog mounts (the narrowed set — the s142 retirement)
-    const mounts = [
-      "<LeadDialog open={quickCreate === \"lead\"}",
-      "<ActivityDialog open={quickCreate === \"activity\"}",
-    ];
-    for (const m of mounts) {
-      expect(src).toContain(m);
-    }
+    // Session-151 (F-151c1, walk41): the two card-level ghost Adds (the
+    // s7-era S7-18 extraction — Lead Sources → lead, Upcoming
+    // Activities → activity) retired against the CURRENT reference
+    // bundle (title-only headers, rowH 24 @390 · 28 @1440, live-decoded
+    // on both apps at both widths). With them the LAST quick-create
+    // entry points died — the state machine, the two dialog mounts and
+    // the Plus/entity-dialog imports all retired. The s142 narrowing
+    // (header dropdown → the two ghosts) is superseded by the ZERO
+    // vocabulary; the dialogs stay reachable on the Leads/Activities
+    // pages, their live edit surfaces unchanged.
+    expect(src).not.toContain("quickCreate");
+    expect(src).not.toContain("<LeadDialog");
+    expect(src).not.toContain("<ActivityDialog");
+    expect(src).not.toContain("<Plus");
     // Session-142 (D-142b0): the Add-menu's lucide icon set (Target/
-    // Users/TrendingUp/Phone/Zap) retired with the dropdown — the only
-    // remaining icons on the page's Buttons are Plus + Download.
+    // Users/TrendingUp/Phone/Zap) retired with the dropdown — the
+    // negative stays (the icons must not return through any side door).
     for (const icon of ["Target", "Users", "TrendingUp", "Phone", "Zap"]) {
       expect(src).not.toContain(`<${icon} className="h-4 w-4 text-muted" />`);
     }

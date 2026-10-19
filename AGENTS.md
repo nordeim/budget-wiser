@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2173 checks)      | `bun run test`                         |
+|  Unit tests (2177 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2173) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2177) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7075,3 +7075,93 @@ the landing.
   "Edit with Base 44" pill, the standing genus; the pill rides FRESH
   page loads — the SPA-navigating sweeps structurally never see it).
   The captures 341-344.
+
+### Session-151 (2026-10-20) — the internal-scroller census + the dashboard card-header mirror (the F-151c1 remediation rotation)
+
+The workspace RESET (re-cloned at `0f81b55` — the s150 feat `4fdeac2` +
+the session_319 log `27163e5` + the owner's `0f81b55` = the
+session_320 transcript + the skill-creator bundle); the environment
+re-stood (install/.env/db push+seed/census MATCH/chromium/dev
+server). probe:ref **#125 STABLE** at the s147/s148/s149/s150
+fingerprint — a rotation round on the session_319 candidates, my
+judgment: **(c) the internal-scroller axis extended to the app pages'
+phone interiors** (the primary walk) + **(a) the login-logo genus
+re-decoded live** (the secondary probe).
+
+- **151-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **117/2173**
+  · build · **e2e 153/153** (first run, no flake) — the EXACT s150-ship
+  match.
+- **151-b**: the drawer battery GREEN (the mobile-nav contract — the
+  user's standing particular-attention item) · **probe:ref #125
+  STABLE** · **the five drift gates CLEAN ×5** (the fullpage at the
+  exact s150-ship values 0.093%/0.316%) · sitemap 11 routes + robots +
+  the SEO meta · the tree clean · zero dep changes.
+- **walk41 PASS 1 THE FULL-GEOMETRY CENSUS** (both apps logged in at
+  390x844, ours at the matched ZERO-DATA state; every element inside
+  `main` censused; a greedy resync-alignment decoder): the frame
+  contract holds on all 9 app pages · **mainH byte-equal 7/9** — the
+  genera decoded + attributed: the lucide DOM-composition genus (our
+  0.525 path-normalized icon sets vs its mixed line/polyline/circle
+  sets — bounding-box-equal, every page) · the recharts-internal
+  genus (the 3px y-axis shift + the zero-data gridline drift — version
+  drift below the fold) · the s95 table poke-out now decoded at PHONE
+  too (the reference's bare flex-1 cards poke to w=472 inside the 358
+  container; ours clamps — its own standing defect) · the settings
+  rows = the LIVE-intraday DATA genus (the template identical — the
+  62px spacing, the 36px row buttons, the add-row).
+- **walk41 PASS 2 F-151c1 THE DASHBOARD'S TWO STALE "+ Add" GHOST
+  BUTTONS** (the ONE real defect): our Lead Sources + Upcoming
+  Activities CardHeaders carried the **s7-era S7-18 extraction** (75x32
+  ghost `h-8 px-3 text-xs text-primary` + the `mr-1` Plus) that the
+  CURRENT reference bundle (stable since s147) does NOT render — its
+  headers are **title-only (rowH 24 @390 · 28 @1440)**, live-decoded
+  on both apps at both widths (the L-148c1 discipline). The count
+  math: ours' dashboard +10 = exactly 2 Add subtrees + 2 chart
+  wrappers. **The 143-session dead zone**: y≈905 @1440 (below the
+  900px sweep fold), y≈2356+ @390 (inside the internal scroller) —
+  invisible to all five standing gates; the +16px mainH delta = the
+  two 8px rows. THE REMEDIATION: the two buttons + the quickCreate
+  state machine + the two dialog mounts + the Plus/entity-dialog
+  imports retired; `DASHBOARD_CARD.addBtn`/`addIcon` retired.
+- **walk41 PASS 3 THE LOGIN-LOGO GENUS RE-DECODE** (the candidate
+  closed): the reference's /login carries an **80x80 (@390) / 96x96
+  (@1440) hotlinked logo IMG** (`aspect-square h-full w-full
+  object-cover`, now a **supabase storage-render URL** — the asset
+  moved) at the page top + the two bottom badge images (the platform
+  pill, guest-only); ours draws the 20x20 svg brand-mark in-card.
+  The genus STABLE; the claim refreshed. NOT mirrored (the owner's own
+  logo asset).
+- **THE PINS (TDD)**: `tests/dashboard-interior-parity.test.ts` NEW
+  **+4** (the zero-wiring census + the ellipsis-family census + the
+  `DASHBOARD_CARD` object-shape freeze + the dead-constants negatives
+  — **3 RED at birth** → the implementation → GREEN; the born-green
+  survivor census re-asserts the ellipsis family) · the mutation-proof
+  ×2 (the replanted button → exactly 1 RED; the replanted constants →
+  exactly 2 RED — the pins independent; both reverted → GREEN) · the
+  legacy pins flipped (page-layout's DASHBOARD_CARD it → the
+  ellipsis-only; dashboard-kpi-parity's quick-create it → the ZERO
+  vocabulary; e2e crm.spec 3035 flipped in place — the title-only
+  decode + the live rowH 24/24/32, with the nav-trigger haspopup
+  false-positive decoded mid-flight: the s47 Radix Sheet idiom is NOT
+  a quick-create — the assertion re-narrowed to the s142 haspopup+Add
+  form) · the count ladder **UNIT 2173→2177 · SUITES 117→118 · badge
+  2326→2330** · the page-layout.ts census HELD at 1687 (the retired
+  members offset by the re-anchored comment) · the CLAUDE-carrier pins
+  flipped (dialog-geometry ×4) · the SKILL **v1.148.0** + the s151
+  head (the s150 layer demoted beneath).
+- **THE LESSONS**: **L-151c1 the bundle-stale pin** — a source pin
+  extracted against an old bundle (the s7 S7-18) can outlive the
+  bundle that justified it through TWO parity events; after any
+  bundle event the below-fold interiors' construction pins must be
+  re-derived live. **L-151c2 the dead zone is structural** —
+  below-every-fold is invisible to ALL five gates by construction;
+  the full-geometry census is the only instrument that sees it, and
+  it stays a standing rotation axis.
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **118/2177** · build ·
+  **e2e 153/153** (the definitive run) · **the five drift gates CLEAN
+  ×5** (the fresh-dev-server house order; the dashboard floor
+  unchanged — the buttons lived below every fold) · census MATCH ·
+  **the VLM battery 2/2** (the phone pair — the fix zone title-only
+  on both apps, the framing artifacts decoded; the desktop pair — a
+  FULL structural match). The captures 345-348 (the dashboard phone +
+  desktop pairs at the fix zone).

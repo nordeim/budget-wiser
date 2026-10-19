@@ -3032,22 +3032,49 @@ test("the contact upload negative trio: the client alert + the two server reject
   await expect(dialog.locator("img")).toHaveCount(0);
 });
 
-test("the dashboard quick-create: the header Add is GONE (the s142 singleton header) + the Lead Sources Add still opens the Lead dialog (S73-P7d + D-142b0)", async ({ page }) => {
+test("the dashboard card headers are title-only where the reference is title-only (F-151c1, walk41)", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/dashboard");
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
-  // Session-142 (D-142b0): the s33 header trio retired on the
-  // reference's new bundle — the header Add (our quick-create Popover
-  // trigger) retired with it. No Popover Add trigger renders anywhere
-  // on the page (the S73 signature was the aria-haspopup trigger).
+  // Session-151 (F-151c1, walk41): the s7-era ghost Adds (Lead Sources +
+  // Upcoming Activities CardHeaders) are RETIRED — the current reference
+  // bundle (stable since s147, re-verified at probe:ref #125) renders
+  // title-only headers there. No Add button anywhere on the dashboard;
+  // the quick-create wiring retired with its last two entry points.
+  await expect(page.getByRole("button", { name: "Add" })).toHaveCount(0);
+  // No Popover Add trigger anywhere (the S73 signature: haspopup + the
+  // Add text — the s142 form; the nav sheet's own aria-haspopup="dialog"
+  // trigger [aria-label "Open navigation", the s47 Radix Sheet idiom]
+  // renders at phone width on every page and is NOT a quick-create).
   await expect(page.locator('button[aria-haspopup="dialog"]').filter({ hasText: "Add" })).toHaveCount(0);
-  // The quick-create dialogs REMAIN reachable through the Lead Sources
-  // card's ghost Add (the S7-18 construction): one click-through to the
-  // create dialog.
-  const sourcesCard = page.locator("main .rounded-xl", { hasText: "Lead Sources" });
-  await sourcesCard.getByRole("button", { name: "Add" }).click();
-  const createDialog = page.getByRole("dialog");
-  await expect(createDialog).toBeVisible();
-  await expect(createDialog.getByText("Create New Lead")).toBeVisible();
+  // The ellipsis pair SURVIVES (the reference renders both): the Top
+  // Performing Sales Reps + Recent Deals card headers keep their ghost.
+  const repsHeader = page.locator("main .rounded-xl", { hasText: "Top Performing Sales Reps" }).first();
+  await expect(repsHeader.getByLabel("More actions")).toBeVisible();
+  const dealsHeader = page.locator("main .rounded-xl", { hasText: "Recent Deals" }).first();
+  // .first(): the card's CardHeader ghost leads the DOM — the seeded
+  // rows carry their own per-row ghosts (the L-78c3 affordance).
+  await expect(dealsHeader.getByLabel("More actions").first()).toBeVisible();
+  // The walk41 geometry decode: the two retired headers render at the
+  // reference's TITLE height (24px at 390 — the CardTitle text-base
+  // pairing; the button-era rows were 32px), the ellipsis pair at 32px.
+  const rowHs = await page.evaluate(() => {
+    const rows = Array.from(document.querySelectorAll("main div.flex.justify-between.items-center"));
+    const pick = (t: string) => {
+      const row = rows.find((r) =>
+        r.querySelector("h3, [class*='font-semibold']")?.textContent?.trim() === t,
+      );
+      return row ? Math.round(row.getBoundingClientRect().height) : -1;
+    };
+    return {
+      lead: pick("Lead Sources"),
+      upcoming: pick("Upcoming Activities"),
+      reps: pick("Top Performing Sales Reps"),
+    };
+  });
+  expect(rowHs.lead).toBe(24);
+  expect(rowHs.upcoming).toBe(24);
+  expect(rowHs.reps).toBe(32);
 });
 
 test("the save-report dialog round-trip: save → count → list → Load applies (S74-P11a)", async ({ page }) => {

@@ -412,12 +412,12 @@ export const ACTIVITY_CARD = {
   emptyPanel: "text-center py-8 text-muted",
 } as const;
 
-/** Dashboard card-header buttons — the Add buttons (Lead Sources /
- *  Upcoming Activities) are ghost h-8 with BLUE text and an `mr-1` plus
- *  glyph; the ellipsis actions are ghost `h-8 w-8`. */
+/** Dashboard card-header buttons — the ellipsis actions are ghost
+ *  `h-8 w-8`. Session-151 (F-151c1, walk41): the s7-era ghost Add
+ *  buttons (Lead Sources / Upcoming Activities) retired against the
+ *  current reference bundle, which renders title-only headers there —
+ *  the addBtn/addIcon members retired with them. */
 export const DASHBOARD_CARD = {
-  addBtn: "h-8 px-3 text-xs text-primary",
-  addIcon: "h-4 w-4 mr-1",
   ellipsisBtn: "h-8 w-8",
   /** Session-87 (N-87c7, bundle-decoded Ht): the five chart cards with
    *  trailing elements nest this row INSIDE the stock CardHeader (the
