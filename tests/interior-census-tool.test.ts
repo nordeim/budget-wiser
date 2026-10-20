@@ -54,7 +54,7 @@ describe("session-152: the interior-census tool (the dead-zone standing gate)", 
     expect(gate.indexOf("census:interior")).toBeGreaterThan(gate.indexOf("sweep:fullpage"));
   });
 
-  it("the 9-page census list: the shell surfaces only — the LANDING joins as the PUBLIC leg (the s155 extension; about/contact/login stay out — login-walled shell surfaces, other gates own them)", async () => {
+  it("the 11-page census list: the shell surfaces + the login-walled marketing interiors (the 156-c extension: about/contact join INTERIOR_PAGES — the (marketing) group renders AppShell, main.overflow-auto interiors, the s150 walk + the 156-c probe both byte-equal; the landing stays the PUBLIC leg below; login stays out — no main interior; other gates own it)", async () => {
     const m = await import("../scripts/interior-census");
     const pages = m.INTERIOR_PAGES as ReadonlyArray<{ name: string; path: string }>;
     expect(pages.map((p) => p.name)).toEqual([
@@ -67,6 +67,8 @@ describe("session-152: the interior-census tool (the dead-zone standing gate)", 
       "reports",
       "settings",
       "profile",
+      "about",
+      "contact",
     ]);
     // lockstep with the sweep's PAGES: the same paths, so the census
     // never drifts from the standing page map (the S68-P4 class)
@@ -865,12 +867,12 @@ describe("session-154: the census TABLET legs (the md-boundary axis 768x1024 + t
 });
 
 describe("session-155: the census LANDING public leg (the last blind surface — the 155-c rotation)", () => {
-  it("the PUBLIC_PAGES contract: the landing at '/' joins the census as the PUBLIC leg — GUEST contexts (the s149 fullpage doctrine: no login, no storageState; the reference renders its 'Edit with Base 44' pill to guests, ours never has it) — while about/contact/login stay OUT (login-walled shell surfaces; the next-round candidates)", async () => {
+  it("the PUBLIC_PAGES contract: the landing at '/' joins the census as the PUBLIC leg — GUEST contexts (the s149 fullpage doctrine: no login, no storageState; the reference renders its 'Edit with Base 44' pill to guests, ours never has it) — while login stays OUT (the login wall has no main interior; other gates own it); about/contact left this pin's OUT-list at s156 (the 156-c INTERIOR legs — re-anchored)", async () => {
     const m = await import("../scripts/interior-census");
     const pub = m.PUBLIC_PAGES as ReadonlyArray<{ name: string; path: string }>;
     expect(pub.map((p) => [p.name, p.path])).toEqual([["landing", "/"]]);
-    // the 9 app pages unchanged (the s152 contract held — the public
-    // leg is ADDITIVE, the app-pages protocol byte-identical)
+    // the 11 interior pages (the 156-c extension: about/contact join
+    // the app pages — the logged-in protocol byte-identical)
     expect(
       (m.INTERIOR_PAGES as ReadonlyArray<{ name: string }>).map((p) => p.name),
     ).toEqual([
@@ -883,8 +885,10 @@ describe("session-155: the census LANDING public leg (the last blind surface —
       "reports",
       "settings",
       "profile",
+      "about",
+      "contact",
     ]);
-    // the combined filter list: all 10 names, the app pages first
+    // the combined filter list: all 12 names, the interior pages first
     expect(
       (m.CENSUS_ALL_PAGES as ReadonlyArray<{ name: string }>).map((p) => p.name),
     ).toEqual([
@@ -897,6 +901,8 @@ describe("session-155: the census LANDING public leg (the last blind surface —
       "reports",
       "settings",
       "profile",
+      "about",
+      "contact",
       "landing",
     ]);
     // the landing path lockstep with the sweep's own landing entry
@@ -927,14 +933,18 @@ describe("session-155: the census LANDING public leg (the last blind surface —
     expect(src).toMatch(/attributeGenera\(events,\s*p\.name,\s*axis\.width\)/);
   });
 
-  it("the --pages filter composes across BOTH legs (the s95 idiom, the combined list): no flag runs all 10; '--pages landing' selects ONLY the public leg (the mutation-proof idiom); mixed selections compose; unknown names fail-fast listing the 10 valid names", async () => {
+  it("the --pages filter composes across BOTH legs (the s95 idiom, the combined list): no flag runs all 12 (the 11 interior + the landing); '--pages landing' selects ONLY the public leg (the mutation-proof idiom); '--pages about,contact' selects the 156-c marketing legs; mixed selections compose; unknown names fail-fast listing the 12 valid names", async () => {
     const m = await import("../scripts/interior-census");
     const all = m.parsePagesArg([], m.CENSUS_ALL_PAGES) as ReadonlyArray<{ name: string }>;
-    expect(all).toHaveLength(10);
+    expect(all).toHaveLength(12);
     const landing = m.parsePagesArg(["--pages", "landing"], m.CENSUS_ALL_PAGES) as ReadonlyArray<{
       name: string;
     }>;
     expect(landing.map((p) => p.name)).toEqual(["landing"]);
+    const legs = m.parsePagesArg(["--pages", "contact,about"], m.CENSUS_ALL_PAGES) as ReadonlyArray<{
+      name: string;
+    }>;
+    expect(legs.map((p) => p.name)).toEqual(["about", "contact"]);
     const mixed = m.parsePagesArg(["--pages", "dashboard,landing"], m.CENSUS_ALL_PAGES) as ReadonlyArray<{
       name: string;
     }>;
@@ -1061,5 +1071,138 @@ describe("session-155: the census LANDING public leg (the last blind surface —
     ] as never;
     const rLanding = m.attributeGenera(landing, "landing", 390) as { unexplained: unknown[] };
     expect(rLanding.unexplained).toHaveLength(1);
+  });
+});
+
+describe("session-156: the census ABOUT/CONTACT legs (the last two blind interior surfaces — the 156-c rotation)", () => {
+  it("the legs contract: about + contact join INTERIOR_PAGES as the login-walled main-interior class (the (marketing) group renders AppShell — main.overflow-auto, the s150 walk + the 156-c probe agree: /about mainH 1731 phone · 1047 desktop · /contact 897 · 953, byte-equal both apps, els 46/46 + 33/33); the paths lockstep with the sweep's own entries; the tool header's stale 'no main.overflow-auto interior' claim retired (the landing and login are the true no-main surfaces)", async () => {
+    const m = await import("../scripts/interior-census");
+    const pages = m.INTERIOR_PAGES as ReadonlyArray<{ name: string; path: string }>;
+    // the two legs land after profile (the interior order)
+    expect(pages.slice(-2).map((p) => [p.name, p.path])).toEqual([
+      ["about", "/about"],
+      ["contact", "/contact"],
+    ]);
+    // the sweep lockstep (both entries are standing sweep PAGES — the
+    // s144 pair, now censused too)
+    const sweep = await import("../scripts/sweep");
+    for (const name of ["about", "contact"] as const) {
+      const p = pages.find((x) => x.name === name)!;
+      const s = (sweep.PAGES as ReadonlyArray<{ name: string; path: string }>).find(
+        (x) => x.name === name,
+      );
+      expect(s).toBeDefined();
+      expect(s!.path).toBe(p.path);
+    }
+    // the header doctrine re-anchored: the 11 shell-interior pages (the
+    // stale "marketing surfaces (landing/about/contact) … no
+    // main.overflow-auto interior" claim RETIRED — about/contact ARE
+    // main-interior logged-in)
+    const src = toolSrc();
+    expect(src).toMatch(/11 shell-interior pages/);
+    expect(src).not.toMatch(/landing\/about\/contact/);
+  });
+
+  it("the STATIC_MARKETING_PAGES scope (the 156-c hazard face): live-data is a WORKSPACE-SURFACE genus — the 9 DATA pages absorb text-only pairs (the reference's intraday workspace data, the standing behavior); the STATIC-MARKETING class — landing (public) + about/contact (the new login-walled legs) — stays RED (a changed headline on /about or /contact is REAL content drift; keying the scope on !isPublicPage would have reopened the walk45 hazard on the first static interior page — the scope names the SURFACE CLASS, never the dispatch)", async () => {
+    const m = await import("../scripts/interior-census");
+    // the predicate: the static-marketing class
+    expect(m.isStaticMarketingPage({ name: "landing" })).toBe(true);
+    expect(m.isStaticMarketingPage({ name: "about" })).toBe(true);
+    expect(m.isStaticMarketingPage({ name: "contact" })).toBe(true);
+    // the 9 DATA pages stay workspace surfaces (the standing live-data
+    // behavior unchanged)
+    for (const name of [
+      "dashboard",
+      "accounts",
+      "contacts",
+      "leads",
+      "calendar",
+      "activities",
+      "reports",
+      "settings",
+      "profile",
+    ] as const) {
+      expect(m.isStaticMarketingPage({ name })).toBe(false);
+    }
+    // the scope swap is src-pinned (the !isPublicPage form RETIRED)
+    const src = toolSrc();
+    expect(src).toMatch(/!isStaticMarketingPage\(\{ name: page \}\)/);
+    expect(src).not.toMatch(/!isPublicPage\(\{ name: page \}\)/);
+    // the fixture negative: a text-only pair stays RED on the new legs
+    // (the walk45 hazard's interior face)
+    const pair = [
+      { kind: "text-only", el: el({ text: "About NEO CRM" }), ref: el({ text: "About Us" }) },
+    ] as never;
+    const rAbout = m.attributeGenera(pair, "about", 358) as { unexplained: unknown[] };
+    expect(rAbout.unexplained).toHaveLength(1);
+    const rContact = m.attributeGenera(pair, "contact", 358) as { unexplained: unknown[] };
+    expect(rContact.unexplained).toHaveLength(1);
+    // the fixture positive: the same pair still absorbs as live-data on
+    // the DATA pages (the contacts page, the s155 form)
+    const rContacts = m.attributeGenera(pair, "contacts", 358) as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(rContacts.explained[0]?.genus).toBe("live-data");
+    expect(rContacts.unexplained).toEqual([]);
+  });
+
+  it("censusVerdict covers the about/contact rows: mainH ≠ 0 REDs (the static legs are NEVER skipped — no DATA genus); a leg RED at one axis fails with the axis named — no leg masks another (the L-153c1 doctrine at the new legs); the settings skip holds untouched (the L-150c2 doctrine)", async () => {
+    const m = await import("../scripts/interior-census");
+    const row = (
+      page: string,
+      over: Partial<{ axis: string; mainHDelta: number | null; unexplained: unknown[] }>,
+    ) =>
+      ({
+        page,
+        axis: "phone",
+        mainHDelta: 0,
+        oursEls: 46,
+        refEls: 46,
+        matches: 46,
+        explained: [],
+        unexplained: [],
+        ...over,
+      }) as never;
+    // all-clean at all four axes GREEN (both legs)
+    const clean = m.censusVerdict([
+      row("about", { axis: "phone" }),
+      row("about", { axis: "tablet" }),
+      row("about", { axis: "landscape" }),
+      row("about", { axis: "desktop" }),
+      row("contact", { axis: "phone" }),
+      row("contact", { axis: "desktop" }),
+    ]);
+    expect(clean.ok).toBe(true);
+    // an about mainH delta at ONE axis REDs with the axis named
+    const bad = m.censusVerdict([
+      row("about", { axis: "phone" }),
+      row("about", { axis: "tablet", mainHDelta: 12 }),
+      row("contact", { axis: "phone" }),
+    ]);
+    expect(bad.ok).toBe(false);
+    expect(bad.failures.some((f) => f.includes("[tablet] about") && f.includes("12"))).toBe(true);
+    // a contact ghost REDs (the F-151c1 class)
+    const ghost = m.censusVerdict([
+      row("contact", {
+        axis: "phone",
+        unexplained: [{ kind: "ours-extra", el: el({ top: 100, tag: "DIV", cls: "ghost" }) }] as never,
+      }),
+    ]);
+    expect(ghost.ok).toBe(false);
+    expect(ghost.failures[0]).toContain("[phone] contact");
+    // the settings skip untouched (the standing doctrine)
+    const settings = m.censusVerdict([
+      { page: "settings", axis: "phone", mainHDelta: 86, oursEls: 1, refEls: 1, matches: 0, explained: [], unexplained: [] },
+    ]);
+    expect(settings.ok).toBe(true);
+  });
+
+  it("the about/contact mutation-proof doctrine is part of the tool's documented contract (the planted ghost in about/page.tsx → '--pages about --fail-on-drift' → RED → the revert → GREEN — the F-151c1 class now fails the gate on all TWELVE censused surfaces; the header's --pages examples name the new legs)", () => {
+    const src = toolSrc();
+    // the header's --pages example list carries the new legs
+    expect(src).toMatch(/--pages leads,settings,about/);
+    // the run-loop comment: the combined list is the 12-name census
+    expect(src).toMatch(/no flag runs all 12/);
   });
 });

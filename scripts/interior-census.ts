@@ -82,11 +82,13 @@
 //                      lucide DOM-composition + v3-compat class-order +
 //                      space-y-hazard families, the walk41 decode)
 //   • live-data      — text-only pairs, geometry byte-equal, on the
-//                      WORKSPACE surfaces (the 9 app pages — the
+//                      WORKSPACE surfaces (the 9 DATA pages — the
 //                      reference's intraday workspace data; the s155
-//                      scoping: static marketing surfaces carry no
-//                      workspace data, a landing text-only pair is
-//                      REAL content drift and stays RED)
+//                      scoping + the 156-c re-anchor: the
+//                      STATIC_MARKETING class [landing + the
+//                      about/contact legs] carries no workspace data,
+//                      a text-only pair there is REAL content drift
+//                      and stays RED)
 //   • composition-split — the TEXT-NODE CARDINALITY face (the walk45
 //                      landing decode): whitespace-stripped byte-equal
 //                      texts at byte-equal boxes — ours MERGES the
@@ -124,10 +126,11 @@
 // Run: bun run census:interior [--fail-on-drift] [--json]
 //      [--axis phone|desktop|all]  (default all — the gate covers both
 //      legs in one command; the mutation-proof runs one axis)
-//      [--pages leads,settings,landing]  (the sweep's subset idiom,
+//      [--pages leads,settings,about]  (the sweep's subset idiom,
 //      fail-fast, over the combined app+public list; composes with
 //      --axis; `--pages landing` runs ONLY the public leg — the
-//      mutation-proof idiom, no login phase)
+//      mutation-proof idiom, no login phase; `--pages about,contact`
+//      runs the 156-c marketing legs)
 // Env: OUR_URL / REF_URL / REF_EMAIL / REF_PASSWORD (the sweep contract)
 // ---------------------------------------------------------------------------
 
@@ -140,10 +143,14 @@ import { login, waitOnUrl, parsePagesArg } from "./sweep";
  *  own seam — reused, not duplicated; the s95 idiom). */
 export { parsePagesArg };
 
-/** The 9 app pages — the shell surfaces with the internal scroller. The
- *  marketing surfaces (landing/about/contact) and login have no
- *  main.overflow-auto interior; their gates are the viewport sweeps +
- *  the fullpage gate. Lockstep with the sweep's PAGES paths. */
+/** The 11 shell-interior pages — the 9 app pages + the login-walled
+ *  marketing interiors (about/contact: the (marketing) group renders
+ *  AppShell since the s147 posture reversal — main.overflow-auto
+ *  interiors, the s150 walk + the 156-c probe both byte-equal [mainH
+ *  1731/897 phone · 1047/953 desktop]). The landing (the PUBLIC leg
+ *  below) and login have no main interior — their gates are the
+ *  viewport sweeps + the fullpage gate. Lockstep with the sweep's
+ *  PAGES paths. */
 export const INTERIOR_PAGES = [
   { name: "dashboard", path: "/dashboard" },
   { name: "accounts", path: "/accounts" },
@@ -154,6 +161,10 @@ export const INTERIOR_PAGES = [
   { name: "reports", path: "/reports" },
   { name: "settings", path: "/settings" },
   { name: "profile", path: "/Profile" },
+  // the 156-c legs — the login-walled marketing interiors (the s144
+  // sweep pair, now censused; the last two blind interior surfaces)
+  { name: "about", path: "/about" },
+  { name: "contact", path: "/contact" },
 ] as const;
 
 export type InteriorPage = (typeof INTERIOR_PAGES)[number];
@@ -180,6 +191,28 @@ export const CENSUS_ALL_PAGES = [...INTERIOR_PAGES, ...PUBLIC_PAGES] as const;
  *  (the guest contexts + the document-scroller collector follow it). */
 export function isPublicPage(p: { name: string }): boolean {
   return PUBLIC_PAGES.some((pub) => pub.name === p.name);
+}
+
+// -- the STATIC-MARKETING scope (the 156-c re-anchor) -------------------------
+//
+// The live-data genus is a WORKSPACE-SURFACE genus: the reference's
+// intraday workspace data lives on the 9 DATA pages only. The
+// STATIC-MARKETING class — the landing (public) + the about/contact
+// legs (login-walled interiors since the s147 posture reversal) —
+// carries NO workspace data: a text-only pair there is REAL content
+// drift (a changed headline, a reprice) and stays RED. The s155 scope
+// keyed on !isPublicPage — correct only while every interior page was
+// a DATA page; the first static interior page (the 156-c legs) would
+// have reopened the walk45 hazard. The scope names the SURFACE CLASS,
+// never the dispatch (L-156c2).
+
+/** The static-marketing surfaces by name (no workspace data). */
+export const STATIC_MARKETING_PAGES = ["landing", "about", "contact"] as const;
+
+/** The scope predicate: live-data absorbs text-only pairs ONLY on the
+ *  workspace (DATA) pages; the static-marketing class stays RED. */
+export function isStaticMarketingPage(p: { name: string }): boolean {
+  return STATIC_MARKETING_PAGES.some((s) => s === p.name);
 }
 
 /** The walk41 census element (the geometry floor is integer px). */
@@ -763,13 +796,14 @@ export function attributeGenera(
         continue;
       }
       // live-data — the reference's intraday WORKSPACE data — is a
-      // WORKSPACE-SURFACE genus (the 9 app pages): on the static
-      // marketing surfaces a text-only pair is REAL content drift (a
-      // repriced tier, a changed headline) and falls through RED
-      // (the walk45 hazard decode: unscoped, the genus absorbed the
-      // landing's pricing pairs — and would have silently absorbed
-      // the next reprice with them).
-      if (!isPublicPage({ name: page })) {
+      // WORKSPACE-SURFACE genus (the 9 DATA pages): on the
+      // STATIC-MARKETING class (the landing + the 156-c about/contact
+      // legs) a text-only pair is REAL content drift (a changed
+      // headline, a reprice) and falls through RED (the walk45 hazard
+      // decode + the 156-c re-anchor: the scope names the SURFACE
+      // CLASS, never the dispatch — keying on !isPublicPage would
+      // have reopened the hazard on the first static interior page).
+      if (!isStaticMarketingPage({ name: page })) {
         genusOf.set(e, "live-data");
         continue;
       }
@@ -1383,7 +1417,8 @@ async function run() {
   // the --pages idiom composes across BOTH legs (the 155-c seam): the
   // combined list drives the selection; the app/public dispatch splits
   // it (`--pages landing` runs ONLY the public leg — no login phase;
-  // no flag runs all 10)
+  // `--pages about,contact` runs the 156-c marketing legs logged-in;
+  // no flag runs all 12 — the 11 interior + the landing)
   const selected = parsePagesArg(argv, CENSUS_ALL_PAGES);
   const pages = selected.filter((p) => !isPublicPage(p));
   const publicPages = selected.filter((p) => isPublicPage(p));

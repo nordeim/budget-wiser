@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2225 checks)      | `bun run test`                         |
+|  Unit tests (2229 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2225) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2229) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7642,3 +7642,124 @@ the tablet/landscape interiors FULLY blind).
   — every element identical per the VLM's own analysis, the
   reference's guest pill the only difference on both adjudications
   — the documented genus, never mirrored) · the captures 361-364.
+
+### Session-156 (2026-10-20) — the census ABOUT/CONTACT legs (the 156-c rotation)
+
+The workspace stood (the pull fast-forwarded to `b673bd9` — the s155
+feat `30c17b3` + the session logs + the owner's session_330
+transcript). probe:ref **#130 STABLE** at the s147–s155 fingerprint —
+a rotation round on the session_329 next-round reading's
+first-listed candidate: **the two remaining never-censused shell
+surfaces — /about + /contact — join INTERIOR_PAGES (the 11-page
+interior list; the census covers 12 surfaces at all four axes = 48
+page-axis runs)** (the L-155c1 doctrine's completion: the s155 leg
+closed the public surface gap; the marketing PAIR were the last
+never-geometry-walked shell pages — held above-fold-only by the
+sweeps since s144, hand-walked once at phone by the s150 round, their
+tablet/landscape/desktop interiors never decoded).
+
+- **156-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **119/2225**
+  · build · **e2e 153/153** (clean first run) — the EXACT s155-ship
+  match.
+- **156-b**: probe:ref **#130 STABLE** · the drawer battery GREEN
+  (inside e2e 153/153 — the mobile-nav contract, the user's standing
+  particular-attention item) · **the SIX drift gates CLEAN ×6** (the
+  four viewport + the fullpage at the exact standing values
+  0.093%/0.316% at equal heights 4990/7259 + the census gate at 40
+  page-axis runs, all zero unexplained) · sitemap 11 routes + robots
+  200 · db census MATCH 15/24/10/23/12 + 4 users · the tree clean ·
+  zero dep changes.
+- **THE PRE-PLAN PROBE (the plan validated BEFORE execution)**: the
+  reference's /about + /contact re-decoded logged-in at the current
+  #130-stable bundle — **mainH byte-equal both apps** (/about 1731
+  phone · 1047 desktop — never measured before; /contact 897 · 953),
+  element counts 46/46 + 33/33 inside main, the construction current
+  (both apps render the pair inside `main.overflow-auto` — the
+  reference's own main `bg-gray-50` vs ours `bg-background`, the
+  token-mirror face on main ITSELF, never censused: the walk covers
+  main's children only). The s150 evidence (6 sessions old) confirmed
+  standing; the `censusPage` collector works on the legs AS-IS.
+- **THE LEGS DESIGN (additive — the logged-in protocol
+  byte-identical)**: `INTERIOR_PAGES` grows 9→11 (about + contact
+  appended after profile; the sweep lockstep held — both paths
+  standing sweep PAGES since s144) · `CENSUS_ALL_PAGES` grows 10→12 ·
+  **THE LIVE-DATA SCOPE RE-ANCHOR (the 156-c hazard face)**:
+  about/contact are STATIC marketing surfaces inside the shell — the
+  s155 scoping keyed on `!isPublicPage` and would have absorbed
+  text-only drift on the first static interior page (a changed
+  headline on /about silently absorbed — the walk45 hazard reopened
+  at 90°); the fix is the **STATIC_MARKETING_PAGES scope** (landing +
+  about + contact — `isStaticMarketingPage`): live-data absorbs
+  text-only pairs on the 9 DATA pages only, the static-marketing
+  class stays RED, public or interior · the tool header's stale
+  "marketing surfaces (landing/about/contact) … no main.overflow-auto
+  interior" claim RETIRED (about/contact ARE main-interior logged-in;
+  the landing and login are the true no-main surfaces) ·
+  **gate:full UNCHANGED** — the six-gate chain stays six commands (the
+  census gate grows to 48 page-axis runs internally).
+- **walk46 PASS 1 — THE MAIDEN CENSUS**: ALL FOUR axes born CLEAN —
+  **mainH Δ0 at every axis**, **30/30 + 25/25 elements, every one a
+  MATCH, zero genera, zero unexplained** (the s142 live-censused
+  construction held: the about cards' `sm:grid-cols-2` regime, the
+  h1's `sm:text-4xl`, the container's `sm:px-8` — all byte-equal both
+  apps at the never-measured tablet/landscape frames). A clean maiden
+  walk — no decode needed; the maiden-decode discipline's first
+  all-MATCH round.
+- **walk46 PASS 2 — THE ABOUT MUTATION-PROOF**: a ghost card div
+  planted in the about cards grid via targeted string surgery →
+  `census:interior --pages about --fail-on-drift` → **RED** (phone: 28
+  unexplained + **mainH Δ82** — the ghost stacks in the 1-col grid,
+  riding BOTH the geometry and mainH; desktop: 23 + **Δ162** — a full
+  2-col row slot; exit 1, the failure axis-prefixed) → the
+  string-surgery revert → **GREEN** (exit 0, the exact standing
+  values). The F-151c1 class now fails the gate on **all TWELVE
+  censused surfaces** — the 9 app pages + the landing public leg +
+  the about/contact marketing pair, at all four axes.
+- **THE PINS (TDD)**: `tests/interior-census-tool.test.ts` extended
+  **+4** (the legs contract [INTERIOR_PAGES 11 + the sweep lockstep +
+  the header-doctrine re-anchor] + the STATIC_MARKETING_PAGES scope
+  [the hazard face: the fixture negatives keep a text-only pair RED on
+  about/contact while the contacts positive holds the standing
+  live-data behavior] + the about/contact verdict [mainH never
+  skipped — no DATA genus on the static legs; the axis-prefixed
+  failure forms; the settings skip untouched] + the
+  mutation-proof/--pages doctrine) — **6 RED at birth + 1
+  born-green** (the verdict pin — `censusVerdict` surface-agnostic,
+  correctly; the s155 pattern) → the implementation → GREEN; the
+  re-anchors: the s152 nine-page pin → the 11-page contract, the s155
+  PUBLIC_PAGES contract + the --pages composition pins (10→12); the
+  count ladder **UNIT 2225→2229 · SUITES 119 held · badge 2378→2382**
+  (the live lockstep sites flipped atomically, count-ladder-156.py,
+  assert-first; the historical clauses preserved — the AGENTS/PAD
+  s155 records, the docs-counts s155 history block) · the
+  CLAUDE-carrier negatives ladders grew the 2225 forms (all four
+  carrier families) · the SKILL **v1.153.0** + the s156 head (the
+  s155 layer demoted beneath) + the Appendix B totals + the
+  layer-axis pin flipped.
+- **THE LESSONS**: **L-156c1 the surface class, not the route group,
+  names the protocol** (about/contact live in the "marketing" route
+  group but scroll like app pages — the collector follows the
+  SCROLLER, never the label) · **L-156c2 the hazard scope must name
+  the SURFACE CLASS, not the dispatch** (keying live-data on
+  `!isPublicPage` was correct only while every interior page carried
+  workspace data — the first static interior page would have reopened
+  the walk45 hazard; the static-marketing class is the invariant) ·
+  **L-156c3 a clean maiden walk is the construction's own proof**
+  (the s142 live-census discipline: pages built from the reference's
+  own DOM byte-for-byte need no decoder faces — the census's all-MATCH
+  maiden round is what parity looks like when the source was never
+  approximated).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2229** · build ·
+  e2e **153/153** (clean first run) · **the SIX drift gates CLEAN
+  ×6** (the four viewport + the fullpage at the exact standing values
+  + **the census gate at ALL FOUR axes × 12 surfaces — 48 page-axis
+  runs, all zero unexplained**, the 40 standing runs at their exact
+  standing values, settings SKIPPED at all four axes, the new legs at
+  their maiden values) · census MATCH · the mutation-proof (planted →
+  RED at phone + desktop → reverted → GREEN) · the VLM battery 2/2
+  (the about tablet pair MATCH — every element identical; the contact
+  phone pair MATCH — the reference's Base44 pill the only difference
+  on both adjudications — the documented genus, never mirrored) · the
+  captures 365-368 (the about cards-grid zone at the never-measured
+  768 frame + the contact email-card zone, both logged-in pairs,
+  scrolled + verified in-frame).

@@ -497,6 +497,32 @@ const SUITES = 119;
 // twins (the add-row/footer cascade)]; SUITES stays 119 [every it
 // lands in the EXISTING census suite]; E2E stays 153 [the tablet +
 // landscape legs are script-gate axes, pinned by unit]).
+// Session-156: 2225 -> 2229 (+4 — the census ABOUT/CONTACT interior
+// legs: the 11-page INTERIOR_PAGES contract [about/contact appended
+// after profile, the sweep lockstep held] + the STATIC_MARKETING_PAGES
+// scope [the live-data hazard face: the s155 !isPublicPage keying
+// would have absorbed text-only drift on the first static interior
+// page — the scope names the SURFACE CLASS, never the dispatch;
+// live-data stays a 9-DATA-page genus, the static-marketing class
+// stays RED] + the about/contact verdict [mainH never skipped — no
+// DATA genus on the static legs; the axis-prefixed failure forms]
+// + the mutation-proof doctrine [--pages about, the F-151c1 class
+// fails on all 12 censused surfaces]; SUITES stays 119 [every it
+// lands in the EXISTING census suite]; E2E stays 153 [the legs are
+// script-gate surfaces, pinned by unit]).
+// Session-156: 2225 -> 2229 (+4 — the census ABOUT/CONTACT interior
+// legs: the 11-page INTERIOR_PAGES contract [about/contact appended
+// after profile, the sweep lockstep held] + the STATIC_MARKETING_PAGES
+// scope [the live-data hazard face: the s155 !isPublicPage keying
+// would have absorbed text-only drift on the first static interior
+// page — the scope names the SURFACE CLASS, never the dispatch;
+// live-data stays a 9-DATA-page genus, the static-marketing class
+// stays RED] + the about/contact verdict [mainH never skipped — no
+// DATA genus on the static legs; the axis-prefixed failure forms]
+// + the mutation-proof doctrine [--pages about, the F-151c1 class
+// fails on all 12 censused surfaces]; SUITES stays 119 [every it
+// lands in the EXISTING census suite]; E2E stays 153 [the legs are
+// script-gate surfaces, pinned by unit]).
 // Session-155: 2217 -> 2225 (+8 — the census LANDING public leg: the
 // PUBLIC_PAGES contract + the walk45 anchor seam [div.min-h-screen
 // .bg-white, the pill/Toaster exclusion, the document scroller's
@@ -512,7 +538,7 @@ const SUITES = 119;
 // self-match]; SUITES stays 119 [every it lands in the EXISTING
 // census suite]; E2E stays 153 [the public leg is a script-gate
 // surface, pinned by unit]).
-const UNIT = 2225;
+const UNIT = 2229;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -935,13 +961,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-155 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-156 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s154 layer now beneath the s155 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s155 layer now beneath the s156 head)",
     ).toContain(
-      "+ beneath it 2217 unit checks + 153 e2e checks green; the session-154 layer (THE CENSUS TABLET LEGS",
+      "+ beneath it 2225 unit checks + 153 e2e checks green; the session-155 layer (THE LANDING PUBLIC LEG",
     );
   });
 
