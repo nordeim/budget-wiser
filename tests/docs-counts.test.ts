@@ -538,7 +538,23 @@ const SUITES = 119;
 // self-match]; SUITES stays 119 [every it lands in the EXISTING
 // census suite]; E2E stays 153 [the public leg is a script-gate
 // surface, pinned by unit]).
-const UNIT = 2229;
+// Session-157: 2229 -> 2233 (+4 — the census LOGIN-WALL leg: the
+// login leg contract [login joins INTERIOR_PAGES as the 12th interior
+// page — main on both apps, byte-equal classes, els 51/51, GUEST and
+// LOGGED-IN identical; the sweep lockstep held] + the login
+// mutation-proof doctrine [--pages login, the 157-c idiom] + the
+// LOGIN-LOGO-MARK genus [the walk47 decode: our CSS brand mark is
+// ours-extra — the reference's ring loads the workspace owner's
+// uploaded logo, live branding data, never mirrored; the exact-token
+// loginLogoMarkSignature absorbs ONLY the standing SPAN construction]
+// + the fullpage-sweep DIRECT-EXECUTION guard [the 157-a fresh-box
+// finding: the unguarded top-level run() fired on the vitest import
+// and process.exit(1)ed with no dev server — the sweep.ts/
+// interior-census.ts idiom applied]; SUITES stays 119 [the census pins
+// land in the EXISTING suites; the guard pin lands in the EXISTING
+// fullpage suite]; E2E stays 153 [the login leg is a script-gate
+// surface, pinned by unit]).
+const UNIT = 2233;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -961,13 +977,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-156 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-157 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s155 layer now beneath the s156 head)",
     ).toContain(
-      "+ beneath it 2225 unit checks + 153 e2e checks green; the session-155 layer (THE LANDING PUBLIC LEG",
+      "+ beneath it 2229 unit checks + 153 e2e checks green; the session-156 layer (THE CENSUS ABOUT/CONTACT INTERIOR LEGS",
     );
   });
 

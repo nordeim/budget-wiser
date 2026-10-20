@@ -126,4 +126,16 @@ describe("session-149: the fullpage-sweep tool (the below-the-fold gate)", () =>
     expect(failOnDrift(0.1, 0.6, 0.5)).toBe(false); // exactly at the line
     expect(failOnDrift(0.1, 0.61, 0.5)).toBe(true); // over
   });
+
+  it("the DIRECT-EXECUTION guard (the 157-c finding): run() fires ONLY when the script is executed directly, never on the vitest import — the sweep.ts/interior-census.ts idiom both siblings shipped with, missed here at s149. An unguarded top-level run() launches chromium INSIDE the unit suite and process.exit(1)s whenever no dev server stands — the 157-a baseline caught it on a fresh box (all 2229 checks passing, exit code 1, the green masked behind the standing dev server for 8 sessions; the first-run `bun run test` documented in AGENTS.md failed on a fresh clone)", () => {
+    const src = toolSrc();
+    // the guard's discriminator (the siblings' exact form)
+    expect(src).toMatch(/process\.argv\[1\]\.endsWith\("fullpage-sweep\.ts"\)/);
+    // the UNGUARDED top-level call RETIRED — run() must never fire at
+    // module top level (the guarded form is indented inside the if)
+    expect(src).not.toMatch(/^run\(\)\.catch/m);
+    // the guarded catch keeps the [fullpage] prefix + exit 1 (the
+    // fail-on-drift contract for the direct run)
+    expect(src).toMatch(/console\.error\(`\[fullpage\] \$\{e instanceof Error \? e\.message : e\}`\)/);
+  });
 });

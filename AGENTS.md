@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2229 checks)      | `bun run test`                         |
+|  Unit tests (2233 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2229) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2233) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7763,3 +7763,162 @@ tablet/landscape/desktop interiors never decoded).
   captures 365-368 (the about cards-grid zone at the never-measured
   768 frame + the contact email-card zone, both logged-in pairs,
   scrolled + verified in-frame).
+
+### Session-157 (2026-10-21) — the census LOGIN-WALL leg (the 157-c rotation)
+
+The workspace stood (the fresh clone + the standing env rebuilt: .env
+from `.env.example` + `db:push`/`db:seed` census MATCH · the Playwright
+chromium installed · the dev server standing). probe:ref **#131
+STABLE** at the s147–s155 fingerprint — a rotation round on the
+session_331 next-round reading's strongest candidate: **the login wall
+at /login — the LAST never-censused rendered surface — joins
+INTERIOR_PAGES (the 12-page interior list; the census covers 13
+surfaces at all four axes = 52 page-axis runs)** (the surface census
+arc's completion: standing-gate s152 → desktop s153 → tablet/landscape
+s154 → landing s155 → about/contact s156 → **the login wall s157 —
+every rendered surface now walked + gated**).
+
+- **157-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **119/2229**
+  · build · **e2e 153/153** (clean first run) — with **ONE FINDING**: the
+  unit suite's EXIT CODE reds on a fresh box — `scripts/fullpage-sweep.ts`'s
+  top-level `run()` fires UNCONDITIONALLY on the vitest import (the
+  direct-execution guard idiom its two siblings `sweep.ts` /
+  `interior-census.ts` both shipped with was missed at s149); with no
+  :3000 listener the import throws → `process.exit(1)` → the
+  vitest-patched exit throws an unhandled rejection → exit 1 with ALL
+  2229 checks passing — the green masked behind the standing dev
+  server for 8 sessions, and the first-run `bun run test` documented in
+  AGENTS.md failing on a fresh clone. **D-157a0 remediated it** (the
+  RED pin → the siblings' exact guard → GREEN; the direct run
+  re-verified clean).
+- **157-b**: probe:ref **#131 STABLE** · the drawer battery GREEN
+  (inside e2e 153/153 — the mobile-nav contract) · **the SIX drift
+  gates CLEAN ×6** (the four viewport + the fullpage at the exact
+  standing values 0.093%/0.316% at equal heights 4990/7259 + the
+  census gate at 48 page-axis runs, all zero unexplained) · sitemap 11
+  routes + robots 200 + the SEO meta · db census MATCH 15/24/10/23/12
+  + 4 users · the tree clean · zero dep changes.
+- **THE PRE-PLAN PROBE (the plan validated BEFORE execution)**: the
+  reference's /login decoded at the #131 bundle, GUEST and LOGGED-IN,
+  phone + desktop — **both apps render /login inside `main` with
+  byte-equal classes** (`min-h-screen flex items-center justify-center
+  bg-gradient-to-br from-slate-50 to-slate-100 p-4`), **mainH byte-equal
+  both apps both contexts** (844 phone · 900 desktop — never measured
+  before), **els 51/51** in all four context-axis combos, **GUEST and
+  LOGGED-IN render the IDENTICAL card** (the S23-P2
+  card-to-authed-visitors evidence re-validated) — the censusPage
+  collector works AS-IS and the LOGGED-IN protocol is FREE (the census
+  login phase already runs; no guest contexts needed).
+- **THE LEG DESIGN (additive — the logged-in protocol
+  byte-identical)**: `INTERIOR_PAGES` grows 11→12 (login appended
+  after contact; the sweep lockstep held — login is a standing sweep
+  PAGES path since S96) · `CENSUS_ALL_PAGES` grows 12→13 (the census
+  gate grows to 52 page-axis runs) · **THE SCOPE FLIP (the 157-c
+  hazard face)**: the login wall is a STATIC-AUTH surface — no
+  workspace data — and the s156 keying was NEGATIVE
+  (`!isStaticMarketingPage` — absorb unless listed), correct only
+  until the next static surface arrives; the login leg was the next
+  face of the exact walk45 hazard both re-anchors closed, so the scope
+  flips to the POSITIVE DATA class: `CENSUS_DATA_PAGES` (the 9 app
+  pages) + `isCensusDataPage` — live-data absorbs text-only pairs
+  ONLY on members, every other surface (landing, about, contact,
+  **login**, any future surface) REDs BY DEFAULT
+  (`STATIC_MARKETING_PAGES`/`isStaticMarketingPage` RETIRED, the s156
+  pins re-anchored) · the header's "and login have no main interior"
+  claim RETIRED (login IS a main interior — the probe's first
+  finding) · **gate:full UNCHANGED** — the six-gate chain stays six
+  commands.
+- **THE RATE-LIMIT DECODE (the operational finding)**: the census
+  retry failures mid-round were NOT the M-72c1 CPU-contention lineage
+  — the dev log showed `POST /api/auth/login 429`: the census logs
+  into ours once per axis (4/invocation) and the login limiter is 10
+  per IP/15 min (fixed-window, 429s also increment) — back-to-back
+  census invocations exhaust the bucket (the maiden + the failed
+  retries burned it). Resolution: the dev-server restart clears the
+  per-process bucket; the maiden + the mutation-proofs + the sweeps
+  then fit the 10-login budget per window. The limiter itself is the
+  production security contract — untouched.
+- **walk47 PASS 1 — THE MAIDEN CENSUS**: **ALL FOUR axes born CLEAN —
+  mainH Δ0 at every axis, 43/43 elements: 23 matches + 19
+  token-mirror + 1 wrapper-twin + 1 login-logo-mark, zero
+  unexplained** (the maiden's one decode face — see below). The
+  s96-era login construction held: the card boxes byte-equal at every
+  axis (358×650 phone · 448×710 desktop), the cls-only pairs absorbing
+  as the standing token-mirror family (the card container, the google
+  button, the accent strip order).
+- **THE LOGIN-LOGO-MARK GENUS (the walk47 decode)**: our CSS brand
+  mark — the 40×40 `flex h-10 w-10 … rounded-full bg-sidebar
+  sm:h-12 sm:w-12` SPAN centered in the ring — is ours-extra at every
+  axis; the raw-byte probe decoded the reference's construction: its
+  ring loads the **WORKSPACE OWNER'S UPLOADED LOGO** (a Base44-prod
+  Supabase storage img — the owner's own "Screenshot2026-02-05…png"
+  upload, keyed to the workspace id — LIVE BRANDING DATA, the
+  Base44-pill genus class, **never mirrored**); the ring boxes pair
+  byte-equal as cls-only token-mirrors and the ref img absorbs as the
+  ring's wrapper-twin. The genus absorbs ONLY the exact standing
+  signature (`loginLogoMarkSignature`, the settingsRowSignature idiom
+  — order-independent exact-token matching + the SPAN tag): a
+  different tag, a restyled token set, or the same shape on another
+  page stays RED (the mutation-proof guard, pinned with negatives
+  all).
+- **walk47 PASS 2 — THE LOGIN MUTATION-PROOF**: a ghost div planted
+  under the login card's subtitle via targeted string surgery →
+  `census:interior --pages login --axis phone --fail-on-drift` →
+  **RED** (phone: 44/43 els, 42 unexplained — the ghost + the
+  displaced card tail; mainH Δ0 — the taller card still fits the 844
+  viewport, the catch rides the GEOMETRY alone, the s153 desktop
+  form; desktop: 40 unexplained; exit 1, the failure axis-prefixed)
+  → the string-surgery revert (zero src diff) → **GREEN** (exit 0,
+  the exact standing values). The F-151c1 class now fails the gate on
+  **all THIRTEEN censused surfaces** — the 9 app pages + the landing
+  public leg + the about/contact marketing pair + **the login wall**,
+  at all four axes.
+- **THE PINS (TDD)**: `tests/fullpage-sweep-tool.test.ts` +1 (the
+  DIRECT-EXECUTION guard — the siblings' idiom pinned, the unguarded
+  top-level call RETIRED) · `tests/interior-census-tool.test.ts`
+  +3 (the login leg contract [INTERIOR_PAGES 12 + the sweep lockstep +
+  the not-public dispatch] + the login mutation-proof doctrine
+  [--pages login] + the LOGIN-LOGO-MARK genus [the fixture positives
+  + the tag/restyle/page negatives + the src pins]); the re-anchors:
+  the s152 11-page pin → the 12-page contract, the s155 PUBLIC/composition
+  pins 12→13, the s156 legs/scope/verdict/doctrine pins re-anchored to
+  the positive DATA keying — **7 RED at birth + 1 born-green** (the
+  verdict login rows — `censusVerdict` surface-agnostic, the
+  s155/s156 pattern) → the implementation → GREEN; the count ladder
+  **UNIT 2229→2233 · SUITES 119 held · badge 2382→2386** (the live
+  lockstep sites flipped atomically, count-ladder-157.py, assert-first,
+  idempotent; the historical clauses preserved — the AGENTS/PAD s156
+  records, the session_331/332 records, the plans, the worklog) · the
+  CLAUDE-carrier negatives ladders grew the 2229 forms (all four
+  carrier families) · the SKILL **v1.154.0** + the s157 head (the
+  s156 layer demoted beneath) + the Appendix B totals + the layer-axis
+  pin flipped.
+- **THE LESSONS**: **L-157c1 the entry guard is part of the tool's
+  contract** (a script that runs on import is a test-time bomb — the
+  guard is what makes the seams-and-pins doctrine safe; the s149 tool
+  missed the idiom its two siblings shipped with and the defect sat
+  masked behind the standing dev server for 8 sessions) · **L-157c2
+  the scope's DEFAULT is the hazard's next face** (the negative keying
+  — absorb unless listed — re-opens the walk45 hazard on every new
+  static surface; the positive keying — absorb only on the DATA class
+  — makes the default RED and the hazard impossible; L-156c2 taken to
+  the invariant) · **L-157c3 the census's own login is a scarce
+  resource** (the rate limiter is the production contract, not a bug —
+  the gate cadence must budget its logins: 4/invocation vs 10 per
+  window; the dev-server restart clears the per-process bucket, and
+  the "CPU-contention" M-72c1 lineage was at least partly this all
+  along).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2233** · build · e2e
+  **153/153** (clean first run) · **the SIX drift gates CLEAN ×6**
+  (the four viewport + the fullpage at the exact standing values +
+  **the census gate at ALL FOUR axes × 13 surfaces — 52 page-axis
+  runs, all zero unexplained**, the 48 standing runs at their exact
+  standing values, the login leg at its maiden values) · census MATCH
+  · the mutation-proof (planted → RED at phone + desktop → reverted →
+  GREEN) · the VLM battery 2/2 (the phone card pair MATCH — every
+  element identical; the desktop logo-mark pair MATCH — the logo
+  content + the reference's Base44 pill the only differences on both
+  adjudications — the documented genera, never mirrored) · the
+  captures 369-372 (the phone login-card pair at the mutation-proof
+  zone + the desktop logo-mark pair at the genus zone — both
+  logged-in pairs, scrolled + verified in-frame).

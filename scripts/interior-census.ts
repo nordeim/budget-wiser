@@ -81,14 +81,16 @@
 //   • token-mirror   — cls-only pairs, geometry byte-equal (the
 //                      lucide DOM-composition + v3-compat class-order +
 //                      space-y-hazard families, the walk41 decode)
-//   • live-data      — text-only pairs, geometry byte-equal, on the
-//                      WORKSPACE surfaces (the 9 DATA pages — the
-//                      reference's intraday workspace data; the s155
-//                      scoping + the 156-c re-anchor: the
-//                      STATIC_MARKETING class [landing + the
-//                      about/contact legs] carries no workspace data,
-//                      a text-only pair there is REAL content drift
-//                      and stays RED)
+//   • live-data      — text-only pairs, geometry byte-equal, ONLY on
+//                      the DATA surfaces (the 9 CENSUS_DATA_PAGES —
+//                      the reference's intraday workspace data; the
+//                      157-c scope keys on the POSITIVE class:
+//                      absorb-only-on-members — every other surface
+//                      [the static-marketing trio + the login wall]
+//                      carries no workspace data, so a text-only pair
+//                      there is REAL content drift and REDs by
+//                      DEFAULT — the s155/s156 hazard closed at the
+//                      invariant, L-156c2 taken to the DEFAULT form)
 //   • composition-split — the TEXT-NODE CARDINALITY face (the walk45
 //                      landing decode): whitespace-stripped byte-equal
 //                      texts at byte-equal boxes — ours MERGES the
@@ -113,6 +115,14 @@
 //                      render the identical template, counts differ
 //                      intraday) + the settings-data-cascade shifts
 //                      (the row-count delta displaces everything below)
+//   • login-logo-mark — ours-extra brand-mark SPAN on the login wall
+//                      (the walk47 decode): our CSS brand mark where
+//                      the reference's ring loads the workspace
+//                      owner's UPLOADED LOGO (live branding data, the
+//                      Base44-pill genus class, never mirrored); the
+//                      ring pairs byte-equal + the ref img is the
+//                      ring's wrapper-twin; the exact-token
+//                      signature never absorbs a restyle or a ghost
 //
 // The ONE margin exception (L-152c3, the L-150c2 doctrine extended): the
 // settings page's mainH is SKIPPED and its shift face is REPORT-ONLY —
@@ -130,7 +140,10 @@
 //      fail-fast, over the combined app+public list; composes with
 //      --axis; `--pages landing` runs ONLY the public leg — the
 //      mutation-proof idiom, no login phase; `--pages about,contact`
-//      runs the 156-c marketing legs)
+//      runs the 156-c marketing legs; `--pages login` runs the 157-c
+//      login-wall leg — the logged-in phase, the census login already
+//      ran; the login wall is the STATIC-AUTH surface: no workspace
+//      data, the text-only RED default)
 // Env: OUR_URL / REF_URL / REF_EMAIL / REF_PASSWORD (the sweep contract)
 // ---------------------------------------------------------------------------
 
@@ -143,14 +156,20 @@ import { login, waitOnUrl, parsePagesArg } from "./sweep";
  *  own seam — reused, not duplicated; the s95 idiom). */
 export { parsePagesArg };
 
-/** The 11 shell-interior pages — the 9 app pages + the login-walled
+/** The 12 shell-interior pages — the 9 app pages + the login-walled
  *  marketing interiors (about/contact: the (marketing) group renders
  *  AppShell since the s147 posture reversal — main.overflow-auto
  *  interiors, the s150 walk + the 156-c probe both byte-equal [mainH
- *  1731/897 phone · 1047/953 desktop]). The landing (the PUBLIC leg
- *  below) and login have no main interior — their gates are the
- *  viewport sweeps + the fullpage gate. Lockstep with the sweep's
- *  PAGES paths. */
+ *  1731/897 phone · 1047/953 desktop]) + the LOGIN wall (the 157-c
+ *  leg: both apps render /login inside main — byte-equal classes
+ *  'min-h-screen flex items-center justify-center bg-gradient-to-br
+ *  from-slate-50 to-slate-100 p-4', mainH 844 phone · 900 desktop
+ *  byte-equal, els 51/51, GUEST and LOGGED-IN identical — the S23-P2
+ *  evidence; the censusPage collector works AS-IS, the logged-in
+ *  protocol free). The LANDING (the PUBLIC leg below) alone has no
+ *  main interior — its gates are the viewport sweeps + the fullpage
+ *  gate + the public census leg. Lockstep with the sweep's PAGES
+ *  paths. */
 export const INTERIOR_PAGES = [
   { name: "dashboard", path: "/dashboard" },
   { name: "accounts", path: "/accounts" },
@@ -165,6 +184,10 @@ export const INTERIOR_PAGES = [
   // sweep pair, now censused; the last two blind interior surfaces)
   { name: "about", path: "/about" },
   { name: "contact", path: "/contact" },
+  // the 157-c leg — the LOGIN wall (the last never-censused rendered
+  // surface; the S96 sweep pair; the 157-c probe: main on both apps,
+  // byte-equal classes, els 51/51, GUEST and LOGGED-IN identical)
+  { name: "login", path: "/login" },
 ] as const;
 
 export type InteriorPage = (typeof INTERIOR_PAGES)[number];
@@ -193,26 +216,39 @@ export function isPublicPage(p: { name: string }): boolean {
   return PUBLIC_PAGES.some((pub) => pub.name === p.name);
 }
 
-// -- the STATIC-MARKETING scope (the 156-c re-anchor) -------------------------
+// -- the POSITIVE DATA scope (the 157-c form — L-156c2 at the invariant) ---
 //
 // The live-data genus is a WORKSPACE-SURFACE genus: the reference's
-// intraday workspace data lives on the 9 DATA pages only. The
-// STATIC-MARKETING class — the landing (public) + the about/contact
-// legs (login-walled interiors since the s147 posture reversal) —
-// carries NO workspace data: a text-only pair there is REAL content
-// drift (a changed headline, a reprice) and stays RED. The s155 scope
-// keyed on !isPublicPage — correct only while every interior page was
-// a DATA page; the first static interior page (the 156-c legs) would
-// have reopened the walk45 hazard. The scope names the SURFACE CLASS,
-// never the dispatch (L-156c2).
+// intraday workspace data lives on the 9 DATA pages only. The scope
+// keys on the POSITIVE class — live-data absorbs text-only pairs
+// ONLY on CENSUS_DATA_PAGES members — so every other surface (the
+// static-marketing trio (landing, about, contact) + the login wall,
+// and any FUTURE surface) REDs BY DEFAULT: a text-only pair there is
+// REAL content drift (a changed headline, a reprice, a changed
+// 'Sign in'). The s155 !isPublicPage keying and the s156 negative
+// static-list keying were each correct only until the next static
+// surface arrived — the login leg was the next face of the exact
+// walk45 hazard both re-anchors closed; the DEFAULT is the hazard's
+// next face, so the scope absorbs only-on-members (L-157c2).
 
-/** The static-marketing surfaces by name (no workspace data). */
-export const STATIC_MARKETING_PAGES = ["landing", "about", "contact"] as const;
+/** The DATA surfaces by name — the ONLY pages whose text-only pairs
+ *  absorb as live-data (the reference's intraday workspace data). */
+export const CENSUS_DATA_PAGES = [
+  "dashboard",
+  "accounts",
+  "contacts",
+  "leads",
+  "calendar",
+  "activities",
+  "reports",
+  "settings",
+  "profile",
+] as const;
 
 /** The scope predicate: live-data absorbs text-only pairs ONLY on the
- *  workspace (DATA) pages; the static-marketing class stays RED. */
-export function isStaticMarketingPage(p: { name: string }): boolean {
-  return STATIC_MARKETING_PAGES.some((s) => s === p.name);
+ *  DATA members; every other surface REDs by default. */
+export function isCensusDataPage(p: { name: string }): boolean {
+  return CENSUS_DATA_PAGES.some((s) => s === p.name);
 }
 
 /** The walk41 census element (the geometry floor is integer px). */
@@ -687,6 +723,31 @@ function settingsRowSignature(cls: string): boolean {
   return SETTINGS_ROW_TOKENS.every((t) => tokens.has(t));
 }
 
+/** The login brand-mark token set (the walk47 decode): the exact
+ *  standing construction — the CSS brand mark where the reference's
+ *  ring loads the workspace owner's UPLOADED LOGO (live branding
+ *  data, the Base44-pill genus class, never mirrored). */
+const LOGIN_MARK_TOKENS = [
+  "flex",
+  "h-10",
+  "w-10",
+  "items-center",
+  "justify-center",
+  "rounded-full",
+  "bg-sidebar",
+  "sm:h-12",
+  "sm:w-12",
+];
+
+/** The login brand-mark signature (the settingsRowSignature idiom —
+ *  order-independent exact-token matching; the tag rides along: the
+ *  mark is a SPAN). Exported for the unit pins. */
+export function loginLogoMarkSignature(tag: string, cls: string): boolean {
+  if (tag !== "SPAN") return false;
+  const tokens = new Set(cls.split(/\s+/));
+  return LOGIN_MARK_TOKENS.every((t) => tokens.has(t));
+}
+
 function containedIn(el: CensusEl, boxes: Array<{ top: number; left: number; w: number; h: number }>): boolean {
   return boxes.some(
     (b) =>
@@ -796,14 +857,16 @@ export function attributeGenera(
         continue;
       }
       // live-data — the reference's intraday WORKSPACE data — is a
-      // WORKSPACE-SURFACE genus (the 9 DATA pages): on the
-      // STATIC-MARKETING class (the landing + the 156-c about/contact
-      // legs) a text-only pair is REAL content drift (a changed
-      // headline, a reprice) and falls through RED (the walk45 hazard
-      // decode + the 156-c re-anchor: the scope names the SURFACE
-      // CLASS, never the dispatch — keying on !isPublicPage would
-      // have reopened the hazard on the first static interior page).
-      if (!isStaticMarketingPage({ name: page })) {
+      // WORKSPACE-SURFACE genus (the 9 CENSUS_DATA_PAGES): the scope
+      // keys on the POSITIVE class (the 157-c form) — absorb
+      // ONLY-on-members — so every static surface (the
+      // static-marketing trio (landing, about, contact) + the login
+      // wall, and any future surface) falls through RED BY DEFAULT
+      // (a changed headline, a reprice, a changed 'Sign in' is REAL
+      // content drift; the walk45 hazard closed at the invariant —
+      // the s155/s156 negative keyings were each correct only until
+      // the next static surface arrived, L-157c2).
+      if (isCensusDataPage({ name: page })) {
         genusOf.set(e, "live-data");
         continue;
       }
@@ -898,6 +961,18 @@ export function attributeGenera(
     }
     if (page === "settings" && settingsRowSignature(el.cls)) {
       genusOf.set(e, "settings-data");
+      continue;
+    }
+    // the login brand mark (the walk47 decode): our CSS brand mark is
+    // ours-extra — the reference's ring loads the WORKSPACE OWNER'S
+    // UPLOADED LOGO instead (a Base44-prod storage img, live
+    // branding data — the Base44-pill genus class, never mirrored;
+    // the ring boxes pair byte-equal as cls-only token-mirrors, the
+    // ref img absorbs as the ring's wrapper-twin; only OUR mark is
+    // extra). The signature is exact-token — a restyled mark or a
+    // planted ghost never rides the genus.
+    if (page === "login" && e.kind === "ours-extra" && loginLogoMarkSignature(el.tag, el.cls)) {
+      genusOf.set(e, "login-logo-mark");
       continue;
     }
     // no direct rule: defer to the containment + twin passes
@@ -1418,7 +1493,10 @@ async function run() {
   // combined list drives the selection; the app/public dispatch splits
   // it (`--pages landing` runs ONLY the public leg — no login phase;
   // `--pages about,contact` runs the 156-c marketing legs logged-in;
-  // no flag runs all 12 — the 11 interior + the landing)
+  // `--pages login` runs the 157-c login-wall leg logged-in (the
+  // census login already ran — the probe proved the authed card
+  // byte-equal to the guest card); no flag runs all 13 — the 12
+  // interior + the landing)
   const selected = parsePagesArg(argv, CENSUS_ALL_PAGES);
   const pages = selected.filter((p) => !isPublicPage(p));
   const publicPages = selected.filter((p) => isPublicPage(p));

@@ -241,7 +241,15 @@ async function run() {
   }
 }
 
-run().catch((e) => {
-  console.error(`[fullpage] ${e instanceof Error ? e.message : e}`);
-  process.exit(1);
-});
+// run only when executed directly (bun scripts/fullpage-sweep.ts / bun run
+// sweep:fullpage), never on the vitest import (the unit pins) — the
+// sweep.ts/interior-census.ts idiom (the 157-c fix: an unguarded top-level
+// run() launched chromium inside the unit suite and process.exit(1)ed
+// whenever no dev server stood — the fresh-clone `bun run test` failed
+// with all checks passing)
+if (process.argv[1] && process.argv[1].endsWith("fullpage-sweep.ts")) {
+  run().catch((e) => {
+    console.error(`[fullpage] ${e instanceof Error ? e.message : e}`);
+    process.exit(1);
+  });
+}
