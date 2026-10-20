@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2207 checks)      | `bun run test`                         |
+|  Unit tests (2217 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2207) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2217) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7362,7 +7362,7 @@ sweep fold; the desktop interiors had never been geometry-censused).
   discriminator · the axis-prefixed verdict · the run-loop/--json
   src pins · the th-label-stretch genus · the F-153c1 retirement) —
   **RED at birth → the implementation → GREEN**; the count ladder
-  **UNIT 2199→2207 · SUITES 119 held · badge 2352→2360** · the 12
+  **UNIT 2199→2217 · SUITES 119 held · badge 2352→2360** · the 12
   lockstep sites flipped atomically · the CLAUDE-carrier pins
   (the negatives ladder grew the 2199 forms) · the SKILL
   **v1.150.0** + the s153 head (the s152 layer demoted beneath) +
@@ -7378,9 +7378,116 @@ sweep fold; the desktop interiors had never been geometry-censused).
   axis (the content column: sidebar + page padding), never a
   constant; the phone's 358 and the desktop's 1120 are the same
   rule at two frames.
-- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2207** · build ·
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2217** · build ·
   e2e 153/153 · **the SIX drift gates CLEAN ×6** (the census gate
   at BOTH axes in the one standing command) · census MATCH · the
   mutation-proof (planted → RED → reverted → GREEN) · the VLM
   battery 2/2 (the dashboard desktop pair and the contacts desktop
   pair both MATCH) · the captures 353-356.
+
+### Session-154 (2026-10-20) — the census TABLET legs (the 154-c rotation)
+
+The workspace stood (the pull fast-forwarded to `1c10ca8` — the s153 feat
++ the owner's session_326 transcript). probe:ref **#128 STABLE** at the
+s147–s153 fingerprint — a rotation round on the session_325 next-round
+reading's strongest candidate: **the census extended to the tablet axes —
+the 768×1024 + 1024×768 interiors walked + gated as the census tool's
+third and fourth legs** (the L-153c1 doctrine: a census axis is cheap, a
+blind axis is a standing gap; the sweep-viewport classes and the census
+axes now coincide — no blind interior axis remains).
+
+- **154-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **119/2207**
+  · build · **e2e 153/153** — the EXACT s153-ship match.
+- **154-b**: probe:ref **#128 STABLE** · the drawer battery GREEN
+  (inside e2e 153/153) · **the SIX drift gates CLEAN ×6** (the fullpage
+  at the exact standing values 0.093%/0.316%) · sitemap 11 routes +
+  robots · the tree clean · zero dep changes.
+- **THE TOOL EXTENSION (additive, data-driven)**: `CENSUS_AXES` gains
+  `tablet` 768×1024 + `landscape` 1024×768 — the two entries were ALL
+  the implementation took (the s153 abstraction at work); the floor
+  seam needed NO change (768→448, 1024→704 already fall out of the
+  standing formula — the sidebar is in flow from **md**, not lg:
+  `hidden md:flex w-64`, page-layout.ts:203).
+- **walk44 PASS 1 — THE MAIDEN TABLET + LANDSCAPE CENSUS**: the first
+  run surfaced four real decode zones (the maiden walk doing its job);
+  the phone + desktop legs held their EXACT standing values throughout:
+  - **F-154c1 THE PX-LESS ELLIPSIS ICON FACE** — our two dashboard
+    header ellipsis buttons carried the CVA `size="sm"`'s stale
+    `px-3 text-xs` (the s7-era ghost vocabulary the reference's
+    construction lacks). At 1440 both render 32×32 (w-8 dominates,
+    the pair absorbs as token-mirror); at the TIGHT 1024 title row
+    (217px cards) the px-3 inflated our min-content past w-8 and
+    BLOCKED the flex-yield the reference's bare h-8 w-8 performs —
+    title zone 137 vs 150, 3-line vs 2-line wrap, **+28px header,
+    +1px mainH**, the space-y-hazard cls pair decoding as a shift
+    (the hidden token finally had a geometry effect at the new axis).
+    The fix: `size="sm"` → `size="icon"` (the per-row site's own
+    px-less precedent; the landscape dashboard leg went CLEAN on the
+    fix alone).
+  - **THE S95 GENUS'S THREE NEW FACES** (the reference's own standing
+    defect, never mirrored): the **tablet cascade** — the poke's
+    DESCENDANTS (the search row 440 + the input 335 inside the ref's
+    poked 472 card) absorb via the registered poke-box containment
+    (the floor test alone misses them: their widths sit ≤ the 448
+    floor); the **landscape LG FORM** — at 1024 the ref's bare flex-1
+    does NOT poke past the floor (472 ≤ 704): its min-content eats
+    the flex row's fair share and **SQUEEZES ITS OWN byte-equal-cls
+    w-80 filters rail** (ours 320 @416, the ref 208 @528 — the RIGHT
+    EDGES COINCIDENT at 736, the flex row's boundary); the
+    construction-signature cls form (ours `[flex-1 min-w-0]` vs the
+    ref's bare `[flex-1]`) carries the attribution, the rail twins +
+    the whole squeezed subtree absorb as the cascade; the
+    **displaced twins** — the Export CSV pair (byte-equal tag/text/
+    w/h at the same top, the cls modulo the standing token
+    vocabulary, the ref twin inside a poke box).
+  - **THE SETTINGS DATA GENUS'S TIGHT-FRAME FACES** (the L-150c2
+    doctrine's extras face, restored): the **row-boxes-from-matches
+    pass** — the picklist rows pair as byte-equal 166×54 MATCHES at
+    768 while the different LIVE-intraday label texts drive different
+    flex cascades inside them (ours' labels win 86px vs the ref's
+    108px → different button boxes 32 vs 21); the row boxes from ALL
+    events (matches included) restore the containment; the
+    **VERTICAL displaced twins** — the add-row + footer constructions
+    displaced past the aligner's windows by the row-count cascade
+    (dTop 12 = the mainH delta): same tag/text/w/h/left + dTop ≤ 96
+    (the displaced-tail scale; a planted duplicate 300px below stays
+    RED).
+  - **THE VERDICT: ALL 36 page-axis runs at ZERO unexplained** —
+    mainH byte-equal on the 32 non-settings runs, settings SKIPPED
+    at all four axes (the L-150c2 DATA genus, never widened); the
+    phone leg at the EXACT s152 standing values, the desktop leg at
+    the EXACT s153 values.
+- **walk44 PASS 2 — THE TABLET MUTATION-PROOF**: the F-151c1 ghost
+  replanted in the Lead Sources CardHeader via targeted string
+  surgery → `census:interior --axis tablet --pages dashboard
+  --fail-on-drift` → **RED** (38 unexplained: the ghost subtree + the
+  displaced tail, **+ mainH Δ4** — at tablet the ghost rides BOTH the
+  geometry and mainH; the failure axis-prefixed `[tablet]`) → the
+  string-surgery revert → **GREEN**. The F-151c1 class now fails the
+  gate at ALL FOUR axes.
+- **THE PINS (TDD)**: `tests/interior-census-tool.test.ts` extended
+  **+10** (the four-axis CENSUS_AXES contract FLIPPED in place + the
+  parseAxisArg ALL flip + the md-boundary floor face [767→703 vs
+  768→448 — **L-154c1 the boundary is an axis**: the floor DROPS 255px
+  at exactly md because the sidebar enters flow; a wider frame CAN
+  floor lower at a breakpoint] + the --axis new names + the four-axis
+  verdict + the data-driven run-loop pin + F-154c1 + the s95 lg
+  cls-form + the cascade + the rail-squeeze + the settings row-boxes
+  + the settings vertical twins; the s152 poke-out negative
+  re-anchored to the outside-the-poke-cascade form) — **RED at birth
+  → the implementation → GREEN**; the count ladder **UNIT
+  2207→2217 · SUITES 119 held · badge 2360→2370** · the 12 lockstep
+  sites flipped atomically (count-ladder-154.py, assert-first) · the
+  CLAUDE-carrier pins (the negatives ladder grew the 2207 forms) ·
+  the SKILL **v1.151.0** + the s154 head (the s153 layer demoted
+  beneath) + the Appendix B totals + the layer-axis pin.
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2217** · build ·
+  e2e **153/153 (the definitive run** — two order/load flakes in the
+  settings tab family re-run clean in isolation + the full suite) ·
+  **the SIX drift gates CLEAN ×6** (the four viewport + the fullpage
+  at the exact standing values + the census gate at ALL FOUR axes in
+  the one standing command, all-36 zero unexplained) · census MATCH ·
+  the mutation-proof (planted → RED → reverted → GREEN) · the VLM
+  battery 2/2 (the dashboard landscape pair MATCH; the accounts
+  landscape pair — the VLM independently confirms the reference's own
+  squeezed rail vs our intended layout) · the captures 357-360.

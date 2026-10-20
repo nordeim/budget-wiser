@@ -480,7 +480,24 @@ const SUITES = 119;
 // decode)]; SUITES stays 119 [every it lands in the EXISTING census
 // suite]; E2E stays 153 [the desktop leg is a script-gate axis,
 // pinned by unit]).
-const UNIT = 2207;
+// Session-154: 2207 -> 2217 (+10 — the walk44 tablet/landscape-leg
+// rotation: interior-census-tool +10 [the four-axis CENSUS_AXES
+// contract FLIPPED in place (phone + tablet 768x1024 + landscape
+// 1024x768 + desktop) + the parseAxisArg ALL flip in place + the
+// md-boundary floor face (767->703 vs 768->448, L-154c1) + the
+// --axis new names + the four-axis verdict + the data-driven run-loop
+// src pin + F-154c1 the px-less ellipsis icon face (the s7-era
+// px-3 text-xs blocked the flex-yield at the tight 1024 title row) +
+// the s95 lg cls-form (the flex-1 min-w-0 construction signature —
+// the poke eats the flex share, not the floor) + the s95 cascade
+// face (the poke-box descendants + the displaced twins) + the s95
+// rail-squeeze (the right-edge-coincident displaced twins + the
+// subtree containment) + the settings row-boxes-from-matches (the
+// DATA genus's tight-frame face) + the settings vertical displaced
+// twins (the add-row/footer cascade)]; SUITES stays 119 [every it
+// lands in the EXISTING census suite]; E2E stays 153 [the tablet +
+// landscape legs are script-gate axes, pinned by unit]).
+const UNIT = 2217;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -903,13 +920,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-153 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-154 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s152 layer now beneath the s153 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s153 layer now beneath the s154 head)",
     ).toContain(
-      "+ beneath it 2199 unit checks + 153 e2e checks green; the session-152 layer (THE INTERIOR CENSUS PROMOTED INTO THE STANDING SIXTH GATE",
+      "+ beneath it 2207 unit checks + 153 e2e checks green; the session-153 layer (THE INTERIOR CENSUS DESKTOP LEG",
     );
   });
 

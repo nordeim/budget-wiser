@@ -24,7 +24,12 @@
 // desktop axis (`--axis desktop --pages dashboard` — the ghost lived at
 // y≈905 @1440, below every desktop sweep fold) must RED the desktop leg
 // exactly as the phone leg REDs — the dead zone is PER-AXIS (L-153c1),
-// and the census now walks BOTH legs in one invocation.
+// and the census now walks BOTH legs in one invocation. The s154
+// extension adds the TABLET legs (walk44): the same ghost at the md-boundary
+// axis (`--axis tablet --pages dashboard` — 768×1024, the sidebar's
+// first-appearance frame, the 448px content regime) must RED the tablet
+// leg exactly as the phone/desktop legs RED — the F-151c1 class then
+// fails the gate at ALL FOUR axes, and no leg masks another.
 //
 // The protocol (sweep.ts's, reused not duplicated): reuse-or-boot the dev
 // server (the platform DATABASE_URL spawn guard) → zero our domain data
@@ -36,15 +41,20 @@
 // zeroed even on a thrown census).
 //
 // The census (the walk41 idiom): both apps logged in at the CENSUS AXES
-// — 390×844 (phone, the walk41 axis) + 1440×900 (desktop, the 153-c
-// extension: the F-151c1 axis) — every element inside `main` censused:
-// content-relative top/left, w, h, tag, class, leaf-text, plus mainH =
-// main.scrollHeight (the internal scroller's content height). The PURE
-// decode seams (alignCensus / attributeGenera / censusVerdict /
-// contentFloor / parseAxisArg) are what the unit pins exercise. The
-// dead zone is PER-AXIS (L-153c1): the phone leg proves the 390 interior,
-// the desktop leg the 1440 interior — one viewport never covers the
-// other's layout tree.
+// — 390×844 (phone, the walk41 axis) + 768×1024 (tablet, the 154-c
+// extension: the md BOUNDARY — the sidebar's first-appearance frame,
+// the 448px content regime) + 1024×768 (landscape, the 154-c extension:
+// the 704px column at half the desktop slack) + 1440×900 (desktop, the
+// 153-c extension: the F-151c1 axis) — every element inside `main`
+// censused: content-relative top/left, w, h, tag, class, leaf-text,
+// plus mainH = main.scrollHeight (the internal scroller's content
+// height). The PURE decode seams (alignCensus / attributeGenera /
+// censusVerdict / contentFloor / parseAxisArg) are what the unit pins
+// exercise. The dead zone is PER-AXIS (L-153c1): the phone leg proves
+// the 390 interior, the tablet/landscape legs the 768/1024 interiors,
+// the desktop leg the 1440 interior — one viewport never covers
+// another's layout tree, and the sweep-viewport classes and the census
+// axes now coincide.
 //
 // The verdict is BYTE-PARITY, zero margin: geometry gates have no raster
 // floor, so every delta must ATTRIBUTE to a documented genus or it is
@@ -165,14 +175,20 @@ export interface CensusAxis {
   height: number;
 }
 
-/** The two census legs (the L-153c1 doctrine: the dead zone is PER-AXIS).
+/** The four census legs (the L-153c1 doctrine: the dead zone is PER-AXIS).
  *  Phone 390×844 — the walk41 axis, the s152 gate. Desktop 1440×900 —
- *  the F-151c1 axis: the ghost buttons lived at y≈905 @1440, below the
- *  1024×768 sweep fold (768) and inside the internal scroller the
- *  1920×1080 sweep structurally cannot see past (1080); the desktop
- *  interiors had never been geometry-censused before s153. */
+ *  the F-151c1 axis (the s153 leg: the ghost buttons lived at y≈905
+ *  @1440, below every desktop sweep fold). Tablet 768×1024 + landscape
+ *  1024×768 — the s154 legs: the md BOUNDARY axis (the sidebar's
+ *  first-appearance frame — `hidden md:flex w-64`; at exactly 768 the
+ *  content column drops from 703 to 448, the L-154c1 boundary face) and
+ *  the lg-adjacent 704px column. The four legs align the census coverage
+ *  with the four pixel-sweep viewport classes — no blind interior axis
+ *  remains. */
 export const CENSUS_AXES: ReadonlyArray<CensusAxis> = [
   { name: "phone", width: 390, height: 844 },
+  { name: "tablet", width: 768, height: 1024 },
+  { name: "landscape", width: 1024, height: 768 },
   { name: "desktop", width: 1440, height: 900 },
 ] as const;
 
@@ -624,10 +640,36 @@ export function attributeGenera(
   //     the same interiors)
   const rowBoxes: Array<{ top: number; left: number; w: number; h: number }> = [];
   const chartBoxes: Array<{ top: number; left: number; w: number; h: number }> = [];
+  // the s95 poke-out boxes (the walk44 extension): every ABSORBED poke
+  // root registers its REF-side box + the poke delta — the cascade
+  // (the descendants inside the poked box: the search row 440 + the
+  // input 335 at tablet; the whole table chain at landscape) + the
+  // displaced byte-equal twins (the Export CSV pair) + the rail
+  // squeeze (the displacement === the poke delta) all ride these.
+  const pokeBoxes: Array<{ box: { top: number; left: number; w: number; h: number }; delta: number }> = [];
+  // the shifts that survive pass 1 (the s95 cascade candidates — kept
+  // in order for the post-poke pass)
+  const pendingShifts: CensusEvent[] = [];
   const boxOf = (el: CensusEl) => ({ top: el.top, left: el.left, w: el.w, h: el.h });
   const chartFamily = (cls: string) => /recharts|chart-no-outline/.test(cls);
+  const hasToken = (cls: string, token: string) => cls.split(/\s+/).includes(token);
   // the pending extras (pass 2 + pass 3 candidates, kept in order)
   const pending: CensusEvent[] = [];
+
+  // -- pass 0: the settings row boxes from EVERY signature event --------
+  // (the walk44 tablet decode: the DATA genus's tight-frame face — the
+  // picklist rows pair as MATCHES at 768 (byte-equal 166x54 boxes),
+  // invisible to the decoder, while the different LIVE-intraday label
+  // texts drive different flex cascades inside them: the squeezed
+  // buttons/svgs/labels fall out of every window. Registering the row
+  // boxes from ALL events — matches included — restores the subtree
+  // containment.)
+  if (page === "settings") {
+    for (const e of events) {
+      if (e.el !== undefined && settingsRowSignature(e.el.cls)) rowBoxes.push(boxOf(e.el));
+      if (e.ref !== undefined && settingsRowSignature(e.ref.cls)) rowBoxes.push(boxOf(e.ref));
+    }
+  }
 
   // -- pass 1: the direct genus rules -------------------------------------
   for (const e of events) {
@@ -677,13 +719,41 @@ export function attributeGenera(
         e.ref.w > floor
       ) {
         genusOf.set(e, "s95-poke-out");
+        pokeBoxes.push({ box: boxOf(e.ref), delta: Math.abs(dw) });
+        continue;
+      }
+      // THE LG CONSTRUCTION FORM (the walk44 landscape decode): at lg
+      // frames the ref's bare flex-1 does NOT poke past the content
+      // floor (472 ≤ 704 at 1024) — its min-content eats the flex
+      // row's fair share instead, SQUEEZING its own w-80 rail (the
+      // sibling-squeeze face). The CONSTRUCTION signature carries the
+      // attribution: ours clamped [flex-1 min-w-0] (the s95 fix we
+      // shipped) vs the ref's bare [flex-1] (its standing defect),
+      // position-aligned, ours narrower by the poke. A bare-vs-bare
+      // width regression (no construction pair) never absorbs; the
+      // poke direction is one-way (ours wider never absorbs).
+      if (
+        dw < -RECHARTS_TOL &&
+        dt <= RECHARTS_TOL &&
+        dl <= RECHARTS_TOL &&
+        dh <= RECHARTS_TOL &&
+        e.el !== undefined &&
+        e.ref !== undefined &&
+        hasToken(e.el.cls, "flex-1") &&
+        hasToken(e.el.cls, "min-w-0") &&
+        hasToken(e.ref.cls, "flex-1") &&
+        !hasToken(e.ref.cls, "min-w-0")
+      ) {
+        genusOf.set(e, "s95-poke-out");
+        pokeBoxes.push({ box: boxOf(e.ref), delta: Math.abs(dw) });
         continue;
       }
       if (page === "settings") {
         genusOf.set(e, "settings-data-cascade");
         continue;
       }
-      continue; // the ordered emission decides unexplained
+      pendingShifts.push(e); // the ordered emission decides unexplained
+      continue;
     }
     // the extras (ours-extra / ref-extra)
     const el = e.kind === "ours-extra" ? e.el : e.ref;
@@ -711,12 +781,43 @@ export function attributeGenera(
       continue;
     }
     if (page === "settings" && settingsRowSignature(el.cls)) {
-      rowBoxes.push(boxOf(el));
       genusOf.set(e, "settings-data");
       continue;
     }
     // no direct rule: defer to the containment + twin passes
     pending.push(e);
+  }
+
+  // -- pass 1.5: the s95 POKE CASCADE (the walk44 tablet/landscape
+  // decode) -------------------------------------------------------------
+  // The absorbed poke roots registered their REF-side boxes. The poke's
+  // DESCENDANTS — the search row 440 + the input 335 inside the ref's
+  // poked 472 card at tablet; the whole table chain (the bg card, the
+  // p-4 border-b, the row, the overflow wrappers) at landscape — are
+  // position-aligned width-only shifts whose REF element sits INSIDE
+  // a registered poke box. Their widths are a function of the poked
+  // parent, not of the content floor (the row at 440 ≤ the 448 floor
+  // stays RED under the floor rule alone); the containment carries
+  // the attribution. A shift with NO poke box present (a real ours
+  // width regression inside the container) stays UNEXPLAINED.
+  const stillShifts: CensusEvent[] = [];
+  for (const e of pendingShifts) {
+    const dt = Math.abs(e.dTop ?? 0);
+    const dl = Math.abs(e.dLeft ?? 0);
+    const dw = e.dW ?? 0;
+    const dh = Math.abs(e.dH ?? 0);
+    if (
+      dw < -RECHARTS_TOL &&
+      dt <= RECHARTS_TOL &&
+      dl <= RECHARTS_TOL &&
+      dh <= RECHARTS_TOL &&
+      e.ref !== undefined &&
+      pokeBoxes.some((p) => containedIn(e.ref as CensusEl, [p.box]))
+    ) {
+      genusOf.set(e, "s95-poke-out");
+      continue;
+    }
+    stillShifts.push(e);
   }
 
   // -- pass 2: the containment faces ---------------------------------------
@@ -768,6 +869,61 @@ export function attributeGenera(
     still.push(e);
   }
 
+  // -- pass 2.5: the s95 RAIL-SQUEEZE (the walk44 landscape decode) ------
+  // At lg frames the ref's poked table (its 472 min-content) eats the
+  // flex row's fair share and SQUEEZES its own byte-equal-cls w-80
+  // filters rail: the pair lands as DISPLACED TWINS (the aligner's
+  // windows cannot pair a 112px horizontal shift) with the RIGHT
+  // EDGES COINCIDENT (ref.left + ref.w === ours.left + ours.w — the
+  // flex row's right boundary pins both rails' right edges) and the
+  // displacement equal to the poke delta. The twins absorb and
+  // register BOTH rail boxes; the squeezed subtree (shifts or extras
+  // with either side contained in its side's rail box — the ref's
+  // deformed rail content: wrapped labels, rescaled inputs, shifted
+  // rows) absorbs as the cascade. Without a matching poke the twins
+  // are a plain displacement — RED.
+  const squeezeOurs: Array<{ top: number; left: number; w: number; h: number }> = [];
+  const squeezeRef: Array<{ top: number; left: number; w: number; h: number }> = [];
+  const matchedRail = new Set<number>();
+  for (let i = 0; i < still.length; i++) {
+    const e = still[i];
+    if (e.kind !== "ours-extra" || e.el === undefined || genusOf.has(e)) continue;
+    const a = e.el;
+    const j = still.findIndex(
+      (r, k) =>
+        r.kind === "ref-extra" &&
+        r.ref !== undefined &&
+        !matchedRail.has(k) &&
+        !genusOf.has(r) &&
+        r.ref.cls === a.cls &&
+        r.ref.top === a.top &&
+        r.ref.h === a.h &&
+        r.ref.left > a.left &&
+        r.ref.left + r.ref.w === a.left + a.w &&
+        pokeBoxes.some((p) => Math.abs(p.delta - (r.ref!.left - a.left)) <= RECHARTS_TOL),
+    );
+    if (j !== -1) {
+      matchedRail.add(j);
+      genusOf.set(e, "s95-poke-out");
+      genusOf.set(still[j], "s95-poke-out");
+      squeezeOurs.push(boxOf(a));
+      squeezeRef.push(boxOf(still[j].ref as CensusEl));
+    }
+  }
+  // the squeezed subtree: shifts + extras with either side inside
+  // its side's rail box
+  const squeezeSub = (e: CensusEvent): boolean => {
+    if (e.el !== undefined && containedIn(e.el, squeezeOurs)) return true;
+    if (e.ref !== undefined && containedIn(e.ref, squeezeRef)) return true;
+    return false;
+  };
+  for (const e of stillShifts) {
+    if (squeezeSub(e)) genusOf.set(e, "s95-poke-out");
+  }
+  for (const e of still) {
+    if (!genusOf.has(e) && squeezeSub(e)) genusOf.set(e, "s95-poke-out");
+  }
+
   // -- pass 3: the wrapper-twin + tag-swap faces ---------------------------
   // the paired boxes (every match/cls-only/text-only/shift event's
   // both sides): an extra whose box is BYTE-EQUAL to a paired box is
@@ -783,6 +939,7 @@ export function attributeGenera(
   }
   const twins: CensusEvent[] = [];
   for (const e of still) {
+    if (genusOf.has(e)) continue; // absorbed at 2.5 (the rail squeeze)
     const el = (e.kind === "ours-extra" ? e.el : e.ref) as CensusEl;
     if (
       pairedBoxes.some(
@@ -814,6 +971,74 @@ export function attributeGenera(
       matchedRef.add(idx);
       genusOf.set(e, "tag-swap");
       genusOf.set(twins[idx], "tag-swap");
+    }
+  }
+  // THE DISPLACED TWIN (the walk44 tablet/landscape decode): the poke
+  // cascade's horizontal displacement pushes byte-equal twins apart —
+  // the Export CSV pair (ours @371 vs the ref @395 at tablet, the
+  // dLeft 24; @283 vs @395 at landscape, the dLeft 112). The twins
+  // share the TAG, the leaf-text, the w/h and the top; the cls carries
+  // the standing token-mirror vocabulary (border-line vs border-input,
+  // bg-surface vs bg-background, the hover pairs — absorbed identically
+  // on aligned token-mirror pairs), so the TAG is the guard. The REF
+  // twin sits INSIDE a registered poke box — the containment carries
+  // the attribution. A twin pair with NO poke present, a different
+  // leaf-text, or a different TAG never pairs — RED on both sides.
+  for (const e of twins) {
+    if (e.kind !== "ours-extra" || e.el === undefined || genusOf.has(e)) continue;
+    const a = e.el;
+    const idx = twins.findIndex(
+      (r, k) =>
+        r.kind === "ref-extra" &&
+        r.ref !== undefined &&
+        !matchedRef.has(k) &&
+        !genusOf.has(r) &&
+        r.ref.tag === a.tag &&
+        r.ref.w === a.w &&
+        r.ref.h === a.h &&
+        r.ref.text === a.text &&
+        r.ref.top === a.top &&
+        pokeBoxes.some((p) => containedIn(r.ref as CensusEl, [p.box])),
+    );
+    if (idx !== -1) {
+      matchedRef.add(idx);
+      genusOf.set(e, "s95-poke-out");
+      genusOf.set(twins[idx], "s95-poke-out");
+    }
+  }
+  // THE SETTINGS VERTICAL DISPLACED TWIN (the walk44 tablet decode): the
+  // DATA genus's row-count cascade displaces whole constructions
+  // VERTICALLY past the aligner's windows — the add-row twins (ours
+  // @1977 vs the ref's @1989, the dTop 12: the accumulated intraday
+  // row-height delta) and the footer twins (riding the page's mainH
+  // delta). Same tag + same leaf-text + same w/h + the same LEFT + the
+  // dTop within the displaced-tail scale (≤ 96 — the standing intraday
+  // deltas live inside it: 86 at phone, 24 at desktop, 12 at tablet;
+  // a planted duplicate 300px below stays RED) absorbs as settings-data
+  // on BOTH sides — the L-150c2 doctrine's extras face, restored at the
+  // tight frames.
+  if (page === "settings") {
+    for (const e of twins) {
+      if (e.kind !== "ours-extra" || e.el === undefined || genusOf.has(e)) continue;
+      const a = e.el;
+      const idx = twins.findIndex(
+        (r, k) =>
+          r.kind === "ref-extra" &&
+          r.ref !== undefined &&
+          !matchedRef.has(k) &&
+          !genusOf.has(r) &&
+          r.ref.tag === a.tag &&
+          r.ref.text === a.text &&
+          r.ref.w === a.w &&
+          r.ref.h === a.h &&
+          r.ref.left === a.left &&
+          Math.abs(r.ref.top - a.top) <= 96,
+      );
+      if (idx !== -1) {
+        matchedRef.add(idx);
+        genusOf.set(e, "settings-data");
+        genusOf.set(twins[idx], "settings-data");
+      }
     }
   }
   // the TH-LABEL-STRETCH face (the walk43 desktop decode): ours'

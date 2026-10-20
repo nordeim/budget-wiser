@@ -419,8 +419,16 @@ export default function DashboardPage() {
           <CardHeader>
             <div className={DASHBOARD_CARD.headerRow}>
               <CardTitle className={CARD_TITLE_OVERRIDE.dashboard}>Top Performing Sales Reps</CardTitle>
-              {/* Session-7 (S7-18): ellipsis actions are ghost h-8 w-8. */}
-              <Button variant="ghost" size="sm" className={DASHBOARD_CARD.ellipsisBtn} aria-label="More actions">
+              {/* Session-7 (S7-18): ellipsis actions are ghost h-8 w-8.
+                  Session-154 (F-154c1, walk44): the px-less icon face —
+                  size="sm" carries the CVA's px-3 text-xs, which at a
+                  tight title row (1024: the 217px cards) floors our
+                  min-content past w-8 and BLOCKS the flex-yield the
+                  reference's bare h-8 w-8 performs — the title zone
+                  squeezed 137 vs 150, wrapping 3 lines vs 2 (+28px
+                  header, +1px mainH). The per-row site's own size="icon"
+                  construction is the px-less precedent. */}
+              <Button variant="ghost" size="icon" className={DASHBOARD_CARD.ellipsisBtn} aria-label="More actions">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </div>
@@ -474,7 +482,8 @@ export default function DashboardPage() {
               <CardTitle className={CARD_TITLE_OVERRIDE.dashboard}>Lead Sources</CardTitle>
               {/* Session-151 (F-151c1, walk41): the s7-era ghost Add retired —
                   the current reference bundle renders this header TITLE-ONLY
-                  (live-decoded at 390 + 1440 on both apps). */}
+                  (live-decoded at 390 + 1440 + 768 on both apps; the walk44
+                  tablet mutation-proof replanted it and RED the gate). */}
             </div>
           </CardHeader>
           <CardContent>
@@ -548,7 +557,9 @@ export default function DashboardPage() {
         <CardHeader>
           <div className={DASHBOARD_CARD.headerRow}>
             <CardTitle className={CARD_TITLE_OVERRIDE.dashboard}>Recent Deals</CardTitle>
-            <Button variant="ghost" size="sm" className={DASHBOARD_CARD.ellipsisBtn} aria-label="More actions">
+            {/* F-154c1: the px-less icon face (see the Top Reps site's
+                decode) — size="icon" + the h-8 w-8 className override. */}
+            <Button variant="ghost" size="icon" className={DASHBOARD_CARD.ellipsisBtn} aria-label="More actions">
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </div>

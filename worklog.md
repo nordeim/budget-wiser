@@ -5807,3 +5807,26 @@ Stage Summary:
 - The walk-harness lessons: L-153c1 the dead zone is per-axis (a geometry gate at one viewport proves that viewport only; a census axis is cheap, a blind axis is a standing gap) · L-153c2 the floor travels with the frame (the s95 poke-out discriminator's floor is a function of the census axis — sidebar + page padding — never a constant: 358 at phone, 1120 at desktop)
 - The standing genera left: the settings picklist-DATA genus (the live-intraday documentation, skipped on both axes), the login logo genus, the s95 accounts overflow genus, the fullpage pill genus, + the two library-drift genera (the lucide DOM-composition + the recharts-internal)
 - Next-round candidates: the s142 landing re-walk, the settings intraday-rhythm map, the tablet/landscape census axes (the axis abstraction makes them cheap), or the next bundle event's below-fold pin re-derivation
+
+---
+Task ID: 154
+Agent: main (Super Z)
+Task: Session-154 — the census TABLET legs (the 154-c rotation) — full maintenance cycle on nordeim/neo-crm
+
+Work Log:
+- git pull fast-forwarded to 1c10ca8; the environment standing; 154-a the baseline gate GREEN (lint 0/0 · tsc 0 · 119/2207 · build · e2e 153/153 — the EXACT s153-ship match); 154-b probe:ref #128 STABLE at the s147-s153 fingerprint · the SIX drift gates CLEAN x6 · sitemap 11 routes + robots · the tree clean · zero dep changes
+- The rotation: the census extended to the tablet axes — the 768x1024 + 1024x768 interiors walked + gated as the census tool's third + fourth legs (the session_325 next-round reading's strongest candidate; the L-153c1 doctrine: a blind axis is a standing gap; the sweep-viewport classes and the census axes now coincide)
+- walk44 PASS 1 THE MAIDEN CENSUS: four real decode zones — F-154c1 THE PX-LESS ELLIPSIS ICON FACE (the stale CVA size=sm px-3 text-xs blocked the flex-yield at the tight 1024 title row: title zone 137 vs 150, 3-line vs 2-line wrap, +28px header, +1px mainH; size=sm -> size=icon; the landscape dashboard leg CLEAN on the fix alone) + THE S95 GENUS'S THREE NEW FACES (the tablet cascade [the poke-box containment] · the landscape LG FORM [the ref's bare flex-1 squeezes its own w-80 rail at lg — ours 320 vs the ref's 208, the right edges coincident; the construction-signature cls form] · the displaced twins [the Export CSV pair, the cls modulo the token vocabulary, the ref twin inside a poke box]) + THE SETTINGS DATA GENUS'S TIGHT-FRAME FACES (the row-boxes-from-matches + the VERTICAL displaced twins [the add-row + footer, dTop <= 96]) — THE VERDICT: ALL 36 page-axis runs at ZERO unexplained, the phone leg at the EXACT s152 values, the desktop leg at the EXACT s153 values, settings SKIPPED at all four axes
+- walk44 PASS 2 THE TABLET MUTATION-PROOF: the F-151c1 ghost replanted -> --axis tablet --pages dashboard --fail-on-drift -> RED (38 unexplained + mainH D4, axis-prefixed [tablet]) -> the string-surgery revert -> GREEN — the F-151c1 class fails the gate at ALL FOUR axes
+- D-154a1: tests/interior-census-tool.test.ts +10 (the four-axis contract FLIPPED + the parseAxisArg flip + the md-boundary floor face + the --axis names + the four-axis verdict + the run-loop pin + F-154c1 + the lg cls-form + the cascade + the rail-squeeze + the settings row-boxes + the vertical twins; the s152 negative re-anchored) — RED at birth -> the implementation -> GREEN
+- D-154a2: the implementation (the two CENSUS_AXES entries — the s153 abstraction was so complete the entries were ALL it took; the decoder passes 0/1.5/2.5/3; the dashboard source fix)
+- D-154a3: the count ladder (UNIT 2207 -> 2217 · badge 2360 -> 2370; the 12 lockstep sites atomically; the historical clauses audited + restored; the CLAUDE carriers x4; the SKILL v1.151.0 + the s154 head + the Appendix B + the layer-axis pin)
+- D-154a4: the captures 357-360 + the VLM battery 2/2 (the dashboard pair MATCH; the accounts pair — the VLM confirms the reference's own squeezed rail)
+- D-154a5: the verification chain — lint 0/0 · tsc 0 · 119/2217 · build · e2e 153/153 (the definitive run) · the SIX drift gates CLEAN x6 · census MATCH
+- D-154a6: the docs realignment (the AGENTS Session-154 section · the PAD session-154 row · the session_327 record + the plan execution record + this record) + the scratch cleanup
+
+Stage Summary:
+- The census gate covers ALL FOUR interior axes in the one standing gate:full command — no blind interior axis remains; the F-151c1 class fails at all four axes (mutation-proven at tablet this round)
+- F-154c1 landed (the px-less ellipsis icon face); the s95 genus decoded at three new faces; the settings DATA genus at two — all 36 page-axis runs at zero unexplained
+- The lessons: L-154c1 the boundary is an axis · L-154c2 the poke's energy has three destinations · L-154c3 the hidden token has no geometry until the frame is tight
+- Next-round candidates: the s142 landing re-walk, the settings intraday-rhythm map, the next bundle event's below-fold re-derivation, or the census runtime optimization

@@ -382,13 +382,14 @@ describe("session-152: the interior-census tool (the dead-zone standing gate)", 
     expect(r.explained.map((e) => e.genus)).toEqual(["wrapper-twin"]);
   });
 
-  it("the s95 poke-out discriminator: only the REFERENCE's past-the-floor widths absorb — an in-container width delta (ours 174 vs the ref's nesting div 294) stays UNEXPLAINED", async () => {
+  it("the s95 poke-out discriminator: only the REFERENCE's past-the-floor widths absorb — an in-container width delta (ours 174 vs the ref's nesting div 294) OUTSIDE any poke cascade stays UNEXPLAINED (the walk44 re-anchor: the pair moved below the poked card's box — the s154 cascade pass absorbs the width-only shifts INSIDE a registered poke box, so the negative now pins the outside-the-cascade face)", async () => {
     const m = await import("../scripts/interior-census");
     const events = [
       // the poke-out: the ref card at w=472, past the 358 floor
       { kind: "shift", el: el({ w: 358, cls: "bg-surface rounded-lg shadow" }), ref: el({ w: 472, cls: "bg-white rounded-lg shadow" }), dTop: 0, dLeft: 0, dW: -114, dH: 0 },
-      // the in-container width delta: both inside the floor — real drift
-      { kind: "shift", el: el({ w: 174, cls: "relative flex-1 max-w-md" }), ref: el({ w: 294, cls: "flex gap-3" }), dTop: 0, dLeft: 0, dW: -120, dH: 0 },
+      // the in-container width delta OUTSIDE the poked card's box
+      // (top 200, below the card) — real drift
+      { kind: "shift", el: el({ top: 200, w: 174, cls: "relative flex-1 max-w-md" }), ref: el({ top: 200, w: 294, cls: "flex gap-3" }), dTop: 0, dLeft: 0, dW: -120, dH: 0 },
     ] as never;
     const r = m.attributeGenera(events, "contacts") as {
       explained: Array<{ genus: string }>;
@@ -447,11 +448,13 @@ describe("session-152: the interior-census tool (the dead-zone standing gate)", 
 });
 
 describe("session-153: the census DESKTOP leg (the F-151c1 axis — the dead zone is PER-AXIS, the 153-c rotation)", () => {
-  it("the two-axis contract: CENSUS_AXES = phone 390x844 + desktop 1440x900 (the F-151c1 axis; the census gate covers BOTH legs in one command)", async () => {
+  it("the four-axis contract: CENSUS_AXES = phone 390x844 + tablet 768x1024 + landscape 1024x768 + desktop 1440x900 (the s154 extension: the last two blind interior axes — the sweep viewport classes and the census axes now coincide; the census gate covers ALL FOUR legs in one command)", async () => {
     const m = await import("../scripts/interior-census");
     const axes = m.CENSUS_AXES as ReadonlyArray<{ name: string; width: number; height: number }>;
     expect(axes.map((a) => [a.name, a.width, a.height])).toEqual([
       ["phone", 390, 844],
+      ["tablet", 768, 1024],
+      ["landscape", 1024, 768],
       ["desktop", 1440, 900],
     ]);
   });
@@ -473,7 +476,7 @@ describe("session-153: the census DESKTOP leg (the F-151c1 axis — the dead zon
   it("the --axis flag: default ALL (both legs) · one-axis subsets · unknown fail-fast (the --pages idiom, composed)", async () => {
     const m = await import("../scripts/interior-census");
     const all = m.parseAxisArg([]) as ReadonlyArray<{ name: string }>;
-    expect(all.map((a) => a.name)).toEqual(["phone", "desktop"]);
+    expect(all.map((a) => a.name)).toEqual(["phone", "tablet", "landscape", "desktop"]);
     const phone = m.parseAxisArg(["--axis", "phone"]) as ReadonlyArray<{ name: string }>;
     expect(phone.map((a) => a.name)).toEqual(["phone"]);
     const desktop = m.parseAxisArg(["--axis", "desktop"]) as ReadonlyArray<{ name: string }>;
@@ -597,5 +600,266 @@ describe("session-153: the census DESKTOP leg (the F-151c1 axis — the dead zon
     // the filter bar keeps its mb-6 (the reference's filter bar DOES
     // carry it — the live decode's control)
     expect(src).toMatch(/cn\(TABLE_CARD\.card, "mb-6"\)/);
+  });
+});
+
+describe("session-154: the census TABLET legs (the md-boundary axis 768x1024 + the lg-adjacent axis 1024x768 — the 154-c rotation)", () => {
+  it("contentFloor at the new axes: the landscape anchor 1024→704 (the w-64 sidebar from md + the sm:p-8 root, the standing ≥768 formula) + the md-BOUNDARY face — 767→703 vs 768→448, the floor DROPS 255px at exactly md because the sidebar enters flow (L-154c1: a wider frame CAN floor lower at a breakpoint; the s153 monotonicity pin spans 390→1440 only, correctly)", async () => {
+    const m = await import("../scripts/interior-census");
+    // the landscape axis: 1024 − 256 − 64 (the standing formula)
+    expect(m.contentFloor(1024)).toBe(704);
+    // the md boundary: the sidebar's first-appearance frame
+    // (hidden md:flex w-64 — page-layout.ts:203)
+    expect(m.contentFloor(767)).toBe(703);
+    expect(m.contentFloor(768)).toBe(448);
+    // the boundary drop IS the doctrine: the 256px sidebar enters
+    // flow at exactly md — the tablet axis's 448px content regime
+    // exists at NO other census axis
+    expect(m.contentFloor(767) - m.contentFloor(768)).toBe(255);
+  });
+
+  it("the --axis flag at the new names: the tablet + landscape one-axis subsets compose (the mutation-proof runs); unknown fail-fast lists all four legs", async () => {
+    const m = await import("../scripts/interior-census");
+    const tablet = m.parseAxisArg(["--axis", "tablet"]) as ReadonlyArray<{ name: string; width: number }>;
+    expect(tablet.map((a) => a.name)).toEqual(["tablet"]);
+    expect(tablet[0].width).toBe(768);
+    const landscape = m.parseAxisArg(["--axis", "landscape"]) as ReadonlyArray<{ name: string; width: number }>;
+    expect(landscape.map((a) => a.name)).toEqual(["landscape"]);
+    expect(landscape[0].width).toBe(1024);
+    expect(() => m.parseAxisArg(["--axis", "bogus"])).toThrow(/bogus/);
+  });
+
+  it("censusVerdict at four axes: a TABLET-leg RED with phone+desktop GREEN fails the gate with the axis named — NO leg masks another (the L-153c1 doctrine at four legs); all-four clean GREEN; the settings skip holds at the new axes (the L-150c2 doctrine)", async () => {
+    const m = await import("../scripts/interior-census");
+    type PR = { page: string; axis?: string; mainHDelta: number | null; unexplained: unknown[] };
+    const v = m.censusVerdict as (rs: PR[]) => { ok: boolean; failures: string[] };
+    // phone + desktop clean, tablet RED: the gate fails, the failure
+    // names the tablet axis
+    const verdict = v([
+      { page: "dashboard", axis: "phone", mainHDelta: 0, unexplained: [] },
+      { page: "dashboard", axis: "desktop", mainHDelta: 0, unexplained: [] },
+      { page: "dashboard", axis: "tablet", mainHDelta: 0, unexplained: [{}] },
+      { page: "dashboard", axis: "landscape", mainHDelta: 0, unexplained: [] },
+    ]);
+    expect(verdict.ok).toBe(false);
+    expect(verdict.failures.some((f) => f.includes("tablet") && f.includes("dashboard"))).toBe(true);
+    // all four clean: GREEN
+    expect(
+      v([
+        { page: "dashboard", axis: "phone", mainHDelta: 0, unexplained: [] },
+        { page: "dashboard", axis: "tablet", mainHDelta: 0, unexplained: [] },
+        { page: "dashboard", axis: "landscape", mainHDelta: 0, unexplained: [] },
+        { page: "dashboard", axis: "desktop", mainHDelta: 0, unexplained: [] },
+      ]).ok,
+    ).toBe(true);
+    // the settings mainH skip holds at the new axes (the DATA genus)
+    expect(
+      v([
+        { page: "settings", axis: "tablet", mainHDelta: 60, unexplained: [] },
+        { page: "settings", axis: "landscape", mainHDelta: 24, unexplained: [] },
+      ]).ok,
+    ).toBe(true);
+  });
+
+  it("the run loop stays DATA-DRIVEN at four legs — the axes loop carries every CENSUS_AXES entry at its own viewport (no axis is special-cased); the tablet mutation-proof is part of the documented contract (--axis tablet --pages dashboard — the F-151c1 class fails at ALL FOUR axes)", () => {
+    const src = toolSrc();
+    // the data-driven loop (the s153 seam — unchanged by the s154
+    // extension: the two entries were all the implementation took)
+    expect(src).toMatch(/for\s*\(const axis of\s+/);
+    expect(src).toMatch(/viewport:\s*\{\s*width:\s*axis\.width,\s*height:\s*axis\.height\s*\}/);
+    // the tablet mutation-proof doctrine (walk44 PASS 2)
+    expect(src).toMatch(/--axis tablet --pages dashboard/);
+  });
+
+  it("F-154c1 the dashboard's two header ellipsis buttons render the PX-LESS icon face (the walk44 landscape decode: size=\"sm\" carries the CVA's px-3 text-xs — the s7-era ghost vocabulary the reference's construction lacks; at the tight 1024 title row the px-3 inflates our min-content past w-8, BLOCKING the flex-yield the reference's bare h-8 w-8 performs — title zone 137 vs 150, 3-line vs 2-line wrap, +28px header, +1px mainH; the per-row site's own size=\"icon\" construction is the in-house px-less precedent)", () => {
+    const src = readFileSync("src/app/(app)/dashboard/page.tsx", "utf-8");
+    // the two header sites: the px-less icon face (h-9 w-9 overridden
+    // to h-8 w-8 by the className — the same construction as the
+    // per-row ghost at the L-78c3 site)
+    expect(src.match(/size="icon" className=\{DASHBOARD_CARD\.ellipsisBtn\}/g) ?? []).toHaveLength(2);
+    // the stale sm form retired at BOTH header sites
+    expect(src).not.toMatch(/size="sm" className=\{DASHBOARD_CARD\.ellipsisBtn\}/);
+    // the CVA contract: the icon size carries NO padding token (the
+    // flex-yield's precondition — padding would floor the min-content)
+    const btn = readFileSync("src/components/ui/button.tsx", "utf-8");
+    expect(btn).toMatch(/icon:\s*"h-9 w-9"/);
+    expect(btn).not.toMatch(/icon:[^\n]*px-/);
+  });
+
+  it("the s95-poke-out LG face (the walk44 landscape decode): the construction-signature form — ours [flex-1 min-w-0] vs the ref's bare [flex-1], position-aligned, ours narrower by the poke — absorbs WITHOUT the floor test (at 1024 the ref's 472 table does NOT poke past the 704 content floor; its min-content eats the flex row's fair share instead, squeezing its own w-80 rail); the standing floor form holds (the s153 pin); a bare-vs-bare width regression NEVER absorbs", async () => {
+    const m = await import("../scripts/interior-census");
+    // the lg construction pair: ours clamped to the share (360), the
+    // ref poked to its min-content (472) — floor 704 < ref.w, so only
+    // the cls signature carries the attribution
+    const r = m.attributeGenera(
+      [{ kind: "shift", el: el({ w: 360, cls: "flex-1 min-w-0" }), ref: el({ w: 472, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: -112, dH: 0 } as never],
+      "accounts",
+      704,
+    ) as { explained: Array<{ genus: string }>; unexplained: unknown[] };
+    expect(r.explained.map((e) => e.genus)).toEqual(["s95-poke-out"]);
+    expect(r.unexplained).toEqual([]);
+    // a bare-vs-bare width regression (no construction signature —
+    // a REAL ours defect on an unclamped pair) stays RED
+    const r2 = m.attributeGenera(
+      [{ kind: "shift", el: el({ w: 360, cls: "flex-1" }), ref: el({ w: 472, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: -112, dH: 0 } as never],
+      "accounts",
+      704,
+    ) as { unexplained: unknown[] };
+    expect(r2.unexplained).toHaveLength(1);
+    // ours WIDER than the ref never absorbs (the poke direction is
+    // one-way: the ref's bare flex-1 is always the wide side)
+    const r3 = m.attributeGenera(
+      [{ kind: "shift", el: el({ w: 472, cls: "flex-1 min-w-0" }), ref: el({ w: 360, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: 112, dH: 0 } as never],
+      "accounts",
+      704,
+    ) as { unexplained: unknown[] };
+    expect(r3.unexplained).toHaveLength(1);
+  });
+
+  it("the s95-poke-out CASCADE face (the walk44 tablet decode): the poke's descendants — a width-only shift whose REF element sits INSIDE a registered poke-out box (the search row 440 + the input 335 inside the ref's poked 472 card) — and the DISPLACED TWIN (the Export CSV pair: byte-equal cls/w/h/text at the same top, the ref twin inside the poke box, ours displaced left by the cascade) both absorb as s95-poke-out; a twin OUTSIDE any poke box (no poke present) and a different-text twin stay RED", async () => {
+    const m = await import("../scripts/interior-census");
+    // the tablet shape: the card pokes past the 448 floor (absorbed,
+    // registers the poke box), then the cascade + the twin ride it
+    const events = [
+      { kind: "shift", el: el({ top: 454, left: 32, w: 448, cls: "flex-1 min-w-0" }), ref: el({ top: 454, left: 32, w: 472, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: -24, dH: 0 },
+      { kind: "shift", el: el({ top: 470, left: 48, w: 416, cls: "flex flex-col sm:flex-row gap-3" }), ref: el({ top: 470, left: 48, w: 440, cls: "flex flex-col sm:flex-row gap-3" }), dTop: 0, dLeft: 0, dW: -24, dH: 0 },
+      { kind: "ours-extra", el: el({ top: 470, left: 371, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex font-medium", text: "Export CSV" }) },
+      { kind: "ref-extra", ref: el({ top: 470, left: 395, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex font-medium", text: "Export CSV" }) },
+    ] as never;
+    const r = m.attributeGenera(events, "accounts", 448) as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(r.explained.filter((e) => e.genus === "s95-poke-out")).toHaveLength(4);
+    expect(r.unexplained).toEqual([]);
+    // NEGATIVE 1: no poke present (the first shift's ref inside the
+    // floor) — the cascade shift + the displaced twin stay RED
+    const events2 = [
+      { kind: "shift", el: el({ top: 454, left: 32, w: 448, cls: "flex-1 min-w-0" }), ref: el({ top: 454, left: 32, w: 440, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: 8, dH: 0 },
+      { kind: "shift", el: el({ top: 470, left: 48, w: 416, cls: "flex flex-col sm:flex-row gap-3" }), ref: el({ top: 470, left: 48, w: 440, cls: "flex flex-col sm:flex-row gap-3" }), dTop: 0, dLeft: 0, dW: -24, dH: 0 },
+      { kind: "ours-extra", el: el({ top: 470, left: 371, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex font-medium", text: "Export CSV" }) },
+      { kind: "ref-extra", ref: el({ top: 470, left: 395, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex font-medium", text: "Export CSV" }) },
+    ] as never;
+    const r2 = m.attributeGenera(events2, "accounts", 448) as { unexplained: unknown[] };
+    expect(r2.unexplained.length).toBeGreaterThanOrEqual(3);
+    // NEGATIVE 2: a different-text twin never pairs even inside a poke
+    const events3 = [
+      { kind: "shift", el: el({ top: 454, left: 32, w: 448, cls: "flex-1 min-w-0" }), ref: el({ top: 454, left: 32, w: 472, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: -24, dH: 0 },
+      { kind: "ours-extra", el: el({ top: 470, left: 371, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex font-medium", text: "Export CSV" }) },
+      { kind: "ref-extra", ref: el({ top: 470, left: 395, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex font-medium", text: "Import CSV" }) },
+    ] as never;
+    const r3 = m.attributeGenera(events3, "accounts", 448) as { unexplained: unknown[] };
+    expect(r3.unexplained.length).toBeGreaterThanOrEqual(2);
+    // the real pair carries the token-mirror vocabulary (border-line vs
+    // border-input, bg-surface vs bg-background, the hover pairs) — the
+    // cls differences absorb exactly as they do on aligned token-mirror
+    // pairs; the TAG is the guard (a LINK never pairs with a BUTTON)
+    const events4 = [
+      { kind: "shift", el: el({ top: 454, left: 32, w: 448, cls: "flex-1 min-w-0" }), ref: el({ top: 454, left: 32, w: 472, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: -24, dH: 0 },
+      { kind: "ours-extra", el: el({ top: 470, left: 371, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex border border-line bg-surface hover:bg-line-soft h-8 px-3 text-xs", text: "Export CSV" }) },
+      { kind: "ref-extra", ref: el({ top: 470, left: 395, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex border border-input bg-background hover:bg-accent h-8 px-3 text-xs", text: "Export CSV" }) },
+    ] as never;
+    const r4 = m.attributeGenera(events4, "accounts", 448) as { unexplained: unknown[] };
+    expect(r4.unexplained).toEqual([]);
+    // a different TAG never pairs (the LINK-vs-BUTTON guard)
+    const events5 = [
+      { kind: "shift", el: el({ top: 454, left: 32, w: 448, cls: "flex-1 min-w-0" }), ref: el({ top: 454, left: 32, w: 472, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: -24, dH: 0 },
+      { kind: "ours-extra", el: el({ top: 470, left: 371, w: 93, h: 32, tag: "BUTTON", cls: "inline-flex font-medium", text: "Export CSV" }) },
+      { kind: "ref-extra", ref: el({ top: 470, left: 395, w: 93, h: 32, tag: "A", cls: "inline-flex font-medium", text: "Export CSV" }) },
+    ] as never;
+    const r5 = m.attributeGenera(events5, "accounts", 448) as { unexplained: unknown[] };
+    expect(r5.unexplained.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("the s95 RAIL-SQUEEZE face (the walk44 landscape decode): at lg the ref's poked table squeezes its own byte-equal-cls w-80 rail — the pair lands as DISPLACED TWINS (the aligner's windows can't pair a 112px horizontal shift) with the RIGHT EDGES COINCIDENT (ref.left + ref.w === ours.left + ours.w: 528+208 === 416+320 — the flex row's right boundary) and the displacement EQUAL TO the poke delta — the twins absorb and register BOTH rail boxes; the squeezed subtree (shifts or extras with either side contained in its side's rail box) absorbs as the cascade; the same twins WITHOUT a matching poke (no right-edge squeeze downstream) stay RED", async () => {
+    const m = await import("../scripts/interior-census");
+    // the full landscape shape: the poke pair (the cls-form root) + the
+    // rail twins + two cascade children (a paired shift inside the
+    // rails + an ours-only extra inside our rail)
+    const events = [
+      { kind: "shift", el: el({ top: 234, left: 32, w: 360, h: 462, cls: "flex-1 min-w-0" }), ref: el({ top: 234, left: 32, w: 472, h: 462, cls: "flex-1" }), dTop: 0, dLeft: 0, dW: -112, dH: 0 },
+      { kind: "ours-extra", el: el({ top: 234, left: 416, w: 320, h: 462, cls: "hidden lg:block w-80" }) },
+      { kind: "ref-extra", ref: el({ top: 234, left: 528, w: 208, h: 462, cls: "hidden lg:block w-80" }) },
+      { kind: "shift", el: el({ top: 235, left: 417, w: 318, h: 60, cls: "flex flex-col space-y-1.5 p-6 pb-3" }), ref: el({ top: 235, left: 529, w: 206, h: 60, cls: "flex flex-col space-y-1.5 p-6 pb-3" }), dTop: 0, dLeft: -112, dW: 112, dH: 0 },
+      { kind: "ours-extra", el: el({ top: 259, left: 441, w: 270, h: 24, cls: "flex justify-between items-center" }) },
+    ] as never;
+    const r = m.attributeGenera(events, "accounts", 704) as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(r.explained.filter((e) => e.genus === "s95-poke-out")).toHaveLength(5);
+    expect(r.unexplained).toEqual([]);
+    // NEGATIVE: the same rail twins WITHOUT the right-edge coincidence
+    // (ref 528+218 = 746 ≠ 416+320 = 736 — a plain displacement, not the
+    // flex-boundary squeeze) and WITHOUT the poke present — the twins
+    // + the subtree stay RED
+    const events2 = [
+      { kind: "ours-extra", el: el({ top: 234, left: 416, w: 320, h: 462, cls: "hidden lg:block w-80" }) },
+      { kind: "ref-extra", ref: el({ top: 234, left: 528, w: 218, h: 462, cls: "hidden lg:block w-80" }) },
+    ] as never;
+    const r2 = m.attributeGenera(events2, "accounts", 704) as { unexplained: unknown[] };
+    expect(r2.unexplained).toHaveLength(2);
+  });
+
+  it("the settings row-boxes register from EVERY signature event (the walk44 tablet decode: the DATA genus's tight-frame face — the picklist rows are byte-equal 166x54 both sides [the labels' slack ran out at 768; the different LIVE-intraday label texts drive different flex cascades] so the rows pair as MATCHES, invisible to the decoder, and the squeezed buttons/svgs/labels inside fall out; the row boxes from ALL events — matches included — restore the containment), and the contained cascade absorbs as settings-data; an extra OUTSIDE any row box stays RED", async () => {
+    const m = await import("../scripts/interior-census");
+    // the tablet shape: the row is a MATCH (byte-equal box + the row
+    // signature cls); the pencil button inside lands as an ours-extra
+    // at a different left than any ref twin (the label squeeze)
+    const rowCls = "flex items-center gap-2 p-2 border rounded-lg hover:bg-gray-50";
+    const events = [
+      { kind: "match", el: el({ top: 443, left: 289, w: 166, h: 54, cls: rowCls }), ref: el({ top: 443, left: 289, w: 166, h: 54, cls: rowCls }) },
+      { kind: "ours-extra", el: el({ top: 452, left: 375, w: 32, h: 36, tag: "BUTTON", cls: "inline-flex rounded-md text-sm h-9 w-9" }) },
+    ] as never;
+    const r = m.attributeGenera(events, "settings", 448) as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(r.explained.filter((e) => e.genus === "settings-data").length).toBeGreaterThanOrEqual(1);
+    expect(r.unexplained).toEqual([]);
+    // NEGATIVE: an extra OUTSIDE the row box (a different zone) stays
+    // RED — the containment is box-bounded
+    const events2 = [
+      { kind: "match", el: el({ top: 443, left: 289, w: 166, h: 54, cls: rowCls }), ref: el({ top: 443, left: 289, w: 166, h: 54, cls: rowCls }) },
+      { kind: "ours-extra", el: el({ top: 900, left: 375, w: 32, h: 36, tag: "BUTTON", cls: "inline-flex rounded-md text-sm h-9 w-9" }) },
+    ] as never;
+    const r2 = m.attributeGenera(events2, "settings", 448) as { unexplained: unknown[] };
+    expect(r2.unexplained).toHaveLength(1);
+  });
+
+  it("the settings VERTICAL displaced-twin face (the walk44 tablet decode): the DATA genus's row-count cascade displaces whole constructions VERTICALLY past the aligner's windows — the add-row twins (ours DIV+INPUT+BUTTON @1977 vs the ref's @1989, the dTop 12: the accumulated intraday row-height delta) and the footer twins (riding the page's mainH delta) — same tag + same leaf-text + same w/h + same LEFT + |dTop| ≤ 96 (the displaced-tail scale) absorbs as settings-data on BOTH sides; a pair displaced beyond the cascade bound (300px — a planted duplicate) and a different-text pair stay RED", async () => {
+    const m = await import("../scripts/interior-census");
+    // the tablet shape: the add-row twins + the footer twins, both
+    // displaced 12px by the row-count cascade
+    const events = [
+      { kind: "ours-extra", el: el({ top: 1977, left: 57, w: 166, h: 36, cls: "flex gap-2", text: "" }) },
+      { kind: "ref-extra", ref: el({ top: 1989, left: 57, w: 166, h: 36, cls: "flex gap-2", text: "" }) },
+      { kind: "ours-extra", el: el({ top: 1977, left: 175, w: 48, h: 36, tag: "BUTTON", cls: "inline-flex rounded-md text-sm", text: "" }) },
+      { kind: "ref-extra", ref: el({ top: 1989, left: 175, w: 48, h: 36, tag: "BUTTON", cls: "inline-flex rounded-md text-sm", text: "" }) },
+      { kind: "ours-extra", el: el({ top: 2094, left: 0, w: 512, h: 53, tag: "FOOTER", cls: "border-t bg-white px-4 py-4", text: "" }) },
+      { kind: "ref-extra", ref: el({ top: 2082, left: 0, w: 512, h: 53, tag: "FOOTER", cls: "border-t bg-white px-4 py-4", text: "" }) },
+    ] as never;
+    const r = m.attributeGenera(events, "settings", 448) as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(r.explained.filter((e) => e.genus === "settings-data")).toHaveLength(6);
+    expect(r.unexplained).toEqual([]);
+    // NEGATIVE 1: the same-shape pair displaced 300px (beyond the
+    // cascade bound — a planted duplicate construction) stays RED
+    const events2 = [
+      { kind: "ours-extra", el: el({ top: 100, left: 57, w: 166, h: 36, cls: "flex gap-2", text: "" }) },
+      { kind: "ref-extra", ref: el({ top: 400, left: 57, w: 166, h: 36, cls: "flex gap-2", text: "" }) },
+    ] as never;
+    const r2 = m.attributeGenera(events2, "settings", 448) as { unexplained: unknown[] };
+    expect(r2.unexplained).toHaveLength(2);
+    // NEGATIVE 2: a different leaf-text pair never absorbs (two
+    // different same-sized rows at the same left)
+    const events3 = [
+      { kind: "ours-extra", el: el({ top: 100, left: 57, w: 166, h: 36, tag: "DIV", cls: "flex gap-2", text: "Industries" }) },
+      { kind: "ref-extra", ref: el({ top: 112, left: 57, w: 166, h: 36, tag: "DIV", cls: "flex gap-2", text: "Stages" }) },
+    ] as never;
+    const r3 = m.attributeGenera(events3, "settings", 448) as { unexplained: unknown[] };
+    expect(r3.unexplained).toHaveLength(2);
   });
 });
