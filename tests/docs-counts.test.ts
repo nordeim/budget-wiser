@@ -469,7 +469,18 @@ const SUITES = 119;
 // never-zeroed finally + the --pages fail-fast + the settings card
 // segmentation + the mutation-proof doctrine]; SUITES 118 -> 119;
 // E2E stays 153 [the sixth gate is a script gate, pinned by unit].
-const UNIT = 2199;
+// Session-153: 2199 -> 2207 (+8 — the walk43 desktop-leg rotation:
+// interior-census-tool +8 [the two-axis CENSUS_AXES contract + the
+// contentFloor pure seam (the L-153c2 floor-travels doctrine) + the
+// --axis flag + the axis-floor s95 poke-out discriminator + the
+// axis-prefixed verdict + the run-loop/json src pins + the
+// th-label-stretch genus (the walk43 decode: the s29 th>button
+// superset's desktop face) + the F-153c1 contacts mb-6 retirement
+// (the s6-era spacing pin unmasked at desktop — the margin-collapse
+// decode)]; SUITES stays 119 [every it lands in the EXISTING census
+// suite]; E2E stays 153 [the desktop leg is a script-gate axis,
+// pinned by unit]).
+const UNIT = 2207;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -892,13 +903,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-152 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-153 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s151 layer now beneath the s152 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s152 layer now beneath the s153 head)",
     ).toContain(
-      "+ beneath it 2177 unit checks + 153 e2e checks green; the session-151 layer (THE INTERNAL-SCROLLER CENSUS + THE DASHBOARD CARD-HEADER MIRROR",
+      "+ beneath it 2199 unit checks + 153 e2e checks green; the session-152 layer (THE INTERIOR CENSUS PROMOTED INTO THE STANDING SIXTH GATE",
     );
   });
 

@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2199 checks)      | `bun run test`                         |
+|  Unit tests (2207 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2199) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2207) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7279,3 +7279,108 @@ rotation memory.
   e2e 153/153 · **the SIX drift gates CLEAN ×6** (the five standing +
   the census gate's maiden `--fail-on-drift` pass at all-zero
   unexplained) · census MATCH.
+
+### Session-153 (2026-10-20) — the census DESKTOP leg (the 153-c rotation)
+
+The workspace RESET (re-cloned at `9ba4f83` — the s152 feat + the
+session logs); the environment re-stood (bun install, `.env` from
+`.env.example` with the root-contract `DATABASE_URL`, db push+seed,
+census MATCH 15/24/10/23/12 + 4 users, the Playwright chromium).
+**THE S152 WORKLOG GAP FILLED FIRST** (the s149-gap pattern: the
+repo worklog ended at Task ID 151 — the s152 ship's worklog record
+was lost to a session interruption; reconstructed and appended).
+probe:ref **#127 STABLE** at the s147–s152 fingerprint — a rotation
+round on the session_323 next-round reading's strongest candidate:
+**the census extended past the phone axis — the 1440×900 desktop
+interiors walked + gated as the census tool's second leg** (the
+F-151c1 axis: the ghost lived at y≈905 @1440, below every desktop
+sweep fold; the desktop interiors had never been geometry-censused).
+
+- **153-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **119/2199**
+  · build · **e2e 153/153** — the EXACT s152-ship match.
+- **153-b**: probe:ref **#127 STABLE** · the drawer battery GREEN
+  (inside e2e 153/153) · **the SIX drift gates CLEAN ×6** (the
+  fullpage at the exact standing values 0.093%/0.316% at equal
+  heights 4990/7259) · sitemap 11 routes + robots · the tree clean ·
+  zero dep changes.
+- **THE TOOL EXTENSION (additive)**: `CENSUS_AXES` (phone 390×844 +
+  desktop 1440×900) · the `--axis phone|desktop|all` flag (default
+  all) · `contentFloor(width)` — the PURE floor seam (the L-153c2
+  doctrine: the floor travels with the frame — 358 at phone, 1120
+  at desktop) wired into the s95 poke-out discriminator through
+  `attributeGenera`'s new floor parameter (back-compat: the 2-arg
+  form keeps the phone floor) · the axis-prefixed verdict failures
+  · the axis in `--json` · ONE zero-data + ONE seed-restore per
+  invocation (the never-zeroed FINALLY spans both legs) ·
+  **gate:full UNCHANGED** — `census:interior -- --fail-on-drift`
+  now covers both legs internally; the six-gate chain stays six
+  commands, the census gate's coverage doubled.
+- **walk43 PASS 1 — THE MAIDEN DESKTOP CENSUS**: 7 of 9 pages CLEAN
+  at birth (dashboard, accounts, calendar, activities, reports,
+  settings, profile — every standing genus reproducing at the
+  desktop axis). TWO real decodes:
+  - **F-153c1 THE CONTACTS CARD'S mb-6** — the session-6-era spacing
+    pin RETIRED: at phone the `lg:hidden mt-6` mobile stub below
+    collapsed the adjacent margins to max(24,24)=24 on BOTH apps
+    (identical page tails — the census held mainH Δ0 for 147
+    sessions); at desktop the stub is display:none and our mb-6 was
+    a standing **+24px page-tail delta** — mainH unchanged at both
+    axes (the content fits the 836px calc box), the delta lived in
+    the white space below the last content, invisible to every
+    pixel gate. The reference's card carries NO margin
+    (live-decoded at 1440); the FILTER BAR keeps its mb-6 (the
+    reference's does carry it). The fix: the class retired + the
+    comment re-anchored (contacts-page.tsx).
+  - **THE TH-LABEL-STRETCH GENUS** — the s29 th>button accessible
+    superset's desktop face: our sortable-header label containers
+    are BUTTONs, the reference's DIVs. At phone the columns are
+    content-width and the pair is byte-equal (the s152 tag-swap
+    face); at desktop the 1120px slack stretches the reference's
+    block-level DIV to the TH content box (w177) while our BUTTON
+    keeps the UA fit-content sizing (w103) — the content pixels
+    identical, only the invisible box stretch differs. Absorbed as
+    tag-swap: same top/left/h + byte-equal cls + the same leaf-text,
+    ours.w ≤ ref.w; an ours-width OVERFLOW or a different label
+    never pairs (real drift, both sides RED).
+  - **THE VERDICT: ALL 18 page-axis runs at ZERO unexplained** —
+    mainH byte-equal on the 16 non-settings runs, settings skipped
+    on both axes (the L-150c2 DATA genus, never widened); the phone
+    leg at the EXACT s152 standing values.
+- **walk43 PASS 2 — THE DESKTOP MUTATION-PROOF**: the F-151c1 ghost
+  replanted in the Lead Sources CardHeader via targeted string
+  surgery → `census:interior --axis desktop --pages dashboard
+  --fail-on-drift` → **RED** (5 unexplained: the ghost BUTTON +
+  the displaced tail, the failure axis-prefixed `[desktop]` — at
+  desktop the catch rides the GEOMETRY, mainH stays Δ0 because the
+  content fits the calc box; the +8 lives in the row heights,
+  exactly the invisible-to-pixel-gates shape) → the string-surgery
+  revert → **GREEN**. The F-151c1 class now fails the gate at BOTH
+  axes.
+- **THE PINS (TDD)**: `tests/interior-census-tool.test.ts` extended
+  **+8** (the two-axis CENSUS_AXES contract · the contentFloor pure
+  seam · the `--axis` flag · the axis-floor s95 poke-out
+  discriminator · the axis-prefixed verdict · the run-loop/--json
+  src pins · the th-label-stretch genus · the F-153c1 retirement) —
+  **RED at birth → the implementation → GREEN**; the count ladder
+  **UNIT 2199→2207 · SUITES 119 held · badge 2352→2360** · the 12
+  lockstep sites flipped atomically · the CLAUDE-carrier pins
+  (the negatives ladder grew the 2199 forms) · the SKILL
+  **v1.150.0** + the s153 head (the s152 layer demoted beneath) +
+  the frontmatter version + the Appendix B totals + the layer-axis
+  pin.
+- **THE LESSONS**: **L-153c1 the dead zone is per-axis** — a
+  geometry gate at one viewport proves that viewport only; the
+  F-151c1 class lived at BOTH the phone interior (y≈2356 @390) and
+  the desktop interior (y≈905 @1440), and only the axis-pair covers
+  both. A census axis is cheap (the tool exists); a blind axis is a
+  standing gap. **L-153c2 the floor travels with the frame** — the
+  s95 poke-out discriminator's floor is a function of the census
+  axis (the content column: sidebar + page padding), never a
+  constant; the phone's 358 and the desktop's 1120 are the same
+  rule at two frames.
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2207** · build ·
+  e2e 153/153 · **the SIX drift gates CLEAN ×6** (the census gate
+  at BOTH axes in the one standing command) · census MATCH · the
+  mutation-proof (planted → RED → reverted → GREEN) · the VLM
+  battery 2/2 (the dashboard desktop pair and the contacts desktop
+  pair both MATCH) · the captures 353-356.

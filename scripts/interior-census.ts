@@ -20,6 +20,11 @@
 // as OURS-EXTRA/unexplained — the exact defect class that survived 143
 // sessions now fails `bun run census:interior -- --fail-on-drift` in one
 // command. Executed and verified at s152; re-execute on any decoder change.
+// The s153 extension adds the DESKTOP leg (walk43): the same ghost at the
+// desktop axis (`--axis desktop --pages dashboard` — the ghost lived at
+// y≈905 @1440, below every desktop sweep fold) must RED the desktop leg
+// exactly as the phone leg REDs — the dead zone is PER-AXIS (L-153c1),
+// and the census now walks BOTH legs in one invocation.
 //
 // The protocol (sweep.ts's, reused not duplicated): reuse-or-boot the dev
 // server (the platform DATABASE_URL spawn guard) → zero our domain data
@@ -30,11 +35,16 @@
 // mid-run: the restore rides the finally, so the workspace is never left
 // zeroed even on a thrown census).
 //
-// The census (the walk41 idiom): both apps logged in at 390×844, every
-// element inside `main` censused — content-relative top/left, w, h, tag,
-// class, leaf-text — plus mainH = main.scrollHeight (the internal
-// scroller's content height). The PURE decode seams (alignCensus /
-// attributeGenera / censusVerdict) are what the unit pins exercise.
+// The census (the walk41 idiom): both apps logged in at the CENSUS AXES
+// — 390×844 (phone, the walk41 axis) + 1440×900 (desktop, the 153-c
+// extension: the F-151c1 axis) — every element inside `main` censused:
+// content-relative top/left, w, h, tag, class, leaf-text, plus mainH =
+// main.scrollHeight (the internal scroller's content height). The PURE
+// decode seams (alignCensus / attributeGenera / censusVerdict /
+// contentFloor / parseAxisArg) are what the unit pins exercise. The
+// dead zone is PER-AXIS (L-153c1): the phone leg proves the 390 interior,
+// the desktop leg the 1440 interior — one viewport never covers the
+// other's layout tree.
 //
 // The verdict is BYTE-PARITY, zero margin: geometry gates have no raster
 // floor, so every delta must ATTRIBUTE to a documented genus or it is
@@ -72,7 +82,10 @@
 // settings baseline. Never widened — skipped, and documented.
 //
 // Run: bun run census:interior [--fail-on-drift] [--json]
-//      [--pages leads,settings]  (the sweep's subset idiom, fail-fast)
+//      [--axis phone|desktop|all]  (default all — the gate covers both
+//      legs in one command; the mutation-proof runs one axis)
+//      [--pages leads,settings]  (the sweep's subset idiom, fail-fast;
+//      composes with --axis)
 // Env: OUR_URL / REF_URL / REF_EMAIL / REF_PASSWORD (the sweep contract)
 // ---------------------------------------------------------------------------
 
@@ -143,6 +156,57 @@ export const RECHARTS_TOL = 3;
  *  REFERENCE's bare flex-1 tables poke past it (w=472); a width delta
  *  between two in-container boxes is NOT the poke-out. */
 export const PHONE_CONTENT_FLOOR = 358;
+
+// -- the census axes (the 153-c extension) -------------------------------
+
+export interface CensusAxis {
+  name: string;
+  width: number;
+  height: number;
+}
+
+/** The two census legs (the L-153c1 doctrine: the dead zone is PER-AXIS).
+ *  Phone 390×844 — the walk41 axis, the s152 gate. Desktop 1440×900 —
+ *  the F-151c1 axis: the ghost buttons lived at y≈905 @1440, below the
+ *  1024×768 sweep fold (768) and inside the internal scroller the
+ *  1920×1080 sweep structurally cannot see past (1080); the desktop
+ *  interiors had never been geometry-censused before s153. */
+export const CENSUS_AXES: ReadonlyArray<CensusAxis> = [
+  { name: "phone", width: 390, height: 844 },
+  { name: "desktop", width: 1440, height: 900 },
+] as const;
+
+/** The content-column floor at a frame width (the L-153c2 seam: the
+ *  floor travels with the frame, never a constant): <640 the sidebar is
+ *  hidden and the page root pads p-4 (390→358, the walk41 anchor);
+ *  640-767 the sidebar still hidden, the sm:p-8 root (640→576); ≥768
+ *  the w-64 sidebar is in flow AND the sm:p-8 root (1440→1120, the
+ *  F-151c1 axis). The s95 poke-out discriminator reads the AXIS's
+ *  floor — a past-the-floor reference width absorbs, an in-container
+ *  width delta stays RED at both axes. */
+export function contentFloor(width: number): number {
+  if (width < 640) return width - 32;
+  if (width < 768) return width - 64;
+  return width - 256 - 64;
+}
+
+/** The --axis CLI seam (the --pages idiom): default ALL legs (the
+ *  standing gate command covers both); one-axis subsets for the
+ *  targeted mutation-proof runs; unknown names fail fast listing the
+ *  valid ones. */
+export function parseAxisArg(argv: string[]): ReadonlyArray<CensusAxis> {
+  const i = argv.indexOf("--axis");
+  if (i === -1) return CENSUS_AXES;
+  const wanted = argv[i + 1];
+  if (wanted === "all") return CENSUS_AXES;
+  const axis = CENSUS_AXES.find((a) => a.name === wanted);
+  if (!axis) {
+    throw new Error(
+      `unknown --axis "${wanted}" — valid: all, ${CENSUS_AXES.map((a) => a.name).join(", ")}`,
+    );
+  }
+  return [axis];
+}
 
 // -- the pure decoder -------------------------------------------------------
 
@@ -540,7 +604,11 @@ function tokenSubset(sub: string, sup: string): boolean {
  * UNEXPLAINED. The one page-scoped exception: the settings DATA face
  * (rows + subtrees + the displacement cascade) — the L-150c2 doctrine.
  */
-export function attributeGenera(events: CensusEvent[], page: string): AttributionResult {
+export function attributeGenera(
+  events: CensusEvent[],
+  page: string,
+  floor: number = PHONE_CONTENT_FLOOR,
+): AttributionResult {
   const matches = events.filter((e) => e.kind === "match").length;
   // the attribution map — the EXPLAINED list is emitted in EVENT ORDER
   // (the decode report reads as the page reads)
@@ -592,19 +660,21 @@ export function attributeGenera(events: CensusEvent[], page: string): Attributio
         continue;
       }
       // the s95 poke-out: position-aligned, width-only, and the
-      // REFERENCE wider than the 390-frame's 358px content floor —
-      // its bare flex-1 cards poke past the phone container (its own
-      // standing defect, the walk41 decode: w=472 inside the 358
-      // container). The FLOOR is the discriminator: a real ours
-      // width regression (both sides inside the container) shows
-      // ref.w ≤ 358 and stays UNEXPLAINED — only the poke-out absorbs.
+      // REFERENCE wider than the axis's content floor (the L-153c2
+      // seam: the floor travels with the frame — 358 at the phone
+      // axis, 1120 at the desktop axis). Its bare flex-1 cards poke
+      // past the container (its own standing defect, the walk41
+      // decode: w=472 inside the 358 phone container). The FLOOR is
+      // the discriminator: a real ours width regression (both sides
+      // inside the container) shows ref.w ≤ floor and stays
+      // UNEXPLAINED — only the poke-out absorbs.
       if (
         dw < -RECHARTS_TOL &&
         dt <= RECHARTS_TOL &&
         dl <= RECHARTS_TOL &&
         dh <= RECHARTS_TOL &&
         e.ref !== undefined &&
-        e.ref.w > PHONE_CONTENT_FLOOR
+        e.ref.w > floor
       ) {
         genusOf.set(e, "s95-poke-out");
         continue;
@@ -746,6 +816,41 @@ export function attributeGenera(events: CensusEvent[], page: string): Attributio
       genusOf.set(twins[idx], "tag-swap");
     }
   }
+  // the TH-LABEL-STRETCH face (the walk43 desktop decode): ours'
+  // sortable-header label containers are BUTTONs (the s29 th>button
+  // accessible superset) where the reference's are DIVs. At the phone
+  // axis the columns are content-width and the pair is byte-equal (the
+  // tag-swap face above); at desktop the 1120px slack stretches the
+  // reference's block-level DIV to the TH content box while our BUTTON
+  // keeps the UA fit-content sizing. Same top/left/h + byte-equal cls
+  // + the same leaf-text label, ours.w ≤ ref.w — the content pixels
+  // identical, only the invisible box stretch differs. A width
+  // OVERFLOW (ours wider than the container) or a different label
+  // never pairs — real drift, both sides unexplained.
+  for (const e of twins) {
+    if (e.kind !== "ours-extra" || e.el === undefined || genusOf.has(e)) continue;
+    const a = e.el;
+    if (a.tag !== "BUTTON") continue;
+    const idx = twins.findIndex(
+      (r, k) =>
+        r.kind === "ref-extra" &&
+        r.ref !== undefined &&
+        !matchedRef.has(k) &&
+        !genusOf.has(r) &&
+        r.ref.tag === "DIV" &&
+        a.top === r.ref.top &&
+        a.left === r.ref.left &&
+        a.h === r.ref.h &&
+        a.w <= r.ref.w &&
+        a.cls === r.ref.cls &&
+        a.text === r.ref.text,
+    );
+    if (idx !== -1) {
+      matchedRef.add(idx);
+      genusOf.set(e, "tag-swap");
+      genusOf.set(twins[idx], "tag-swap");
+    }
+  }
 
   // -- the ordered emission (event order, the decode-report order) -------
   const explained: AttributedEvent[] = [];
@@ -765,6 +870,10 @@ export function attributeGenera(events: CensusEvent[], page: string): Attributio
 
 export interface CensusPageResult {
   page: string;
+  /** The 153-c extension: the census leg this result walked (phone /
+   *  desktop). Undefined = the axis-less standing form (the s152 pins
+   * call the verdict seam directly without an axis). */
+  axis?: string;
   mainHDelta: number | null;
   oursEls: number;
   refEls: number;
@@ -788,16 +897,20 @@ export interface CensusVerdict {
 export function censusVerdict(results: CensusPageResult[]): CensusVerdict {
   const failures: string[] = [];
   for (const r of results) {
+    // the 153-c extension: the failure names its AXIS — a phone GREEN
+    // never masks a desktop RED (and the axis-less standing form stays
+    // unprefixed, back-compat with the s152 pins)
+    const where = r.axis !== undefined ? `[${r.axis}] ${r.page}` : r.page;
     if (r.unexplained.length > 0) {
       failures.push(
-        `${r.page}: ${r.unexplained.length} unexplained event(s) — first: ` +
+        `${where}: ${r.unexplained.length} unexplained event(s) — first: ` +
           `${r.unexplained[0].kind} ` +
           `${r.unexplained[0].el ? `ours ${r.unexplained[0].el.tag}@${r.unexplained[0].el.top} [${r.unexplained[0].el.cls}]` : ""}` +
           `${r.unexplained[0].ref ? `ref ${r.unexplained[0].ref.tag}@${r.unexplained[0].ref.top} [${r.unexplained[0].ref.cls}]` : ""}`,
       );
     }
     if (r.page !== "settings" && r.mainHDelta !== null && r.mainHDelta !== 0) {
-      failures.push(`${r.page}: mainH delta ${r.mainHDelta} ≠ 0 (byte-parity, zero margin)`);
+      failures.push(`${where}: mainH delta ${r.mainHDelta} ≠ 0 (byte-parity, zero margin)`);
     }
   }
   return { ok: failures.length === 0, failures };
@@ -879,6 +992,7 @@ async function run() {
   const failOnDriftFlag = argv.includes("--fail-on-drift");
   const json = argv.includes("--json");
   const pages = parsePagesArg(argv, INTERIOR_PAGES);
+  const axes = parseAxisArg(argv);
 
   // 1. the dev server: reuse :3000 or boot one (the s123 F-A guard —
   //    the platform shell exports a STALE absolute DATABASE_URL; an
@@ -920,62 +1034,74 @@ async function run() {
     });
     if (z.status !== 0) throw new Error("zero-data.ts failed");
 
-    // 3. both apps logged in, at the walk41 axis 390×844
+    // 3. the AXES loop (the 153-c extension): one zero-data + one
+    //    browser per invocation; a fresh context (with both logins) at
+    //    each axis's viewport — the dead zone is PER-AXIS, the census
+    //    walks every leg (--axis subsets for the mutation-proof runs)
     const browser = await chromium.launch({
       headless: process.env.HEADLESS === "0" ? false : true,
     });
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
-    const refPage = await ctx.newPage();
-    log(`logging into the reference ${REF_URL}…`);
-    await login(refPage, REF_URL);
-    const ourPage = await ctx.newPage();
-    log(`logging into ours ${OUR_URL}…`);
-    await login(ourPage, OUR_URL);
-
-    // 4. the census per page + the decode
     results = [];
-    for (const p of pages) {
-      const ref = await censusPage(refPage, REF_URL, p.path);
-      const ours = await censusPage(ourPage, OUR_URL, p.path);
-      // the settings page aligns through the card segmentation (the
-      // LIVE-DATA page — the L-150c2 doctrine, the walk42 decode)
-      const events =
-        p.name === "settings" ? alignSettings(ours.els, ref.els) : alignCensus(ours.els, ref.els);
-      const att = attributeGenera(events, p.name);
-      const mainHDelta = ours.mainH - ref.mainH;
-      results.push({
-        page: p.name,
-        mainHDelta,
-        oursEls: ours.els.length,
-        refEls: ref.els.length,
-        matches: att.matches,
-        explained: att.explained,
-        unexplained: att.unexplained,
-      });
+    for (const axis of axes) {
+      const ctx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
+      const refPage = await ctx.newPage();
+      log(`logging into the reference ${REF_URL} (${axis.name} ${axis.width}x${axis.height})…`);
+      await login(refPage, REF_URL);
+      const ourPage = await ctx.newPage();
+      log(`logging into ours ${OUR_URL}…`);
+      await login(ourPage, OUR_URL);
+
+      // 4. the census per page + the decode, at the axis's content
+      //    floor (the L-153c2 seam — the s95 poke-out discriminator
+      //    travels with the frame)
+      const floor = contentFloor(axis.width);
+      for (const p of pages) {
+        const ref = await censusPage(refPage, REF_URL, p.path);
+        const ours = await censusPage(ourPage, OUR_URL, p.path);
+        // the settings page aligns through the card segmentation (the
+        // LIVE-DATA page — the L-150c2 doctrine, the walk42 decode)
+        const events =
+          p.name === "settings" ? alignSettings(ours.els, ref.els) : alignCensus(ours.els, ref.els);
+        const att = attributeGenera(events, p.name, floor);
+        const mainHDelta = ours.mainH - ref.mainH;
+        results.push({
+          page: p.name,
+          axis: axis.name,
+          mainHDelta,
+          oursEls: ours.els.length,
+          refEls: ref.els.length,
+          matches: att.matches,
+          explained: att.explained,
+          unexplained: att.unexplained,
+        });
+      }
+      await ctx.close();
     }
     await browser.close();
 
-    // 5. the report
+    // 5. the report — a section per axis (the decode reads per leg)
     if (!json) {
-      console.log(`\n[census] === the interior geometry census (390x844, both apps logged in, ours at the matched zero-data state) ===`);
-      for (const r of results) {
-        const genera: Record<string, number> = {};
-        for (const a of r.explained) genera[a.genus] = (genera[a.genus] ?? 0) + 1;
-        const generaLine =
-          Object.entries(genera)
-            .map(([g, n]) => `${g} ${n}`)
-            .join(", ") || "none";
-        const mainHLine =
-          r.page === "settings"
-            ? `mainH Δ${r.mainHDelta} SKIPPED (the DATA genus)`
-            : `mainH Δ${r.mainHDelta}`;
-        console.log(
-          `  ${r.page.padEnd(11)} ${mainHLine} · els ${r.oursEls}/${r.refEls} · match ${r.matches} · genera: ${generaLine} · unexplained ${r.unexplained.length}`,
-        );
-        for (const u of r.unexplained.slice(0, 5)) {
-          const side = u.el ? `ours ${u.el.tag}@${u.el.top} w${u.el.w} h${u.el.h} [${u.el.cls}]` : "";
-          const sideRef = u.ref ? `ref ${u.ref.tag}@${u.ref.top} w${u.ref.w} h${u.ref.h} [${u.ref.cls}]` : "";
-          console.log(`    UNEXPLAINED ${u.kind} ${side}${sideRef}`);
+      for (const axis of axes) {
+        console.log(`\n[census] === the interior geometry census — ${axis.name} ${axis.width}x${axis.height} (both apps logged in, ours at the matched zero-data state) ===`);
+        for (const r of results.filter((x) => x.axis === axis.name)) {
+          const genera: Record<string, number> = {};
+          for (const a of r.explained) genera[a.genus] = (genera[a.genus] ?? 0) + 1;
+          const generaLine =
+            Object.entries(genera)
+              .map(([g, n]) => `${g} ${n}`)
+              .join(", ") || "none";
+          const mainHLine =
+            r.page === "settings"
+              ? `mainH Δ${r.mainHDelta} SKIPPED (the DATA genus)`
+              : `mainH Δ${r.mainHDelta}`;
+          console.log(
+            `  ${r.page.padEnd(11)} ${mainHLine} · els ${r.oursEls}/${r.refEls} · match ${r.matches} · genera: ${generaLine} · unexplained ${r.unexplained.length}`,
+          );
+          for (const u of r.unexplained.slice(0, 5)) {
+            const side = u.el ? `ours ${u.el.tag}@${u.el.top} w${u.el.w} h${u.el.h} [${u.el.cls}]` : "";
+            const sideRef = u.ref ? `ref ${u.ref.tag}@${u.ref.top} w${u.ref.w} h${u.ref.h} [${u.ref.cls}]` : "";
+            console.log(`    UNEXPLAINED ${u.kind} ${side}${sideRef}`);
+          }
         }
       }
     }
@@ -986,6 +1112,7 @@ async function run() {
         JSON.stringify({
           tool: "interior-census",
           results: results.map((r) => ({
+            axis: r.axis,
             page: r.page,
             mainHDelta: r.mainHDelta,
             oursEls: r.oursEls,

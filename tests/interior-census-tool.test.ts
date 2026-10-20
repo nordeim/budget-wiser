@@ -445,3 +445,157 @@ describe("session-152: the interior-census tool (the dead-zone standing gate)", 
     expect(src).toMatch(/L-151c2/);
   });
 });
+
+describe("session-153: the census DESKTOP leg (the F-151c1 axis — the dead zone is PER-AXIS, the 153-c rotation)", () => {
+  it("the two-axis contract: CENSUS_AXES = phone 390x844 + desktop 1440x900 (the F-151c1 axis; the census gate covers BOTH legs in one command)", async () => {
+    const m = await import("../scripts/interior-census");
+    const axes = m.CENSUS_AXES as ReadonlyArray<{ name: string; width: number; height: number }>;
+    expect(axes.map((a) => [a.name, a.width, a.height])).toEqual([
+      ["phone", 390, 844],
+      ["desktop", 1440, 900],
+    ]);
+  });
+
+  it("contentFloor: the axis floor is a PURE function of the frame — the sidebar + page-root arithmetic (the L-153c2 seam: 390→358 the walk41 anchor · 1440→1120 the F-151c1 axis · the sm mid-band)", async () => {
+    const m = await import("../scripts/interior-census");
+    // <640: the sidebar hidden, the p-4 page root — the walk41 anchor
+    expect(m.contentFloor(390)).toBe(358);
+    expect(m.contentFloor(390)).toBe(m.PHONE_CONTENT_FLOOR);
+    // ≥768: the w-64 sidebar in flow + the sm:p-8 page root
+    expect(m.contentFloor(1440)).toBe(1120);
+    expect(m.contentFloor(768)).toBe(448);
+    // 640-767: the sidebar still hidden, the sm:p-8 page root
+    expect(m.contentFloor(640)).toBe(576);
+    // the floor never inverts (a wider frame never floors lower)
+    expect(m.contentFloor(1440)).toBeGreaterThan(m.contentFloor(390));
+  });
+
+  it("the --axis flag: default ALL (both legs) · one-axis subsets · unknown fail-fast (the --pages idiom, composed)", async () => {
+    const m = await import("../scripts/interior-census");
+    const all = m.parseAxisArg([]) as ReadonlyArray<{ name: string }>;
+    expect(all.map((a) => a.name)).toEqual(["phone", "desktop"]);
+    const phone = m.parseAxisArg(["--axis", "phone"]) as ReadonlyArray<{ name: string }>;
+    expect(phone.map((a) => a.name)).toEqual(["phone"]);
+    const desktop = m.parseAxisArg(["--axis", "desktop"]) as ReadonlyArray<{ name: string }>;
+    expect(desktop.map((a) => a.name)).toEqual(["desktop"]);
+    expect(() => m.parseAxisArg(["--axis", "bogus"])).toThrow(/bogus/);
+  });
+
+  it("attributeGenera: the s95 poke-out discriminates at the AXIS floor — the desktop past-the-floor shift absorbs; the in-container width delta stays RED; the standing 2-arg phone form unchanged", async () => {
+    const m = await import("../scripts/interior-census");
+    // the desktop poke-out shape: the reference's bare flex-1 table past
+    // the 1120 content floor, position-aligned, width-only
+    const r = m.attributeGenera(
+      [{ kind: "shift", el: el({ w: 1120, cls: "flex-1 min-w-0" }), ref: el({ w: 1300 }), dW: -180 } as never],
+      "accounts",
+      1120,
+    ) as { explained: Array<{ genus: string }>; unexplained: unknown[] };
+    expect(r.explained.map((e) => e.genus)).toEqual(["s95-poke-out"]);
+    expect(r.unexplained).toEqual([]);
+    // the in-container width delta (ref w=900 INSIDE the 1120 floor) is
+    // a REAL regression — RED at the desktop axis exactly as at phone
+    const r2 = m.attributeGenera(
+      [{ kind: "shift", el: el({ w: 720, cls: "x" }), ref: el({ w: 900 }), dW: -180 } as never],
+      "accounts",
+      1120,
+    ) as { unexplained: unknown[] };
+    expect(r2.unexplained).toHaveLength(1);
+    // the standing 2-arg form keeps the phone floor (back-compat — the
+    // s152 pins call attributeGenera(events, page) and stay green)
+    const r3 = m.attributeGenera(
+      [{ kind: "shift", el: el({ w: 358, cls: "flex-1 min-w-0" }), ref: el({ w: 472 }), dW: -114 } as never],
+      "accounts",
+    ) as { explained: Array<{ genus: string }> };
+    expect(r3.explained.map((e) => e.genus)).toEqual(["s95-poke-out"]);
+  });
+
+  it("censusVerdict: the failures carry the AXIS — a desktop-leg defect REDs the gate with the axis named (a phone GREEN never masks a desktop RED); the axis-less standing form stays unprefixed", async () => {
+    const m = await import("../scripts/interior-census");
+    type PR = { page: string; axis?: string; mainHDelta: number | null; unexplained: unknown[] };
+    const v = m.censusVerdict as (rs: PR[]) => { ok: boolean; failures: string[] };
+    // phone clean + desktop RED: the gate fails, the failure names the axis
+    const verdict = v([
+      { page: "dashboard", axis: "phone", mainHDelta: 0, unexplained: [] },
+      { page: "dashboard", axis: "desktop", mainHDelta: 0, unexplained: [{}] },
+    ]);
+    expect(verdict.ok).toBe(false);
+    expect(verdict.failures.some((f) => f.includes("desktop") && f.includes("dashboard"))).toBe(true);
+    // both axes clean: GREEN
+    expect(
+      v([
+        { page: "dashboard", axis: "phone", mainHDelta: 0, unexplained: [] },
+        { page: "dashboard", axis: "desktop", mainHDelta: 0, unexplained: [] },
+      ]).ok,
+    ).toBe(true);
+    // the settings skip holds per-axis (the L-150c2 doctrine, both legs)
+    expect(
+      v([
+        { page: "settings", axis: "desktop", mainHDelta: 86, unexplained: [] },
+      ]).ok,
+    ).toBe(true);
+    // the axis-less standing form: unprefixed (back-compat with the s152 pins)
+    const bare = v([{ page: "leads", mainHDelta: 0, unexplained: [{}] }]);
+    expect(bare.ok).toBe(false);
+    expect(bare.failures[0].startsWith("leads")).toBe(true);
+  });
+
+  it("the run loop walks EVERY axis with a fresh context at its viewport; ONE zero-data + ONE seed-restore per invocation (the never-zeroed FINALLY spans both legs); the --json output carries the axis", () => {
+    const src = toolSrc();
+    // the per-axis context (the walk41 axis + the F-151c1 axis)
+    expect(src).toMatch(/for\s*\(const axis of\s+/);
+    expect(src).toMatch(/viewport:\s*\{\s*width:\s*axis\.width,\s*height:\s*axis\.height\s*\}/);
+    // the json machine contract gains the axis field
+    expect(src).toMatch(/axis:\s*r\.axis/);
+    // the mutation-proof at the desktop axis is part of the documented
+    // contract (the F-151c1 ghost lived at y≈905 @1440 — this leg's
+    // reason to exist; executed at s153)
+    expect(src).toMatch(/--axis desktop --pages dashboard/);
+  });
+
+  it("attributeGenera: the th-label-stretch face (the walk43 desktop decode) — the s29 th>button accessible superset at the desktop axis: our BUTTON keeps the UA fit-content sizing while the reference's DIV stretches to the TH content box (at phone the columns are content-width and the pair is byte-equal — the s152 tag-swap face); same top/left/h + cls + leaf-text, ours.w ≤ ref.w → tag-swap; an ours-width OVERFLOW or a different label NEVER pairs", async () => {
+    const m = await import("../scripts/interior-census");
+    const btn = (over: Partial<{ w: number; text: string }> = {}) =>
+      el({ tag: "BUTTON", top: 437, left: 40, w: 103, h: 20, cls: "flex items-center gap-2", text: "Lead Name", ...over });
+    const div = (over: Partial<{ w: number; text: string }> = {}) =>
+      el({ tag: "DIV", top: 437, left: 40, w: 177, h: 20, cls: "flex items-center gap-2", text: "Lead Name", ...over });
+    // the desktop stretch pair absorbs as tag-swap (the composition genus)
+    const r = m.attributeGenera(
+      [
+        { kind: "ours-extra", el: btn() },
+        { kind: "ref-extra", ref: div() },
+      ] as never,
+      "leads",
+    ) as { explained: Array<{ genus: string }>; unexplained: unknown[] };
+    expect(r.explained.filter((x) => x.genus === "tag-swap")).toHaveLength(2);
+    expect(r.unexplained).toEqual([]);
+    // ours WIDER than the reference's container box (the overflow face)
+    // never pairs — real drift on both sides
+    const r2 = m.attributeGenera(
+      [
+        { kind: "ours-extra", el: btn({ w: 200 }) },
+        { kind: "ref-extra", ref: div() },
+      ] as never,
+      "leads",
+    ) as { unexplained: unknown[] };
+    expect(r2.unexplained).toHaveLength(2);
+    // a different label never pairs (the mispair guard)
+    const r3 = m.attributeGenera(
+      [
+        { kind: "ours-extra", el: btn({ text: "Email" }) },
+        { kind: "ref-extra", ref: div() },
+      ] as never,
+      "leads",
+    ) as { unexplained: unknown[] };
+    expect(r3.unexplained).toHaveLength(2);
+  });
+
+  it("F-153c1 the contacts card's mb-6 RETIRED (the walk43 desktop decode: the session-6 spacing pin was masked at phone by the lg:hidden stub's mt-6 — the adjacent margins collapsed to max(24,24)=24 on BOTH apps; at desktop the stub is display:none and our mb-6 was a standing +24px page-tail delta invisible to every pixel gate — mainH unchanged at both axes, the delta lived in the white space below the last content; the reference's card carries NO margin, live-decoded at 1440; the FILTER BAR keeps its mb-6 — the reference's does carry it)", () => {
+    const src = readFileSync("src/app/(app)/contacts/contacts-page.tsx", "utf-8");
+    // the card: no margin (the reference's construction, live-decoded)
+    expect(src).toMatch(/<Card className="overflow-hidden shadow-sm border-line-strong">/);
+    expect(src).not.toMatch(/<Card className="mb-6/);
+    // the filter bar keeps its mb-6 (the reference's filter bar DOES
+    // carry it — the live decode's control)
+    expect(src).toMatch(/cn\(TABLE_CARD\.card, "mb-6"\)/);
+  });
+});

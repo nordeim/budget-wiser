@@ -467,16 +467,26 @@ export default function ContactsPage() {
       </div>
 
       {/* Reference wrapper: rounded-xl + border + shadow-sm + overflow-hidden
-          (session-5) — contacts is the one bordered table wrapper (mb-6
-          spacing per session-6). Session-11 (S11-P9): the shadow-sm
-          override is now EXPLICIT — the Card base's bare `shadow` rendered
-          one step heavier than the reference's tiny shadow-sm here (the
-          contacts table is the only entity table with the small shadow;
-          accounts/leads keep the standard one). Session-12 (S12-P3): the
-          reference's border here is EXPLICIT border-gray-200 — the strong
-          token (--color-line-strong), not the #e5e5e5 platform default.
-          `cn` is tailwind-merge, so both conflicts resolve correctly. */}
-      <Card className="mb-6 overflow-hidden shadow-sm border-line-strong">
+          (session-5). Session-153 (F-153c1, walk43 desktop-decoded): the
+          session-6-era `mb-6` RETIRED — the reference's card carries NO
+          margin (live-decoded at 1440). The pin survived 147 sessions
+          because at phone the `lg:hidden mt-6` mobile stub below collapsed
+          the adjacent margins to max(24,24)=24 on BOTH apps (identical
+          page tails); at desktop the stub is display:none and our mb-6
+          was a standing +24px page-tail delta — inside the white space
+          below the last content, mainH unchanged at both axes, invisible
+          to every pixel gate. The desktop census leg caught it. (The
+          FILTER BAR above keeps its mb-6 — the reference's filter bar
+          does carry it.) Session-11 (S11-P9): the shadow-sm override is
+          now EXPLICIT — the Card base's bare `shadow` rendered one step
+          heavier than the reference's tiny shadow-sm here (the contacts
+          table is the only entity table with the small shadow;
+          accounts/leads keep the standard one). Session-12 (S12-P3):
+          the reference's border here is EXPLICIT border-gray-200 — the
+          strong token (--color-line-strong), not the #e5e5e5 platform
+          default. `cn` is tailwind-merge, so both conflicts resolve
+          correctly. */}
+      <Card className="overflow-hidden shadow-sm border-line-strong">
         <CardContent className="px-0 py-0">
           <Table>
             <TableHeader>
