@@ -497,7 +497,22 @@ const SUITES = 119;
 // twins (the add-row/footer cascade)]; SUITES stays 119 [every it
 // lands in the EXISTING census suite]; E2E stays 153 [the tablet +
 // landscape legs are script-gate axes, pinned by unit]).
-const UNIT = 2217;
+// Session-155: 2217 -> 2225 (+8 — the census LANDING public leg: the
+// PUBLIC_PAGES contract + the walk45 anchor seam [div.min-h-screen
+// .bg-white, the pill/Toaster exclusion, the document scroller's
+// documentElement.scrollHeight, the viewport floor] + the --pages
+// composition over the combined 10-page list + the guest-context run
+// loop with the login/public guards + the landing verdict [docH never
+// skipped] + the landing mutation-proof doctrine + the TEXT-NODE
+// CARDINALITY face [the pricing pairs: ours TEXT("$8") vs the ref's
+// TEXT("$")+TEXT("8"), the join(" ") artifact, absorbed as
+// composition-split, pinning the latent pairedOpposite self-match]
+// + the live-data WORKSPACE-SCOPING [text-only pairs stay RED on the
+// static marketing surface, pinning the latent wrapper-twin paired
+// self-match]; SUITES stays 119 [every it lands in the EXISTING
+// census suite]; E2E stays 153 [the public leg is a script-gate
+// surface, pinned by unit]).
+const UNIT = 2225;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -920,13 +935,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-154 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-155 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s153 layer now beneath the s154 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s154 layer now beneath the s155 head)",
     ).toContain(
-      "+ beneath it 2207 unit checks + 153 e2e checks green; the session-153 layer (THE INTERIOR CENSUS DESKTOP LEG",
+      "+ beneath it 2217 unit checks + 153 e2e checks green; the session-154 layer (THE CENSUS TABLET LEGS",
     );
   });
 

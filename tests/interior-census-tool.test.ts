@@ -54,7 +54,7 @@ describe("session-152: the interior-census tool (the dead-zone standing gate)", 
     expect(gate.indexOf("census:interior")).toBeGreaterThan(gate.indexOf("sweep:fullpage"));
   });
 
-  it("the 9-page census list: the shell surfaces only — no landing/about/contact/login (they have no internal scroller; other gates own them)", async () => {
+  it("the 9-page census list: the shell surfaces only — the LANDING joins as the PUBLIC leg (the s155 extension; about/contact/login stay out — login-walled shell surfaces, other gates own them)", async () => {
     const m = await import("../scripts/interior-census");
     const pages = m.INTERIOR_PAGES as ReadonlyArray<{ name: string; path: string }>;
     expect(pages.map((p) => p.name)).toEqual([
@@ -861,5 +861,205 @@ describe("session-154: the census TABLET legs (the md-boundary axis 768x1024 + t
     ] as never;
     const r3 = m.attributeGenera(events3, "settings", 448) as { unexplained: unknown[] };
     expect(r3.unexplained).toHaveLength(2);
+  });
+});
+
+describe("session-155: the census LANDING public leg (the last blind surface — the 155-c rotation)", () => {
+  it("the PUBLIC_PAGES contract: the landing at '/' joins the census as the PUBLIC leg — GUEST contexts (the s149 fullpage doctrine: no login, no storageState; the reference renders its 'Edit with Base 44' pill to guests, ours never has it) — while about/contact/login stay OUT (login-walled shell surfaces; the next-round candidates)", async () => {
+    const m = await import("../scripts/interior-census");
+    const pub = m.PUBLIC_PAGES as ReadonlyArray<{ name: string; path: string }>;
+    expect(pub.map((p) => [p.name, p.path])).toEqual([["landing", "/"]]);
+    // the 9 app pages unchanged (the s152 contract held — the public
+    // leg is ADDITIVE, the app-pages protocol byte-identical)
+    expect(
+      (m.INTERIOR_PAGES as ReadonlyArray<{ name: string }>).map((p) => p.name),
+    ).toEqual([
+      "dashboard",
+      "accounts",
+      "contacts",
+      "leads",
+      "calendar",
+      "activities",
+      "reports",
+      "settings",
+      "profile",
+    ]);
+    // the combined filter list: all 10 names, the app pages first
+    expect(
+      (m.CENSUS_ALL_PAGES as ReadonlyArray<{ name: string }>).map((p) => p.name),
+    ).toEqual([
+      "dashboard",
+      "accounts",
+      "contacts",
+      "leads",
+      "calendar",
+      "activities",
+      "reports",
+      "settings",
+      "profile",
+      "landing",
+    ]);
+    // the landing path lockstep with the sweep's own landing entry
+    const sweep = await import("../scripts/sweep");
+    const sLanding = (sweep.PAGES as ReadonlyArray<{ name: string; path: string }>).find(
+      (x) => x.name === "landing",
+    );
+    expect(sLanding).toBeDefined();
+    expect(sLanding!.path).toBe("/");
+    // the dispatch: isPublicPage by name
+    expect(m.isPublicPage({ name: "landing" })).toBe(true);
+    expect(m.isPublicPage({ name: "dashboard" })).toBe(false);
+  });
+
+  it("the anchor seam (the walk45 probe decode): the public-leg collector anchors at div.min-h-screen.bg-white (ours id=top at body level; the reference's #root first child — querySelector's first document-order match on BOTH apps) so the guest pill (the body-level div#base44-edit-badge sibling, position:fixed) and the shadcn Toaster portal sit OUTSIDE the anchor and never enter the census; the height seam is documentElement.scrollHeight (the landing scrolls the DOCUMENT — no main.overflow-auto); the public floor is the VIEWPORT column (the s95 discriminator travels with the frame)", () => {
+    const src = toolSrc();
+    // the anchor selector (both apps' landing root)
+    expect(src).toMatch(/div\.min-h-screen\.bg-white/);
+    // the pill's exclusion is DOCUMENTED in the tool (never censused,
+    // never mirrored — the genus stays in the fullpage STANDING_EXPLAINED)
+    expect(src).toMatch(/base44-edit-badge/);
+    // the document-scroller height seam
+    expect(src).toMatch(/documentElement\.scrollHeight/);
+    // the public collector: its own function (the main-anchor
+    // protocol untouched)
+    expect(src).toMatch(/async function censusPublicPage/);
+    // the public leg's floor: the viewport width (the document column)
+    expect(src).toMatch(/attributeGenera\(events,\s*p\.name,\s*axis\.width\)/);
+  });
+
+  it("the --pages filter composes across BOTH legs (the s95 idiom, the combined list): no flag runs all 10; '--pages landing' selects ONLY the public leg (the mutation-proof idiom); mixed selections compose; unknown names fail-fast listing the 10 valid names", async () => {
+    const m = await import("../scripts/interior-census");
+    const all = m.parsePagesArg([], m.CENSUS_ALL_PAGES) as ReadonlyArray<{ name: string }>;
+    expect(all).toHaveLength(10);
+    const landing = m.parsePagesArg(["--pages", "landing"], m.CENSUS_ALL_PAGES) as ReadonlyArray<{
+      name: string;
+    }>;
+    expect(landing.map((p) => p.name)).toEqual(["landing"]);
+    const mixed = m.parsePagesArg(["--pages", "dashboard,landing"], m.CENSUS_ALL_PAGES) as ReadonlyArray<{
+      name: string;
+    }>;
+    expect(mixed.map((p) => p.name)).toEqual(["dashboard", "landing"]);
+    expect(() => m.parsePagesArg(["--pages", "nope"], m.CENSUS_ALL_PAGES)).toThrow(/landing/);
+  });
+
+  it("the run loop: a fresh GUEST context per axis for the public leg (NO login — the s149 fullpage doctrine; the app-pages login phase GUARDED so a public-only run never logs in; a public-empty selection never opens guest contexts); ONE zero-data + ONE seed-restore per invocation (the never-zeroed FINALLY spans both legs)", () => {
+    const src = toolSrc();
+    // the per-axis guest contexts (inside the axes loop)
+    expect(src).toMatch(/guestCtx/);
+    // the login-phase guard (an app-empty selection skips the login)
+    expect(src).toMatch(/pages\.length > 0/);
+    // the public-phase guard (a public-empty selection skips the guests)
+    expect(src).toMatch(/publicPages\.length > 0/);
+  });
+
+  it("censusVerdict covers the LANDING rows: docH ≠ 0 REDs (the landing is NEVER skipped — no DATA genus on a static marketing surface); a landing RED at one axis fails with the axis named — no leg masks another (the L-153c1 doctrine at the public leg); the settings skip holds untouched (the L-150c2 doctrine)", async () => {
+    const m = await import("../scripts/interior-census");
+    // the row factory (the file's `as never` fixture idiom — the
+    // dynamic-import namespace is a value, not a type namespace)
+    const row = (
+      over: Partial<{ axis: string; mainHDelta: number | null; unexplained: unknown[] }>,
+    ) =>
+      ({
+        page: "landing",
+        axis: "tablet",
+        mainHDelta: 0,
+        oursEls: 400,
+        refEls: 400,
+        matches: 400,
+        explained: [],
+        unexplained: [],
+        ...over,
+      }) as never;
+    // all-clean at all four legs GREEN
+    const clean = m.censusVerdict([
+      row({ axis: "phone" }),
+      row({ axis: "tablet" }),
+      row({ axis: "landscape" }),
+      row({ axis: "desktop" }),
+    ]);
+    expect(clean.ok).toBe(true);
+    // a landing docH delta at ONE axis REDs with the axis named
+    const bad = m.censusVerdict([
+      row({ axis: "phone" }),
+      row({ axis: "tablet", mainHDelta: 12 }),
+      row({ axis: "landscape" }),
+      row({ axis: "desktop" }),
+    ]);
+    expect(bad.ok).toBe(false);
+    expect(bad.failures.some((f) => f.includes("[tablet] landing") && f.includes("12"))).toBe(true);
+    // an unexplained landing event REDs (the ghost class)
+    const ghost = m.censusVerdict([
+      row({
+        axis: "phone",
+        unexplained: [{ kind: "ours-extra", el: el({ top: 100, tag: "DIV", cls: "ghost" }) }] as never,
+      }),
+    ]);
+    expect(ghost.ok).toBe(false);
+    expect(ghost.failures[0]).toContain("[phone] landing");
+    // the settings skip untouched (the standing doctrine)
+    const settings = m.censusVerdict([
+      { page: "settings", axis: "phone", mainHDelta: 86, oursEls: 1, refEls: 1, matches: 0, explained: [], unexplained: [] },
+    ]);
+    expect(settings.ok).toBe(true);
+  });
+
+  it("the landing mutation-proof doctrine is part of the tool's documented contract (the planted ghost in landing-page.tsx → '--pages landing --fail-on-drift' → RED at ALL FOUR axes → the revert → GREEN — the F-151c1 class now fails the gate on the 9 app pages AND the public leg; the L-155c1 surface closure)", () => {
+    const src = toolSrc();
+    expect(src).toMatch(/--pages landing/);
+    // the public leg is pinned in the tool header's doctrine (the
+    // GUEST + pill-exclusion contract, the s149 idiom)
+    expect(src).toMatch(/GUEST/);
+  });
+
+  it("the TEXT-NODE CARDINALITY face (the walk45 landing decode): a text-only pair whose whitespace-stripped texts are byte-equal absorbs as COMPOSITION-SPLIT — the census's leaf-text join(\" \") between DIRECT text nodes reads ours [TEXT(\"$8\")] as \"$8\" where the reference's [TEXT(\"$\"), TEXT(\"8\")] reads \"$ 8\" (textContent byte-equal on both apps, live-verified; ours MERGES what the reference SPLITS — the composition-split genus's TEXT face, the walk42 cls-merge twin; page-agnostic — at byte-equal boxes a real rendered space would widen the box and pair as geometry, so only the join artifact reaches this face); a text-only pair differing BEYOND whitespace never absorbs", async () => {
+    const m = await import("../scripts/interior-census");
+    // the pricing shape: ours "$8" (one text node) vs the ref "$ 8"
+    // (two — the join artifact), byte-equal boxes both sides
+    const cardinality = [
+      { kind: "text-only", el: el({ text: "$8", tag: "SPAN" }), ref: el({ text: "$ 8", tag: "SPAN" }) },
+    ] as never;
+    const r = m.attributeGenera(cardinality, "landing", 390) as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(r.explained[0]?.genus).toBe("composition-split");
+    expect(r.unexplained).toEqual([]);
+    // NEGATIVE: the texts differ beyond whitespace (a REAL content
+    // change — e.g. a repriced tier) never absorbs as composition-split
+    // — AND the negative pins the LATENT PASS-2 SELF-MATCH defect (the
+    // walk45 decode): pairedOpposite scanned pairedEvents INCLUDING the
+    // event itself, and a paired event's own box trivially contains
+    // its own element + its own cls tokens are a subset of themselves
+    // — masked for three sessions because pass 1 absorbed every paired
+    // kind; the landing's workspace-scoped fall-through was the first
+    // paired event to ever reach the lookup (it self-absorbed as
+    // composition-split until the p === e exclusion)
+    const real = [
+      { kind: "text-only", el: el({ text: "$8", tag: "SPAN" }), ref: el({ text: "$9", tag: "SPAN" }) },
+    ] as never;
+    const r2 = m.attributeGenera(real, "landing", 390) as { unexplained: unknown[] };
+    expect(r2.unexplained).toHaveLength(1);
+  });
+
+  it("the live-data genus is WORKSPACE-SCOPED (the walk45 hazard decode): text-only pairs beyond the cardinality face absorb as live-data on the APP pages (the reference's intraday workspace data — the standing behavior unchanged); on the LANDING — a static marketing surface with NO workspace data — the same pair stays RED (the maiden census had absorbed the landing's pricing pairs as live-data; a future reprice would have been silently absorbed with them)", async () => {
+    const m = await import("../scripts/interior-census");
+    // the app-page positive: the standing behavior held (a real
+    // workspace-text diff on the contacts page)
+    const app = [
+      { kind: "text-only", el: el({ text: "Acme" }), ref: el({ text: "Acme Corp" }) },
+    ] as never;
+    const rApp = m.attributeGenera(app, "contacts", 358) as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(rApp.explained[0]?.genus).toBe("live-data");
+    expect(rApp.unexplained).toEqual([]);
+    // the landing negative: the SAME shape stays RED on the static
+    // marketing surface (no workspace data — real content drift)
+    const landing = [
+      { kind: "text-only", el: el({ text: "Acme" }), ref: el({ text: "Acme Corp" }) },
+    ] as never;
+    const rLanding = m.attributeGenera(landing, "landing", 390) as { unexplained: unknown[] };
+    expect(rLanding.unexplained).toHaveLength(1);
   });
 });

@@ -29,7 +29,12 @@
 // axis (`--axis tablet --pages dashboard` — 768×1024, the sidebar's
 // first-appearance frame, the 448px content regime) must RED the tablet
 // leg exactly as the phone/desktop legs RED — the F-151c1 class then
-// fails the gate at ALL FOUR axes, and no leg masks another.
+// fails the gate at ALL FOUR axes, and no leg masks another. The s155
+// extension adds the PUBLIC leg (walk45): a ghost planted in the
+// landing (`--pages landing` — the public marketing surface, GUEST
+// contexts) must RED the public leg at all four axes exactly as the
+// app pages RED — the F-151c1 class then fails the gate on EVERY
+// censused surface, and no SURFACE masks another (L-155c1).
 //
 // The protocol (sweep.ts's, reused not duplicated): reuse-or-boot the dev
 // server (the platform DATABASE_URL spawn guard) → zero our domain data
@@ -39,6 +44,20 @@
 // doctrine — this tool closes the gap sweep.ts leaves when it throws
 // mid-run: the restore rides the finally, so the workspace is never left
 // zeroed even on a thrown census).
+//
+// THE PUBLIC LEG (the 155-c extension): the landing at `/` is the
+// public marketing surface — it renders to GUESTS (NO login, NO
+// storageState, the s149 fullpage doctrine) in a fresh GUEST context
+// per axis. The anchor is div.min-h-screen.bg-white (ours id=top at
+// body level, the reference's #root first child — querySelector's
+// first document-order match on both apps), so the reference's guest
+// pill (the body-level div#base44-edit-badge sibling, position:fixed)
+// and both apps' shadcn Toaster portal sit OUTSIDE the anchor and
+// never enter the census — the pill genus stays in the fullpage
+// gate's STANDING_EXPLAINED, never censused, never mirrored. The
+// landing scrolls the DOCUMENT (no main.overflow-auto): the height
+// seam is documentElement.scrollHeight (docH) and the s95 floor
+// travels with the frame as the VIEWPORT column (axis.width).
 //
 // The census (the walk41 idiom): both apps logged in at the CENSUS AXES
 // — 390×844 (phone, the walk41 axis) + 768×1024 (tablet, the 154-c
@@ -62,8 +81,19 @@
 //   • token-mirror   — cls-only pairs, geometry byte-equal (the
 //                      lucide DOM-composition + v3-compat class-order +
 //                      space-y-hazard families, the walk41 decode)
-//   • live-data      — text-only pairs, geometry byte-equal (the
-//                      reference's intraday workspace data)
+//   • live-data      — text-only pairs, geometry byte-equal, on the
+//                      WORKSPACE surfaces (the 9 app pages — the
+//                      reference's intraday workspace data; the s155
+//                      scoping: static marketing surfaces carry no
+//                      workspace data, a landing text-only pair is
+//                      REAL content drift and stays RED)
+//   • composition-split — the TEXT-NODE CARDINALITY face (the walk45
+//                      landing decode): whitespace-stripped byte-equal
+//                      texts at byte-equal boxes — ours MERGES the
+//                      text nodes the reference SPLITS ([TEXT("$8")]
+//                      vs [TEXT("$"), TEXT("8")]), the census's
+//                      join(" ") between direct text nodes the only
+//                      witness; the walk42 cls-merge twin
 //   • recharts-internal — paired shifts with all deltas ≤ 3px (the
 //                      3px y-axis top/height drift, version-borne)
 //   • dead-stub      — one-sided extras at w=0 AND h=0 (the s125/s141
@@ -94,8 +124,10 @@
 // Run: bun run census:interior [--fail-on-drift] [--json]
 //      [--axis phone|desktop|all]  (default all — the gate covers both
 //      legs in one command; the mutation-proof runs one axis)
-//      [--pages leads,settings]  (the sweep's subset idiom, fail-fast;
-//      composes with --axis)
+//      [--pages leads,settings,landing]  (the sweep's subset idiom,
+//      fail-fast, over the combined app+public list; composes with
+//      --axis; `--pages landing` runs ONLY the public leg — the
+//      mutation-proof idiom, no login phase)
 // Env: OUR_URL / REF_URL / REF_EMAIL / REF_PASSWORD (the sweep contract)
 // ---------------------------------------------------------------------------
 
@@ -125,6 +157,30 @@ export const INTERIOR_PAGES = [
 ] as const;
 
 export type InteriorPage = (typeof INTERIOR_PAGES)[number];
+
+// -- the PUBLIC leg (the 155-c extension) ----------------------------------
+//
+// The landing at `/`: the public marketing surface, censused as GUESTS
+// (no login — the s149 fullpage doctrine). The 9 INTERIOR_PAGES protocol
+// is untouched; the public leg is a separate list with its own collector
+// (censusPublicPage — the document scroller + the landing-root anchor).
+
+export const PUBLIC_PAGES = [
+  { name: "landing", path: "/" },
+] as const;
+
+export type PublicPage = (typeof PUBLIC_PAGES)[number];
+
+/** The combined filter list: the --pages idiom selects across BOTH legs
+ *  (the s95 seam, composed — `--pages landing` runs only the public
+ *  leg; mixed selections compose; unknown names fail-fast). */
+export const CENSUS_ALL_PAGES = [...INTERIOR_PAGES, ...PUBLIC_PAGES] as const;
+
+/** The dispatch: a census page is public iff its name is in PUBLIC_PAGES
+ *  (the guest contexts + the document-scroller collector follow it). */
+export function isPublicPage(p: { name: string }): boolean {
+  return PUBLIC_PAGES.some((pub) => pub.name === p.name);
+}
 
 /** The walk41 census element (the geometry floor is integer px). */
 export interface CensusEl {
@@ -689,8 +745,34 @@ export function attributeGenera(
       continue;
     }
     if (e.kind === "text-only") {
-      genusOf.set(e, "live-data");
-      continue;
+      // THE TEXT-NODE CARDINALITY face (the walk45 landing decode):
+      // the census's leaf-text join(" ") between DIRECT text nodes
+      // reads ours [TEXT("$8")] as "$8" where the reference's
+      // [TEXT("$"), TEXT("8")] reads "$ 8" — textContent byte-equal
+      // on both (live-verified), ours MERGES what the reference
+      // SPLITS — the composition-split genus's TEXT face. At
+      // byte-equal boxes a REAL rendered space would widen the box
+      // and pair as geometry, so only the join artifact reaches this
+      // face; page-agnostic.
+      if (
+        e.el !== undefined &&
+        e.ref !== undefined &&
+        e.el.text.replace(/\s+/g, "") === e.ref.text.replace(/\s+/g, "")
+      ) {
+        genusOf.set(e, "composition-split");
+        continue;
+      }
+      // live-data — the reference's intraday WORKSPACE data — is a
+      // WORKSPACE-SURFACE genus (the 9 app pages): on the static
+      // marketing surfaces a text-only pair is REAL content drift (a
+      // repriced tier, a changed headline) and falls through RED
+      // (the walk45 hazard decode: unscoped, the genus absorbed the
+      // landing's pricing pairs — and would have silently absorbed
+      // the next reprice with them).
+      if (!isPublicPage({ name: page })) {
+        genusOf.set(e, "live-data");
+        continue;
+      }
     }
     if (e.kind === "shift") {
       const dt = Math.abs(e.dTop ?? 0);
@@ -835,6 +917,13 @@ export function attributeGenera(
   const pairedOpposite = (e: CensusEvent, extra: CensusEl): boolean => {
     const side: "el" | "ref" = e.kind === "ref-extra" ? "el" : "ref";
     for (const p of pairedEvents) {
+      // never SELF-match (the walk45 decode): a paired event's own box
+      // trivially contains its own element and its cls tokens are a
+      // subset of themselves — the latent pass-2 defect, masked for
+      // three sessions because pass 1 absorbed every paired kind; the
+      // landing's workspace-scoped text-only fall-through was the first
+      // paired event to ever reach this lookup
+      if (p === e) continue;
       const el2 = p[side];
       if (el2 === undefined) continue;
       if (containedIn(extra, [boxOf(el2)]) && tokenSubset(extra.cls, el2.cls)) {
@@ -940,6 +1029,15 @@ export function attributeGenera(
   const twins: CensusEvent[] = [];
   for (const e of still) {
     if (genusOf.has(e)) continue; // absorbed at 2.5 (the rail squeeze)
+    // never a wrapper TWIN for a PAIRED event (the walk45 decode): the
+    // genus is an EXTRA byte-equal to a PAIRED box — a two-sided event
+    // that fell through pass 1 (the landing's workspace-scoped
+    // text-only face) would trivially self-match its own pairedBoxes
+    // entry, exactly the masked latent shape pairedOpposite carried
+    if (e.kind !== "ours-extra" && e.kind !== "ref-extra") {
+      twins.push(e);
+      continue;
+    }
     const el = (e.kind === "ours-extra" ? e.el : e.ref) as CensusEl;
     if (
       pairedBoxes.some(
@@ -1204,6 +1302,72 @@ async function censusPage(
   });
 }
 
+// -- the PUBLIC leg's browser twin (the walk45 collector) ---------------------
+
+/** The landing-root anchor selector: BOTH apps' landing container is
+ *  div.min-h-screen.bg-white (ours carries id="top" at body level, the
+ *  reference's is #root's first child — querySelector's first
+ *  document-order match on both). The guest pill (the reference's
+ *  body-level div#base44-edit-badge sibling, position:fixed) and the
+ *  shadcn Toaster portal sit OUTSIDE this anchor on both apps and
+ *  never enter the census. */
+const LANDING_ANCHOR = "div.min-h-screen.bg-white";
+
+async function censusPublicPage(
+  page: import("@playwright/test").Page,
+  base: string,
+  route: string,
+): Promise<CensusCapture> {
+  await page.goto(`${base}${route}`, { waitUntil: "domcontentloaded" });
+  await page
+    .locator(LANDING_ANCHOR)
+    .first()
+    .waitFor({ state: "visible", timeout: 15000 })
+    .catch(() => undefined);
+  await page.waitForTimeout(2500);
+  return page.evaluate(() => {
+    const anchor = document.querySelector("div.min-h-screen.bg-white");
+    if (!anchor) throw new Error(`no landing anchor on ${location.pathname}`);
+    const arect = anchor.getBoundingClientRect();
+    // THE GLYPH-INTERIOR EXCLUSION (the walk42 doctrine, unchanged):
+    // the svg BOX is censused, its version-borne interior never.
+    const SVG_SHAPES = new Set(["path", "polyline", "line", "circle", "rect"]);
+    const els: Array<{ top: number; left: number; w: number; h: number; tag: string; cls: string; text: string }> = [];
+    const walk = (node: Element) => {
+      for (const child of Array.from(node.children)) {
+        if (SVG_SHAPES.has(child.tagName)) continue; // the glyph interior
+        const r = child.getBoundingClientRect();
+        const leafText = Array.from(child.childNodes)
+          .filter((n) => n.nodeType === Node.TEXT_NODE)
+          .map((n) => n.textContent ?? "")
+          .join(" ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 48);
+        els.push({
+          // the landing scrolls the DOCUMENT (no main.overflow-auto):
+          // anchor-relative top is scroll-independent (both rects are
+          // viewport-relative and move together) — no scroll pass
+          // needed (no lazy-render patterns on either landing)
+          top: Math.round(r.top - arect.top),
+          left: Math.round(r.left - arect.left),
+          w: Math.round(r.width),
+          h: Math.round(r.height),
+          tag: child.tagName,
+          cls: child.getAttribute("class") ?? "",
+          text: leafText,
+        });
+        walk(child);
+      }
+    };
+    walk(anchor);
+    // the height seam: the DOCUMENT scroller — docH, byte-parity gated
+    // (the landing's standing fullpage heights: 4990 desktop · 7259
+    // phone, byte-equal both apps)
+    return { mainH: document.documentElement.scrollHeight, els };
+  });
+}
+
 // -- the CLI ----------------------------------------------------------------
 
 const REPO = path.resolve(import.meta.dirname, "..");
@@ -1216,7 +1380,13 @@ async function run() {
   const argv = process.argv.slice(2);
   const failOnDriftFlag = argv.includes("--fail-on-drift");
   const json = argv.includes("--json");
-  const pages = parsePagesArg(argv, INTERIOR_PAGES);
+  // the --pages idiom composes across BOTH legs (the 155-c seam): the
+  // combined list drives the selection; the app/public dispatch splits
+  // it (`--pages landing` runs ONLY the public leg — no login phase;
+  // no flag runs all 10)
+  const selected = parsePagesArg(argv, CENSUS_ALL_PAGES);
+  const pages = selected.filter((p) => !isPublicPage(p));
+  const publicPages = selected.filter((p) => isPublicPage(p));
   const axes = parseAxisArg(argv);
 
   // 1. the dev server: reuse :3000 or boot one (the s123 F-A guard —
@@ -1268,46 +1438,83 @@ async function run() {
     });
     results = [];
     for (const axis of axes) {
-      const ctx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
-      const refPage = await ctx.newPage();
-      log(`logging into the reference ${REF_URL} (${axis.name} ${axis.width}x${axis.height})…`);
-      await login(refPage, REF_URL);
-      const ourPage = await ctx.newPage();
-      log(`logging into ours ${OUR_URL}…`);
-      await login(ourPage, OUR_URL);
+      // 4. the APP leg (the 9 shell pages): the logged-in contexts —
+      //    GUARDED (a public-only run never logs in)
+      if (pages.length > 0) {
+        const ctx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
+        const refPage = await ctx.newPage();
+        log(`logging into the reference ${REF_URL} (${axis.name} ${axis.width}x${axis.height})…`);
+        await login(refPage, REF_URL);
+        const ourPage = await ctx.newPage();
+        log(`logging into ours ${OUR_URL}…`);
+        await login(ourPage, OUR_URL);
 
-      // 4. the census per page + the decode, at the axis's content
-      //    floor (the L-153c2 seam — the s95 poke-out discriminator
-      //    travels with the frame)
-      const floor = contentFloor(axis.width);
-      for (const p of pages) {
-        const ref = await censusPage(refPage, REF_URL, p.path);
-        const ours = await censusPage(ourPage, OUR_URL, p.path);
-        // the settings page aligns through the card segmentation (the
-        // LIVE-DATA page — the L-150c2 doctrine, the walk42 decode)
-        const events =
-          p.name === "settings" ? alignSettings(ours.els, ref.els) : alignCensus(ours.els, ref.els);
-        const att = attributeGenera(events, p.name, floor);
-        const mainHDelta = ours.mainH - ref.mainH;
-        results.push({
-          page: p.name,
-          axis: axis.name,
-          mainHDelta,
-          oursEls: ours.els.length,
-          refEls: ref.els.length,
-          matches: att.matches,
-          explained: att.explained,
-          unexplained: att.unexplained,
-        });
+        // the census per page + the decode, at the axis's content
+        // floor (the L-153c2 seam — the s95 poke-out discriminator
+        // travels with the frame)
+        const floor = contentFloor(axis.width);
+        for (const p of pages) {
+          const ref = await censusPage(refPage, REF_URL, p.path);
+          const ours = await censusPage(ourPage, OUR_URL, p.path);
+          // the settings page aligns through the card segmentation (the
+          // LIVE-DATA page — the L-150c2 doctrine, the walk42 decode)
+          const events =
+            p.name === "settings" ? alignSettings(ours.els, ref.els) : alignCensus(ours.els, ref.els);
+          const att = attributeGenera(events, p.name, floor);
+          const mainHDelta = ours.mainH - ref.mainH;
+          results.push({
+            page: p.name,
+            axis: axis.name,
+            mainHDelta,
+            oursEls: ours.els.length,
+            refEls: ref.els.length,
+            matches: att.matches,
+            explained: att.explained,
+            unexplained: att.unexplained,
+          });
+        }
+        await ctx.close();
       }
-      await ctx.close();
+
+      // 4b. the PUBLIC leg (the 155-c extension): GUEST contexts per
+      //     axis — the landing renders to guests (the s149 fullpage
+      //     doctrine); the pill + the Toaster sit outside the census
+      //     anchor; the floor is the VIEWPORT column (the landing
+      //     scrolls the document — the s95 discriminator travels with
+      //     the frame)
+      if (publicPages.length > 0) {
+        const guestCtx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
+        const refGuest = await guestCtx.newPage();
+        const ourGuest = await guestCtx.newPage();
+        for (const p of publicPages) {
+          const ref = await censusPublicPage(refGuest, REF_URL, p.path);
+          const ours = await censusPublicPage(ourGuest, OUR_URL, p.path);
+          const events = alignCensus(ours.els, ref.els);
+          const att = attributeGenera(events, p.name, axis.width);
+          // the public leg's height seam: docH (documentElement
+          // .scrollHeight) rides mainHDelta — byte-parity gated, never
+          // skipped (a static marketing surface has no DATA genus)
+          const docHDelta = ours.mainH - ref.mainH;
+          results.push({
+            page: p.name,
+            axis: axis.name,
+            mainHDelta: docHDelta,
+            oursEls: ours.els.length,
+            refEls: ref.els.length,
+            matches: att.matches,
+            explained: att.explained,
+            unexplained: att.unexplained,
+          });
+        }
+        await guestCtx.close();
+      }
     }
     await browser.close();
 
     // 5. the report — a section per axis (the decode reads per leg)
     if (!json) {
       for (const axis of axes) {
-        console.log(`\n[census] === the interior geometry census — ${axis.name} ${axis.width}x${axis.height} (both apps logged in, ours at the matched zero-data state) ===`);
+        console.log(`\n[census] === the interior geometry census — ${axis.name} ${axis.width}x${axis.height} (the app pages logged in + the landing as GUESTS · ours at the matched zero-data state) ===`);
         for (const r of results.filter((x) => x.axis === axis.name)) {
           const genera: Record<string, number> = {};
           for (const a of r.explained) genera[a.genus] = (genera[a.genus] ?? 0) + 1;
@@ -1315,12 +1522,17 @@ async function run() {
             Object.entries(genera)
               .map(([g, n]) => `${g} ${n}`)
               .join(", ") || "none";
-          const mainHLine =
+          // the public leg's height seam prints docH (the document
+          // scroller); the app pages print mainH; settings stays the
+          // one SKIPPED exception (the L-150c2 doctrine)
+          const heightLine =
             r.page === "settings"
               ? `mainH Δ${r.mainHDelta} SKIPPED (the DATA genus)`
-              : `mainH Δ${r.mainHDelta}`;
+              : isPublicPage({ name: r.page })
+                ? `docH Δ${r.mainHDelta}`
+                : `mainH Δ${r.mainHDelta}`;
           console.log(
-            `  ${r.page.padEnd(11)} ${mainHLine} · els ${r.oursEls}/${r.refEls} · match ${r.matches} · genera: ${generaLine} · unexplained ${r.unexplained.length}`,
+            `  ${r.page.padEnd(11)} ${heightLine} · els ${r.oursEls}/${r.refEls} · match ${r.matches} · genera: ${generaLine} · unexplained ${r.unexplained.length}`,
           );
           for (const u of r.unexplained.slice(0, 5)) {
             const side = u.el ? `ours ${u.el.tag}@${u.el.top} w${u.el.w} h${u.el.h} [${u.el.cls}]` : "";

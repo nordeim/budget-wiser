@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2217 checks)      | `bun run test`                         |
+|  Unit tests (2225 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2217) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2225) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7362,7 +7362,7 @@ sweep fold; the desktop interiors had never been geometry-censused).
   discriminator · the axis-prefixed verdict · the run-loop/--json
   src pins · the th-label-stretch genus · the F-153c1 retirement) —
   **RED at birth → the implementation → GREEN**; the count ladder
-  **UNIT 2199→2217 · SUITES 119 held · badge 2352→2360** · the 12
+  **UNIT 2199→2207 · SUITES 119 held · badge 2352→2360** · the 12
   lockstep sites flipped atomically · the CLAUDE-carrier pins
   (the negatives ladder grew the 2199 forms) · the SKILL
   **v1.150.0** + the s153 head (the s152 layer demoted beneath) +
@@ -7378,7 +7378,7 @@ sweep fold; the desktop interiors had never been geometry-censused).
   axis (the content column: sidebar + page padding), never a
   constant; the phone's 358 and the desktop's 1120 are the same
   rule at two frames.
-- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2217** · build ·
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2207** · build ·
   e2e 153/153 · **the SIX drift gates CLEAN ×6** (the census gate
   at BOTH axes in the one standing command) · census MATCH · the
   mutation-proof (planted → RED → reverted → GREEN) · the VLM
@@ -7491,3 +7491,154 @@ axes now coincide — no blind interior axis remains).
   battery 2/2 (the dashboard landscape pair MATCH; the accounts
   landscape pair — the VLM independently confirms the reference's own
   squeezed rail vs our intended layout) · the captures 357-360.
+
+### Session-155 (2026-10-20) — the census LANDING public leg (the 155-c rotation)
+
+The workspace stood (the pull fast-forwarded to `9616106` — the s154
+feat `db27237` + the session logs + the owner's session_328
+transcript). probe:ref **#129 STABLE** at the s147–s154 fingerprint —
+a rotation round on the session_327 next-round reading's strongest
+candidate: **the census extended past the 9 auth'd app pages to the
+PUBLIC MARKETING LANDING at `/` — the landing walked + gated as the
+census tool's PUBLIC leg at ALL FOUR axes** (the L-153c1 doctrine's
+surface face: the s153/s154 axis pair closed the viewport gaps, the
+SURFACE gap is the same lesson at 90 degrees — the landing is the
+last never-geometry-walked surface; its standing gates were
+pixel-margin only [the fullpage 0.093%/0.316% at desktop+phone] with
+the tablet/landscape interiors FULLY blind).
+
+- **155-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **119/2217**
+  · build · **e2e 153/153** (clean first run) — the EXACT s154-ship
+  match.
+- **155-b**: probe:ref **#129 STABLE** · the drawer battery GREEN
+  (inside e2e 153/153 — the mobile-nav contract, the user's standing
+  particular-attention item) · **the SIX drift gates CLEAN ×6** (the
+  four viewport + the fullpage at the exact standing values + the
+  census gate all-36 zero unexplained) · sitemap 11 routes + robots
+  · db census MATCH · the tree clean · zero dep changes.
+- **THE PUBLIC-LEG DESIGN (additive — the app-pages protocol
+  byte-identical)**: `PUBLIC_PAGES = [{ name: "landing", path: "/" }]`
+  + `CENSUS_ALL_PAGES` (the combined 10-name `--pages` filter —
+  `--pages landing` runs ONLY the public leg, no login phase) +
+  `isPublicPage` dispatch + `censusPublicPage` (the GUEST-context
+  collector: **GUESTS, no login** — the s149 fullpage doctrine; the
+  anchor `div.min-h-screen.bg-white` — ours `id="top"` at body
+  level, the reference's `#root` first child — so the guest pill
+  [the body-level `div#base44-edit-badge` sibling, position:fixed]
+  and both apps' Toaster portal sit OUTSIDE the census; the height
+  seam `docH = documentElement.scrollHeight` — the landing scrolls
+  the DOCUMENT; the floor the VIEWPORT column — the s95
+  discriminator travels with the frame) + the per-axis guest
+  contexts GUARDED (an app-empty selection never logs in; a
+  public-empty selection never opens guests); gate:full UNCHANGED
+  — the census command covers the public leg internally, the
+  six-gate chain stays six commands.
+- **walk45 PASS 1 — THE MAIDEN LANDING CENSUS**: ALL FOUR axes born
+  CLEAN — **docH byte-equal Δ0 at every axis** (phone 7259 · desktop
+  4990 — the fullpage gate's equal heights — and the two
+  NEVER-MEASURED tablet/landscape docH byte-equal too), 364/364
+  elements, every delta attributed: **token-mirror 43** (the s142
+  documented deviations riding byte-equal boxes — the working
+  `truncate` vs the reference's dead `rounded-truncate` token, the
+  leading/max-w-2xl cls families) · **composition-split 3** (the
+  walk45 decode below) · **recharts-internal 6/7** (the sub-3px
+  rounding drift through the FAQ/footer box stacks — the ≤3px
+  genus's bound, 1px at three axes, a +1 height face at landscape).
+- **THE WALK45 DECODES** (the maiden census's real findings — the
+  audit discipline: verify the genera truthfully NAMED, never
+  mis-bucketed):
+  - **THE TEXT-NODE CARDINALITY FACE**: the maiden run read the
+    three pricing-tier amounts as **live-data** — WRONG genus
+    (live-data means the reference's intraday WORKSPACE data; the
+    landing is static marketing, it has none). The raw-byte probe
+    decoded the truth: the reference's SPAN carries **two text
+    nodes** `[TEXT("$"), TEXT("8")]` where ours carries **one**
+    `[TEXT("$8")]` — `textContent` byte-equal on both apps
+    (`"$8"`, live-verified codepoint-by-codepoint); the census's
+    leaf-text `join(" ")` between direct text nodes is the ONLY
+    witness. **THE HAZARD**: unscoped, live-data had absorbed the
+    landing's pricing pairs — a future reprice would have been
+    SILENTLY absorbed with them. **THE FIX**: the cardinality face
+    (whitespace-stripped byte-equal texts at byte-equal boxes →
+    composition-split, page-agnostic — at byte-equal boxes a real
+    rendered space would widen the box and pair as geometry, so
+    only the join artifact reaches this face) + **live-data
+    WORKSPACE-SCOPED** (text-only pairs stay RED on the static
+    marketing surfaces; the app pages' standing behavior
+    unchanged).
+  - **TWO LATENT DECODER DEFECTS** the decode's negatives exposed
+    (masked for THREE sessions because pass 1 absorbed every
+    paired kind — the landing's workspace-scoped fall-through was
+    the first paired event to ever reach the later passes):
+    `pairedOpposite` **self-matched its own pairedEvents entry**
+    (an event's own box trivially contains its own element + its
+    own cls tokens are a subset of themselves) and the
+    **wrapper-twin pass self-matched its own pairedBoxes entry**
+    (the same shape) — a paired event could never legitimately
+    reach either pass, so the dead code was never exercised; both
+    now EXCLUDED (a paired event can never self-absorb). Pinned
+    with negatives both.
+- **walk45 PASS 2 — THE LANDING MUTATION-PROOF**: a ghost div
+  planted in the hero CTA row via targeted string surgery →
+  `census:interior --pages landing --fail-on-drift` → **RED**
+  (phone: 320 unexplained + **docH Δ44** — the ghost stacks in
+  the flex-col CTA row, riding BOTH the geometry and docH;
+  tablet/landscape: 7 each — the geometry catch alone at flex-row
+  frames; exit 1, the failure axis-prefixed) → the string-surgery
+  revert → **GREEN** (exit 0, the exact standing values). The
+  F-151c1 class now fails the gate on **every censused surface** —
+  the 9 app pages AND the public leg, at all four axes.
+- **THE PINS (TDD)**: `tests/interior-census-tool.test.ts` extended
+  **+8** (the PUBLIC_PAGES contract + the walk45 anchor-seam src
+  pin [the selector · the pill exclusion documented ·
+  documentElement.scrollHeight · the viewport floor] + the
+  combined `--pages` composition over the 10-name list + the
+  guest-context run loop with both guards + the landing verdict
+  [docH never skipped — no DATA genus on a static surface] + the
+  landing mutation-proof doctrine + the TEXT-NODE CARDINALITY face
+  [pinning the pairedOpposite self-match] + the live-data
+  WORKSPACE-SCOPING [pinning the wrapper-twin paired self-match];
+  the s152 nine-page pin's title re-anchored) — **5 RED + 2 RED at
+  birth → the implementation → GREEN**; the count ladder **UNIT
+  2217→2225 · SUITES 119 held · badge 2370→2378** · the 19 sites
+  flipped atomically (count-ladder-155.py, assert-first — the 17
+  live lockstep sites + **2 s154-audit RESTORES**: the s154
+  global flip had corrupted the AGENTS Session-153 historical
+  clauses [`2199→2217` → restored `2199→2207`, `119/2217` →
+  restored `119/2207` — the s153-era values, caught by this
+  round's historical audit]) · the CLAUDE-carrier negatives
+  ladder grew the 2217 forms · the SKILL **v1.152.0** + the s155
+  head (the s154 layer demoted beneath) + the Appendix B totals +
+  the layer-axis pin flipped.
+- **THE LESSONS**: **L-155c1 a blind surface is a standing gap**
+  (the axis doctrine's surface face: pixel-margin gates absorb
+  real drift by construction — the s149 walk39 proof: three
+  decodes accumulated on the landing between bundle events; the
+  census's byte-parity zero-margin contract is the standing cure)
+  · **L-155c2 the context class follows the surface** (the public
+  leg censuses GUESTS — the logged-in protocol [login + zero-data
+  + the app chrome] is the WRONG instrument for a public
+  marketing surface; the anchor + the height seam + the floor
+  travel with the surface's own scroller [the document], never
+  one-size-fits-all) · **L-155c3 the decoder's passes are only as
+  tested as their reachable inputs** (two self-match paths sat
+  dead for three sessions because no paired event could ever
+  reach them — a new surface class exercised the dead code and
+  the negatives caught it; the mutation-proof doctrine extends to
+  the decoder itself).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2225** · build ·
+  e2e **153/153 (the definitive run** — the M-72c1 focus window's
+  cold-isolation face: 3/3 isolation failures on the 2-core cold
+  boot, the epoch remount reverting the fill [the s154 pattern's
+  mirror — there the suite flaked and isolation passed]; the full
+  suite's warmed pipeline holds it) · **the SIX drift gates CLEAN
+  ×6** (the four viewport + the fullpage at the exact standing
+  values 0.093%/0.316% at equal heights 4990/7259 + **the census
+  gate at ALL FOUR axes × 10 surfaces — 40 page-axis runs, all
+  zero unexplained**, the 36 standing runs at their exact standing
+  values, settings SKIPPED at all four axes) · census MATCH · the
+  mutation-proof (planted → RED → reverted → GREEN) · the VLM
+  battery 2/2 (the phone pricing pair MATCH; the tablet hero pair
+  — every element identical per the VLM's own analysis, the
+  reference's guest pill the only difference on both adjudications
+  — the documented genus, never mirrored) · the captures 361-364.
