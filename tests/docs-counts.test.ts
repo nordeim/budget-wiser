@@ -124,7 +124,9 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 // Session-150: E2E 152 -> 153 (+1 — the marketing-mobile spec: the
 // walk40 scroll model + the census).
 const E2E = 153;
-const SUITES = 118;
+// Session-152: SUITES 118 -> 119 (the interior-census-tool file — the
+// standing sixth gate's pin suite).
+const SUITES = 119;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -456,7 +458,18 @@ const SUITES = 118;
 // ellipsis-family census + the DASHBOARD_CARD object-shape freeze +
 // the dead-constants negatives]; SUITES 117 -> 118; E2E stays 153
 // [the e2e 3035 test flipped in place — the title-only headers decode]).
-const UNIT = 2177;
+// Session-152: 2177 -> 2199 (+22 — the walk42 standing-gate rotation:
+// interior-census-tool NEW +22 [the tool/wiring/9-page-list pins + the
+// greedy-resync + the piecewise re-anchor + the tag-swap pairing + the
+// glyph-interior exclusion + the genera whitelist (the maiden decode's
+// 12 faces: dead-stub · chart-suppression · s95-wrapper · s95-poke-out
+// · settings-data + subtree · token-mirror · live-data · recharts
+// · tag-swap · wrapper-twin · composition-split) + the s95 floor
+// discriminator + the byte-equal-cls preference + the verdict + the
+// never-zeroed finally + the --pages fail-fast + the settings card
+// segmentation + the mutation-proof doctrine]; SUITES 118 -> 119;
+// E2E stays 153 [the sixth gate is a script gate, pinned by unit].
+const UNIT = 2199;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -879,13 +892,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-151 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-152 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s148 layer now beneath the s149 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s151 layer now beneath the s152 head)",
     ).toContain(
-      "+ beneath it 2173 unit checks + 153 e2e checks green; the session-150 layer (THE MARKETING PHONE-STATE WALK",
+      "+ beneath it 2177 unit checks + 153 e2e checks green; the session-151 layer (THE INTERNAL-SCROLLER CENSUS + THE DASHBOARD CARD-HEADER MIRROR",
     );
   });
 

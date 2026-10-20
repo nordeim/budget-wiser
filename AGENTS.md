@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2177 checks)      | `bun run test`                         |
+|  Unit tests (2199 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2177) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2199) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7165,3 +7165,117 @@ re-decoded live** (the secondary probe).
   on both apps, the framing artifacts decoded; the desktop pair — a
   FULL structural match). The captures 345-348 (the dashboard phone +
   desktop pairs at the fix zone).
+
+### Session-152 (2026-10-20) — the interior census promoted into the STANDING SIXTH GATE (the 152-c rotation)
+
+The workspace stood at the s151 ship (`bd09bbc` + the owner's
+`0d98454` session_322 transcript); `git pull` fast-forwarded clean.
+The environment verified standing (`.env` root contract · census
+MATCH 15/24/10/23/12 + 4 users). probe:ref **#126 STABLE** at the
+s147–s151 fingerprint — a rotation round on the session_321
+next-round reading's strongest candidate: **the walk41 throwaway
+promoted into a standing repo tool** — `scripts/interior-census.ts`,
+the full-geometry census across the 9 app pages' phone interiors,
+wired as the SIXTH gate (`bun run census:interior -- --fail-on-drift`
+chained into `gate:full` after `sweep:fullpage`). The L-151c2 dead
+zone — below-every-fold, inside `main.overflow-auto`, invisible to
+ALL five pixel gates by construction — is closed STRUCTURALLY, not by
+rotation memory.
+
+- **152-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **118/2177**
+  · build · **e2e 153/153** — the EXACT s151-ship match.
+- **152-b**: probe:ref **#126 STABLE** · the drawer battery GREEN
+  (inside e2e 153/153) · **the five drift gates CLEAN ×5** (the
+  fullpage at the exact s151-ship values 0.093%/0.316% at equal
+  heights 4990/7259) · sitemap 11 routes + robots · the test configs
+  in place · the tree clean · zero dep changes.
+- **walk42 PASS 1 — THE MAIDEN CENSUS** (the tool's first run IS the
+  walk; the throwaway-probe decode ran 5 decoder rounds against the
+  live reference): the v1 greedy-resync decoder (the walk41 idiom,
+  13 pins GREEN at birth) measured **79+ unexplained across the 9
+  pages** and the decode peeled them face-by-face — the **lucide
+  glyph-interior face** (our 0.525 path-normalized icon sets vs its
+  mixed sets: the census now EXCLUDES the svg shape vocabulary at the
+  collector — the census is a LAYOUT-tree instrument, the icon BOX is
+  censused, its version-borne interior never is; the decode caught
+  three coincidentally-aligned icon paths sustaining a FALSE resync
+  offset and losing the walk's sync) · the **recharts DOM face** (the
+  extra wrapper divs by class + the tooltip/axis extras inside paired
+  chart boxes) · the **tag-swap face** (the s76 calendar day cells —
+  our BUTTON/SPAN vs its DIV at byte-equal boxes: PAIRED across the
+  tag difference; the exact-offset form broke on a standing -1px
+  subpixel-rounding running offset, the window form fixed) · the
+  **wrapper-twin face** (an extra byte-equal to a PAIRED box — the
+  reference's space-y-3 nesting wrapper around the paired empty-state
+  P) · the **composition-split face** (the reference nests
+  [p-4 border-b] > [flex gap-3] where ours merges both — the
+  token-superset containment proof) · the **s95 poke-out re-derived
+  with the 358px FLOOR discriminator** (only the reference's
+  past-the-content-floor widths absorb; an in-container width
+  regression stays RED) · the **s16 stock-table container** (our
+  shadcn Table wrapper, the s95 in-box-scroll family) · the
+  **byte-equal-cls preference** (a nesting wrapper on one side never
+  steals its twin's pair — the contacts/activities mispair decode) ·
+  the **piecewise direct re-anchor + the sustain-checked pure runs**
+  (a coincidental single pair at a stale offset must never steal the
+  resync) · **the settings card SEGMENTATION** (the LIVE-DATA page:
+  the picklist cards are a fixed template, the card is the alignment
+  unit — the row-count deltas stay inside their segment; the decode
+  caught a cross-card BACKWARD resync at offset -162, ours card1's
+  rows pairing its card2's rows, rows look like rows — structurally
+  impossible now). **THE MAIDEN VERDICT: ALL 9 PAGES AT ZERO
+  UNEXPLAINED** — mainH byte-equal on the 8 non-settings pages,
+  settings Δ+86 the documented LIVE-intraday DATA genus (mainH
+  skipped, the L-150c2 doctrine; the shift face report-only; the
+  extras face — the row signature + subtree containment — still
+  gates), every delta attributed to a named genus.
+- **walk42 PASS 2 — THE MUTATION-PROOF** (the structural-cure
+  demonstration): the F-151c1 ghost replanted in the Lead Sources
+  CardHeader via targeted string surgery → `census:interior --pages
+  dashboard --fail-on-drift` → **RED** (mainH Δ+8 — the exact
+  F-151c1 row arithmetic — + 39 unexplained: the ghost subtree + the
+  displaced below-fold tail) → the string-surgery revert (never
+  `git checkout`) → **GREEN** (mainH Δ0 · 0 unexplained). The exact
+  defect class that survived 143 sessions now fails the one-command
+  gate.
+- **THE PINS (TDD)**: `tests/interior-census-tool.test.ts` NEW
+  **+22** (the tool + the SIX-gate wiring + the 9-page list contract
+  + the lockstep with sweep PAGES + the pure decoder seams: byte-equal
+  twins · the ≤3px recharts shifts · the greedy resync · the piecewise
+  re-anchor · the tag-swap pairing · the glyph-interior exclusion ·
+  the genera whitelist (dead-stub · chart-suppression · s95-wrapper ·
+  s95-poke-out · settings-data + subtree · token-mirror · live-data ·
+  recharts · tag-swap · wrapper-twin · composition-split) + the s95
+  floor discriminator + the byte-equal-cls preference + the
+  never-zeroed FINALLY + the `--pages` fail-fast + the settings
+  segmentation + the mutation-proof doctrine) — **RED at birth →
+  the implementation → GREEN**; the gate-script composite re-anchored
+  to the SIX-gate chain (the s152 expected blast radius: the steps
+  array + the every-gate-carries-flag filter) · the count ladder
+  **UNIT 2177→2199 · SUITES 118→119 · badge 2330→2352** · the 12 RED
+  lockstep sites flipped atomically (README ×4 · AGENTS ×2 · PAD ×5 ·
+  SKILL ×2) · the CLAUDE-carrier pins flipped ×4 (the 2177 forms
+  joining the negatives) · the SKILL **v1.149.0** + the s152 head
+  (the s151 layer demoted beneath) + the wall-clock phrase.
+- **THE LESSONS**: **L-152c1 the dead zone closed structurally** —
+  the interior census as a standing gate converts the L-151c2 blind
+  spot from a rotation-memory axis into a one-command gate; the
+  F-151c1 class (a below-fold ours-only element) now REDs `gate:full`
+  directly. **L-152c2 geometry gates carry no margin** — pixel gates
+  need baselines + a raster-floor margin; the census is byte-parity,
+  every delta must ATTRIBUTE to a named genus or it is drift (the one
+  exception: the settings DATA face, skipped by the L-150c2 doctrine,
+  never widened). **L-152c3 the census is a layout-tree instrument**
+  — the glyph interiors (lucide paths, recharts curves) are
+  version-borne rendering detail; censusing them fed the alignment
+  false anchors (three coincidental paths sustained a phantom resync)
+  — the BOX is the contract, the interior is never censused.
+  **L-152c4 the alignment unit follows the data topology** — a page
+  whose sections differ by data-dependent row counts (the LIVE
+  settings picklists) must align section-by-section; one continuous
+  walk invites cross-section backward resyncs that no amount of
+  candidate-ordering can veto (rows look like rows).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2199** · build ·
+  e2e 153/153 · **the SIX drift gates CLEAN ×6** (the five standing +
+  the census gate's maiden `--fail-on-drift` pass at all-zero
+  unexplained) · census MATCH.

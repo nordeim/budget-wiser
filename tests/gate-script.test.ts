@@ -117,7 +117,7 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
     expect(pkg.scripts!["gate:full"].length).toBeGreaterThan(0);
   });
 
-  it("gate:full = the standing gate chain + the FIVE drift gates (desktop, phone 390, tablet 768, landscape 1024 — the s99 fourth sweep — + the s149 FULLPAGE landing gate)", () => {
+  it("gate:full = the standing gate chain + the SIX drift gates (desktop, phone 390, tablet 768, landscape 1024 — the s99 fourth sweep — + the s149 FULLPAGE landing gate + the s152 INTERIOR census gate)", () => {
     const steps = pkg.scripts!["gate:full"].split("&&").map((s) => s.trim());
     expect(steps).toEqual([
       "bun run lint",
@@ -133,6 +133,11 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
       // (the full-page capture pair the owner's skill motivated; the
       // four viewport sweeps structurally clip at y≈900)
       "bun run sweep:fullpage -- --fail-on-drift",
+      // s152 (the 152-c rotation): the SIXTH gate — the interior
+      // full-geometry census (the L-151c2 dead-zone cure: the five
+      // pixel gates clip at their capture height; the census walks
+      // every element inside main.overflow-auto at 390×844)
+      "bun run census:interior -- --fail-on-drift",
     ]);
   });
 
@@ -142,12 +147,12 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
     );
   });
 
-  it("every drift sweep in gate:full carries --fail-on-drift (a report-only sweep would gate nothing)", () => {
-    const sweeps = pkg.scripts!["gate:full"]
+  it("every drift gate in gate:full carries --fail-on-drift (a report-only gate would gate nothing)", () => {
+    const gates = pkg.scripts!["gate:full"]
       .split("&&")
       .map((s) => s.trim())
-      .filter((s) => s.startsWith("bun run sweep"));
-    expect(sweeps.length).toBe(5); // the four viewport classes + the s149 fullpage gate
-    for (const s of sweeps) expect(s).toContain("--fail-on-drift");
+      .filter((s) => /^(bun run sweep|bun run census)/.test(s));
+    expect(gates.length).toBe(6); // the four viewport sweeps + the s149 fullpage gate + the s152 interior census gate
+    for (const s of gates) expect(s).toContain("--fail-on-drift");
   });
 });

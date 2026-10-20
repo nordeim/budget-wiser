@@ -681,8 +681,11 @@ const SHOTS = path.join(REPO, "scripts", "sweep-shots");
 
 const log = (s: string) => console.log(`[sweep] ${s}`);
 
-/** Wait for a URL to answer 200 (the dev-server boot wait). */
-async function waitOnUrl(url: string, ms: number): Promise<boolean> {
+/** Wait for a URL to answer 200 (the dev-server boot wait).
+ *  Session-152: exported for scripts/interior-census.ts (the geometry
+ *  census gate reuses the sweep's boot/login protocol verbatim — the
+ *  reuse-not-duplicate doctrine; additive export, zero behavior). */
+export async function waitOnUrl(url: string, ms: number): Promise<boolean> {
   const deadline = Date.now() + ms;
   while (Date.now() < deadline) {
     try {
@@ -696,7 +699,10 @@ async function waitOnUrl(url: string, ms: number): Promise<boolean> {
   return false;
 }
 
-async function login(page: import("@playwright/test").Page, base: string) {
+/** Session-152: exported for scripts/interior-census.ts (the census
+ *  logs into BOTH apps with this same idiom — the hydration settle,
+ *  the fill, the waitForURL race; additive export, zero behavior). */
+export async function login(page: import("@playwright/test").Page, base: string) {
   await page.goto(`${base}/login`, { waitUntil: "networkidle" });
   // hydration settle: filling during hydration gets cleared by the
   // re-render before submit (the observed 400 "email and password are
