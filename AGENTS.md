@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2252 checks)      | `bun run test`                         |
+|  Unit tests (2257 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2252) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2257) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -8173,3 +8173,114 @@ base, and every future round gets a one-command rhythm capture.**
   377-380 (the settings picklist-card pair at phone + desktop, the
   rhythm round's subject surface, the seeded remediated codebase,
   scrolled + verified in-frame).
+
+### Session-160 (2026-10-21) — the census LOGIN CONSOLIDATION (the 160-c rotation)
+
+The workspace stood (the fresh clone + the standing env: `.env` from
+`.env.example` + `db:push`/`db:seed` census MATCH · the Playwright
+chromium installed · the dev server standing). probe:ref **#134
+STABLE** at the s147–s155 fingerprint — a rotation round on the
+**recurring audit finding**: the L-158c3 login budget exhausted live
+in THREE consecutive rounds (s158, s159, and the 160-b audit itself
+— 13 chain logins vs the 10-per-IP/15-min window, 2 × 429s, the
+manual dev-server restart + re-run each time). **The census's
+per-axis logins collapse into ONE pre-flight login pair per
+invocation — the structural cure; the app's own login limiter, a
+deliberate security contract, stays byte-identical.**
+
+- **160-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **120/2252**
+  (clean exit) · build · **e2e 153/153** (clean first run — the drawer
+  battery inside, the mobile-nav contract).
+- **160-b**: probe:ref **#134 STABLE** · **the SIX drift gates CLEAN
+  ×6** (the four viewport sweeps + the fullpage at the exact standing
+  values 0.093%/0.316% at equal heights 4990/7259 + the census gate at
+  `--parallel 4`: 52 page-axis runs, all zero unexplained, exit 0 ·
+  the settings row 256/249 at the standing genera) · sitemap 11
+  routes + robots 200 · db census MATCH · zero dep changes. ONE live
+  decode: **the L-158c3 budget for the THIRD consecutive round** — 13
+  our-logins (4 sweeps + 1 fullpage + 4 census + 4 census re-run) vs
+  the 10-per-IP/15-min window; 2 × 429 POSTs; the dev-server restart
+  + the single re-run, the doctrine's own operational form. **This
+  round is that finding's structural cure.**
+- **THE PRE-PLAN PROBE** (scratch, cleaned): ONE login (~3.9s)
+  captured the `neo_session` cookie via `context.storageState()`; a
+  FRESH context at a DIFFERENT viewport (1440×900) opened with that
+  state read `/dashboard` authenticated — the URL held, `main`
+  rendered. **The stateless HMAC cookie survives context recreation —
+  the consolidation is safe, the read side unchanged** (the
+  zero-data phase keeps the users table; the seed restore is
+  idempotent in place — the cookie's user payload persists).
+- **THE CONSOLIDATION** (`scripts/interior-census.ts`): the
+  `preflightLoginPair` phase — ONE context logs into the reference,
+  then ours, captures the **COMBINED storageState** (two origins, one
+  cookie jar: the ref's Base44 cookie + our stateless `neo_session`)
+  and hands it to every axis worker's fresh context. The in-worker
+  logins DELETED. The 429-diagnostic: on pre-flight failure the
+  budget hint logs to **STDERR** (the s159 stdout/stderr contract)
+  then rethrows — fail-fast. The stagger **re-anchored**
+  `LOGIN_STAGGER_MS` → **`WALK_STAGGER_MS`** (the value 4000 held;
+  the login-arrival role RETIRED — the worker-START stagger spreads
+  the 4-way walk load, the no-burst spirit intact). The public-only
+  guard transfers to the pre-flight call site (an app-empty
+  selection never logs in — the s152/s149 doctrine held). **The
+  gate:full chain's ours-login count drops 9 → 6.**
+- **THE LIVE PROOFS (walk50)**: **PASS 1 the budget** — the
+  consolidated run burns EXACTLY ONE our-login (the dev log's POST
+  200 delta 5→6, was 4; zero 429s); **PASS 2 the byte-parity** — the
+  gate clean at the standing values (settings 256/249 SKIPPED at
+  the DATA genus, login 43/43, landing 364/364, all 52 page-axis
+  runs zero unexplained, exit 0); **PASS 3 the public-only guard**
+  — `--pages landing` runs guest-only, login delta 0, no
+  pre-flight; **PASS 4 the sequential default form** — `--pages
+  login --axis phone`, exactly one login, the standing values;
+  **PASS 5 the wall-clock** — 2m29.8s (the walk dominates the
+  concurrent form; the budget is the true subject).
+- **THE T3 RHYTHM RIDE-ALONG** (the standing instrument's first
+  CROSS-SESSION observation — the L-159c1 one-command form): the T2
+  reconstruction from the s159-documented byte-exact values + the
+  fresh T3 capture (05:35Z) + the axis-by-axis diff — **byte-identical
+  on every axis: 31 rows (5/6/6/4/10), els 249, mainH
+  2973/2135/2099/2099, +0 on every section** — the window extends
+  ~45 min → **~3h05m** (T1 02:30Z → T3 05:35Z, two maintenance
+  rounds); the ours control at the standing seeded values (32 rows
+  [8/7/6/3/8], els 256, mainH 3059). **L-159c3's null face extends
+  across sessions — the swing windows stay the exception the SKIP
+  doctrine correctly absorbs.**
+- **THE PINS (TDD)**: `tests/interior-census-tool.test.ts` (the
+  session-160 describe) **+5** — the `WALK_STAGGER_MS` re-anchor (+
+  the old name's RETIREMENT pinned: `not.toHaveProperty`) + the
+  one-login-per-run contract (the walkAxis body login-free + the
+  pre-flight helper, source-shape) + the storageState propagation
+  (the app-leg context carries it; the guest contexts stay bare —
+  the s149 doctrine) + the public-only guard + the 429-diagnostic
+  (the STDERR hint) + the header doctrine (L-160c1/c2/c3) — **7 RED
+  at birth (the 5 new + the 2 s158 stagger re-anchors) → the
+  implementation → GREEN**. The count ladder **UNIT 2252→2257 (+5)
+  · SUITES 120 held · badge 2405→2410** (count-ladder-160.py +
+  skill-head-160.py, assert-first, idempotent, unique-anchor
+  replacements; the three PAD sites the docs-counts pins caught
+  live — the HEAD line, the checklist, the commands table — joined
+  the ladder script) · the CLAUDE-carrier negatives ladders grew
+  the 2252 forms (all four carrier families) · the SKILL **v1.157.0**
+  + the s160 head (the s159 layer demoted beneath) + the Appendix B
+  totals.
+- **THE LESSONS**: **L-160c1 the login COUNT is the budget's true
+  axis** (the arrival-rate stagger treated the symptom; the
+  orchestration shrinks the count itself — never by weakening the
+  app's limiter, a deliberate security contract) · **L-160c2 the
+  stateless cookie is the consolidation license** (the HMAC-signed
+  stateless session + the zero-data-keeps-users contract make
+  cross-context reuse safe; a server-side session store would break
+  the whole design) · **L-160c3 a recurring operational fix is a
+  standing defect** (the same manual restart + re-run three rounds
+  running is the signal to spend a round on the structural cure —
+  the decode-the-pain doctrine applied to the tooling itself).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **120/2257** · build ·
+  e2e **153/153** · **the SIX drift gates CLEAN ×6** (the census
+  leg at the consolidated form) · the VLM battery 2/2 (the phone +
+  desktop login-wall pairs MATCH — the 3D-logo genus + the Base44
+  pill the only differences, both documented genera, never
+  mirrored) · the captures 381-384 (the login-wall pair at phone +
+  desktop — the round's subject surface: the consolidated login's
+  own wall; the seeded remediated codebase, settled + verified
+  in-frame).

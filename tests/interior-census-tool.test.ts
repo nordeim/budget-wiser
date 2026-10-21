@@ -1360,9 +1360,12 @@ describe("session-158: the census PARALLEL-AXES option (the 158-c rotation)", ()
     expect(m.planAxisBatches([], 4)).toEqual([]);
   });
 
-  it("LOGIN_STAGGER_MS: the no-burst constant (4000ms — worker i of a batch delays its login phase by i×4000, the four our-logins spread over ~12s; L-157c3 the census's own logins are a scarce resource: the login limiter is 10-per-IP/15-min fixed-window and 429s also increment; parallelism multiplies the ARRIVAL RATE, not the LOGIN COUNT)", async () => {
+  it("WALK_STAGGER_MS: the no-burst constant (4000ms — worker i of a batch delays its START by i×4000, spreading the 4-way walk load over ~12s; the s160 re-anchor: the login-arrival role RETIRED — the logins consolidated to ONE pre-flight pair per invocation [the 160-c rotation, the L-160c1 count doctrine], the stagger now spaces the workers' first censusPage reads; the value + the export shape hold from the s158 LOGIN_STAGGER_MS form)", async () => {
     const m = await import("../scripts/interior-census");
-    expect(m.LOGIN_STAGGER_MS).toBe(4000);
+    expect(m.WALK_STAGGER_MS).toBe(4000);
+    // the old name is RETIRED (a name that lies is technical debt — the
+    // delay no longer staggers any login)
+    expect(m).not.toHaveProperty("LOGIN_STAGGER_MS");
   });
 
   it("parseParallelArg: default 1 (the standing sequential protocol — the no-flag form byte-identical); --parallel N parses; the fail-fast negatives (the --axis idiom — never a silent fall-back on a typo)", async () => {
@@ -1390,8 +1393,9 @@ describe("session-158: the census PARALLEL-AXES option (the 158-c rotation)", ()
     // the fresh context at its viewport
     expect(src).toMatch(/walkAxis/);
     expect(src).toMatch(/viewport:\s*\{\s*width:\s*axis\.width,\s*height:\s*axis\.height\s*\}/);
-    // the stagger is applied inside the worker (the login-phase delay)
-    expect(src).toMatch(/LOGIN_STAGGER_MS/);
+    // the stagger is applied inside the worker (the s160 re-anchor: the
+    // worker-START delay — the logins left the worker at 160-c)
+    expect(src).toMatch(/WALK_STAGGER_MS/);
     // one zero-data + one seed-restore per invocation — OUTSIDE the
     // batches (the never-zeroed doctrine spans every batch)
     expect(src).toMatch(/delete\s+\w+Env\.DATABASE_URL/);
@@ -1438,5 +1442,60 @@ describe("session-158b: the QUIESCENCE extension (the PASS-1 decode — the fixe
     const src = toolSrc();
     expect(src).toMatch(/quiescence/i);
     expect(src).toMatch(/read-too-early|pre-mount|mid-entrance/i);
+  });
+});
+
+describe("session-160: the census LOGIN CONSOLIDATION (the 160-c rotation — the L-158c3 budget's structural cure)", () => {
+  it("the ONE-LOGIN-PER-RUN contract: the logins live in ONE pre-flight phase (one ref-login + one our-login per invocation, regardless of --parallel or the axes count) — the walkAxis worker body is LOGIN-FREE (the 4-per-run our-logins that exhausted the 10-per-IP/15-min window three rounds running [s158, s159, s160's 160-b: 13 logins, 2 x 429s] collapse to 1; the count is the budget's true axis — L-160c1)", async () => {
+    const src = toolSrc();
+    // the pre-flight phase: ONE context, the login pair, the combined
+    // storageState (the ref's Base44 cookie + our neo_session — two
+    // origins, one cookie jar)
+    expect(src).toMatch(/preflightLoginPair/);
+    expect(src).toMatch(/storageState\(\)/);
+    // walkAxis: the worker signature takes the state, its body holds NO
+    // login call (the call sites collapsed into the pre-flight)
+    const walkBody = src.slice(src.indexOf("async function walkAxis"));
+    const walkSlice = walkBody.slice(0, walkBody.indexOf("\nasync function "));
+    expect(walkSlice).not.toMatch(/await login\(/);
+    expect(walkSlice).toMatch(/storageState/);
+  });
+
+  it("the STORAGE-STATE PROPAGATION contract: the app-leg context carries the combined pair state (auth provenance is context-level — the stateless HMAC cookie survives context recreation, the zero-data phase keeps the users table: the L-160c2 license); the PUBLIC-leg GUEST contexts stay BARE — no storageState ever (the s149 fullpage doctrine: the landing renders to guests, the reference's Base44 pill included)", async () => {
+    const src = toolSrc();
+    // the app-leg context gains the state (the walkAxis app leg)
+    expect(src).toMatch(/storageState:\s*\w+/);
+    // the guest contexts stay bare (the public leg — NO storageState on
+    // the guest newContext; the s149 doctrine held through the s160
+    // consolidation)
+    const publicBody = src.slice(src.indexOf("// 4b. the PUBLIC leg"));
+    const publicSlice = publicBody.slice(0, publicBody.indexOf("return out;"));
+    expect(publicSlice).not.toMatch(/storageState/);
+  });
+
+  it("the PUBLIC-ONLY GUARD transfers to the pre-flight: `--pages landing` (and any app-empty selection) NEVER logs in — the pre-flight phase is guarded by the app-pages selection exactly as the s152 in-worker login phase was (the guard doctrine re-anchored, not weakened)", async () => {
+    const src = toolSrc();
+    // the pre-flight call site: guarded by the app-pages length (the
+    // browser-launch → pre-flight → batches window of run())
+    const runBody = src.slice(src.indexOf("async function run()"));
+    const runSlice = runBody.slice(0, runBody.indexOf("const batches = planAxisBatches"));
+    expect(runSlice).toMatch(/pages\.length\s*>\s*0\s*\?\s*await preflightLoginPair/);
+  });
+
+  it("the 429-DIAGNOSTIC: the pre-flight login failure logs the budget hint to STDERR (the s159 stdout/stderr contract) — the L-158c3 doctrine's own operational form named IN the tool, then the error RETHROWS (the fail-fast idiom, never a silent fall-back; the census's own logins are a scarce resource, and the failure that recurred three rounds running now tells the operator exactly which restart to make)", async () => {
+    const src = toolSrc();
+    expect(src).toMatch(/10-per-IP\/15-min/);
+    expect(src).toMatch(/L-158c3/);
+    // the hint goes to STDERR (console.error) — never interleaved with
+    // the --json stdout contract
+    expect(src).toMatch(/console\.error\([\s\S]*?10-per-IP\/15-min/);
+  });
+
+  it("the HEADER DOCTRINE (L-160c1/c2/c3): the tool header documents the consolidation — the count-not-arrival decode (the stagger treated the symptom; the orchestration shrinks the count), the stateless-cookie license (the auth seam's shape makes cross-context reuse safe), and the recurring-operational-fix-is-a-standing-defect signal (three rounds running of the same manual restart + re-run)", async () => {
+    const src = toolSrc();
+    expect(src).toMatch(/160-c/);
+    expect(src).toMatch(/L-160c1/);
+    expect(src).toMatch(/stateless/);
+    expect(src).toMatch(/L-160c3/);
   });
 });

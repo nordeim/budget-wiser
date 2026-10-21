@@ -147,19 +147,31 @@
 //      [--parallel N]  (default 1 — the standing sequential protocol,
 //      one axis at a time, the observable behavior byte-identical; N
 //      walks the axes N-at-a-time: the planAxisBatches partition, each
-//      batch's axes CONCURRENT with the logins STAGGERED
-//      LOGIN_STAGGER_MS per worker, the batches sequential; the 158-c
+//      batch's axes CONCURRENT with the worker starts STAGGERED
+//      WALK_STAGGER_MS per worker, the batches sequential; the 158-c
 //      probe validated 4-way on the 2-core standing box — all 24 walks
 //      reproduced the standing values byte-for-byte, 2.7× on the
 //      subset; gate:full runs --parallel 4, the ~26-min census leg
-//      ~7-8 min. THE LOGIN-BUDGET DOCTRINE (L-157c3, formalized):
-//      the census's own logins are a scarce resource — the login
+//      ~7-8 min. THE LOGIN-BUDGET DOCTRINE — the 160-c structural
+//      cure (L-160c1): the login COUNT is the budget's true axis —
+//      the census's own logins are a scarce resource (the login
 //      limiter is 10-per-IP/15-min fixed-window and 429s also
-//      increment; each axis worker logs in exactly once (parallelism
-//      multiplies the logins' ARRIVAL RATE, never their COUNT), and
-//      the stagger spreads the four arrivals over ~12s — no burst;
-//      the dev-server restart clears the per-process bucket when the
-//      gate cadence needs a retry. The batch gathers through
+//      increment), and the per-axis logins that exhausted it three
+//      rounds running (s158, s159, s160's audit: 13 chain logins, 2 ×
+//      429s) collapsed at 160-c into ONE pre-flight login pair per
+//      invocation: login the reference + ours ONCE in a neutral
+//      context, capture the COMBINED storageState (two origins, one
+//      cookie jar), hand it to every axis worker's fresh context — the
+//      stateless HMAC cookie survives context recreation and the
+//      zero-data phase keeps the users table (L-160c2, the
+//      consolidation license; a server-side session store would break
+//      it); the app's own limiter — a deliberate security contract —
+//      is NEVER touched. The stagger (L-157c3's arrival doctrine,
+//      re-anchored) now spaces the worker STARTS — spreading the
+//      4-way walk load, the no-burst spirit intact. L-160c3: the
+//      recurring operational fix (the same manual dev-server restart
+//      + re-run three rounds running) is a standing defect — this
+//      round is its structural cure. The batch gathers through
 //      Promise.allSettled — INPUT order, never completion order — so
 //      the report + the --json shape stay byte-identical under
 //      concurrency; a rejected worker drains the batch then rethrows.
@@ -383,15 +395,17 @@ export function parseAxisArg(argv: string[]): ReadonlyArray<CensusAxis> {
 
 // -- the PARALLEL-AXES option (the 158-c rotation) --------------------------
 
-/** The login-phase stagger between the workers of one batch (the no-burst
- *  budget form — L-157c3 the census's own logins are a scarce resource:
- *  the login limiter is 10-per-IP/15-min fixed-window and 429s also
- *  increment). Worker i of a batch delays its login phase by
- *  i × LOGIN_STAGGER_MS, spreading the four our-logins over ~12s —
- *  parallelism multiplies the logins' ARRIVAL RATE, never their COUNT
- *  (each axis worker still logs in exactly once). `--parallel 1` workers
- *  are always worker 0: zero added delay, the standing cadence. */
-export const LOGIN_STAGGER_MS = 4000;
+/** The worker-START stagger between the workers of one batch (the
+ *  no-burst load form — re-anchored at the 160-c rotation): the
+ *  login-arrival role is RETIRED — the logins live in ONE pre-flight
+ *  pair per invocation now (L-160c1: the count is the budget's true
+ *  axis; the 10-per-IP/15-min limiter stays untouched, a deliberate
+ *  security contract). Worker i of a batch delays its START by
+ *  i × WALK_STAGGER_MS, spreading the 4-way first-read load over
+ *  ~12s (the s158 LOAD decode rides: the concurrent walks still
+ *  enter one at a time). `--parallel 1` workers are always worker 0:
+ *  zero added delay, the standing cadence. */
+export const WALK_STAGGER_MS = 4000;
 
 /** The --parallel CLI seam (the --axis idiom): default 1 = the standing
  *  sequential protocol (the no-flag form byte-identical — one axis at a
@@ -1650,34 +1664,84 @@ const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app";
 
 const log = (s: string) => console.log(`[census] ${s}`);
 
-/** The per-axis worker (the s158 extraction — the standing per-axis body,
- *  VERBATIM): a fresh context (with both logins, the second staggered by
- *  the batch position — worker i of a concurrent batch delays its login
- *  phase by `staggerMs`, the no-burst budget form; a sequential batch's
- *  only worker is worker 0: zero delay, the standing cadence) at the
- *  axis's viewport; the app leg + the public leg; the per-axis results
- *  returned (the batch's allSettled gathers them in INPUT order — the
- *  report + the --json shape stay byte-identical under concurrency).
- *  The dead zone is PER-AXIS; the census walks every leg. */
+/** The combined per-app cookie state (the pre-flight pair's capture) —
+ *  the playwright BrowserContext.storageState() return shape, derived
+ *  from the context method so the version's own type rides (no bare
+ *  any, no namespace member that moves between playwright versions). */
+type AuthState = Awaited<ReturnType<import("@playwright/test").BrowserContext["storageState"]>>;
+
+/** The pre-flight login pair (the 160-c consolidation — the L-160c1
+ *  count doctrine): ONE context logs into the reference, then ours,
+ *  then captures the COMBINED storageState (two origins, one cookie
+ *  jar: the ref's Base44 cookie + our stateless `neo_session` — which
+ *  survives context recreation and the zero-data phase [users stay],
+ *  the L-160c2 license). Every axis worker's fresh context carries the
+ *  state — the per-axis logins that exhausted the login budget three
+ *  rounds running collapse to ONE pair per invocation, regardless of
+ *  --parallel or the axes count. On failure the budget hint goes to
+ *  STDERR (the s159 stdout/stderr contract) and the error RETHROWS
+ *  (fail-fast, never a silent fall-back). */
+async function preflightLoginPair(
+  browser: import("@playwright/test").Browser,
+): Promise<AuthState> {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  try {
+    const refPage = await ctx.newPage();
+    log(`the pre-flight login pair: the reference ${REF_URL}…`);
+    await login(refPage, REF_URL);
+    const ourPage = await ctx.newPage();
+    log(`the pre-flight login pair: ours ${OUR_URL}…`);
+    await login(ourPage, OUR_URL);
+    const state = await ctx.storageState();
+    log("the pre-flight pair captured (one ref-login + one our-login — the combined storageState)");
+    return state;
+  } catch (e) {
+    console.error(
+      `[census] the pre-flight login pair FAILED — if the dev log shows 429s, the\n` +
+        `10-per-IP/15-min login window is exhausted (the L-158c3/L-160c1 budget\n` +
+        `doctrine); the fix: a dev-server restart, then a single census re-run.\n` +
+        `The app's own login limiter is a deliberate security contract — never\n` +
+        `weakened; the census consolidates its logins instead (one pair per run).`,
+    );
+    throw e;
+  } finally {
+    await ctx.close();
+  }
+}
+
+/** The per-axis worker (the s158 extraction — the standing per-axis body;
+ *  the 160-c re-anchor: LOGIN-FREE): a fresh context carrying the
+ *  combined pre-flight storageState (the one login pair per invocation
+ *  — worker i of a concurrent batch delays its START by `staggerMs`,
+ *  the no-burst LOAD form; a sequential batch's only worker is worker
+ *  0: zero delay, the standing cadence) at the axis's viewport; the
+ *  app leg + the public leg; the per-axis results returned (the
+ *  batch's allSettled gathers them in INPUT order — the report + the
+ *  --json shape stay byte-identical under concurrency). The dead zone
+ *  is PER-AXIS; the census walks every leg. */
 async function walkAxis(
   axis: CensusAxis,
   staggerMs: number,
   browser: import("@playwright/test").Browser,
   pages: ReadonlyArray<{ name: string; path: string }>,
   publicPages: ReadonlyArray<{ name: string; path: string }>,
+  authState: AuthState | undefined,
 ): Promise<CensusPageResult[]> {
   await new Promise((r) => setTimeout(r, staggerMs));
   const out: CensusPageResult[] = [];
-  // 4. the APP leg (the 9 shell pages): the logged-in contexts —
-  //    GUARDED (a public-only run never logs in)
+  // 4. the APP leg (the 9 shell pages): the state-reused logged-in
+  //    context — the pre-flight pair's combined storageState (the
+  //    160-c consolidation; the guard lives at the pre-flight call
+  //    site — a public-only run never logs in, the s152/s149 doctrine
+  //    held)
   if (pages.length > 0) {
-    const ctx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
+    const ctx = await browser.newContext({
+      viewport: { width: axis.width, height: axis.height },
+      storageState: authState,
+    });
     const refPage = await ctx.newPage();
-    log(`logging into the reference ${REF_URL} (${axis.name} ${axis.width}x${axis.height})…`);
-    await login(refPage, REF_URL);
+    log(`walking ${axis.name} ${axis.width}x${axis.height} logged-in (the pre-flight pair's storageState — the 160-c consolidation)`);
     const ourPage = await ctx.newPage();
-    log(`logging into ours ${OUR_URL} (${axis.name})…`);
-    await login(ourPage, OUR_URL);
 
     // the census per page + the decode, at the axis's content
     // floor (the L-153c2 seam — the s95 poke-out discriminator
@@ -1803,15 +1867,17 @@ async function run() {
     if (z.status !== 0) throw new Error("zero-data.ts failed");
 
     // 3. the AXES in BATCHES (the 158-c parallel option): one zero-data
-    //    + one browser per invocation; a fresh context (with both
-    //    logins, staggered per worker) at each axis's viewport — the
+    //    + one browser per invocation; a fresh state-reused context per
+    //    axis (the 160-c consolidation: the ONE pre-flight login pair,
+    //    its combined storageState handed to every worker — the
+    //    worker starts staggered) at each axis's viewport — the
     //    dead zone is PER-AXIS, the census walks every leg (--axis
     //    subsets for the mutation-proof runs). --parallel 1 (the
     //    default) = one axis per batch, the standing sequential
     //    semantics, observable behavior byte-identical; --parallel N
     //    walks the axes N-at-a-time — each batch's axes CONCURRENTLY
-    //    (the logins staggered LOGIN_STAGGER_MS per worker, the
-    //    no-burst budget form), the batches themselves sequential.
+    //    (the worker starts staggered WALK_STAGGER_MS per worker, the
+    //    no-burst LOAD form), the batches themselves sequential.
     //    The batch gathers through Promise.allSettled — INPUT order,
     //    never completion order, so the report + the --json shape stay
     //    byte-identical under concurrency; a rejected worker DRAINS
@@ -1820,16 +1886,22 @@ async function run() {
     const browser = await chromium.launch({
       headless: process.env.HEADLESS === "0" ? false : true,
     });
+    // 3b. the PRE-FLIGHT LOGIN PAIR (the 160-c consolidation — the
+    //     L-160c1 count doctrine): ONE ref-login + ONE our-login per
+    //     invocation, the combined storageState shared by every axis
+    //     worker; the GUARD transfers here (a public-only run — an
+    //     app-empty selection — never logs in, the s152/s149 doctrine).
+    const authState = pages.length > 0 ? await preflightLoginPair(browser) : undefined;
     results = [];
     const batches = planAxisBatches(axes, parallel);
     for (const batch of batches) {
       if (batch.length > 1) {
         log(
-          `walking ${batch.length} axes concurrently (${batch.map((a) => a.name).join(" + ")}) — the logins staggered ${LOGIN_STAGGER_MS}ms per worker (the no-burst budget form)…`,
+          `walking ${batch.length} axes concurrently (${batch.map((a) => a.name).join(" + ")}) — the worker starts staggered ${WALK_STAGGER_MS}ms (the no-burst LOAD form; the logins consolidated at 160-c)…`,
         );
       }
       const settled = await Promise.allSettled(
-        batch.map((a, i) => walkAxis(a, i * LOGIN_STAGGER_MS, browser, pages, publicPages)),
+        batch.map((a, i) => walkAxis(a, i * WALK_STAGGER_MS, browser, pages, publicPages, authState)),
       );
       const firstReject = settled.find((s) => s.status === "rejected") as
         | PromiseRejectedResult
