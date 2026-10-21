@@ -243,3 +243,59 @@ describe("session-159: the settings-rhythm tool (the intraday-rhythm observation
     expect(censusSrc()).toContain("settings-rhythm.ts");
   });
 });
+
+describe("session-161: the rhythm LOGIN CONSOLIDATION (the 161-c rotation — the s160 doctrine's second application, the walking-tool family's other member)", () => {
+  it("the ONE-LOGIN-PER-INVOCATION contract: the login lives in ONE pre-flight phase (preflightLogin — ONE context, login the target app, storageState(), close), exactly one login per invocation regardless of the --axis count — the capture loop is LOGIN-FREE (the ours control burned 4 our-logins per --axis all invocation, one per axis context; the count is the budget's true axis — L-160c1 applied to the second walking tool)", async () => {
+    const src = rhythmSrc();
+    // the pre-flight helper: ONE context, the target login, the state
+    // capture, the close
+    expect(src).toMatch(/preflightLogin/);
+    expect(src).toMatch(/storageState\(\)/);
+    // the capture loop body: NO login call (the per-axis call site
+    // retired; the loop only opens state-carrying contexts)
+    const loopBody = src.slice(src.indexOf("for (const axis of axes)"));
+    const loopSlice = loopBody.slice(0, loopBody.indexOf("// THE JSON CONTRACT"));
+    expect(loopSlice).not.toMatch(/await login\(/);
+  });
+
+  it("the STORAGE-STATE PROPAGATION contract: every axis context in the capture loop carries the pre-flight state (the stateless HMAC cookie survives context recreation — the L-160c2 license, proven live by the s160 probe; the settled-read guarantee rides along untouched — censusPage's quiescence, the read side never changes)", async () => {
+    const src = rhythmSrc();
+    // the axis context gains the state
+    expect(src).toMatch(/storageState:\s*\w+/);
+    // the loop slice carries it
+    const loopBody = src.slice(src.indexOf("for (const axis of axes)"));
+    const loopSlice = loopBody.slice(0, loopBody.indexOf("// THE JSON CONTRACT"));
+    expect(loopSlice).toMatch(/storageState/);
+  });
+
+  it("the 429-DIAGNOSTIC transfers: the pre-flight login failure logs the budget hint to STDERR (the s159 stdout/stderr contract — the --json stdout NEVER interleaved) then RETHROWS (fail-fast, never a silent fall-back; the census form adapted to the single-app rhythm context)", async () => {
+    const src = rhythmSrc();
+    // the hint names the budget + the doctrine
+    expect(src).toMatch(/10-per-IP\/15-min/);
+    expect(src).toMatch(/L-160c1/);
+    // the hint goes to STDERR (console.error), inside the pre-flight's
+    // catch — then the error rethrows
+    expect(src).toMatch(/console\.error\([\s\S]*?10-per-IP\/15-min/);
+    const helperBody = src.slice(src.indexOf("function preflightLogin"));
+    const helperSlice = helperBody.slice(0, helperBody.indexOf("\nasync function ") > 0 ? helperBody.indexOf("\nasync function ") : undefined);
+    expect(helperSlice).toMatch(/throw e/);
+  });
+
+  it("the HEADER RE-ANCHOR: the login-budget paragraph now documents the L-160c1 count doctrine (ONE login per invocation, the count — never the arrival rate); the OLD per-axis language RETIRED — 'one login each' and 'never a burst' both gone (the arrival-rate stagger treated the symptom; s160 retired the doctrine, 161 retires its letter in the second tool)", async () => {
+    const src = rhythmSrc();
+    // the new doctrine tokens
+    expect(src).toMatch(/L-160c1/);
+    expect(src).toMatch(/161-c/);
+    // the old language retired
+    expect(src).not.toMatch(/one login each/);
+    expect(src).not.toMatch(/never a burst/);
+  });
+
+  it("the REUSE + OBSERVATION-ONLY doctrines held: login still imported from ./sweep (the pre-flight's own seam — reuse, not duplicate), censusPage still the read engine, and the tool still NEVER in the gate chain (gate:full does not name it)", async () => {
+    const src = rhythmSrc();
+    expect(src).toMatch(/import \{[^}]*login[^}]*\} from "\.\/sweep"/);
+    expect(src).toMatch(/import \{[^}]*censusPage[^}]*\} from "\.\/interior-census"/);
+    const gate: string = pkgSrc().scripts["gate:full"];
+    expect(gate).not.toContain("settings-rhythm");
+  });
+});

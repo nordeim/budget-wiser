@@ -27,10 +27,10 @@
 // the OBSERVATION, never the contract.
 //
 // THE T1/T2 PROTOCOL (the rhythm map): capture the reference at all
-// four axes (four SEQUENTIAL invocations — one login each, the
-// L-158c3 no-burst form) at T1, again at T2; `--diff a.json b.json`
-// reports the swing. The null face (no edit inside the window) is a
-// VALID finding — the rhythm's baseline observation.
+// four axes at T1 (one invocation, ONE pre-flight login — the 161-c
+// consolidated form), again at T2; `--diff a.json b.json` reports the
+// swing. The null face (no edit inside the window) is a VALID
+// finding — the rhythm's baseline observation.
 //
 // THIS TOOL IS OBSERVATION-ONLY — NEVER in the gate chain (gate:full
 // does not name it; it gates nothing, it observes). The browser twin
@@ -38,10 +38,15 @@
 // read a SETTLED read, the s158 never-weaker guarantee rides along)
 // and the sweep's login/waitOnUrl (the s152 precedent).
 //
-// The login budget (L-157c3/L-158c3): each invocation logs in exactly
-// ONCE (--app ours counts against OUR 10-per-IP/15-min window; the
-// four-axis map = four invocations spread over minutes, never a
-// burst).
+// The login budget (L-160c1, the 161-c consolidation — the s160
+// census doctrine applied to the second walking tool): ONE pre-flight
+// login per invocation, REGARDLESS of the --axis count (the count is
+// the budget's true axis, never the arrival rate; --app ours counts
+// against OUR 10-per-IP/15-min window; `--axis all` walks four axes
+// on the one pre-flight state). The stateless HMAC cookie survives
+// context recreation (the L-160c2 license, proven live at s160); the
+// app's own login limiter is a deliberate security contract, never
+// touched.
 //
 // Run: bun scripts/settings-rhythm.ts [--app ref|ours] (default ref —
 //      the observation target is the reference's own live edits)
@@ -214,9 +219,9 @@ export function parseDiffArg(argv: string[]): string[] | null {
 }
 
 /** The --axis seam: the census's parseAxisArg fail-fast idiom, but the
- * DEFAULT is the phone leg alone (one axis per invocation — the
- * L-158c3 no-burst budget form; `--axis all` walks the four axes
- * sequentially, one login each). */
+ * DEFAULT is the phone leg alone; `--axis all` walks the four axes
+ * sequentially on the ONE pre-flight state (the 161-c consolidation
+ * — the axis count never multiplies the login count). */
 function parseRhythmAxisArg(argv: string[]): ReadonlyArray<(typeof CENSUS_AXES)[number]> {
   if (!argv.includes("--axis")) return [CENSUS_AXES[0]];
   return parseAxisArg(argv);
@@ -278,6 +283,47 @@ function printDiff(d: ReturnType<typeof diffFingerprints>, label: string) {
   );
 }
 
+// -- the pre-flight login (the 161-c consolidation) ---------------------------
+
+type AuthState = Awaited<ReturnType<import("@playwright/test").BrowserContext["storageState"]>>;
+
+/** The pre-flight login (the 161-c consolidation — the s160 census
+ *  construction, single-app form: the rhythm tool walks ONE app per
+ *  invocation, so the pre-flight takes the TARGET as its parameter —
+ *  the pair walks both apps because the census does; this never does):
+ *  ONE context → login the target app → storageState() → close.
+ *  Exactly ONE login per invocation, REGARDLESS of the --axis count —
+ *  the count is the budget's true axis (L-160c1); the stateless HMAC
+ *  cookie survives context recreation (the L-160c2 license, proven
+ *  live by the s160 probe). The 429-diagnostic mirrors the census
+ *  form: the budget hint to STDERR, then the rethrow — fail-fast. */
+async function preflightLogin(
+  browser: import("@playwright/test").Browser,
+  app: "ref" | "ours",
+  base: string,
+): Promise<AuthState> {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  try {
+    const page = await ctx.newPage();
+    log(`the pre-flight login: ${app === "ours" ? "ours " + OUR_URL : "the reference " + REF_URL}…`);
+    await login(page, base);
+    const state = await ctx.storageState();
+    log("the pre-flight state captured (ONE login per invocation — the 161-c consolidation)");
+    return state;
+  } catch (e) {
+    console.error(
+      `[rhythm] the pre-flight login FAILED — if the dev log shows 429s, the\n` +
+        `10-per-IP/15-min login window is exhausted (the L-158c3/L-160c1 budget\n` +
+        `doctrine); the fix: a dev-server restart, then a single re-run.\n` +
+        `The app's own login limiter is a deliberate security contract — never\n` +
+        `weakened; the rhythm tool consolidates its logins instead (one per run).`,
+    );
+    throw e;
+  } finally {
+    await ctx.close();
+  }
+}
+
 async function run() {
   const argv = process.argv.slice(2);
   const asJson = argv.includes("--json");
@@ -325,12 +371,17 @@ async function run() {
 
   const browser = await chromium.launch();
   try {
+    // the pre-flight login (the 161-c consolidation): ONE login per
+    // invocation, the storageState shared by every axis context below
+    const authState = await preflightLogin(browser, app, base);
     const records: CaptureRecord[] = [];
     for (const axis of axes) {
-      const ctx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
+      const ctx = await browser.newContext({
+        viewport: { width: axis.width, height: axis.height },
+        storageState: authState,
+      });
       const page = await ctx.newPage();
-      log(`logging into ${app === "ours" ? "ours " + OUR_URL : "the reference " + REF_URL} (${axis.name} ${axis.width}x${axis.height})…`);
-      await login(page, base);
+      log(`walking ${axis.name} ${axis.width}x${axis.height} on the pre-flight state (the 161-c consolidation)…`);
       const capture = await censusPage(page, base, "/settings");
       const fp = settingsFingerprint(capture);
       records.push({ app, axis: axis.name, fingerprint: fp });

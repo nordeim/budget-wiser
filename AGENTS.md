@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2257 checks)      | `bun run test`                         |
+|  Unit tests (2262 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2257) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2262) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -8284,3 +8284,91 @@ deliberate security contract, stays byte-identical.**
   desktop — the round's subject surface: the consolidated login's
   own wall; the seeded remediated codebase, settled + verified
   in-frame).
+
+### Session-161 (2026-10-22) — the rhythm LOGIN CONSOLIDATION (the 161-c rotation)
+
+The workspace stood (the fresh clone + the standing env: `.env` from
+`.env.example` + `db:push`/`db:seed` census MATCH · the Playwright
+chromium installed · the dev server standing). probe:ref **#135
+STABLE** at the s147–s155 fingerprint — a rotation round on **the s160
+doctrine's second application**: the walking-tool family's OTHER
+member, the settings-rhythm instrument, still logged in PER AXIS (4
+our-logins per `--axis all` ours-control; the control + the gate
+chain = 9 of the 10-per-IP/15-min window, one diagnostic re-run from
+the 429 wall — the L-160c3 recurring-cost pattern verbatim). **The
+rhythm tool's capture loop gets the same pre-flight form — ONE login
+per invocation, the storageState shared by every axis context; the
+app's own login limiter stays byte-identical.**
+
+- **161-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **120/2257**
+  (clean exit) · build · **e2e 153/153** (clean first run — the drawer
+  battery inside, the mobile-nav contract).
+- **161-b**: probe:ref **#135 STABLE** · **the SIX drift gates CLEAN
+  ×6** (the four viewport sweeps + the fullpage at the exact standing
+  values 0.093%/0.316% at equal heights 4990/7259 + the census gate
+  at `--parallel 4`: 52 page-axis runs, all zero unexplained, exit 0
+  — the census leg at the 160-c form, EXACTLY ONE our-login verified
+  live, the dev-log POST-200 delta 4→5) · sitemap 11 routes + robots
+  200 · db census MATCH · the tree clean · zero dep changes. ONE
+  supplemental live check: the mobile drawer verified in-browser at
+  390×844 (trigger unique · the rail hidden · `data-state=open` · 8/8
+  links · the MAIN-scroller lock · close-on-navigate + the URL change
+  · Escape + the lock release — PASS) — and the login window filled
+  to 10/10 inside the audit, the budget reality this round addresses.
+- **THE CONSOLIDATION** (`scripts/settings-rhythm.ts`): the
+  `preflightLogin` helper — the s160 census construction, single-app
+  form (the pair walks both apps because the census does; the rhythm
+  walks ONE app per invocation, so the pre-flight takes the target as
+  its parameter): ONE context → login the target → `storageState()` →
+  close. The capture loop's contexts carry the state; the in-loop
+  login DELETED. The 429-diagnostic mirrors the census form (the
+  budget hint to STDERR — the s159 stdout/stderr contract — then the
+  rethrow, fail-fast). The header re-anchored to L-160c1 (ONE login
+  per invocation REGARDLESS of the --axis count); the old per-axis
+  arrival-rate language RETIRED ("one login each" + "never a burst"
+  both gone). **The ours control's login count drops 4 → 1.**
+- **THE LIVE PROOFS**: **PASS 1 the budget** — `--app ours --axis
+  all` burns EXACTLY ONE our-login (the dev-log POST-200 delta 0→1,
+  was 4; zero 429s); **PASS 2 the byte-parity** — the ours control at
+  the standing values byte-for-byte (phone 32 rows [8/7/6/3/8], els
+  256, mainH 3059) plus the FIRST multi-axis ours baseline (tablet
+  mainH 2147 · landscape 2123 · desktop 2123); **PASS 3 the T4 rhythm
+  ride-along** — the reference byte-identical to the T3 reconstruction
+  on every axis (31 rows [5/6/6/4/10], els 249, mainH
+  2973/2135/2099/2099, +0 everywhere), the null face extends
+  ~45 min → **~20.5h ACROSS DAYS** (T1 02:30Z 2026-10-21 → T4 23:00Z
+  2026-10-22, four observations, three maintenance rounds);
+  **PASS 4 the diff mode** — browser-free, login-free, unchanged.
+- **THE PINS (TDD)**: `tests/settings-rhythm-tool.test.ts` (the
+  session-161 describe) **+5** — the one-login-per-invocation contract
+  (the capture loop login-free + the pre-flight helper, source-shape)
+  + the storageState propagation + the 429-diagnostic (the STDERR
+  hint + the fail-fast rethrow) + the header re-anchor (the L-160c1
+  doctrine present, the old language RETIRED) + the reuse/
+  observation-only doctrine — **4 RED at birth → the implementation →
+  GREEN** (the 5th born-green by design: it pins contracts that
+  already hold). The count ladder **UNIT 2257→2262 (+5) · SUITES 120
+  held · badge 2410→2415** (count-ladder-161.py, assert-first,
+  idempotent, unique-anchor replacements; the docs-counts pins
+  caught the SKILL H1 version site live — joined the ladder script)
+  · the CLAUDE-carrier negatives grew the 2257 forms (all four
+  carrier families) · the SKILL **v1.158.0** + the s161 head (the
+  s160 layer demoted beneath) + the Appendix B totals.
+- **THE LESSONS**: **L-161c1 a doctrine lands in a FAMILY, not a
+  file** (the s160 cure healed the census while the rhythm tool — the
+  same family, the same seams — kept the per-axis pattern; when a
+  structural cure lands, enumerate the family members sharing the
+  seam) · **L-161c2 the standing ride-along is a standing COST** (the
+  moment an observation becomes an every-round feature its budget
+  cost recurs every round — minimize it structurally, never just
+  tolerate it once).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **120/2262** · build ·
+  e2e **153/153** · **the SIX drift gates CLEAN ×6** · the VLM
+  battery 2/2 (the phone + desktop settings pairs MATCH — the
+  live-data genus [the reference's own intraday picklist edits, the
+  row counts independently CONFIRMING the rhythm fingerprints: ours
+  8/7 vs ref 5/6] + the Base44 pill the only differences, both
+  documented genera, never mirrored) · the captures 385-388 (the
+  settings pair at phone + desktop — the round's subject surface: the
+  rhythm instrument's own page; the seeded remediated codebase,
+  settled + verified in-frame at the standing mainH values).

@@ -575,7 +575,14 @@ const SUITES = 120;
 // stay bare] + the public-only guard [the pre-flight guarded] + the
 // 429-diagnostic [the STDERR hint] + the header doctrine; SUITES stays
 // 120; E2E stays 153.)
-const UNIT = 2257;
+// Session-161: 2257 -> 2262 (+5 — the rhythm LOGIN CONSOLIDATION pins in
+// the settings-rhythm-tool suite: the one-login-per-invocation contract
+// [the preflightLogin helper, the capture loop login-free] + the
+// storageState propagation + the 429-diagnostic [the STDERR hint +
+// the fail-fast rethrow] + the header re-anchor [the L-160c1 count
+// doctrine, the old per-axis language retired] + the reuse/
+// observation-only doctrine; SUITES stays 120; E2E stays 153.)
+const UNIT = 2262;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -1004,13 +1011,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-160 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-161 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s159 layer now beneath the s160 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s160 layer now beneath the s161 head)",
     ).toContain(
-      "+ beneath it 2252 unit checks + 153 e2e checks green; the session-159 layer (THE SETTINGS INTRADAY-RHYTHM MAP",
+      "+ beneath it 2257 unit checks + 153 e2e checks green; the session-160 layer (THE CENSUS LOGIN CONSOLIDATION",
     );
   });
 
