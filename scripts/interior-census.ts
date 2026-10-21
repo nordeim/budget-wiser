@@ -172,6 +172,10 @@
 //      QUIESCENCE_STABLE_SAMPLES consecutive samples agree, the
 //      standing settle the floor, QUIESCENCE_CEILING_MS the
 //      never-weaker fallback.)
+//      Session-159: waitQuiescent + censusPage + settingsRowSignature are
+//      additionally EXPORTED for scripts/settings-rhythm.ts (the
+//      intraday-rhythm observation instrument gets the settled read + the
+//      row contract for free — additive exports, zero behavior).
 // Env: OUR_URL / REF_URL / REF_EMAIL / REF_PASSWORD (the sweep contract)
 // ---------------------------------------------------------------------------
 
@@ -795,10 +799,13 @@ export interface AttributionResult {
 
 /** The settings picklist-row signature (SETTINGS_PICKLIST.itemRow, the
  *  bundle-decoded bordered row): token-SUBSET so the reference's
- *  class-order variance still matches. */
+ *  class-order variance still matches. Session-159: exported for
+ *  scripts/settings-rhythm.ts (the intraday-rhythm observation instrument
+ *  reuses the row contract verbatim — the reuse-not-duplicate doctrine;
+ *  additive export, zero behavior). */
 const SETTINGS_ROW_TOKENS = ["items-center", "gap-2", "p-2", "border", "rounded-lg"];
 
-function settingsRowSignature(cls: string): boolean {
+export function settingsRowSignature(cls: string): boolean {
   const tokens = new Set(cls.split(/\s+/));
   return SETTINGS_ROW_TOKENS.every((t) => tokens.has(t));
 }
@@ -1430,7 +1437,9 @@ export function censusVerdict(results: CensusPageResult[]): CensusVerdict {
 
 // -- the browser twin (the census evaluate) ------------------------------------
 
-interface CensusCapture {
+/** Session-159: exported alongside censusPage (the settings-rhythm
+ * instrument's pins name the capture shape; additive, zero behavior). */
+export interface CensusCapture {
   mainH: number;
   els: CensusEl[];
 }
@@ -1469,7 +1478,7 @@ export const QUIESCENCE_INTERVAL_MS = 400;
  *  the standing behavior exactly). */
 export const QUIESCENCE_CEILING_MS = 12000;
 
-async function waitQuiescent(page: import("@playwright/test").Page): Promise<void> {
+export async function waitQuiescent(page: import("@playwright/test").Page): Promise<void> {
   await page.evaluate(
     ({ samples, interval, ceiling }) =>
       new Promise<void>((resolve) => {
@@ -1509,7 +1518,7 @@ async function waitQuiescent(page: import("@playwright/test").Page): Promise<voi
   );
 }
 
-async function censusPage(
+export async function censusPage(
   page: import("@playwright/test").Page,
   base: string,
   route: string,

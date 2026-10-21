@@ -126,7 +126,9 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 const E2E = 153;
 // Session-152: SUITES 118 -> 119 (the interior-census-tool file — the
 // standing sixth gate's pin suite).
-const SUITES = 119;
+// Session-159: SUITES 119 -> 120 (the settings-rhythm-tool file — the
+// intraday-rhythm observation instrument's pin suite).
+const SUITES = 120;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -561,7 +563,12 @@ const SUITES = 119;
 // extension [the PASS-1 decode: the fixed 2500ms settle does not survive
 // 4-way load — the settled-read fingerprint poll + the constants + the
 // header doctrine, 2 pins]; SUITES stays 119; E2E stays 153.)
-const UNIT = 2241;
+// Session-159: 2241 -> 2252 (+11 — the settings-rhythm-tool suite, the
+// NEW 120th file: the title signature pair + the fingerprint classifier
+// + the safety faces + the diff seam + the CLI pair + the entry guard +
+// the observation-only doctrine + the stdout/stderr contract [the PASS-3
+// find] + the additive-export pins; SUITES 119 -> 120; E2E stays 153.)
+const UNIT = 2252;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -596,6 +603,12 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(readme).toContain("uploads-path");
     // the s131 extension — the toast-anatomy family pins join the list
     expect(readme).toContain("toast-anatomy");
+    // the s159 extension — the settings-rhythm observation tool joins the list
+    expect(readme).toContain("settings-rhythm-tool");
+    // the s159 extension — the settings-rhythm observation tool joins the list
+    expect(readme).toContain("settings-rhythm-tool");
+    // the s159 extension — the settings-rhythm observation tool joins the list
+    expect(readme).toContain("settings-rhythm-tool");
   });
 
   it("README Tested row carries the live counts (the headline live-tense row)", () => {
@@ -984,13 +997,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-158 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-159 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s155 layer now beneath the s156 head)",
     ).toContain(
-      "+ beneath it 2233 unit checks + 153 e2e checks green; the session-157 layer (THE LOGIN-WALL CENSUS LEG",
+      "+ beneath it 2241 unit checks + 153 e2e checks green; the session-158 layer (THE CENSUS PARALLEL-AXES OPTION",
     );
   });
 

@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2241 checks)      | `bun run test`                         |
+|  Unit tests (2252 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2241) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2252) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -8053,3 +8053,123 @@ protocol byte-identical) with the logins staggered.**
   pill the only differences, all documented) · the captures 373-376
   (the dashboard pair at phone + desktop, the seeded remediated
   codebase, settled + verified in-frame).
+
+### Session-159 (2026-10-21) — the settings INTRADAY-RHYTHM map (the 159-c rotation)
+
+The workspace stood (the fresh clone + the standing env: `.env` from
+`.env.example` + `db:push`/`db:seed` census MATCH · the Playwright
+chromium installed · the dev server standing). probe:ref **#133
+STABLE** at the s147–s155 fingerprint — a rotation round on the
+session_335 next-round reading's strongest candidate: **the settings
+intraday-rhythm map — the standing observation instrument + the T1/T2
+double capture. The census's settings SKIP doctrine gets its evidence
+base, and every future round gets a one-command rhythm capture.**
+
+- **159-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **119/2241**
+  (clean exit) · build · **e2e 153/153** (clean first run — the drawer
+  battery inside, the mobile-nav contract).
+- **159-b**: probe:ref **#133 STABLE** · **the SIX drift gates CLEAN
+  ×6** (the four viewport sweeps + the fullpage at the exact standing
+  values 0.093%/0.316% at equal heights 4990/7259 + the census gate at
+  `--parallel 4`: 52 page-axis runs, all zero unexplained, exit 0 ·
+  the settings row 256/249 at the standing genera) · sitemap 11
+  routes + robots 200 · db census MATCH · zero dep changes. ONE live
+  decode: **the L-158c3 budget again** — the back-to-back census
+  diagnostics burned 12 our-logins against the 10/15-min window
+  (7 × 429s); the dev-server restart + the re-run, the doctrine's own
+  operational form, twice validated live now.
+- **THE PRE-PLAN PROBE** (scratch, cleaned): both apps' settings walks
+  decoded live at phone — **the card-title construction byte-equal
+  both apps** (`DIV` + `font-semibold tracking-tight text-lg` + the
+  leaf text, the five section names in the same order) and the
+  picklist rows carry the standing `settingsRowSignature` token set on
+  both sides; **the document order holds: every title precedes its
+  card's rows** — the classifier assigns by ORDER, no geometry needed.
+  The discriminators: the tab BUTTONs (a different class family), the
+  H1 (`text-3xl font-bold`, no font-semibold), the subtitle P. T1
+  phone evidence: reference 31 rows · mainH 2973 · 249 els vs
+  ours-seeded 32 rows · 3059 · 256 (the census's standing values).
+- **THE INSTRUMENT** (`scripts/settings-rhythm.ts` — observation-only,
+  NEVER in the gate chain): the exact-token title signature
+  (`SETTINGS_TITLE_TOKENS` + `settingsTitleSignature` — the
+  loginLogoMarkSignature idiom; a restyled title stays UNMATCHED, its
+  rows fall to `unassignedRows`, the safety face) + the
+  document-order classifier (`settingsFingerprint` — the per-section
+  row counts, the sections in walk order) + the T1/T2 diff
+  (`diffFingerprints` — the per-section deltas, the added/removed
+  sections, the totals) + the CLI pair (`--app ref|ours` fail-fast ·
+  `--axis` reused with a phone default · `--diff a.json b.json` ·
+  `--json`). **The reuse-not-duplicate doctrine**: `login`/`waitOnUrl`
+  from sweep · `CENSUS_AXES`/`parseAxisArg`/`CensusEl` +
+  **the additive exports** `settingsRowSignature` + `censusPage` +
+  `waitQuiescent` from interior-census (zero behavior change; the s152
+  precedent) — the instrument gets the SETTLED read for free, the s158
+  never-weaker guarantee rides along. The entry guard ships at birth
+  (L-157c1).
+- **THE LIVE PROOFS (walk49)**: **PASS 1 the axis-invariance** — the
+  reference's per-section row counts IDENTICAL at all four axes
+  (Contact Sources 5 · Lead Stages 6 · Activity Types 6 · Account
+  Tiers 4 · Industries 10 = 31 rows, els 249 at every axis; only the
+  cascade geometry varies — mainH 2973 phone → 2135 tablet → 2099
+  landscape/desktop); **PASS 2 the control** — ours reproduces the
+  seeded state byte-for-byte (32 rows [8/7/6/3/8], els 256, mainH
+  3059 — the standing census values); **PASS 3 the sensitivity** — the
+  diff on two REAL captures reports every delta (the per-section
+  swings +3/+1/0/−1/−2, the totals, the unpaired-axes pairing
+  contract).
+- **THE STDOUT/STDERR CONTRACT (the PASS-3 find)**: the first diff run
+  choked on a log-prefixed T1 file — the capture mode's diagnostics
+  had interleaved with the `--json` output on stdout. The fix is the
+  standing CLI idiom: **diagnostics log to STDERR, data prints to
+  STDOUT** — the `--json` output is one ARRAY per invocation (one
+  record per axis walked), pipeable + parseable, and the diff pairs
+  the records AXIS-BY-AXIS (the four-axis rhythm map form). Pinned
+  with the rest.
+- **THE T1/T2 RHYTHM MAP (the null face — L-159c3 live)**: T1
+  (02:30Z) the reference ×4 axes — 31 rows (5/6/6/4/10), els 249 at
+  every axis, mainH 2973/2135/2099/2099; the ours control at phone —
+  32 rows (8/7/6/3/8), els 256, mainH 3059. T2 (03:15Z — a ~45-minute
+  intraday window) — **byte-identical to T1 on every axis: zero swing
+  on every section**. **THE MAP'S FIRST SYSTEMATIC OBSERVATION: the
+  reference's settings state is STABLE across the window at the
+  settled protocol** — the s151–s158-era "swing" observations decode
+  largely as READ-TIME artifacts (the s158 PASS-1's 97/68 els were
+  pre-mount reads under load, not owner edits); the settled reads are
+  byte-stable, the swing windows the exception the SKIP doctrine
+  correctly absorbs. The one-command re-observation now stands:
+  `bun scripts/settings-rhythm.ts --app ref --axis all --json` +
+  `--diff` against any prior file.
+- **THE PINS (TDD)**: `tests/settings-rhythm-tool.test.ts` (the NEW
+  120th suite file) **+11** — the additive-export pins (born-green,
+  D-159a0) + the title signature pair (the standing construction + the
+  negatives: the tab BUTTON, the H1, the subtitle P, a restyled
+  text-base title, an empty text, a wrong tag) + the fingerprint
+  classifier + the safety faces (the unassigned rows, the empty
+  section, the row-reuse contract) + the diff seam + the CLI pair +
+  the entry guard + the observation-only doctrine + the stdout/stderr
+  contract — **9 RED at birth + 1 born-green → the implementation →
+  GREEN → the PASS-3 find drove the stdout/stderr pin (1 RED at
+  birth) → the fix → GREEN**. The count ladder **UNIT 2241→2252 (+11)
+  · SUITES 119→120 · badge 2394→2405** (count-ladder-159.py,
+  assert-first, idempotent; the historicals preserved) · the
+  CLAUDE-carrier negatives ladders grew the 2241 forms (all four
+  carrier families) · the SKILL **v1.156.0** + the s159 head (the s158
+  layer demoted beneath) + the Appendix B totals.
+- **THE LESSONS**: **L-159c1 an observation doctrine needs a STANDING
+  instrument, not a one-off probe** (the scattered s151–s158 settings
+  observations never composed into a rhythm; the tool makes the next
+  observation a one-command capture) · **L-159c2 the classifier pins
+  to the CONSTRUCTION, not the content** (the exact-token signatures
+  read the template both apps share; the live data — the row counts,
+  the names — is the OBSERVATION, never the contract) · **L-159c3 the
+  null face is a finding** (a stable window documents the rhythm's
+  baseline; the swing windows stay the exception — documented either
+  way, never assumed).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **120/2252** · build · e2e
+  **153/153** · **the SIX drift gates CLEAN ×6** (gate:full with the
+  census leg at `--parallel 4`) · the VLM battery 2/2 (the phone +
+  desktop settings pairs MATCH — the Base44 pill + the live-data row
+  counts the only differences, both documented genera) · the captures
+  377-380 (the settings picklist-card pair at phone + desktop, the
+  rhythm round's subject surface, the seeded remediated codebase,
+  scrolled + verified in-frame).
