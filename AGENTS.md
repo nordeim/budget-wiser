@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2233 checks)      | `bun run test`                         |
+|  Unit tests (2241 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2233) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2241) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -7922,3 +7922,134 @@ every rendered surface now walked + gated**).
   captures 369-372 (the phone login-card pair at the mutation-proof
   zone + the desktop logo-mark pair at the genus zone — both
   logged-in pairs, scrolled + verified in-frame).
+
+### Session-158 (2026-10-21) — the census PARALLEL-AXES option (the 158-c rotation)
+
+The workspace stood (the fresh clone + the standing env: .env from
+`.env.example` + `db:push`/`db:seed` census MATCH · the Playwright
+chromium installed · the dev server standing). probe:ref **#132 STABLE**
+at the s147–s155 fingerprint — a rotation round on the session_333
+next-round reading's strongest candidate: **the census runtime
+optimization — the 52-run gate's wall-clock. The four axis walks run
+CONCURRENTLY (`--parallel N`, default 1 = the standing sequential
+protocol byte-identical) with the logins staggered.**
+
+- **158-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **119/2233**
+  (clean exit — the s157 entry-guard fix holds on the fresh box) ·
+  build · **e2e 153/153** (clean first run — the drawer battery inside,
+  the mobile-nav contract).
+- **158-b**: probe:ref **#132 STABLE** · **the SIX drift gates CLEAN
+  ×6** (the four viewport sweeps [one cold-boot calendar flake re-run
+  clean — the documented lineage] + the fullpage at the exact standing
+  values 0.093%/0.316% at equal heights 4990/7259 + the census gate at
+  52 page-axis runs, all zero unexplained) · sitemap 11 routes +
+  robots 200 + the SEO meta · db census MATCH · the tree clean · zero
+  dep changes.
+- **THE PRE-PLAN PROBE** (scratch, cleaned): the A/B experiment on this
+  2-core box, the exact censusPage protocol, the zero-data state, 3
+  risk-class pages × all four axes — **A the sequential control 120s ·
+  B the concurrent run (logins staggered 4000ms) 44s — 2.7× on the
+  subset, all 24 walks STABLE at the exact standing values, mainH Δ0
+  everywhere** — the 4-way design validated (and the wall-clock
+  projection later confirmed conservative).
+- **THE DESIGN (additive)**: `planAxisBatches` (the pure partition —
+  consecutive batches of ≤N, order-preserving, capped at the axes
+  count, parallel 1 = one axis per batch = the standing semantics) +
+  `LOGIN_STAGGER_MS` 4000 (worker i of a batch delays its login phase
+  by i×4000 — the no-burst budget form) + `parseParallelArg` (the
+  --axis fail-fast idiom) + the `walkAxis` extraction (the standing
+  per-axis body verbatim) + **the batch gathers through
+  `Promise.allSettled` — INPUT order, never completion order — so the
+  report + the --json shape stay byte-identical under concurrency**; a
+  rejected worker drains the batch then rethrows (the never-zeroed
+  FINALLY unchanged). `gate:full` flips its census leg to `--parallel
+  4` — **the six-gate chain stays six commands**.
+- **THE PASS-1 DECODE (the real finding)**: the FIRST full parallel
+  census read three heavy pages before settle — **the [desktop]
+  reports recharts tooltip MID-ENTRANCE (ours w55 h46 vs the settled
+  w22 h22 — 3 unexplained, the gate RED)** and the reference's
+  settings rows PRE-MOUNT at tablet/landscape/desktop (ref els 97/68
+  vs the settled 249 — the reference renders inside OUR slowed
+  browser; its heaviest page mounts late under our own CPU
+  contention). **The fixed 2500ms settle does not survive 4-way load
+  on the 2-core box — the 3-page probe was too light to see it.**
+- **THE QUIESCENCE EXTENSION (the cure — strictly stronger reads)**:
+  every census read is now a SETTLED read — a geometry fingerprint
+  (main.scrollHeight + the descendant count + a rounded geometry
+  accumulation over every main descendant — catches mid-animation
+  SIZE transitions, not just DOM mutations) sampled until
+  `QUIESCENCE_STABLE_SAMPLES` (3) consecutive samples agree
+  (`QUIESCENCE_INTERVAL_MS` 400 — a 1.2s no-change span), capped by
+  `QUIESCENCE_CEILING_MS` (12000). **THE NEVER-WEAKER GUARANTEE**:
+  the standing 2500ms settle stays the FLOOR (never skipped); a
+  never-settling page pays the ceiling and reads anyway — the exact
+  standing behavior, only ever MORE settled (the sequential gate
+  included). **THE GATE-TAIL HARDENING**: the standalone PASS-1 ran
+  clean at 2×150ms/6s, but the gate:full chain's load tail
+  re-surfaced both faces (the starved [desktop] reports entrance
+  stalled past the window + the ceiling; the starved settings mount
+  read ours pre-mount as 34 ref-extra) — the window widened and the
+  ceiling doubled; the re-run then CLEAN at the exact standing
+  values. The census re-run also hit the **L-158c3 budget** live: the
+  chain's sweeps (4 logins) + the failed census (4) + the re-run (4)
+  exhausted the 10-per-15-min bucket mid-login — the dev-server
+  restart (the per-process bucket) + the re-run, the doctrine's own
+  operational form.
+- **THE LIVE PROOF (PASS 1 re-run)**: the cold parallel census — **52
+  page-axis runs, ALL ZERO unexplained, exit 0, the 48 stable rows
+  BYTE-IDENTICAL to the standing sequential values** (the settings
+  rows absorbed by the standing LIVE-DATA SKIP doctrine — the
+  reference's picklist rows are LIVE-EDITED INTRADAY, its own face,
+  not ours) — **wall-clock ~26 min → 2m29s** (the hardened
+  quiescence's honest cost, still ~10×).
+- **THE PARALLEL MUTATION-PROOF (PASS 3)**: the ghost div planted in
+  the calendar KPI grid → `--pages calendar --fail-on-drift --parallel
+  4` → **RED at ALL FOUR axes simultaneously** (els 222/221, mainH
+  Δ40, unexplained 35/36/79/79, the failures axis-prefixed — **no
+  axis masks another, the L-153c1 doctrine held under concurrency**) →
+  the revert (zero src diff) → GREEN (the calendar rows at their
+  standing values inside the live proof). PASS 2 the sequential-form
+  sanity: `--pages login --axis phone` at the exact standing values —
+  the default `--parallel 1` path unchanged.
+- **THE GATE-CADENCE LOGIN-BUDGET DOCTRINE (L-157c3, formalized)**:
+  the census's own logins are a scarce resource — the login limiter is
+  10-per-IP/15-min fixed-window and 429s also increment; each axis
+  worker logs in exactly once (**parallelism multiplies the logins'
+  ARRIVAL RATE, never their COUNT**); the stagger spreads the four
+  arrivals over ~12s — no burst (an unknown limiter on the reference
+  side could punish exactly that shape); the dev-server restart clears
+  the per-process bucket when the gate cadence needs a retry.
+- **THE PINS (TDD)**: `tests/interior-census-tool.test.ts` **+8** —
+  the session-158 block (planAxisBatches' six partition forms +
+  LOGIN_STAGGER_MS + parseParallelArg with the fail-fast negatives +
+  the input-order contract + the run-loop re-anchors [the s153/s154
+  loop-form pins re-anchored to the batches form] + the gate:full
+  flip + the header doctrine) and the session-158b block (the
+  quiescence constants + the both-collectors pair pin + the header
+  doctrine) — **9 RED at birth** (the six s158 + the two re-anchors +
+  the gate-script chain pin) → the implementation → GREEN; then the
+  PASS-1 decode drove the 158b pair, **2 RED at birth** → the
+  quiescence implementation → GREEN. The count ladder **UNIT
+  2233→2241 · SUITES 119 held · badge 2386→2394** (count-ladder-158.py,
+  assert-first, idempotent; the historicals preserved) · the
+  CLAUDE-carrier negatives ladders grew the 2233 forms (all four
+  carrier families) · the SKILL **v1.155.0** + the s158 head (the s157
+  layer demoted beneath) + the Appendix B totals.
+- **THE LESSONS**: **L-158c1 the concurrency is a MEASUREMENT question,
+  never an assumption** (the 3-page probe said stable; the full-set
+  PASS-1 found what the probe missed — the quiescence is what made it
+  stick; a slower box re-measures, the flag documents the dial) ·
+  **L-158c2 the collection order must be INPUT order, not completion
+  order** (allSettled — the concurrent gate's output stays
+  byte-identical; a completion-order collection would make the gate
+  nondeterministic) · **L-158c3 parallelism multiplies the logins'
+  ARRIVAL RATE, never their COUNT** (the stagger is the whole budget
+  story).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **119/2241** · build · e2e
+  **153/153** · **the SIX drift gates CLEAN ×6 — the census leg now
+  `--parallel 4`, the ~26-min leg ~2.5 min** · census MATCH · the VLM
+  battery 2/2 (the phone + desktop dashboard pairs MATCH — the
+  brand-blue fix-over-defect genus + the demo-data state + the Base44
+  pill the only differences, all documented) · the captures 373-376
+  (the dashboard pair at phone + desktop, the seeded remediated
+  codebase, settled + verified in-frame).

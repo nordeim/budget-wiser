@@ -137,7 +137,10 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
       // full-geometry census (the L-151c2 dead-zone cure: the five
       // pixel gates clip at their capture height; the census walks
       // every element inside main.overflow-auto at 390×844)
-      "bun run census:interior -- --fail-on-drift",
+      // s158 (the 158-c rotation): the census leg runs the probe-validated
+      // concurrency — the four axis walks CONCURRENTLY (logins staggered);
+      // the six-gate chain stays six commands
+      "bun run census:interior -- --fail-on-drift --parallel 4",
     ]);
   });
 

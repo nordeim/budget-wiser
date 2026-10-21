@@ -554,7 +554,14 @@ const SUITES = 119;
 // land in the EXISTING suites; the guard pin lands in the EXISTING
 // fullpage suite]; E2E stays 153 [the login leg is a script-gate
 // surface, pinned by unit]).
-const UNIT = 2233;
+// Session-158: 2233 -> 2241 (+8 — the census PARALLEL-AXES option: the
+// planAxisBatches partition seam + LOGIN_STAGGER_MS + parseParallelArg
+// + the input-order contract + the run-loop re-anchors + the gate:full
+// flip [--parallel 4] + the header doctrine [6 pins] + the QUIESCENCE
+// extension [the PASS-1 decode: the fixed 2500ms settle does not survive
+// 4-way load — the settled-read fingerprint poll + the constants + the
+// header doctrine, 2 pins]; SUITES stays 119; E2E stays 153.)
+const UNIT = 2241;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -977,13 +984,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-157 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-158 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s155 layer now beneath the s156 head)",
     ).toContain(
-      "+ beneath it 2229 unit checks + 153 e2e checks green; the session-156 layer (THE CENSUS ABOUT/CONTACT INTERIOR LEGS",
+      "+ beneath it 2233 unit checks + 153 e2e checks green; the session-157 layer (THE LOGIN-WALL CENSUS LEG",
     );
   });
 

@@ -144,6 +144,34 @@
 //      login-wall leg — the logged-in phase, the census login already
 //      ran; the login wall is the STATIC-AUTH surface: no workspace
 //      data, the text-only RED default)
+//      [--parallel N]  (default 1 — the standing sequential protocol,
+//      one axis at a time, the observable behavior byte-identical; N
+//      walks the axes N-at-a-time: the planAxisBatches partition, each
+//      batch's axes CONCURRENT with the logins STAGGERED
+//      LOGIN_STAGGER_MS per worker, the batches sequential; the 158-c
+//      probe validated 4-way on the 2-core standing box — all 24 walks
+//      reproduced the standing values byte-for-byte, 2.7× on the
+//      subset; gate:full runs --parallel 4, the ~26-min census leg
+//      ~7-8 min. THE LOGIN-BUDGET DOCTRINE (L-157c3, formalized):
+//      the census's own logins are a scarce resource — the login
+//      limiter is 10-per-IP/15-min fixed-window and 429s also
+//      increment; each axis worker logs in exactly once (parallelism
+//      multiplies the logins' ARRIVAL RATE, never their COUNT), and
+//      the stagger spreads the four arrivals over ~12s — no burst;
+//      the dev-server restart clears the per-process bucket when the
+//      gate cadence needs a retry. The batch gathers through
+//      Promise.allSettled — INPUT order, never completion order — so
+//      the report + the --json shape stay byte-identical under
+//      concurrency; a rejected worker drains the batch then rethrows.
+//      [--parallel N] carries THE QUIESCENCE EXTENSION (the PASS-1
+//      decode): the fixed 2500ms settle does not survive 4-way load —
+//      the read-too-early class hit ours ([desktop] reports' recharts
+//      tooltip read MID-ENTRANCE) and the reference inside our slowed
+//      browser (its settings rows read PRE-MOUNT); every census read
+//      is now a SETTLED read — a geometry fingerprint polled until
+//      QUIESCENCE_STABLE_SAMPLES consecutive samples agree, the
+//      standing settle the floor, QUIESCENCE_CEILING_MS the
+//      never-weaker fallback.)
 // Env: OUR_URL / REF_URL / REF_EMAIL / REF_PASSWORD (the sweep contract)
 // ---------------------------------------------------------------------------
 
@@ -347,6 +375,58 @@ export function parseAxisArg(argv: string[]): ReadonlyArray<CensusAxis> {
     );
   }
   return [axis];
+}
+
+// -- the PARALLEL-AXES option (the 158-c rotation) --------------------------
+
+/** The login-phase stagger between the workers of one batch (the no-burst
+ *  budget form — L-157c3 the census's own logins are a scarce resource:
+ *  the login limiter is 10-per-IP/15-min fixed-window and 429s also
+ *  increment). Worker i of a batch delays its login phase by
+ *  i × LOGIN_STAGGER_MS, spreading the four our-logins over ~12s —
+ *  parallelism multiplies the logins' ARRIVAL RATE, never their COUNT
+ *  (each axis worker still logs in exactly once). `--parallel 1` workers
+ *  are always worker 0: zero added delay, the standing cadence. */
+export const LOGIN_STAGGER_MS = 4000;
+
+/** The --parallel CLI seam (the --axis idiom): default 1 = the standing
+ *  sequential protocol (the no-flag form byte-identical — one axis at a
+ *  time); N > 1 walks the axes in batches of ≤ N concurrent workers.
+ *  The fail-fast negatives mirror --axis: never a silent fall-back on a
+ *  typo (a missing value, a non-numeric value, or n < 1 throws). */
+export function parseParallelArg(argv: string[]): number {
+  const i = argv.indexOf("--parallel");
+  if (i === -1) return 1;
+  const wanted = argv[i + 1];
+  const n = Number(wanted);
+  if (wanted === undefined || wanted === "" || !Number.isInteger(n) || n < 1) {
+    throw new Error(
+      `invalid --parallel "${wanted ?? ""}" — an integer ≥ 1 (1 = the standing sequential protocol; 4 = the probe-validated gate:full form on the 2-core box)`,
+    );
+  }
+  return n;
+}
+
+/** The pure partition seam (the s158 walk48 orchestration): the axes are
+ *  walked in CONSECUTIVE BATCHES of ≤ parallel; each batch's axes run
+ *  CONCURRENTLY (a worker per axis — the standing per-axis body, logins
+ *  staggered), the batches themselves run sequentially. The partition is
+ *  order-preserving (flattened batches === the input axes order) and
+ *  CAPPED at the axes count (no empty workers — a 4-way flag on one
+ *  selected axis is one worker, the single-axis mutation-proof runs).
+ *  parallel 1 → one axis per batch = the standing sequential semantics,
+ *  observable behavior byte-identical. */
+export function planAxisBatches(
+  axes: ReadonlyArray<CensusAxis>,
+  parallel: number,
+): ReadonlyArray<ReadonlyArray<CensusAxis>> {
+  if (axes.length === 0) return [];
+  const n = Math.max(1, Math.min(Math.trunc(parallel), axes.length));
+  const batches: Array<ReadonlyArray<CensusAxis>> = [];
+  for (let i = 0; i < axes.length; i += n) {
+    batches.push(axes.slice(i, i + n));
+  }
+  return batches;
 }
 
 // -- the pure decoder -------------------------------------------------------
@@ -1355,6 +1435,80 @@ interface CensusCapture {
   els: CensusEl[];
 }
 
+// -- the QUIESCENCE extension (the 158-c PASS-1 decode) ----------------------
+//
+// The fixed 2500ms settle does not survive concurrent load on the 2-core
+// standing box: the PASS-1 full parallel census read the [desktop]
+// reports recharts tooltip MID-ENTRANCE (ours w55 h46 vs the settled
+// w22 h22 — the tooltip's collapse still in flight at the read) and the
+// reference's settings rows PRE-MOUNT at three axes (ref els 97/68 vs the
+// settled 249 — the reference renders inside OUR slowed browser; its
+// heavy pages mount late under our own CPU contention). The cure is the
+// direct form of the settle's purpose: read only a SETTLED DOM — a
+// geometry fingerprint (main.scrollHeight + the descendant count + a
+// rounded geometry accumulation over every main descendant — catches
+// mid-animation SIZE transitions, not just DOM mutations) sampled until
+// QUIESCENCE_STABLE_SAMPLES consecutive samples agree, capped by
+// QUIESCENCE_CEILING_MS. THE NEVER-WEAKER GUARANTEE: the standing
+// 2500ms settle stays the FLOOR (never skipped); a page that never
+// settles pays the ceiling and reads anyway — the exact standing
+// behavior, only ever MORE settled. Under no load the first poll passes
+// immediately (the read ~QUIESCENCE_INTERVAL_MS × samples later than
+// standing, the same settled geometry — byte-identical values).
+
+/** The consecutive stable samples required before the read (3 — the
+ *  GATE-TAIL hardening: under the gate:full chain's load tail a starved
+ *  recharts entrance stalled past the 2-sample window; the window is now
+ *  3 consecutive ~400ms samples = a 1.2s no-change span). */
+export const QUIESCENCE_STABLE_SAMPLES = 3;
+/** The fingerprint sampling interval (ms). */
+export const QUIESCENCE_INTERVAL_MS = 400;
+/** The poll ceiling (ms): a never-settling page reads anyway here — the
+ *  standing behavior as the fallback, the never-weaker guarantee (12s:
+ *  a starved entrance must finish inside it, else the read falls back to
+ *  the standing behavior exactly). */
+export const QUIESCENCE_CEILING_MS = 12000;
+
+async function waitQuiescent(page: import("@playwright/test").Page): Promise<void> {
+  await page.evaluate(
+    ({ samples, interval, ceiling }) =>
+      new Promise<void>((resolve) => {
+        const main = document.querySelector("main");
+        if (!main) return resolve();
+        const fingerprint = () => {
+          let acc = 0;
+          let n = 0;
+          for (const el of main.querySelectorAll("*")) {
+            const r = el.getBoundingClientRect();
+            acc =
+              (acc + Math.round(r.top * 10) + Math.round(r.width * 10) + Math.round(r.height * 10)) %
+              1000000007;
+            n++;
+          }
+          return `${main.scrollHeight}:${n}:${acc}`;
+        };
+        let last = "";
+        let stable = 0;
+        const t0 = performance.now();
+        const tick = () => {
+          if (performance.now() - t0 > ceiling) return resolve();
+          const now = fingerprint();
+          if (now !== "" && now === last) stable++;
+          else stable = 0;
+          last = now;
+          if (stable >= samples) return resolve();
+          setTimeout(tick, interval);
+        };
+        setTimeout(tick, interval);
+      }),
+    {
+      samples: QUIESCENCE_STABLE_SAMPLES,
+      interval: QUIESCENCE_INTERVAL_MS,
+      ceiling: QUIESCENCE_CEILING_MS,
+    },
+  );
+}
+
 async function censusPage(
   page: import("@playwright/test").Page,
   base: string,
@@ -1367,6 +1521,7 @@ async function censusPage(
     .waitFor({ state: "visible", timeout: 15000 })
     .catch(() => undefined);
   await page.waitForTimeout(2500);
+  await waitQuiescent(page);
   return page.evaluate(() => {
     const main = document.querySelector("main");
     if (!main) throw new Error(`no main on ${location.pathname}`);
@@ -1434,6 +1589,7 @@ async function censusPublicPage(
     .waitFor({ state: "visible", timeout: 15000 })
     .catch(() => undefined);
   await page.waitForTimeout(2500);
+  await waitQuiescent(page);
   return page.evaluate(() => {
     const anchor = document.querySelector("div.min-h-screen.bg-white");
     if (!anchor) throw new Error(`no landing anchor on ${location.pathname}`);
@@ -1485,6 +1641,97 @@ const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app";
 
 const log = (s: string) => console.log(`[census] ${s}`);
 
+/** The per-axis worker (the s158 extraction — the standing per-axis body,
+ *  VERBATIM): a fresh context (with both logins, the second staggered by
+ *  the batch position — worker i of a concurrent batch delays its login
+ *  phase by `staggerMs`, the no-burst budget form; a sequential batch's
+ *  only worker is worker 0: zero delay, the standing cadence) at the
+ *  axis's viewport; the app leg + the public leg; the per-axis results
+ *  returned (the batch's allSettled gathers them in INPUT order — the
+ *  report + the --json shape stay byte-identical under concurrency).
+ *  The dead zone is PER-AXIS; the census walks every leg. */
+async function walkAxis(
+  axis: CensusAxis,
+  staggerMs: number,
+  browser: import("@playwright/test").Browser,
+  pages: ReadonlyArray<{ name: string; path: string }>,
+  publicPages: ReadonlyArray<{ name: string; path: string }>,
+): Promise<CensusPageResult[]> {
+  await new Promise((r) => setTimeout(r, staggerMs));
+  const out: CensusPageResult[] = [];
+  // 4. the APP leg (the 9 shell pages): the logged-in contexts —
+  //    GUARDED (a public-only run never logs in)
+  if (pages.length > 0) {
+    const ctx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
+    const refPage = await ctx.newPage();
+    log(`logging into the reference ${REF_URL} (${axis.name} ${axis.width}x${axis.height})…`);
+    await login(refPage, REF_URL);
+    const ourPage = await ctx.newPage();
+    log(`logging into ours ${OUR_URL} (${axis.name})…`);
+    await login(ourPage, OUR_URL);
+
+    // the census per page + the decode, at the axis's content
+    // floor (the L-153c2 seam — the s95 poke-out discriminator
+    // travels with the frame)
+    const floor = contentFloor(axis.width);
+    for (const p of pages) {
+      const ref = await censusPage(refPage, REF_URL, p.path);
+      const ours = await censusPage(ourPage, OUR_URL, p.path);
+      // the settings page aligns through the card segmentation (the
+      // LIVE-DATA page — the L-150c2 doctrine, the walk42 decode)
+      const events =
+        p.name === "settings" ? alignSettings(ours.els, ref.els) : alignCensus(ours.els, ref.els);
+      const att = attributeGenera(events, p.name, floor);
+      const mainHDelta = ours.mainH - ref.mainH;
+      out.push({
+        page: p.name,
+        axis: axis.name,
+        mainHDelta,
+        oursEls: ours.els.length,
+        refEls: ref.els.length,
+        matches: att.matches,
+        explained: att.explained,
+        unexplained: att.unexplained,
+      });
+    }
+    await ctx.close();
+  }
+
+  // 4b. the PUBLIC leg (the 155-c extension): GUEST contexts per
+  //     axis — the landing renders to guests (the s149 fullpage
+  //     doctrine); the pill + the Toaster sit outside the census
+  //     anchor; the floor is the VIEWPORT column (the landing
+  //     scrolls the document — the s95 discriminator travels with
+  //     the frame)
+  if (publicPages.length > 0) {
+    const guestCtx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
+    const refGuest = await guestCtx.newPage();
+    const ourGuest = await guestCtx.newPage();
+    for (const p of publicPages) {
+      const ref = await censusPublicPage(refGuest, REF_URL, p.path);
+      const ours = await censusPublicPage(ourGuest, OUR_URL, p.path);
+      const events = alignCensus(ours.els, ref.els);
+      const att = attributeGenera(events, p.name, axis.width);
+      // the public leg's height seam: docH (documentElement
+      // .scrollHeight) rides mainHDelta — byte-parity gated, never
+      // skipped (a static marketing surface has no DATA genus)
+      const docHDelta = ours.mainH - ref.mainH;
+      out.push({
+        page: p.name,
+        axis: axis.name,
+        mainHDelta: docHDelta,
+        oursEls: ours.els.length,
+        refEls: ref.els.length,
+        matches: att.matches,
+        explained: att.explained,
+        unexplained: att.unexplained,
+      });
+    }
+    await guestCtx.close();
+  }
+  return out;
+}
+
 async function run() {
   const argv = process.argv.slice(2);
   const failOnDriftFlag = argv.includes("--fail-on-drift");
@@ -1501,6 +1748,10 @@ async function run() {
   const pages = selected.filter((p) => !isPublicPage(p));
   const publicPages = selected.filter((p) => isPublicPage(p));
   const axes = parseAxisArg(argv);
+  // the 158-c parallel option — parsed BEFORE any server boot so a typo
+  // fails fast (the --axis idiom): default 1 = the standing sequential
+  // protocol; N = the axes walked N-at-a-time (batches, logins staggered)
+  const parallel = parseParallelArg(argv);
 
   // 1. the dev server: reuse :3000 or boot one (the s123 F-A guard —
   //    the platform shell exports a STALE absolute DATABASE_URL; an
@@ -1542,84 +1793,41 @@ async function run() {
     });
     if (z.status !== 0) throw new Error("zero-data.ts failed");
 
-    // 3. the AXES loop (the 153-c extension): one zero-data + one
-    //    browser per invocation; a fresh context (with both logins) at
-    //    each axis's viewport — the dead zone is PER-AXIS, the census
-    //    walks every leg (--axis subsets for the mutation-proof runs)
+    // 3. the AXES in BATCHES (the 158-c parallel option): one zero-data
+    //    + one browser per invocation; a fresh context (with both
+    //    logins, staggered per worker) at each axis's viewport — the
+    //    dead zone is PER-AXIS, the census walks every leg (--axis
+    //    subsets for the mutation-proof runs). --parallel 1 (the
+    //    default) = one axis per batch, the standing sequential
+    //    semantics, observable behavior byte-identical; --parallel N
+    //    walks the axes N-at-a-time — each batch's axes CONCURRENTLY
+    //    (the logins staggered LOGIN_STAGGER_MS per worker, the
+    //    no-burst budget form), the batches themselves sequential.
+    //    The batch gathers through Promise.allSettled — INPUT order,
+    //    never completion order, so the report + the --json shape stay
+    //    byte-identical under concurrency; a rejected worker DRAINS
+    //    the batch (allSettled) then rethrows (the never-zeroed
+    //    FINALLY rides the same try — the seed restore unchanged).
     const browser = await chromium.launch({
       headless: process.env.HEADLESS === "0" ? false : true,
     });
     results = [];
-    for (const axis of axes) {
-      // 4. the APP leg (the 9 shell pages): the logged-in contexts —
-      //    GUARDED (a public-only run never logs in)
-      if (pages.length > 0) {
-        const ctx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
-        const refPage = await ctx.newPage();
-        log(`logging into the reference ${REF_URL} (${axis.name} ${axis.width}x${axis.height})…`);
-        await login(refPage, REF_URL);
-        const ourPage = await ctx.newPage();
-        log(`logging into ours ${OUR_URL}…`);
-        await login(ourPage, OUR_URL);
-
-        // the census per page + the decode, at the axis's content
-        // floor (the L-153c2 seam — the s95 poke-out discriminator
-        // travels with the frame)
-        const floor = contentFloor(axis.width);
-        for (const p of pages) {
-          const ref = await censusPage(refPage, REF_URL, p.path);
-          const ours = await censusPage(ourPage, OUR_URL, p.path);
-          // the settings page aligns through the card segmentation (the
-          // LIVE-DATA page — the L-150c2 doctrine, the walk42 decode)
-          const events =
-            p.name === "settings" ? alignSettings(ours.els, ref.els) : alignCensus(ours.els, ref.els);
-          const att = attributeGenera(events, p.name, floor);
-          const mainHDelta = ours.mainH - ref.mainH;
-          results.push({
-            page: p.name,
-            axis: axis.name,
-            mainHDelta,
-            oursEls: ours.els.length,
-            refEls: ref.els.length,
-            matches: att.matches,
-            explained: att.explained,
-            unexplained: att.unexplained,
-          });
-        }
-        await ctx.close();
+    const batches = planAxisBatches(axes, parallel);
+    for (const batch of batches) {
+      if (batch.length > 1) {
+        log(
+          `walking ${batch.length} axes concurrently (${batch.map((a) => a.name).join(" + ")}) — the logins staggered ${LOGIN_STAGGER_MS}ms per worker (the no-burst budget form)…`,
+        );
       }
-
-      // 4b. the PUBLIC leg (the 155-c extension): GUEST contexts per
-      //     axis — the landing renders to guests (the s149 fullpage
-      //     doctrine); the pill + the Toaster sit outside the census
-      //     anchor; the floor is the VIEWPORT column (the landing
-      //     scrolls the document — the s95 discriminator travels with
-      //     the frame)
-      if (publicPages.length > 0) {
-        const guestCtx = await browser.newContext({ viewport: { width: axis.width, height: axis.height } });
-        const refGuest = await guestCtx.newPage();
-        const ourGuest = await guestCtx.newPage();
-        for (const p of publicPages) {
-          const ref = await censusPublicPage(refGuest, REF_URL, p.path);
-          const ours = await censusPublicPage(ourGuest, OUR_URL, p.path);
-          const events = alignCensus(ours.els, ref.els);
-          const att = attributeGenera(events, p.name, axis.width);
-          // the public leg's height seam: docH (documentElement
-          // .scrollHeight) rides mainHDelta — byte-parity gated, never
-          // skipped (a static marketing surface has no DATA genus)
-          const docHDelta = ours.mainH - ref.mainH;
-          results.push({
-            page: p.name,
-            axis: axis.name,
-            mainHDelta: docHDelta,
-            oursEls: ours.els.length,
-            refEls: ref.els.length,
-            matches: att.matches,
-            explained: att.explained,
-            unexplained: att.unexplained,
-          });
-        }
-        await guestCtx.close();
+      const settled = await Promise.allSettled(
+        batch.map((a, i) => walkAxis(a, i * LOGIN_STAGGER_MS, browser, pages, publicPages)),
+      );
+      const firstReject = settled.find((s) => s.status === "rejected") as
+        | PromiseRejectedResult
+        | undefined;
+      if (firstReject) throw firstReject.reason;
+      for (const s of settled) {
+        if (s.status === "fulfilled") results.push(...s.value);
       }
     }
     await browser.close();

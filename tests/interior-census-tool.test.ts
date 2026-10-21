@@ -545,10 +545,11 @@ describe("session-153: the census DESKTOP leg (the F-151c1 axis — the dead zon
     expect(bare.failures[0].startsWith("leads")).toBe(true);
   });
 
-  it("the run loop walks EVERY axis with a fresh context at its viewport; ONE zero-data + ONE seed-restore per invocation (the never-zeroed FINALLY spans both legs); the --json output carries the axis", () => {
+  it("the run loop walks EVERY axis with a fresh context at its viewport; ONE zero-data + ONE seed-restore per invocation (the never-zeroed FINALLY spans both legs); the --json output carries the axis (the s158 re-anchor: the flat axes loop became the BATCHES loop + the walkAxis worker — the doctrine unchanged: every CENSUS_AXES entry, a fresh context at its own viewport, no axis special-cased)", () => {
     const src = toolSrc();
-    // the per-axis context (the walk41 axis + the F-151c1 axis)
-    expect(src).toMatch(/for\s*\(const axis of\s+/);
+    // the per-axis context (the walk41 axis + the F-151c1 axis) — since
+    // s158 inside walkAxis, the s153/s154 loop-form pins re-anchored
+    expect(src).toMatch(/for\s*\(const batch of\s+/);
     expect(src).toMatch(/viewport:\s*\{\s*width:\s*axis\.width,\s*height:\s*axis\.height\s*\}/);
     // the json machine contract gains the axis field
     expect(src).toMatch(/axis:\s*r\.axis/);
@@ -664,11 +665,13 @@ describe("session-154: the census TABLET legs (the md-boundary axis 768x1024 + t
     ).toBe(true);
   });
 
-  it("the run loop stays DATA-DRIVEN at four legs — the axes loop carries every CENSUS_AXES entry at its own viewport (no axis is special-cased); the tablet mutation-proof is part of the documented contract (--axis tablet --pages dashboard — the F-151c1 class fails at ALL FOUR axes)", () => {
+  it("the run loop stays DATA-DRIVEN at four legs — the axes loop carries every CENSUS_AXES entry at its own viewport (no axis is special-cased); the tablet mutation-proof is part of the documented contract (--axis tablet --pages dashboard — the F-151c1 class fails at ALL FOUR axes; the s158 re-anchor: the loop feeds planAxisBatches, the batches carry the same data-driven doctrine)", () => {
     const src = toolSrc();
     // the data-driven loop (the s153 seam — unchanged by the s154
-    // extension: the two entries were all the implementation took)
-    expect(src).toMatch(/for\s*\(const axis of\s+/);
+    // extension and by the s158 batches re-anchor: the parsed axes feed
+    // planAxisBatches and every entry gets its own worker + viewport)
+    expect(src).toMatch(/for\s*\(const batch of\s+/);
+    expect(src).toMatch(/planAxisBatches\(axes/);
     expect(src).toMatch(/viewport:\s*\{\s*width:\s*axis\.width,\s*height:\s*axis\.height\s*\}/);
     // the tablet mutation-proof doctrine (walk44 PASS 2)
     expect(src).toMatch(/--axis tablet --pages dashboard/);
@@ -1320,5 +1323,120 @@ describe("session-157: the census LOGIN-WALL leg (the last never-censused render
     const src = toolSrc();
     expect(src).toMatch(/login-logo-mark/);
     expect(src).toMatch(/loginLogoMarkSignature/);
+  });
+});
+
+describe("session-158: the census PARALLEL-AXES option (the 158-c rotation)", () => {
+  it("planAxisBatches: the pure partition seam — the default (1) is the standing sequential semantics (one axis per batch, walked in order); parallel 4 = ONE batch of 4 (the gate:full form); 2 = two waves; capped at the axes count (no empty workers); order-preserving; the single-axis mutation-proof runs cap naturally; empty input", async () => {
+    const m = await import("../scripts/interior-census");
+    const A = m.CENSUS_AXES as ReadonlyArray<{ name: string; width: number; height: number }>;
+    const names = (xs: ReadonlyArray<{ name: string }>) => xs.map((x) => x.name);
+    // parallel 1 — the standing sequential semantics
+    const one = m.planAxisBatches(A, 1);
+    expect(one).toHaveLength(4);
+    for (const b of one) expect(b).toHaveLength(1);
+    expect(names(one.flat())).toEqual(names(A));
+    // parallel 4 — the gate:full form: ONE batch of 4
+    const four = m.planAxisBatches(A, 4);
+    expect(four).toHaveLength(1);
+    expect(four[0]).toHaveLength(4);
+    expect(names(four.flat())).toEqual(names(A));
+    // parallel 2 — two waves
+    const two = m.planAxisBatches(A, 2);
+    expect(two).toHaveLength(2);
+    expect(two[0]).toHaveLength(2);
+    expect(two[1]).toHaveLength(2);
+    expect(names(two.flat())).toEqual(names(A));
+    // capped — no empty workers at any width
+    const capped = m.planAxisBatches(A, 99);
+    expect(capped).toHaveLength(1);
+    expect(capped[0]).toHaveLength(4);
+    // the single-axis mutation-proof runs (--axis phone --pages login)
+    // cap naturally — a 4-way flag on one axis is one worker
+    const single = m.planAxisBatches(A.slice(0, 1), 4);
+    expect(single).toHaveLength(1);
+    expect(single[0]).toHaveLength(1);
+    // empty input — no batches, no workers
+    expect(m.planAxisBatches([], 4)).toEqual([]);
+  });
+
+  it("LOGIN_STAGGER_MS: the no-burst constant (4000ms — worker i of a batch delays its login phase by i×4000, the four our-logins spread over ~12s; L-157c3 the census's own logins are a scarce resource: the login limiter is 10-per-IP/15-min fixed-window and 429s also increment; parallelism multiplies the ARRIVAL RATE, not the LOGIN COUNT)", async () => {
+    const m = await import("../scripts/interior-census");
+    expect(m.LOGIN_STAGGER_MS).toBe(4000);
+  });
+
+  it("parseParallelArg: default 1 (the standing sequential protocol — the no-flag form byte-identical); --parallel N parses; the fail-fast negatives (the --axis idiom — never a silent fall-back on a typo)", async () => {
+    const m = await import("../scripts/interior-census");
+    expect(m.parseParallelArg([])).toBe(1);
+    expect(m.parseParallelArg(["--fail-on-drift"])).toBe(1);
+    expect(m.parseParallelArg(["--json"])).toBe(1);
+    expect(m.parseParallelArg(["--parallel", "4"])).toBe(4);
+    expect(m.parseParallelArg(["--fail-on-drift", "--parallel", "2"])).toBe(2);
+    // NEGATIVE: < 1 never parses (zero/negative = no workers)
+    expect(() => m.parseParallelArg(["--parallel", "0"])).toThrow();
+    expect(() => m.parseParallelArg(["--parallel", "-1"])).toThrow();
+    // NEGATIVE: non-numeric throws
+    expect(() => m.parseParallelArg(["--parallel", "four"])).toThrow();
+    // NEGATIVE: the missing value throws (never a silent 1)
+    expect(() => m.parseParallelArg(["--parallel"])).toThrow();
+  });
+
+  it("the concurrent collection is INPUT-ORDER deterministic: each batch gathers through Promise.allSettled (resolves in input order, NEVER completion order) so the report + the --json shape stay byte-identical under concurrency; a rejected worker DRAINS the batch then rethrows (the never-zeroed FINALLY unchanged — the seed restore rides the same try)", () => {
+    const src = toolSrc();
+    expect(src).toMatch(/Promise\.allSettled/);
+    // the batches loop replaces the flat axes loop (the s158 form)
+    expect(src).toMatch(/for\s*\(const batch of\s+/);
+    // the per-axis worker (the extracted standing per-axis body) carries
+    // the fresh context at its viewport
+    expect(src).toMatch(/walkAxis/);
+    expect(src).toMatch(/viewport:\s*\{\s*width:\s*axis\.width,\s*height:\s*axis\.height\s*\}/);
+    // the stagger is applied inside the worker (the login-phase delay)
+    expect(src).toMatch(/LOGIN_STAGGER_MS/);
+    // one zero-data + one seed-restore per invocation — OUTSIDE the
+    // batches (the never-zeroed doctrine spans every batch)
+    expect(src).toMatch(/delete\s+\w+Env\.DATABASE_URL/);
+    expect(src).toMatch(/finally\s*\{[\s\S]*db:seed/);
+  });
+
+  it("the tool header documents the parallel option + the login-budget doctrine (L-157c3 formalized: the axes walk CONCURRENTLY, each worker logs in ONCE, the stagger spreads the arrivals; the probe-validated 4-way form named for gate:full)", () => {
+    const src = toolSrc();
+    expect(src).toMatch(/--parallel/);
+    expect(src).toMatch(/stagger/i);
+  });
+
+  it("the gate:full census leg runs the proven concurrency: `census:interior -- --fail-on-drift --parallel 4` (the probe-validated form on the standing 2-core box — the ~26-min gate projects to ~7-8 min; the SIX-GATE CHAIN STAYS SIX COMMANDS; --fail-on-drift still the verdict; the sixth position after sweep:fullpage unchanged)", () => {
+    const pkg = pkgSrc();
+    const gate = pkg.scripts["gate:full"] as string;
+    expect(gate).toMatch(/census:interior -- --fail-on-drift --parallel 4/);
+    expect(gate.indexOf("census:interior")).toBeGreaterThan(gate.indexOf("sweep:fullpage"));
+  });
+});
+
+describe("session-158b: the QUIESCENCE extension (the PASS-1 decode — the fixed settle does not survive concurrent load)", () => {
+  it("the read is a SETTLED read: BOTH collectors extend the standing 2500ms settle with a quiescence poll — a geometry fingerprint sampled until QUIESCENCE_STABLE_SAMPLES consecutive samples agree (QUIESCENCE_INTERVAL_MS apart), capped by QUIESCENCE_CEILING_MS (the read-never-weaker guarantee: the ceiling falls back to the standing behavior, the floor is never skipped); the s58 constants exported for the pins — the GATE-TAIL hardening (the gate:full census leg caught what the standalone PASS-1 missed: under the chain's load tail a starved recharts entrance stalled past the 2x150ms window + the 6s ceiling [the [desktop] reports tooltip read MID-ENTRANCE] and a starved settings mount landed in a >300ms gap [ours pre-mount read as 34 ref-extra] — the window widens to 3x400ms and the ceiling to 12s)", async () => {
+    const m = await import("../scripts/interior-census");
+    expect(m.QUIESCENCE_STABLE_SAMPLES).toBe(3);
+    expect(m.QUIESCENCE_INTERVAL_MS).toBe(400);
+    expect(m.QUIESCENCE_CEILING_MS).toBe(12000);
+    const src = toolSrc();
+    // BOTH collectors carry the extension (the app leg + the public leg —
+    // the read-too-early class hit ours AND the reference inside our
+    // slowed browser alike: [desktop] reports' recharts tooltip read
+    // mid-entrance [ours w55 h46 vs the settled w22 h22]; the reference's
+    // settings rows read pre-mount at tablet/landscape/desktop)
+    const pair = src.match(
+      /await page\.waitForTimeout\(2500\);\s*await waitQuiescent\(page\);/g,
+    ) ?? [];
+    expect(pair).toHaveLength(2);
+    // the geometry fingerprint: scrollHeight + element count + a rounded
+    // geometry accumulation over every main descendant (catches the
+    // mid-animation tooltip's SIZE transition, not just DOM mutation)
+    expect(src).toMatch(/scrollHeight/);
+  });
+
+  it("the PASS-1 doctrine is part of the tool's documented contract: the header names the quiescence extension (the 158-c decode — the fixed 2500ms settle does not survive 4-way load on the 2-core box; the poll is the cure, the ceiling the never-weaker guarantee)", () => {
+    const src = toolSrc();
+    expect(src).toMatch(/quiescence/i);
+    expect(src).toMatch(/read-too-early|pre-mount|mid-entrance/i);
   });
 });
