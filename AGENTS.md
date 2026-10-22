@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2480 checks)      | `bun run test`                         |
+|  Unit tests (2520 checks)      | `bun run test`                         |
 |  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2480) → `bun run build` → `bun run test:e2e` (161) — or the
+`bun run test` (2520) → `bun run build` → `bun run test:e2e` (161) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -72,9 +72,9 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   deploy-declared `NEO_PROXY_HOPS` depth (session-163, digma S62-D/S69-A:
   unset=1, 0=direct/unknown, N≥2=Nth-from-last, unparsable fails closed).
   The auth family validates through the **Zod seam** (session-163):
-  `src/lib/schemas.ts` + `parseBody()` in `src/lib/api.ts` (zod ^4 — the
-  CRUD family keeps the `asString` guards, the documented incremental
-  adoption path).
+  `src/lib/schemas.ts` + `parseBody()` in `src/lib/api.ts` (zod ^4 —
+  the CRUD family joined at session-166: every body route rides the seam;
+  the query-param GET family keeps the `asString`/`asDate` helpers).
 - **API envelope is `{ ok, data } | { ok, error: { code, message } }`** — build
   responses with `ok()` / `fail()` / `ERR.*` from `src/lib/api.ts`. The store's
   `call()` helper (`src/stores/crm-store.ts`) is the only sanctioned client.
@@ -3080,9 +3080,11 @@ operations under env -u DATABASE_URL).
 ## Conventions that differ from defaults
 
 - TypeScript strict **except `noImplicitAny: false`** (sandbox default, kept).
-- Validation is hand-rolled in route handlers (trim, length caps, enum
-  membership, referential checks via `asString`/`asNumber`/`asDate` in
-  `src/lib/api.ts`). No schema library — zod was deliberately pruned.
+- Validation rides the Zod seam at every body boundary (zod ^4:
+  `src/lib/schemas.ts` + `parseBody()` in `src/lib/api.ts` —
+  the auth family since session-163, the CRUD family since session-166).
+  The `asString`/`asNumber`/`asDate` helpers survive on the URL-param
+  surfaces (the query-param GET family).
 - Charts are recharts with recharts DEFAULTS (`src/components/charts/`);
   the REAL chart renders at all-zero data (session-10 reversal — the
   empty-state placeholder boxes are retired; fixed lists render ticks at
@@ -8989,3 +8991,63 @@ the moment the battery ran).
 routes) · e2e **161/161** · db census MATCH · the six drift gates
 CLEAN ×6 at the audit leg (the round touches docs + tests only — no
 visual source changed, the standing parity verdict carries).
+
+## Session-168 — THE AGENTS-DOCTRINE CLOSURE + THE INVENTORY LIVE-CENSUS (2026-10-22)
+
+The post-167 audit round. Baseline: the s167 ship state reproduced
+exactly (lint 0/0 · tsc 0 · **128/2480** · build · e2e **161/161** ·
+probe:ref **#140 STABLE** · the six drift gates CLEAN ×6 · the mobile
+drawer **7/7 PASS** live at 390×844 · the Tailwind v4 state clean ·
+sitemap 11 routes + robots + manifest standing · bun audit's 9-advisory
+posture unchanged · db census MATCH) — one fresh-sandbox note: the
+Playwright chromium install (the standing intake) + the documented
+ambient-DATABASE_URL scrub discipline.
+
+**THE FINDINGS (ten, all reproduced live)**: the s165/s166/s167 rounds
+flipped the validation doctrine everywhere EXCEPT AGENTS.md itself —
+F-168a the architecture-facts layer still said "the CRUD family keeps
+the `asString` guards, the documented incremental adoption path" (the
+exact clause F-167b eradicated from SKILL §7.4) · F-168b the
+conventions bullet still said "No schema library — zod was deliberately
+pruned" (contradicting the same file's own L74 seam) · F-168c PAD §11's
+Lines column carried SEVEN stale rows (api 172/308 · constants 547/549
+· rate-limit 51/126 · mobile-nav 215/143 · app-shell 70/94 ·
+globals.css 413/430 · (app)/layout 11/22 — the s109 line-census family
+pinned thirteen rows + the SKILL headers but never these seven PAD
+rows) · F-168d/e SKILL's inventory layer carried the era-12 counts
+(pages 11/15 · route handlers 27/29 · components 25/19 vs 28/22 · the
+page enumeration missing the four post-s12 pages) · F-168f "8 models"
+(live 9) · F-168g Bug #1's "7-check e2e suite" (live 10) · F-168h §19's
+primary-foreground #ffffff mirror (live #fafafa) · F-168i README's
+"nine-route /sitemap.xml" (live 11 since s142) · F-168j the repo
+worklog's tail gap (the s166/s167 rounds never appended theirs).
+
+**THE REMEDIATION (TDD — RED 18 → GREEN)**: the 129th suite
+`tests/inventory-census.test.ts` (+40) — the L-165c1 live-census
+doctrine extended from the schema seam to the DOC INVENTORY LAYER: the
+PAD §11 Lines-column live-census (ALL 27 count-carrying rows asserted
+against their files' live line counts — a row census pin guards the
+surface itself) + the SKILL inventory live-census (the models/pages/
+routes/components/sitemap/mobile-nav counts + the §19 color mirror, all
+read live from the tree) + the AGENTS doctrine pins (the
+completed-adoption clause present, BOTH retired clauses absent —
+AGENTS.md joins the docs pin family for the first time) + the README
+eleven-route sitemap pins. Mutation-proven at birth (a planted line in
+csv.ts → exactly +1 RED → reverted → GREEN). The sixteen stale sites
+flipped; the count ladder 2480 → **2520** (+40) · SUITES 128 → **129**
+· E2E 161 held · badge 2641 → **2681** — every live-tense site
+re-anchored atomically (count-ladder-168.py, assert-first, idempotent
+[one live-caught double-application of the insertion pairs, repaired +
+the guards moved first], unique-anchor) + the SKILL **v1.165.0**
+frontmatter + H1 lockstep + the s168 head layer (the s167 layer
+comment-demoted).
+
+**THE SCANDIHAVEN EVALUATION**: the z.input/z.infer colocation candidate
+(the s167 next-round list) evaluated live — already structurally
+embodied: `parseBody` returns `z.output<S>`, the routes carry zero
+hand-written body interfaces; nothing to port (documented, closed).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **129/2520** · build (29
+routes) · e2e **161/161** · db census MATCH · the six drift gates CLEAN
+×6 at the audit leg (the round touches docs + tests only — no visual
+source changed, the standing parity verdict carries).

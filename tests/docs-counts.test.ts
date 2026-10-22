@@ -149,7 +149,11 @@ const E2E = 161;
 // S148-A/S75-B port's pin suite).
 // Session-166: SUITES 125 -> 127 (the schemas-crud + crud-zod-seam
 // files — the CRUD-family Zod seam's two batteries).
-const SUITES = 128;
+// Session-167: SUITES 127 -> 128 (the schemas-census file — the schema
+// live-census battery).
+// Session-168: SUITES 128 -> 129 (the inventory-census file — the doc
+// inventory layer's live-census battery).
+const SUITES = 129;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -651,7 +655,11 @@ const SUITES = 128;
 // pure seam x3 + the watermark-holds skip + the crossing re-opens the
 // walk + the O(1)-gate source pin]; SUITES stays 124; E2E stays 161 —
 // the settings Defaults starved-read hardening lands IN PLACE.)
-const UNIT = 2480;
+// Session-168: 2480 -> 2520 (+40 — the inventory-census battery
+// [the 129th suite]: the PAD 11 Lines-column live-census [all 27
+// rows] + the SKILL inventory live-census + the AGENTS doctrine
+// pins + the README sitemap pins).
+const UNIT = 2520;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1116,13 +1124,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-167 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-168 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s165 layer now beneath the s166 head)",
     ).toContain(
-      "+ beneath it 2454 unit checks + 161 e2e checks green; the session-166 layer (THE CRUD-FAMILY ZOD SEAM",
+      "+ beneath it 2480 unit checks + 161 e2e checks green; the session-167 layer (THE STALE-SITE CLOSURE",
     );
   });
 

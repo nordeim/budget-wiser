@@ -8,7 +8,7 @@ description: >
   mobile-navigation drawer fix, auth, testing strategy, anti-patterns and
   the full debugging playbook. Use it to extend, debug, onboard, or
   replicate this architecture.
-version: 1.164.0
+version: 1.165.0
 last_updated: 2026-10-22
 <!-- retired session-141 layer (the DUPLICATE project_state key this file carried
      since the s165 head bump — comment-demoted at session-166, the F-166f cure;
@@ -45,10 +45,15 @@ project_state: 2382 unit checks + 161 e2e checks green; the session-165 layer (T
 project_state: 2454 unit checks + 161 e2e checks green; the session-166 layer (THE CRUD-FAMILY ZOD SEAM + THE DOC-TRUTH CARRIERS — the post-165 audit round [the baseline gate GREEN at the s165 ship state: lint 0/0 · tsc 0 · 125/2382 · build · e2e 161/161; the web-app-foundation §7.2 "zod at every boundary" checklist the audit rode]: THE CRUD-FAMILY ZOD SEAM [the s163 incremental path COMPLETED — the TWELVE body routes (accounts/activities/contacts/events/leads x[root+[id]] + settings + users) ride parseBody(req, schema), the schemas living in src/lib/schemas.ts as the field-builder vocabulary (nullable/clearable/required-on-present/defaulted-enum/fkId/date/bool/photoUrl — every asString/isBad* guard quadrant recast: the create defaults, the PUT three-state absent-clear-value semantics, the legacy hot/warm/cold priority mapping, the settings quartet's absent-no-write/null-default split; every 400 message the route's own string — the zero-message-drift doctrine extended family-wide; the field ORDER matches each route's guard ladder, parseBody answering the FIRST issue — the single-error message equivalence); the users PATCH keeps its route-local readBoundedJson + safeParse form (its divergent "Invalid JSON body" null-body message); reset keeps its custom confirm form ('Type "RESET" to confirm'); leads/[id] normalized to parseBody-before-404 (the §7.3 ordering its five siblings already carried); the asString silent-truncation caps converted to honest .max() rejects (the s163 email precedent — the "must be reasonably sized" family, never a silent prefix); the FK-existence checks + the merged-record invariants (events' end≥start, leads' stage/closedAt) stay route-side (§7.3: parseBody → ownership/FK checks → mutation); the guard helpers stay exported for the query-param GET family (events' from/to, the reports/export/search period+q parses) + their behavior battery, coercion-guards.test.ts] + THE DOC-TRUTH CARRIERS [README's file-tree route census 27/39 → the LIVE 29/41 · PAD's mermaid route-node ×27 → ×29 · PAD's file-tree "9 spec files" → 10 · PAD §8.2's env table gains the three s163 knobs (the six-knob contract .env.example + SKILL §3.3 already carry) — every carrier pinned against the LIVE source tree (the L-165c1 doctrine extended to all four)] + THE SKILL APPEARANCE FIXES [the frontmatter's DUPLICATE project_state key retired (the stale s141 layer comment-demoted + the head-bump-orphaned s143 tail folded — the single-key house form restored) + Appendix A's ADR-007 duplicate row removed]; the count ladder 2382 → 2454 (+72: schemas-crud +38 [the 126th suite] · crud-zod-seam +31 [the 127th suite] · docs-counts +4 [the four carrier live-census pins] · body-pregate −1 [the F-69a3 ordering pin consolidated into the parseBody-before-DB pin]) · SUITES 125 → 127 · E2E 161 held (the migration is behavior-preserving — the standing e2e suite IS the parity proof) · badge 2543 → 2615 — every live-tense site re-anchored in lockstep (count-ladder-166.py, assert-first, idempotent, unique-anchor) and the pin carriers (docs-counts UNIT/SUITES + the comment ladder + the head-layer pins → the s166 head · dialog-geometry CLAUDE ×4 + the 2382-form negatives) + beneath it 2382 unit checks + 161 e2e checks green; the session-165 layer (THE BOUNDED-READER PORT + THE CONTENT-TYPE CSRF GATE + THE E2E-CENSUS DOCTRINE — the digma S148-A/S75-B port onto the parse seam, the thirteen sessioned CRUD sites swapped onto readBoundedJson, every 400 message preserved VERBATIM)
 -->
 
+<!-- retired session-167 layer (comment-demoted at session-168 — the house
+     single-key form; the s141/s143/s165/s166 layers sit demoted above it):
 project_state: 2480 unit checks + 161 e2e checks green; the session-167 layer (THE STALE-SITE CLOSURE + THE SCHEMA LIVE-CENSUS — the post-166 audit round [the baseline gate GREEN at the s166 ship state: lint 0/0 · tsc 0 · 127/2454 · build · e2e 161/161 · probe:ref #139 STABLE · the six drift gates CLEAN ×6 · the mobile drawer 7/7 at 390×844 · the Tailwind v4 state clean]): THE SCHEMA LIVE-CENSUS [tests/schemas-census.test.ts — the 128th suite, the L-165c1 live-census doctrine extended to the seam the s166 round built: the field-inventory pins (Object.keys(schema.shape) for every exported object schema, in the route-guard order — the drift guard against a silent field drop [API widening] or add [API narrowing]) + the exported-schema census (the 20 members read live from source) + the line-census carrier pin (SKILL 7.4's schemas.ts line count read LIVE from disk — RED at birth on the stale 103, GREEN at the live 716; the count can never drift again because the pin reads the file)] + THE STALE-SITE CLOSURE [the ten sites the s166 count-ladder's own sweep missed: SKILL 11's pre-ship gate block 2382/2382 → the live form (the exact site class s165 called 'the worst possible stale site', recurred one round after its cure) · SKILL 7.4's 'the CRUD family keeps the asString guards' doctrine clause → the completed-adoption form + the heading's schemas.ts line census 103 → 716 · the head layer's OWN stale first-pass ladder numbers (2450/+68/2611 → 2454/+72/2615 — L-166c3's mis-derivation shipped inside the prose) · SKILL 15.1's canonical route example rewritten from the bare req.json + asString idiom to the parseBody(req, accountCreateSchema) form + the 27 → 29 count · README's env table 3 → the six-knob contract (the three NEO_* knobs) · the suite enumeration + the six missing batteries · the Zod seam's file-tree discoverability + the root line's two omitted docs · PAD's header date + 7.3's '7 regression checks' → 10 + the 7.1 inventory-table surgery (the s86-s91 rows re-seated chronologically, the Total row terminating the table again, the footnote's dual row-forms documented)] + THE PIN EXTENSION [the recurrence root-cure: five previously-UNPINNED live-tense sites join the docs-counts pin family — the 11 gate block · the 7.4 doctrine line · the 15.1 example idiom + route count · the README env table · the PAD 7.3 count — the F-99a1/F-102a2 genus retired on these axes: the sites that had to be fixed by hand at s99/s102/s106/s165/s166 now fail the gate the day they drift]; the count ladder 2454 → 2480 (+26: schemas-census +21 [the 128th suite] · docs-counts +5 [the carrier pins]) · SUITES 127 → 128 · E2E 161 held · badge 2615 → 2641 — every live-tense site re-anchored in lockstep (count-ladder-167.py, assert-first, idempotent, unique-anchor) + beneath it 2454 unit checks + 161 e2e checks green; the session-166 layer (THE CRUD-FAMILY ZOD SEAM + THE DOC-TRUTH CARRIERS — the twelve body routes ride parseBody(req, schema), the field-builder vocabulary in src/lib/schemas.ts, every 400 message the route's own string, the four doc carriers live-pinned)
+-->
+
+project_state: 2520 unit checks + 161 e2e checks green; the session-168 layer (THE AGENTS-DOCTRINE CLOSURE + THE INVENTORY LIVE-CENSUS — the post-167 audit round [the baseline gate GREEN at the s167 ship state: lint 0/0 · tsc 0 · 128/2480 · build · e2e 161/161 · probe:ref #140 STABLE · the six drift gates CLEAN ×6 · the mobile drawer 7/7 at 390×844 · the Tailwind v4 state clean · sitemap 11 routes + robots + manifest standing · db census MATCH]): THE AGENTS-DOCTRINE CLOSURE [the two live-tense validation-doctrine sites the s165/s166/s167 rounds flipped everywhere EXCEPT AGENTS.md itself — the architecture-facts 'the CRUD family keeps the asString guards, the documented incremental adoption path' → the completed-adoption form + the conventions' 'No schema library — zod was deliberately pruned' → the Zod-seam reality; AGENTS.md joins the docs pin family for the first time (the L-167c1 root-cure on the file the rotations kept forgetting to flip)] + THE INVENTORY LIVE-CENSUS [tests/inventory-census.test.ts — the 129th suite, the L-165c1 doctrine extended from the schema seam to the DOC INVENTORY LAYER: the PAD §11 Lines-column live-census (ALL 27 count-carrying rows asserted against their files' live line counts — seven were stale: api 172/308 · constants 547/549 · rate-limit 51/126 · mobile-nav 215/143 · app-shell 70/94 · globals.css 413/430 · (app)/layout 11/22; the s109 line-census family pinned thirteen rows + the SKILL headers but never these seven PAD rows) + the SKILL inventory live-census (the models 8/9 · the layer map pages 11→15 + routes 27→29 · the components 25/19→28/22 + the page enumeration's four post-s12 pages · the Bug #1 7-check→10-check · the §19 primary-foreground #ffffff→#fafafa — all read live from the tree) + the AGENTS doctrine pins + the README nine-route→eleven-route sitemap pins — mutation-proven at birth]; the count ladder 2480 → 2520 (+40: inventory-census +40 [the 129th suite]) · SUITES 128 → 129 · E2E 161 held · badge 2641 → 2681 — every live-tense site re-anchored in lockstep (count-ladder-168.py, assert-first, idempotent, unique-anchor) + beneath it 2480 unit checks + 161 e2e checks green; the session-167 layer (THE STALE-SITE CLOSURE + THE SCHEMA LIVE-CENSUS — the ten stale sites + the schema-census pin family)
 ---
 
-# NEO CRM — Engineering Skill (SKILL.md v1.164.0)
+# NEO CRM — Engineering Skill (SKILL.md v1.165.0)
 
 > **How to use this document:** §1–§3 give you the mental model and a
 > working environment. §4–§8 describe what the code actually does (every
@@ -200,7 +205,7 @@ Demo login (mirrors the reference app): `sepnetflix2023@outlook.com` /
 | `eslint.config.mjs` | next/core-web-vitals + next/typescript; `skills/`, build dirs ignored; react-hooks purity rules enforced |
 | `vitest.config.ts` | `include: ["src/**/*.test.ts", "tests/**/*.test.ts"]`, node env, `@` alias |
 | `playwright.config.ts` | 2 projects (setup + chromium), `globalSetup` reseeds `db/e2e.db` in place, webServer boots the standalone build on :3100 with `DATABASE_URL=file:../db/e2e.db` |
-| `prisma/schema.prisma` | 8 models; `datasource db { provider = "sqlite"; url = env("DATABASE_URL") }` |
+| `prisma/schema.prisma` | 9 models; `datasource db { provider = "sqlite"; url = env("DATABASE_URL") }` |
 | `scripts/prisma-env.ts` | `db:push` wrapper — injects the schema-rule URL into the Prisma CLI's env (§9 bug #8) |
 
 ### 3.3 Environment variables (6 — count them, 6)
@@ -341,7 +346,7 @@ map when you extend a vocabulary.
 ### 5.1 Layer model (the Golden Rule: imports point DOWN only)
 
 ```
-Layer 1  src/app/**            pages (11) + API route handlers (27) + layouts
+Layer 1  src/app/**            pages (15) + API route handlers (29) + layouts
 Layer 2  src/components/**     UI kit (13 files) + layout chrome + shared dialogs
 Layer 3  src/lib/**            pure seams: auth, api envelope, db, db-path,
                                format, csv, rate-limit, constants, download
@@ -355,9 +360,10 @@ HTTP client for server state (its `call()` helper unwraps the envelope).
 
 ### 5.2 Inventory (verified counts)
 
-- 25 `.tsx` files under `src/components/`; 19 start with `"use client"`.
-- 11 pages (`src/app/**/page.tsx`): login, signup, dashboard, accounts,
-  contacts, leads, calendar, activities, reports, settings, profile.
+- 28 `.tsx` files under `src/components/`; 22 start with `"use client"`.
+- 15 pages (`src/app/**/page.tsx`): landing (/), about, contact, login,
+  signup, reset-password, dashboard, accounts, contacts, leads,
+  calendar, activities, reports, settings, profile.
 - 29 API route files: auth (login/signup/logout/me/verify/resend/forgot-password/reset-password), users,
   accounts±id, contacts±id, leads±id, activities±id, events±id,
   opportunities, dashboard, reports, settings, search, export, upload,
@@ -695,7 +701,7 @@ a regression test or a structural guard.
 
 **Symptom:** below `lg` the reference app shows no nav at all.
 **Root cause:** the reference template hides the sidebar without shipping
-a replacement. **Fix:** `mobile-nav.tsx` drawer + 7-check e2e suite.
+a replacement. **Fix:** `mobile-nav.tsx` drawer + 10-check e2e suite.
 **Lesson:** cloning parity means fixing the reference's defects, not
 photocopying them.
 
@@ -795,7 +801,7 @@ and `curl` against the envelope (`{"ok":true,"data":…}`) for API truth.
 ```bash
 bun run lint         # 0 errors, 0 warnings
 bun run typecheck    # clean (the REAL type gate — build ignores errors)
-bun run test         # 2480/2480
+bun run test         # 2520/2520
 bun run build        # standalone build succeeds
 bun run test:e2e     # 161/161 (build first; boots :3100 with db/e2e.db)
 ```
@@ -6373,7 +6379,7 @@ mirror — fix both if either changes):
 | `sidebar-active` | `#4d7ef5` | 77 126 245 | `bg-sidebar-active` | active nav row |
 | `primary` | `#3b82f6` | 59 130 246 | `bg-primary`/`text-primary` | primary buttons, links, active states |
 | `primary-hover` | `#2563eb` | 37 99 235 | `hover:bg-primary-hover` | primary hover |
-| `primary-foreground` | `#ffffff` | 255 255 255 | `text-primary-foreground` | on-primary text |
+| `primary-foreground` | `#fafafa` | 250 250 250 | `text-primary-foreground` | on-primary text (the s119 re-pin) |
 | `background` | `#f9fafb` | 249 250 251 | `bg-background` | app canvas |
 | `surface` | `#ffffff` | 255 255 255 | `bg-surface` | cards, topbar, dialogs |
 | `foreground` | `#0a0a0a` | 10 10 10 | `text-foreground` | primary text (session-13 re-pin) |
@@ -6573,7 +6579,7 @@ Full ADRs with context/decision/rationale/consequences/alternatives live in
 | login-reset (session-11) | `tests/login-reset.test.ts` | 14 | ~6 ms |
 | seeded-dashboard-kpis (session-110) | `tests/seeded-dashboard-kpis.test.ts` | 4 | ~12 ms |
 | leading-inert-genus (session-150) | `tests/leading-inert-genus.test.ts` | 4 | ~10 s (the src scan) |
-| **unit total** | 128 files | **2480** | **~18 s** (one worker per file) |
+| **unit total** | 129 files | **2520** | **~18 s** (one worker per file) |
 | e2e landing (the marketing family, s142 + the s144 guest block) | `tests/e2e/landing.spec.ts` | 14 | — |
 | e2e auth (logged out + reset flow) | `tests/e2e/auth.spec.ts` | 11 | — |
 | e2e setup (login) | `tests/e2e/auth.setup.ts` | 1 | — |
@@ -6588,7 +6594,7 @@ Full ADRs with context/decision/rationale/consequences/alternatives live in
 | **e2e total** | 10 spec files + the setup project | **161** | **~3.6 m** (incl. server boot + reseed) |
 
 Full gate wall-clock (the s109 standing): lint ~10 s, typecheck ~8 s, unit
-~15 s (128 suites, one worker per file), build ~40 s, e2e ~3.6 m (161
+~15 s (129 suites, one worker per file), build ~40 s, e2e ~3.6 m (161
 checks, fresh server boot + in-place e2e.db reseed under CI=1) → roughly
 4.6 m end-to-end. Costs worth knowing: e2e reseeds
 `db/e2e.db` in place (global-setup) and boots the standalone build on

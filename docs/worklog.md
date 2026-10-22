@@ -270,3 +270,26 @@ Stage Summary:
 - THE VERIFICATION: lint 0/0 · tsc 0 · 125/2382 · build (29 routes) · e2e 161/161 · probe:ref #138 STABLE · the six drift gates CLEAN ×6 · census MATCH
 - The lessons: L-165c1 the live-census doctrine (a pin that checks doc-consistency with a constant never checks the constant against its census) · L-165c2 the RegExp-from-template escaping trap (mutation-prove regex pins at birth) · L-165c3 the e2e rows are only 10 — pin them live
 - SHIPPED: the remediated codebase committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)
+
+---
+Task ID: 168
+Agent: main (Z.ai)
+Task: The session-168 post-167 audit round — THE AGENTS-DOCTRINE CLOSURE + THE INVENTORY LIVE-CENSUS — TDD remediation, docs lockstep, push to main via the SSH wrapper.
+
+Work Log:
+- (Tail-gap note: the s166/s167 rounds recorded their work in docs/session_353.md–session_356.md + their plan files but never appended worklog entries — this entry resumes the sequence at 168.)
+- The workspace re-cloned at d57ef8e (the s167 ship + its session-log commit); the sandbox root's stale .env residue removed + the ambient DATABASE_URL scrubbed on every DB-touching command (the documented class); .env recreated with a fresh 64-char AUTH_SECRET; db:push + db:seed census MATCH; the Playwright chromium installed (the standing fresh-sandbox intake)
+- The baseline gate GREEN at the exact s167 ship state: lint 0/0 · tsc 0 · 128/2480 · build (29 routes) · e2e 161/161 (clean run after the intake) · probe:ref #140 STABLE · the SIX drift gates CLEAN ×6 (the fullpage at the exact standing values; the census byte-parity zero unexplained) · the mobile drawer 7/7 PASS live at 390×844 (scripts/drawer-battery-168.ts) · the Tailwind v4 state clean · sitemap/robots/manifest source-verified · bun audit's 9-advisory posture unchanged
+- The audit (the web-app-foundation §12/§14 lenses + the mega-doc digests): TEN findings all reproduced live — F-168a/b AGENTS.md's own two live-tense validation-doctrine sites (the "keeps the asString guards" incremental-path clause + the "No schema library — zod was deliberately pruned" conventions bullet — the s165/s166/s167 rounds flipped the doctrine everywhere EXCEPT the file every agent reads first) · F-168c PAD §11's Lines column SEVEN stale rows (api/constants/rate-limit/mobile-nav/app-shell/globals.css/(app)-layout — the s109 line-census family never covered these seven) · F-168d/e/f/g/h SKILL's inventory layer (the layer map 11/27 · the components 25/19 · the page enumeration · "8 models" · the Bug #1 "7-check" · the §19 primary-foreground #ffffff) · F-168i README's "nine-route" sitemap claims ×2 · F-168j the worklog tail gap
+- The scandihaven z.input/z.infer colocation candidate evaluated live and closed (already embodied: parseBody returns z.output<S>; zero hand-written body interfaces)
+- The plan landed at docs/plans/2026-10-22-session168-agents-doctrine-inventory-live-census.md; validated against the codebase; executed TDD
+- WP-1: tests/inventory-census.test.ts (the 129th suite, +40) — the PAD §11 Lines-column live-census (ALL 27 rows + the row-surface census pin) + the SKILL inventory live-census (models/pages/routes/components/sitemap/mobile-nav checks + the §19 color hex, all read live) + the AGENTS doctrine pins (AGENTS.md joins the docs pin family for the first time) + the README eleven-route pins; mutation-proven at birth (the planted csv.ts line → exactly +1 RED → reverted → GREEN); three live-caught calibration fixes (the pages census 23→15 via the ROUTE-entry definition; the routes census 32→29 via the src/app/api scope; the README article form)
+- WP-2: the sixteen stale sites flipped (the AGENTS clauses rewrapped for contiguous pin anchors)
+- WP-3: the count ladder 2480 → 2520 (+40) · SUITES 128 → 129 · E2E 161 held · badge 2641 → 2681 (count-ladder-168.py, 28 site-group flips + the head surgery; ONE live-caught tooling defect — the insertion pairs lacked idempotency guards, a re-run double-applied → repaired + the guards moved first, the re-run verified as a 0-flip no-op) + the SKILL v1.165.0 frontmatter + H1 lockstep + the s168 head layer
+- The docs: the AGENTS Session-168 section · the PAD session-168 inventory row · session_357.md · the plan's execution record · this entry
+
+Stage Summary:
+- The captures 409-412 (the landing + about pages — the s142 marketing surfaces the SKILL enumeration forgot — at phone + desktop) + the VLM battery
+- THE VERIFICATION: lint 0/0 · tsc 0 · 129/2520 · build (29 routes) · e2e 161/161 · db census MATCH
+- The lessons: L-168c1 the rotation's blind spot is the doc it never audits (AGENTS.md joins the pin family) · L-168c2 a census definition must match the claim's semantics, not its string shape · L-168c3 an insertion is not a flip (the ladder's insertion pairs need their own idempotency guards)
+- SHIPPED: the remediated codebase committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)
