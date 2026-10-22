@@ -26,6 +26,9 @@ function stripComments(src: string): string {
 
 const route = (rel: string) => stripComments(read(rel) ?? "");
 const store = () => stripComments(read("src/stores/crm-store.ts") ?? "");
+// Session-166: the schema seam source — the guard-family vocabulary
+// lives here now (the routes consume it through parseBody).
+const schemaSeam = () => stripComments(read("src/lib/schemas.ts") ?? "");
 
 describe("session-35: PUT [id] routes validate foreign keys (the POST vocabulary)", () => {
   it("contacts/[id] checks accountId + ownerId before the update", () => {
@@ -218,12 +221,20 @@ describe("session-36: photoUrl accepts only the documented URL shapes", () => {
     "src/app/api/contacts/route.ts",
     "src/app/api/contacts/[id]/route.ts",
   ])("%s guards photoUrl with the prefix check (Invalid photo URL)", (rel) => {
+    // Session-166 re-anchor: the prefix check + the type message moved
+    // onto the schema seam's photoUrl builders (only the documented
+    // /api/uploads/ or https:// shapes pass); the routes consume the
+    // parsed field (the users route destructures it; the contacts
+    // routes write body.photoUrl directly). The quadrants are pinned
+    // in schemas-crud.test.ts.
     const src = route(rel);
-    expect(src).toMatch(/Invalid photo URL/);
-    expect(src).toMatch(/\/api\/uploads\//);
+    expect(src).toMatch(rel.includes("users") ? /photoUrl/ : /body\.photoUrl/);
+    const schema = schemaSeam();
+    expect(schema).toContain('"Invalid photo URL"');
+    expect(schema).toContain("/api/uploads/");
     // NOTE: stripComments eats the `//` inside the "https://" string literal,
     // so the pin matches the bare scheme — the mangled source keeps `https:`.
-    expect(src).toMatch(/https:/);
+    expect(schema).toMatch(/https:/);
   });
 });
 
@@ -414,36 +425,48 @@ describe("session-37: FK ids reject non-string payloads (S37-P3, no silent coerc
     ["src/app/api/accounts/[id]/route.ts", ["ownerId"]],
   ];
 
-  it.each(FK_SITES)("%s guards its FK fields with isBadFK → asFKId", (rel, fks) => {
+  it.each(FK_SITES)("%s accepts its FK fields through the schema seam (the isBadFK → asFKId pair recast)", (rel, fks) => {
     const src = route(rel);
-    // The silent-coercion pattern is gone…
+    // Session-166 re-anchor: the FK guard pair moved onto the schemas —
+    // the route consumes the parsed field, the selection message lives
+    // in schemas.ts (the rejection quadrants are pinned behaviorally in
+    // schemas-crud.test.ts). The silent-coercion pattern stays gone.
     expect(src).not.toMatch(/asString\(body\.(accountId|ownerId|contactId)\s*,/);
-    // …and every FK field this route accepts is guarded + parsed by the
-    // new helpers.
+    const schema = schemaSeam();
     for (const fk of fks) {
-      expect(src).toMatch(new RegExp(`isBadFK\\(body\\.${fk}\\)`));
-      expect(src).toMatch(new RegExp(`asFKId\\(body\\.${fk}\\)`));
+      expect(src, `${rel}: the parsed ${fk} is consumed`).toMatch(new RegExp(`body\\.${fk}`));
+      expect(schema, `the ${fk} selection message lives on the schema seam`).toContain(
+        `"${fk === "accountId" ? "Invalid company selection" : fk === "ownerId" ? "Invalid owner selection" : "Invalid contact selection"}"`,
+      );
     }
   });
 
   it("the FK-400 vocabulary stays in the family (company / owner / contact)", () => {
-    const contacts = route("src/app/api/contacts/route.ts");
-    expect(contacts).toMatch(/Invalid company selection/);
-    expect(contacts).toMatch(/Invalid owner selection/);
-    const events = route("src/app/api/events/route.ts");
-    expect(events).toMatch(/Invalid contact selection/);
-    expect(events).toMatch(/Invalid company selection/);
+    // Session-166 re-anchor: the vocabulary's home is the schema seam —
+    // every FK message the ten routes answered is answered there
+    // verbatim (the zero-message-drift doctrine).
+    const schema = schemaSeam();
+    expect(schema).toContain('"Invalid company selection"');
+    expect(schema).toContain('"Invalid owner selection"');
+    expect(schema).toContain('"Invalid contact selection"');
   });
 });
 
 describe("session-37: photoUrl cap parity across the three writers (S37-P5)", () => {
-  it("users PATCH no longer truncates at 300 — the shared 500 cap", () => {
+  it("users PATCH no longer truncates at 300 — the shared 500 cap (the schema seam's honest .max)", () => {
     const patch = handlerBlock(route("src/app/api/users/route.ts"), "PATCH");
     expect(patch).not.toMatch(/slice\(0,\s*300\)/);
-    expect(patch).toMatch(/500/);
-    // The contacts writers already cap at 500 (asString max).
-    expect(route("src/app/api/contacts/route.ts")).toMatch(/photoUrl,\s*\{\s*optional:\s*true,\s*max:\s*500\s*\}/);
-    expect(route("src/app/api/contacts/[id]/route.ts")).toMatch(/photoUrl,\s*\{\s*optional:\s*true,\s*max:\s*500\s*\}/);
+    // Session-166 re-anchor: the cap moved onto the schema's photoUrl
+    // builders — the honest .max(500) reject ALL THREE writers share
+    // (the s37 slice-truncation converting per the s163 email
+    // precedent; the quadrants pinned in schemas-crud.test.ts).
+    const schema = schemaSeam();
+    expect(schema).toContain('nullablePhotoUrl("Invalid photo URL", "Photo URL must be reasonably sized")');
+    expect(schema).toContain('photoUrlField("Invalid photo URL", "Photo URL must be reasonably sized")');
+    // ONE shared builder — the single .max(500) every photoUrl field
+    // consumes (the delegation photoUrlField = nullablePhotoUrl().optional()
+    // is the parity itself).
+    expect((schema.match(/\.max\(500,/g) ?? []).length).toBe(1);
   });
 });
 
@@ -489,30 +512,34 @@ describe("session-38: the signup name-fallback revival (S38-P1)", () => {
 });
 
 describe("session-38: the photoUrl type-guard family (S38-P2)", () => {
+  // Session-166 re-anchor: the type guards moved onto the schema seam's
+  // photoUrl builders (a present non-string answers "Invalid photo
+  // URL" — the quadrants pinned in schemas-crud.test.ts); the routes
+  // consume the parsed field.
   it("contacts POST rejects a present non-string photoUrl (was a silent clear)", () => {
     const post = handlerBlock(route("src/app/api/contacts/route.ts"), "POST");
-    expect(post).toMatch(/isBadFK\(body\.photoUrl\)/);
-    expect(post).toMatch(/Invalid photo URL/);
+    expect(post).toMatch(/photoUrl: body\.photoUrl/);
+    expect(schemaSeam()).toContain('nullablePhotoUrl("Invalid photo URL", "Photo URL must be reasonably sized")');
   });
 
   it("contacts PUT rejects a present non-string photoUrl (LIVE-proven silent clear)", () => {
     const put = handlerBlock(route("src/app/api/contacts/[id]/route.ts"), "PUT");
-    expect(put).toMatch(/isBadFK\(body\.photoUrl\)/);
-    expect(put).toMatch(/Invalid photo URL/);
+    expect(put).toMatch(/if \(body\.photoUrl !== undefined\) data\.photoUrl = body\.photoUrl;/);
+    expect(schemaSeam()).toContain('photoUrlField("Invalid photo URL", "Photo URL must be reasonably sized")');
   });
 
   it("users PATCH rejects a present non-string photoUrl (was a silent ignore)", () => {
     const patch = handlerBlock(route("src/app/api/users/route.ts"), "PATCH");
-    expect(patch).toMatch(/isBadFK\(body\.photoUrl\)/);
-    expect(patch).toMatch(/Invalid photo URL/);
+    expect(patch).toMatch(/photoUrl/);
+    expect(schemaSeam()).toContain('photoUrlField("Invalid photo URL", "Photo URL must be reasonably sized")');
   });
 
-  it("the trim is harmonized — users PATCH trims like the contacts writers (F12)", () => {
-    const patch = handlerBlock(route("src/app/api/users/route.ts"), "PATCH");
-    // Contacts trim via asString before the prefix check; users sliced
-    // raw, so " https://…" was accepted+trimmed on contacts but 400ed
-    // on the profile. Both writers now trim.
-    expect(patch).toMatch(/body\.photoUrl\.trim\(\)\.slice\(0,\s*500\)/);
+  it("the trim is harmonized — the photoUrl builder trims (F12)", () => {
+    // Session-166 re-anchor: users sliced raw, so " https://…" was
+    // accepted+trimmed on contacts but 400ed on the profile. The
+    // schema's ONE builder trims ahead of the prefix refine — all
+    // three writers share it.
+    expect(schemaSeam()).toMatch(/\.trim\(\)\s*\.max\(500,/);
   });
 });
 
@@ -734,6 +761,11 @@ describe("session-40: the PUT-side type-guard sweep (S40-P2 — the silent-mutat
   it.each([
     // [route, field, guard, message] — the s37 FK-guard shape, one
     // parse family over. Every row was a LIVE-verified silent mutation.
+    // Session-166 re-anchor: the guard moved onto the route's UPDATE
+    // schema — the message lives in schemas.ts (the census below), the
+    // route<->schema wiring is pinned in crud-zod-seam.test.ts, and
+    // every field's rejection quadrants are pinned BEHAVIORALLY in
+    // schemas-crud.test.ts (the strongest form of this table).
     ["src/app/api/leads/[id]/route.ts", "email", "isBadString", "Invalid email"],
     ["src/app/api/leads/[id]/route.ts", "phone", "isBadString", "Invalid phone number"],
     ["src/app/api/leads/[id]/route.ts", "company", "isBadString", "Invalid company"],
@@ -764,16 +796,23 @@ describe("session-40: the PUT-side type-guard sweep (S40-P2 — the silent-mutat
     ["src/app/api/events/[id]/route.ts", "location", "isBadString", "Invalid location"],
     ["src/app/api/events/[id]/route.ts", "relatedType", "isBadString", "Invalid related type"],
     ["src/app/api/events/[id]/route.ts", "endAt", "isBadDate", "Invalid end date"],
-  ])("%s: %s rejects the present-non-string class (400 %s)", (rel, field, guard, message) => {
-    const put = handlerBlock(route(rel), "PUT");
-    expect(put).toMatch(guardCall(guard, field));
-    expect(put).toMatch(message);
+  ])("%s: %s rejects the present-non-string class on the schema seam (400 %s)", (rel, field, _guard, message) => {
+    // Session-166 re-anchor: the type guard lives in schemas.ts now —
+    // the message census + the route's patch-write form (the field the
+    // schema validates is the field the route writes).
+    expect(schemaSeam(), `the "${message}" vocabulary lives on the schema seam`).toContain(`"${message}"`);
+    expect(handlerBlock(route(rel), "PUT"), `${rel}: the parsed ${field} is written`).toMatch(
+      new RegExp(`body\\.${field} !== undefined`),
+    );
   });
 
   it("contacts/[id] status gains the CONTACT_STATUSES membership (N-B5: \"banana\" stored verbatim)", () => {
-    const put = handlerBlock(route("src/app/api/contacts/[id]/route.ts"), "PUT");
-    expect(put).toMatch(/CONTACT_STATUSES/);
-    expect(put).toMatch(/Invalid status/);
+    // Session-166 re-anchor: the membership moved onto
+    // contactUpdateSchema's status field (requiredOnPresentEnum).
+    expect(schemaSeam()).toContain('requiredOnPresentEnum([...CONTACT_STATUSES], "Invalid status", "Invalid status")');
+    expect(handlerBlock(route("src/app/api/contacts/[id]/route.ts"), "PUT")).toMatch(
+      /if \(body\.status !== undefined\) data\.status = body\.status;/,
+    );
   });
 });
 
@@ -784,19 +823,27 @@ describe("session-40: the settings dead-fallback revival + guards (S40-P3 — N-
     ["defaultTier", "isBadString", "Invalid default tier"],
     ["calendarView", "isBadString", "Invalid calendar view"],
     ["followUpDays", "isBadNumber", "Invalid follow-up days"],
-  ])("settings PUT %s: the type guard (400 %s)", (field, guard, message) => {
-    const put = handlerBlock(route("src/app/api/settings/route.ts"), "PUT");
-    expect(put).toMatch(guardCall(guard, field));
-    expect(put).toMatch(message);
+  ])("settings PUT %s: the type guard on the schema seam (400 %s)", (field, _guard, message) => {
+    // Session-166 re-anchor: the type guard moved onto
+    // settingsUpdateSchema — the message lives in schemas.ts, the
+    // route's ?? default block consumes the parsed field.
+    expect(schemaSeam()).toContain(`"${message}"`);
+    expect(handlerBlock(route("src/app/api/settings/route.ts"), "PUT")).toMatch(
+      new RegExp(`body\\.${field} !== undefined`),
+    );
   });
 
-  it("the quartet's ?? fallbacks are LIVE (optional: true — \"\" is not nullish, the s38 lesson)", () => {
+  it("the quartet's ?? fallbacks are LIVE (the route-side ?? fills the schema's null — the s40-P3 semantics)", () => {
     const put = handlerBlock(route("src/app/api/settings/route.ts"), "PUT");
-    for (const field of ["defaultCurrency", "defaultLeadStage", "defaultTier", "calendarView"]) {
-      const m = put.match(new RegExp(`asString\\(body\\.${field},[^)]*\\)`));
-      expect(m).not.toBeNull();
-      expect(m![0]).toMatch(/optional:\s*true/);
-    }
+    // Session-166 re-anchor: absent → undefined (NO write) lives on the
+    // schema; null/'' → the schema's null → the ROUTE's ?? default
+    // ("" is not nullish was the s38 lesson — the null-fills below are
+    // the live code that lesson produced, one station over).
+    expect(put).toContain('(body.defaultCurrency ?? "AED")');
+    expect(put).toContain('body.defaultLeadStage ?? "new"');
+    expect(put).toContain('body.defaultTier ?? "B"');
+    expect(put).toContain('body.calendarView ?? "month"');
+    expect(put).toContain("body.followUpDays ?? 3");
   });
 });
 
@@ -813,10 +860,13 @@ describe("session-40: the POST-side inventing twins (S40-P4 — bad types silent
     ["src/app/api/activities/route.ts", "dueAt", "isBadDate", "Invalid due date"],
     // events: endAt→null — the invariant twin
     ["src/app/api/events/route.ts", "endAt", "isBadDate", "Invalid end date"],
-  ])("%s: %s rejects the inventing class (400 %s)", (rel, field, guard, message) => {
+  ])("%s: %s rejects the inventing class on the schema seam (400 %s)", (rel, field, _guard, message) => {
+    // Session-166 re-anchor: the inventing-twin guards moved onto the
+    // CREATE schemas — the message lives in schemas.ts, the route
+    // consumes the parsed field into its create data.
     const post = handlerBlock(route(rel), "POST");
-    expect(post).toMatch(guardCall(guard, field));
-    expect(post).toMatch(message);
+    expect(schemaSeam()).toContain(`"${message}"`);
+    expect(post).toMatch(new RegExp(`body\\.${field}`));
   });
 });
 
@@ -889,10 +939,14 @@ describe("session-41: the POST-side lenient-create completion (S41-P1 — the si
     ["src/app/api/events/route.ts", "description", "Invalid description"],
     ["src/app/api/events/route.ts", "location", "Invalid location"],
     ["src/app/api/events/route.ts", "relatedType", "Invalid related type"],
-  ])("%s: POST %s rejects the present-non-string class (400 %s)", (rel, field, message) => {
+  ])("%s: POST %s rejects the present-non-string class on the schema seam (400 %s)", (rel, field, message) => {
+    // Session-166 re-anchor: the lenient-create guards moved onto the
+    // CREATE schemas — the message lives in schemas.ts (the census),
+    // the route consumes the parsed field, and the quadrants are
+    // pinned behaviorally in schemas-crud.test.ts.
     const post = handlerBlock(route(rel), "POST");
-    expect(post).toMatch(guardCall("isBadString", field));
-    expect(post).toMatch(message);
+    expect(schemaSeam()).toContain(`"${message}"`);
+    expect(post).toMatch(new RegExp(`body\\.${field}`));
   });
 });
 
@@ -985,10 +1039,13 @@ describe("session-42: booleans reject the present-non-boolean class (S42-P2)", (
     // flag — its star rides the computed tier).
     ["src/app/api/events/route.ts", "POST", "allDay", "Invalid all-day flag"],
     ["src/app/api/events/[id]/route.ts", "PUT", "allDay", "Invalid all-day flag"],
-  ])("%s %s: %s rejects present non-booleans (400 %s)", (rel, verb, field, message) => {
+  ])("%s %s: %s rejects present non-booleans on the schema seam (400 %s)", (rel, verb, field, message) => {
+    // Session-166 re-anchor: the strict-bool guard moved onto the
+    // events schemas' allDay fields (the createBool/boolField builders
+    // — null ≡ false, the === true idiom's own semantics).
     const block = handlerBlock(route(rel), verb);
-    expect(block).toMatch(guardCall("isBadBool", field));
-    expect(block).toMatch(message);
+    expect(block).toMatch(new RegExp(`body\\.${field}`));
+    expect(schemaSeam()).toContain(`"${message}"`);
   });
 });
 
@@ -1002,12 +1059,13 @@ describe("session-42: booleans reject the present-non-boolean class (S42-P2)", (
 // ---------------------------------------------------------------------------
 
 describe("session-42: activities/[id] PUT accepts contactId/accountId (S42-P3)", () => {
-  it("the PUT guards + parses both FK fields (the contacts/[id] shape)", () => {
+  it("the PUT accepts both FK fields through the schema seam (the contacts/[id] shape)", () => {
+    // Session-166 re-anchor: the FK guard pair moved onto
+    // activityUpdateSchema (fkId) — the route's patch writes are the
+    // flat three-state form.
     const put = handlerBlock(route("src/app/api/activities/[id]/route.ts"), "PUT");
-    expect(put).toMatch(guardCall("isBadFK", "contactId"));
-    expect(put).toMatch(guardCall("isBadFK", "accountId"));
-    expect(put).toMatch(/asFKId\(body\.contactId\)/);
-    expect(put).toMatch(/asFKId\(body\.accountId\)/);
+    expect(put).toMatch(/if \(body\.contactId !== undefined\) data\.contactId = body\.contactId;/);
+    expect(put).toMatch(/if \(body\.accountId !== undefined\) data\.accountId = body\.accountId;/);
   });
 
   it("the PUT checks FK existence inside the try (the POST's own vocabulary)", () => {
@@ -1028,12 +1086,14 @@ describe("session-42: activities/[id] PUT accepts contactId/accountId (S42-P3)",
 // ---------------------------------------------------------------------------
 
 describe("session-42: contacts/[id] PUT status \"\" is a 400, not a silent reset (S42-P4)", () => {
-  it("the status parse is non-optional — no ?? \"active\" default can fire on a present value", () => {
+  it("the status parse is required-on-present — no ?? \"active\" default can fire on a present value", () => {
     const put = handlerBlock(route("src/app/api/contacts/[id]/route.ts"), "PUT");
-    // The silent-reset shape is gone…
-    expect(put).not.toMatch(/asString\(body\.status,\s*\{[^}]*optional:\s*true[^}]*\}\)\s*\?\?\s*"active"/);
-    // …replaced by the sibling-enum shape (non-optional parse).
-    expect(put).toMatch(/const status = asString\(body\.status, \{ max: 20 \}\)/);
+    // Session-166 re-anchor: the non-optional parse moved onto
+    // contactUpdateSchema's status field (requiredOnPresentEnum — a
+    // present "" is a bad value, not a clear; the behavioral pin in
+    // schemas-crud.test.ts). The silent-reset shape stays gone.
+    expect(put).not.toMatch(/\?\?\s*\"active\"/);
+    expect(put).toMatch(/if \(body\.status !== undefined\) data\.status = body\.status;/);
   });
 });
 
@@ -1073,23 +1133,25 @@ describe("session-42: the bare-request period default is reachable (S42-P6)", ()
 describe("session-43: leads accept contactId on both verbs (S43-P1)", () => {
   it("the POST create data carries contactId (the dropped field stores now)", () => {
     const post = handlerBlock(route("src/app/api/leads/route.ts"), "POST");
-    expect(post).toMatch(/isBadFK\(body\.contactId\)/);
-    expect(post).toMatch(/asFKId\(body\.contactId\)/);
-    // The create data itself must carry the parsed field (the silent
-    // drop was exactly here: the payload parsed nowhere, stored nowhere).
+    // Session-166 re-anchor: the FK guard moved onto leadCreateSchema;
+    // the create data itself must carry the parsed field (the silent
+    // drop was exactly here: the payload parsed nowhere, stored
+    // nowhere).
     const createAt = post.indexOf("db.lead.create");
     expect(createAt).toBeGreaterThanOrEqual(0);
-    expect(post.slice(createAt)).toMatch(/contactId/);
+    expect(post.slice(createAt)).toMatch(/contactId: body\.contactId/);
+    expect(schemaSeam()).toContain('"Invalid contact selection"');
   });
 
   it("the PUT checks contactId existence inside the try (the POST's own vocabulary)", () => {
     const put = handlerBlock(route("src/app/api/leads/[id]/route.ts"), "PUT");
     expect(put).toMatch(/db\.contact\.findUnique/);
     expect(put).toMatch(/Selected contact does not exist/);
-    // The parse-side branch too (a non-string FK is a 400, not a silent
-    // coercion — the s37-P3 doctrine).
-    expect(put).toMatch(guardCall("isBadFK", "contactId"));
-    expect(put).toMatch(/asFKId\(body\.contactId\)/);
+    // Session-166 re-anchor: the parse-side branch is the schema's FK
+    // field (the flat patch write); the type-guard message lives in
+    // schemas.ts.
+    expect(put).toMatch(/if \(body\.contactId !== undefined\) data\.contactId = body\.contactId;/);
+    expect(schemaSeam()).toContain('"Invalid contact selection"');
   });
 });
 
@@ -1159,10 +1221,14 @@ describe("session-43: the settings defaults quartet completes (S43-P3)", () => {
     expect(put).not.toMatch(/agenda/);
   });
 
-  it("firstDayOfWeek gains the isBadString guard its sibling quintet has", () => {
-    const put = handlerBlock(route("src/app/api/settings/route.ts"), "PUT");
-    expect(put).toMatch(guardCall("isBadString", "firstDayOfWeek"));
-    expect(put).toMatch(/Invalid first day of week/);
+  it("firstDayOfWeek keeps its type guard (the schema's two-message vocabulary)", () => {
+    // Session-166 re-anchor: the isBadString guard moved onto
+    // settingsUpdateSchema's firstDayOfWeek field — the type message
+    // ("Invalid first day of week") AND the enum message ("First day of
+    // week must be monday or sunday") both live in schemas.ts.
+    expect(schemaSeam()).toContain('"Invalid first day of week"');
+    expect(schemaSeam()).toContain('"First day of week must be monday or sunday"');
+    expect(handlerBlock(route("src/app/api/settings/route.ts"), "PUT")).toMatch(/body\.firstDayOfWeek !== undefined/);
   });
 });
 
@@ -1202,26 +1268,20 @@ describe("session-43: events GET from/to reject garbage (S43-P5)", () => {
 
 describe("session-44: accounts accept health on both verbs (S44-P1)", () => {
   it("the POST guards + stores health (absent keeps the schema default)", () => {
+    // Session-166 re-anchor: the guard + the create-default moved onto
+    // accountCreateSchema's health field (defaultedEnum → "Healthy";
+    // the quadrants pinned in schemas-crud.test.ts).
     const post = handlerBlock(route("src/app/api/accounts/route.ts"), "POST");
-    expect(post).toMatch(/isBadString\(body\.health\)/);
-    expect(post).toMatch(/Invalid health status/);
-    expect(post).toMatch(/ACCOUNT_HEALTH_STATUSES/);
-    // The create-default semantics (the priority shape): absent/""/null →
-    // "Healthy", a present garbage string 400s.
-    expect(post).toMatch(/asString\(body\.health,\s*\{\s*optional:\s*true,\s*max:\s*20\s*\}\)\s*\?\?\s*"Healthy"/);
-    expect(post).toMatch(/^\s*health,/m);
+    expect(post).toMatch(/health: body\.health/);
+    expect(schemaSeam()).toContain('defaultedEnum([...ACCOUNT_HEALTH_STATUSES], "Healthy", "Invalid health status")');
   });
 
   it("the PUT branch validates + assigns (present \"\" is a 400, absent is no-change)", () => {
+    // Session-166 re-anchor: the required-on-present shape moved onto
+    // accountUpdateSchema's health field (requiredOnPresentEnum).
     const put = handlerBlock(route("src/app/api/accounts/[id]/route.ts"), "PUT");
-    expect(put).toMatch(/"health" in body/);
-    expect(put).toMatch(/isBadString\(body\.health\)/);
-    expect(put).toMatch(/Invalid health status/);
-    expect(put).toMatch(/ACCOUNT_HEALTH_STATUSES/);
-    // The s43-P2 narrow shape: a non-optional parse never returns
-    // undefined, so `!health ||` is the live tsc narrow.
-    expect(put).toMatch(/!health \|\|/);
-    expect(put).toMatch(/data\.health = health/);
+    expect(put).toMatch(/if \(body\.health !== undefined\) data\.health = body\.health;/);
+    expect(schemaSeam()).toContain('"Invalid health status"');
   });
 });
 
@@ -1238,12 +1298,11 @@ describe("session-44: accounts accept health on both verbs (S44-P1)", () => {
 
 describe("session-44: contacts POST accepts status (S44-P2)", () => {
   it("the POST guards + stores status (absent keeps the schema default)", () => {
+    // Session-166 re-anchor: the guard + the create-default moved onto
+    // contactCreateSchema's status field (defaultedEnum → "active").
     const post = handlerBlock(route("src/app/api/contacts/route.ts"), "POST");
-    expect(post).toMatch(/isBadString\(body\.status\)/);
-    expect(post).toMatch(/Invalid status/);
-    expect(post).toMatch(/CONTACT_STATUSES/);
-    expect(post).toMatch(/asString\(body\.status,\s*\{\s*optional:\s*true,\s*max:\s*20\s*\}\)\s*\?\?\s*"active"/);
-    expect(post).toMatch(/^\s*status,/m);
+    expect(post).toMatch(/status: body\.status/);
+    expect(schemaSeam()).toContain('defaultedEnum([...CONTACT_STATUSES], "active", "Invalid status")');
   });
 });
 

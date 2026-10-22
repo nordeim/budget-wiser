@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asDate, asFKId, isBadString, isBadDate, isBadFK, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
-import { ACTIVITY_TYPES } from "@/lib/constants";
+import { ok, ERR, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { activityUpdateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -11,82 +11,40 @@ export async function PUT(req: Request, { params }: Params) {
   if (isGuarded(guard)) return guard.response;
   const { id } = await params;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = read.value;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed).
+  // The patch three-state lives in the schema: absent → undefined (no
+  // write), null/"" → null (the clear), a value → the trimmed value —
+  // the s40/s42 guard ladder this form replaces, message-for-message.
+  // The status→completedAt derivation + the FK-EXISTENCE checks stay
+  // route-side (§7.3).
+  const parsed = await parseBody(req, activityUpdateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const data: Record<string, unknown> = {};
-  if ("subject" in body) {
-    const subject = asString(body.subject, { max: 200 });
-    if (!subject) return ERR.BAD_REQUEST("Activity details are required");
-    data.subject = subject;
+  if (body.subject !== undefined) data.subject = body.subject;
+  if (body.notes !== undefined) data.notes = body.notes;
+  if (body.relatedType !== undefined) data.relatedType = body.relatedType;
+  if (body.relatedName !== undefined) data.relatedName = body.relatedName;
+  if (body.dueAt !== undefined) data.dueAt = body.dueAt;
+  if (body.priority !== undefined) data.priority = body.priority;
+  if (body.type !== undefined) data.type = body.type;
+  if (body.status !== undefined) {
+    data.status = body.status;
+    data.completedAt = body.status === "completed" ? new Date() : null;
   }
-  // Session-40 (S40-P2): the silent-clear family — isBadFK's class,
-  // one parse-shape over.
-  if ("notes" in body) {
-    if (isBadString(body.notes)) return ERR.BAD_REQUEST("Invalid notes");
-    data.notes = asString(body.notes, { optional: true, max: 2000 }) ?? null;
-  }
-  if ("relatedType" in body) {
-    if (isBadString(body.relatedType)) return ERR.BAD_REQUEST("Invalid related type");
-    data.relatedType = asString(body.relatedType, { optional: true, max: 40 }) ?? null;
-  }
-  if ("relatedName" in body) {
-    if (isBadString(body.relatedName)) return ERR.BAD_REQUEST("Invalid related name");
-    data.relatedName = asString(body.relatedName, { optional: true, max: 160 }) ?? null;
-  }
-  if ("dueAt" in body) {
-    // An unparseable string silently cleared the date before the
-    // guard (asDate("garbage") → undefined → null).
-    if (isBadDate(body.dueAt)) return ERR.BAD_REQUEST("Invalid due date");
-    data.dueAt = asDate(body.dueAt) ?? null;
-  }
-  if ("priority" in body) {
-    // Session-43 (S43-P2): the dead `?? "normal"` removed (the s42-P5
-    // shape — non-optional asString returns "", never undefined).
-    const priority = asString(body.priority);
-    if (!priority || !["high", "normal", "low"].includes(priority)) return ERR.BAD_REQUEST("Invalid priority");
-    data.priority = priority;
-  }
-  if ("type" in body) {
-    const type = asString(body.type);
-    if (!type || !(ACTIVITY_TYPES as readonly string[]).includes(type)) return ERR.BAD_REQUEST("Invalid activity type");
-    data.type = type;
-  }
-  if ("status" in body) {
-    const status = asString(body.status);
-    if (!status || !["scheduled", "completed"].includes(status)) return ERR.BAD_REQUEST("Invalid status");
-    data.status = status;
-    data.completedAt = status === "completed" ? new Date() : null;
-  }
-  // Session-42 (S42-P3): the FK branches the route was missing entirely —
-  // a PUT contactId/accountId used to be silently IGNORED (the caller's
-  // payload dropped without error; an activity's links could never be
-  // re-assigned or cleared via the API). The contacts/[id] shape,
-  // verbatim.
-  if ("contactId" in body) {
-    if (isBadFK(body.contactId)) return ERR.BAD_REQUEST("Invalid contact selection");
-    data.contactId = asFKId(body.contactId);
-  }
-  if ("accountId" in body) {
-    if (isBadFK(body.accountId)) return ERR.BAD_REQUEST("Invalid company selection");
-    data.accountId = asFKId(body.accountId);
-  }
+  // Session-42 (S42-P3): the FK branches the route was missing until the
+  // s42 round — an activity's links re-assign and clear like the
+  // contacts/[id] shape.
+  if (body.contactId !== undefined) data.contactId = body.contactId;
+  if (body.accountId !== undefined) data.accountId = body.accountId;
 
   // Session-36 (S36-P2): the update is envelope-held (SQLITE_BUSY-class
   // failures stay inside { ok, error } instead of a raw non-JSON 500).
-  // Session-37 (S37-P2): the existence fetch moved INSIDE the try — the
-  // last [id] route to join (a DB failure on the read stays inside the
-  // envelope; missing-id + malformed-body now answers 400 before 404,
-  // matching the four sibling [id] routes' ordering).
+  // Session-37 (S37-P2): the existence fetch moved INSIDE the try —
+  // missing-id + malformed-body both answer 400 before 404, matching
+  // the four sibling [id] routes' ordering.
   try {
     const existing = await db.activity.findUnique({ where: { id } });
     if (!existing) return ERR.NOT_FOUND("Activity");

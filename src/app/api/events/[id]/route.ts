@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asDate, asFKId, isBadFK, isBadString, isBadDate, isBadBool, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
-import { EVENT_TYPES } from "@/lib/constants";
+import { ok, ERR, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { eventUpdateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -11,86 +11,32 @@ export async function PUT(req: Request, { params }: Params) {
   if (isGuarded(guard)) return guard.response;
   const { id } = await params;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = read.value;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed).
+  // The patch three-state lives in the schema: absent → undefined (no
+  // write below), null/"" → null (the clear), a value → the trimmed
+  // value — the s40/s42 guard ladder this form replaces,
+  // message-for-message. The MERGED-RECORD end≥start invariant + the
+  // FK-EXISTENCE checks stay route-side (§7.3).
+  const parsed = await parseBody(req, eventUpdateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const data: Record<string, unknown> = {};
-  if ("title" in body) {
-    const title = asString(body.title, { max: 160 });
-    if (!title) return ERR.BAD_REQUEST("Event title is required");
-    data.title = title;
-  }
-  // Session-40 (S40-P2): the silent-clear family — isBadFK's class,
-  // one parse-shape over.
-  if ("description" in body) {
-    if (isBadString(body.description)) return ERR.BAD_REQUEST("Invalid description");
-    data.description = asString(body.description, { optional: true, max: 1000 }) ?? null;
-  }
-  if ("location" in body) {
-    if (isBadString(body.location)) return ERR.BAD_REQUEST("Invalid location");
-    data.location = asString(body.location, { optional: true, max: 200 }) ?? null;
-  }
-  if ("relatedType" in body) {
-    if (isBadString(body.relatedType)) return ERR.BAD_REQUEST("Invalid related type");
-    data.relatedType = asString(body.relatedType, { optional: true, max: 40 }) ?? null;
-  }
+  if (body.title !== undefined) data.title = body.title;
+  if (body.description !== undefined) data.description = body.description;
+  if (body.location !== undefined) data.location = body.location;
+  if (body.relatedType !== undefined) data.relatedType = body.relatedType;
   // Session-76 (M-76c13): the reference's CalendarEvent carries
   // related_to_name — the PATCH twin of the POST guard.
-  if ("relatedName" in body) {
-    if (isBadString(body.relatedName)) return ERR.BAD_REQUEST("Invalid related name");
-    data.relatedName = asString(body.relatedName, { optional: true, max: 160 }) ?? null;
-  }
-  // Session-42 (S42-P2): the strict-bool silent-clear family — a
-  // present non-boolean used to silently CLEAR an existing true. The
-  // event dialog has no all-day control, so the surface is API-only.
-  if ("allDay" in body) {
-    if (isBadBool(body.allDay)) return ERR.BAD_REQUEST("Invalid all-day flag");
-    data.allDay = body.allDay === true;
-  }
-  // Session-37 (S37-P3): a non-string FK payload is a 400, not a silent
-  // coercion to null (the silent FK clear on PUT).
-  if ("accountId" in body) {
-    if (isBadFK(body.accountId)) return ERR.BAD_REQUEST("Invalid company selection");
-    data.accountId = asFKId(body.accountId);
-  }
-  if ("contactId" in body) {
-    if (isBadFK(body.contactId)) return ERR.BAD_REQUEST("Invalid contact selection");
-    data.contactId = asFKId(body.contactId);
-  }
-  if ("startAt" in body) {
-    const startAt = asDate(body.startAt);
-    if (!startAt) return ERR.BAD_REQUEST("Start date and time are required");
-    data.startAt = startAt;
-  }
-  if ("endAt" in body) {
-    // Session-40 (S40-P2): a bad-type endAt BOTH silently cleared the
-    // end time AND bypassed the s36 end≥start invariant below (a null
-    // effectiveEnd skips the merged-record check — LIVE-proven with
-    // {"endAt": {"$gt": …}} → 200 + endAt null).
-    if (isBadDate(body.endAt)) return ERR.BAD_REQUEST("Invalid end date");
-    data.endAt = asDate(body.endAt) ?? null;
-  }
-  if ("type" in body) {
-    // Session-43 (S43-P2): the dead `?? "meeting"` removed (the s42-P5
-    // shape — non-optional asString returns "", never undefined).
-    const type = asString(body.type);
-    if (!type || !(EVENT_TYPES as readonly string[]).includes(type)) return ERR.BAD_REQUEST("Invalid event type");
-    data.type = type;
-  }
-  if ("status" in body) {
-    const status = asString(body.status);
-    if (!status || !["scheduled", "completed", "cancelled"].includes(status)) return ERR.BAD_REQUEST("Invalid status");
-    data.status = status;
-  }
+  if (body.relatedName !== undefined) data.relatedName = body.relatedName;
+  if (body.allDay !== undefined) data.allDay = body.allDay;
+  if (body.accountId !== undefined) data.accountId = body.accountId;
+  if (body.contactId !== undefined) data.contactId = body.contactId;
+  if (body.startAt !== undefined) data.startAt = body.startAt;
+  if (body.endAt !== undefined) data.endAt = body.endAt;
+  if (body.type !== undefined) data.type = body.type;
+  if (body.status !== undefined) data.status = body.status;
 
   // Session-35 (S35-P5): FK existence guards on PUT — the POST-side
   // vocabulary — plus the envelope-held failure path. Session-36 (S36-P1):

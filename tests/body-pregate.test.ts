@@ -20,14 +20,18 @@ import { describe, expect, it } from "vitest";
 // sites ALL moved onto the readBoundedJson seam — the composed
 // THREE-layer gate (the content-type CSRF gate → the declared-length
 // fast path → the stream counter) with the null-on-unparseable parse
-// tail. The pins below are ORDERING-aware (indexOf comparisons, not
-// mere containment) so a gate placed after the parse cannot satisfy
-// them, exactly as at s68; the seam's own contract battery lives in
-// tests/bounded-reader.test.ts and the composed parseBody form in
-// tests/parse-body.test.ts. Every route's 400 vocabulary is preserved
-// VERBATIM (the zero-message-drift doctrine — including the two
-// divergent siblings: users' "Invalid JSON body" and reset's
-// 'Type "RESET" to confirm' null-body fallthrough).
+// tail.
+//
+// Session-166 (the Zod seam): the ELEVEN asString-family routes moved
+// onto parseBody(req, <schema>) — the seam composes readBoundedJson +
+// safeParse inside src/lib/api.ts, so the ordering pins below re-anchor
+// onto the parseBody call form (the gate-before-parse and
+// gate-before-DB contracts ride the SAME composed seam, one call). The
+// users PATCH keeps its route-local readBoundedJson + safeParse form
+// (its divergent "Invalid JSON body" null-body message — the
+// zero-message-drift doctrine); reset keeps its custom confirm form.
+// The pins stay ORDERING-aware (indexOf comparisons) so a seam placed
+// after the parse or after DB work cannot satisfy them.
 
 function read(rel: string): string | null {
   const p = path.resolve(import.meta.dirname, "..", rel);
@@ -40,8 +44,8 @@ function stripComments(src: string): string {
     .replace(/\/\/[^\n]*/g, "");
 }
 
-// The eleven asString-family routes (the shared "Invalid request body"
-// invalid-body form).
+// The eleven parseBody-family routes (the shared "Invalid request body"
+// invalid-body form rides parseBody's null branch in api.ts).
 const ROUTES = [
   "src/app/api/accounts/route.ts",
   "src/app/api/accounts/[id]/route.ts",
@@ -68,18 +72,19 @@ const RESET_ROUTE = "src/app/api/reset/route.ts" as const;
 // are param- and message-aware below.
 const USERS_ROUTE = "src/app/api/users/route.ts" as const;
 
-const SEAM_ROUTES = [...ROUTES, RESET_ROUTE] as const;
-
-describe("session-68 + session-165: the sessioned bounded-reader family (F-68a2 → the S148-A/S75-B port)", () => {
-  it("all 12 sessioned routes import readBoundedJson from the api seam", () => {
-    for (const rel of SEAM_ROUTES) {
+describe("session-68 + session-165 + session-166: the sessioned bounded-reader family (F-68a2 → the S148-A/S75-B port → the Zod seam)", () => {
+  it("all 11 parseBody-family routes import the seam from the api module", () => {
+    for (const rel of ROUTES) {
       const src = stripComments(read(rel) ?? "");
-      expect(src, rel).toMatch(/readBoundedJson/);
+      expect(src, rel).toMatch(/parseBody/);
       expect(src, rel).toMatch(/from "@\/lib\/api"/);
     }
+    // the reset route keeps the raw seam (its custom confirm form)
+    const reset = stripComments(read(RESET_ROUTE) ?? "");
+    expect(reset, RESET_ROUTE).toMatch(/readBoundedJson/);
   });
 
-  it("session-72: the users PATCH — the 13th sessioned body-parsing route — is on the seam too (M-72c2)", () => {
+  it("session-72: the users PATCH — the 13th sessioned body-parsing route — is on the route-local seam form (M-72c2 + s166)", () => {
     const src = stripComments(read(USERS_ROUTE) ?? "");
     expect(src, USERS_ROUTE).toMatch(/readBoundedJson/);
     expect(src, USERS_ROUTE).toMatch(/from "@\/lib\/api"/);
@@ -90,8 +95,8 @@ describe("session-68 + session-165: the sessioned bounded-reader family (F-68a2 
     );
   });
 
-  it("session-165: NO sessioned route parses through a bare req.json() anymore (the unbounded direct parse retired)", () => {
-    for (const rel of [...SEAM_ROUTES, USERS_ROUTE]) {
+  it("session-165 + session-166: NO sessioned route parses through a bare req.json() anymore (the unbounded direct parse retired)", () => {
+    for (const rel of [...ROUTES, RESET_ROUTE, USERS_ROUTE]) {
       const src = stripComments(read(rel) ?? "");
       expect(src, `${rel}: the direct req.json()/request.json() parse must not survive`).not.toMatch(
         /\b(?:req|request)\.json\(\)/,
@@ -99,47 +104,11 @@ describe("session-68 + session-165: the sessioned bounded-reader family (F-68a2 
     }
   });
 
-  it("the seam call precedes the too-large rejection in every sessioned handler", () => {
-    for (const rel of SEAM_ROUTES) {
-      const src = stripComments(read(rel) ?? "");
-      const seam = src.indexOf("readBoundedJson(req)");
-      expect(seam, `${rel}: no seam call`).toBeGreaterThanOrEqual(0);
-      expect(src, rel).toContain(
-        'if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");',
-      );
-      const tooLarge = src.indexOf("if (read.tooLarge)");
-      expect(tooLarge, `${rel}: no too-large rejection`).toBeGreaterThan(seam);
-    }
-  });
-
-  it("the eleven asString-family routes keep their exact invalid-body 400 form (the message-preservation contract)", () => {
+  it("the parseBody call precedes all DB work in its own handler (the s166 seam form of the gate-before-DB ordering)", () => {
     for (const rel of ROUTES) {
       const src = stripComments(read(rel) ?? "");
-      expect(src, rel).toContain('ERR.BAD_REQUEST("Invalid request body")');
-    }
-    // the two divergent siblings, preserved verbatim — never normalized
-    // mid-port (the s165 zero-message-drift doctrine):
-    const users = stripComments(read(USERS_ROUTE) ?? "");
-    expect(users, USERS_ROUTE).toContain('ERR.BAD_REQUEST("Invalid JSON body")');
-    const reset = stripComments(read(RESET_ROUTE) ?? "");
-    expect(reset, RESET_ROUTE).toContain('Type "RESET" to confirm');
-  });
-});
-
-describe("session-69: the seam precedes all DB work in its own handler (F-69a3)", () => {
-  it("no sessioned route reads the DB before the bounded reader rejects an oversized body", () => {
-    // The 69-a re-audit's find: leads/[id] placed the gate INSIDE the
-    // try AFTER the findUnique — the only one where an oversized body
-    // still paid a DB round-trip before rejection (the gate-before-
-    // parse ordering held, the cheap-rejection contract did not). The
-    // pin scopes to the seam's OWN handler so the root routes' GET
-    // findMany (a different handler, no body parse) stays legitimately
-    // out of scope. Carried verbatim onto the s165 seam form: the
-    // readBoundedJson call is the rejection point now.
-    for (const rel of SEAM_ROUTES) {
-      const src = stripComments(read(rel) ?? "");
-      const seam = src.indexOf("readBoundedJson(req)");
-      expect(seam, `${rel}: no seam call`).toBeGreaterThanOrEqual(0);
+      const seam = src.indexOf("await parseBody(req");
+      expect(seam, `${rel}: no parseBody call`).toBeGreaterThanOrEqual(0);
       const handlerStarts = [...src.matchAll(/export async function (?:GET|POST|PUT|PATCH|DELETE)/g)]
         .map((m) => m.index ?? 0)
         .filter((i) => i < seam);
@@ -149,7 +118,7 @@ describe("session-69: the seam precedes all DB work in its own handler (F-69a3)"
       const between = src.slice(handlerStart, seam);
       expect(between.match(/\bdb\.\w+/g) ?? [], `${rel}: DB work before the seam`).toEqual([]);
     }
-    // the users route's param-aware twin
+    // the users route's param-aware twin (the route-local seam form)
     const users = stripComments(read(USERS_ROUTE) ?? "");
     const seam = users.indexOf("readBoundedJson(request)");
     expect(seam, `${USERS_ROUTE}: no seam call`).toBeGreaterThanOrEqual(0);
@@ -158,5 +127,33 @@ describe("session-69: the seam precedes all DB work in its own handler (F-69a3)"
       .filter((i) => i < seam);
     const handlerStart = handlerStarts.length ? handlerStarts[handlerStarts.length - 1] : 0;
     expect(users.slice(handlerStart, seam).match(/\bdb\.\w+/g) ?? [], `${USERS_ROUTE}: DB work before the seam`).toEqual([]);
+    // the reset route's twin
+    const reset = stripComments(read(RESET_ROUTE) ?? "");
+    const resetSeam = reset.indexOf("readBoundedJson(req)");
+    expect(resetSeam, `${RESET_ROUTE}: no seam call`).toBeGreaterThanOrEqual(0);
+    const resetHandlers = [...reset.matchAll(/export async function (?:GET|POST|PUT|PATCH|DELETE)/g)]
+      .map((m) => m.index ?? 0)
+      .filter((i) => i < resetSeam);
+    const resetStart = resetHandlers.length ? resetHandlers[resetHandlers.length - 1] : 0;
+    expect(reset.slice(resetStart, resetSeam).match(/\bdb\.\w+/g) ?? [], `${RESET_ROUTE}: DB work before the seam`).toEqual([]);
+  });
+
+  it("the 400 vocabulary rides the seam (api.ts) + the two divergent siblings keep their own forms (the message-preservation contract)", () => {
+    // Session-166 re-anchor: the eleven routes' shared "Request body too
+    // large" + "Invalid request body" 400s are parseBody's own literals
+    // (src/lib/api.ts) — the routes carry no seam literals of their own.
+    const api = stripComments(read("src/lib/api.ts") ?? "");
+    expect(api).toContain('ERR.BAD_REQUEST("Request body too large")');
+    expect(api).toContain('ERR.BAD_REQUEST("Invalid request body")');
+    for (const rel of ROUTES) {
+      const src = stripComments(read(rel) ?? "");
+      expect(src, rel).toMatch(/if \(!parsed\.ok\) return parsed\.response;/);
+    }
+    // the two divergent siblings, preserved verbatim — never normalized
+    // mid-port (the s165/s166 zero-message-drift doctrine):
+    const users = stripComments(read(USERS_ROUTE) ?? "");
+    expect(users, USERS_ROUTE).toContain('ERR.BAD_REQUEST("Invalid JSON body")');
+    const reset = stripComments(read(RESET_ROUTE) ?? "");
+    expect(reset, RESET_ROUTE).toContain('Type "RESET" to confirm');
   });
 });

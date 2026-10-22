@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asNumber, asDate, asFKId, isBadFK, isBadString, isBadDate, isBadNumber, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
-import { LEAD_STAGES } from "@/lib/constants";
+import { ok, ERR, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { leadUpdateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -11,100 +11,49 @@ export async function PUT(req: Request, { params }: Params) {
   if (isGuarded(guard)) return guard.response;
   const { id } = await params;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  // Session-69 (F-69a3): hoisted ABOVE the try — the gate is the first
-  // post-guard statement like its 11 siblings, so an oversized body is
-  // rejected before any DB round-trip too.
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed) —
+  // AND the §7.3 ordering normalization: parseBody now PRECEDES the
+  // findUnique, matching the five sibling [id] routes' shape (the
+  // s37-era divergence this route alone carried — its 404 answered
+  // before a malformed body's 400; the standard shape validates first,
+  // a malformed body + missing record now answers 400). The patch
+  // three-state lives in the schema: absent → undefined (no write),
+  // null/"" → null (the clear), a value → the trimmed value.
+  // Session-69 (F-69a3): the gate stays the first post-guard statement
+  // — an oversized body is rejected before any DB round-trip too.
+  const parsed = await parseBody(req, leadUpdateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   // Session-35 (S35-P5): FK existence guards on PUT — the POST-side
   // vocabulary — plus the envelope-held failure path (P2003 and every
   // other DB failure stay inside the { ok, error } envelope).
   // Session-36 (S36-P2): the whole handler body is envelope-held — the
-  // existence fetch moved INSIDE the try (the stage parsing below reads
+  // existence fetch INSIDE the try (the stage parsing below reads
   // existing.closedAt, so the try must start at the fetch).
   try {
     const existing = await db.lead.findUnique({ where: { id } });
     if (!existing) return ERR.NOT_FOUND("Lead");
 
-    const body = read.value;
-    if (!body) return ERR.BAD_REQUEST("Invalid request body");
-
     const data: Record<string, unknown> = {};
-    if ("name" in body) {
-      const name = asString(body.name, { max: 120 });
-      if (!name) return ERR.BAD_REQUEST("Lead name is required");
-      data.name = name;
-    }
-    // Session-40 (S40-P2): the non-FK silent-clear family — a present
-    // non-string used to ride the optional coercion to null (the
-    // isBadFK class one parse-shape over).
-    if ("email" in body) {
-      if (isBadString(body.email)) return ERR.BAD_REQUEST("Invalid email");
-      data.email = asString(body.email, { optional: true, max: 160 }) ?? null;
-    }
-    if ("phone" in body) {
-      if (isBadString(body.phone)) return ERR.BAD_REQUEST("Invalid phone number");
-      data.phone = asString(body.phone, { optional: true, max: 40 }) ?? null;
-    }
-    if ("company" in body) {
-      if (isBadString(body.company)) return ERR.BAD_REQUEST("Invalid company");
-      data.company = asString(body.company, { optional: true, max: 120 }) ?? null;
-    }
-    if ("value" in body) {
-      // Number()'s truthy/array edges (true→1, [5]→5, []→0) silently
-      // stored a number before the guard.
-      if (isBadNumber(body.value)) return ERR.BAD_REQUEST("Invalid value");
-      data.value = asNumber(body.value) ?? 0;
-    }
-    if ("source" in body) {
-      if (isBadString(body.source)) return ERR.BAD_REQUEST("Invalid source");
-      data.source = asString(body.source, { optional: true, max: 40 }) ?? null;
-    }
-    // Session-37 (S37-P3): a non-string FK payload is a 400, not a
-    // silent coercion to null (the silent FK clear on PUT).
-    if ("accountId" in body) {
-      if (isBadFK(body.accountId)) return ERR.BAD_REQUEST("Invalid company selection");
-      data.accountId = asFKId(body.accountId);
-    }
-    if ("ownerId" in body) {
-      if (isBadFK(body.ownerId)) return ERR.BAD_REQUEST("Invalid owner selection");
-      data.ownerId = asFKId(body.ownerId);
-    }
-    // Session-43 (S43-P1): the contactId branch — the PUT silently
-    // IGNORED the field while the POST (now) accepts it (the N-42b
-    // class; an activity's/lead's links could never be re-assigned or
-    // cleared via the API).
-    if ("contactId" in body) {
-      if (isBadFK(body.contactId)) return ERR.BAD_REQUEST("Invalid contact selection");
-      data.contactId = asFKId(body.contactId);
-    }
-    if ("expectedCloseDate" in body) {
-      // An unparseable string silently cleared the date before the
-      // guard (asDate("garbage") → undefined → null).
-      if (isBadDate(body.expectedCloseDate)) return ERR.BAD_REQUEST("Invalid expected close date");
-      data.expectedCloseDate = asDate(body.expectedCloseDate) ?? null;
-    }
-    if ("nextFollowUp" in body) {
-      if (isBadDate(body.nextFollowUp)) return ERR.BAD_REQUEST("Invalid follow-up date");
-      data.nextFollowUp = asDate(body.nextFollowUp) ?? null;
-    }
-    if ("stage" in body) {
-      // Session-43 (S43-P2): the dead `?? "new"` removed — non-optional
-      // asString returns "" (never undefined), so the fallback could
-      // never fire; a present "" already 400s on the membership below
-      // (the s42-P5 settings shape, generalized across the family).
-      const stage = asString(body.stage);
-      if (!stage || !(LEAD_STAGES as readonly string[]).includes(stage)) return ERR.BAD_REQUEST("Invalid stage");
-      data.stage = stage;
-      const closed = stage === "won" || stage === "lost";
-      data.status = closed ? (stage === "won" ? "closed_won" : "closed_lost") : "open";
+    if (body.name !== undefined) data.name = body.name;
+    if (body.email !== undefined) data.email = body.email;
+    if (body.phone !== undefined) data.phone = body.phone;
+    if (body.company !== undefined) data.company = body.company;
+    if (body.value !== undefined) data.value = body.value ?? 0;
+    if (body.source !== undefined) data.source = body.source;
+    if (body.accountId !== undefined) data.accountId = body.accountId;
+    if (body.ownerId !== undefined) data.ownerId = body.ownerId;
+    // Session-43 (S43-P1): the contactId branch — the PUT accepts the
+    // field like the POST (the N-42b class cured at s43).
+    if (body.contactId !== undefined) data.contactId = body.contactId;
+    if (body.expectedCloseDate !== undefined) data.expectedCloseDate = body.expectedCloseDate;
+    if (body.nextFollowUp !== undefined) data.nextFollowUp = body.nextFollowUp;
+    if (body.stage !== undefined) {
+      data.stage = body.stage;
+      const closed = body.stage === "won" || body.stage === "lost";
+      data.status = closed ? (body.stage === "won" ? "closed_won" : "closed_lost") : "open";
       if (closed && !existing.closedAt) data.closedAt = new Date();
       if (!closed && existing.closedAt) data.closedAt = null;
     }

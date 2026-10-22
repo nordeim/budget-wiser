@@ -147,7 +147,9 @@ const E2E = 161;
 // intraday-rhythm observation instrument's pin suite).
 // Session-165: SUITES 124 -> 125 (the bounded-reader file — the digma
 // S148-A/S75-B port's pin suite).
-const SUITES = 125;
+// Session-166: SUITES 125 -> 127 (the schemas-crud + crud-zod-seam
+// files — the CRUD-family Zod seam's two batteries).
+const SUITES = 127;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -608,6 +610,21 @@ const SUITES = 125;
 // + the atomic-0600 write + the freshness pure seam + the header
 // doctrine + the SEED's ID-STABILITY contract [the PASS-1 root cause];
 // SUITES stays 120; E2E stays 153.)
+// Session-166: 2382 -> 2454 (+72 — the CRUD-family Zod seam:
+// schemas-crud +38 [the 126th suite — every field's quadrant matrix:
+// absent/null/""/whitespace/garbage/over-cap + the default/clear
+// semantics + the message-exactness of every rejection] +
+// crud-zod-seam +31 [the 127th suite — the parseBody call forms + the
+// guard-import retirement + the FK-existence/invariant route-side
+// stays + the leads/[id] §7.3 ordering normalization + the settings
+// range literal + the query-param GET family's exemptions] +
+// body-pregate -1 [the F-69a3 gate-before-DB ordering pin consolidated
+// into the parseBody-before-DB pin — the seam form covers both
+// contracts in one assertion] + docs-counts +4 [the four carrier
+// live-census pins: the README route census + the PAD mermaid node +
+// the PAD e2e spec-file line + the PAD 8.2 env table]; SUITES 125 ->
+// 127; E2E stays 161 — the migration is behavior-preserving, the
+// standing e2e suite IS the parity proof.)
 // Session-165: 2362 -> 2382 (+20 — the digma S148-A/S75-B port: the
 // bounded-reader suite +11 [the 125th file — the readBoundedJson seam's
 // contract battery: the content-type CSRF gate family + the charset/
@@ -634,7 +651,7 @@ const SUITES = 125;
 // pure seam x3 + the watermark-holds skip + the crossing re-opens the
 // walk + the O(1)-gate source pin]; SUITES stays 124; E2E stays 161 —
 // the settings Defaults starved-read hardening lands IN PLACE.)
-const UNIT = 2382;
+const UNIT = 2454;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1036,6 +1053,26 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).not.toMatch(/11-check mobile drawer regression suite/);
     expect(agents).not.toMatch(/\(11 checks, 390\/700px/);
     expect(skill).not.toMatch(/\(11 checks, 390\/700px/);
+    // -----------------------------------------------------------------
+    // Session-166: the retired 2382/125/2543 site-forms join the
+    // ladder — the count-ladder lockstep's own retired forms (the same
+    // SITE-FORM anchors: history rows quote the forms in arrow/gate
+    // phrasing only, never the bare site constructions).
+    // -----------------------------------------------------------------
+    expect(readme).not.toMatch(/# 125 Vitest suites/);
+    expect(readme).not.toMatch(/# 2382 Vitest unit checks/);
+    expect(readme).not.toMatch(/tests-2543%20checks/);
+    expect(readme).not.toMatch(/\| 🧪 Tested \| 2382 Vitest unit checks/);
+    expect(pad).not.toMatch(/# 125 Vitest suites/);
+    expect(pad).not.toMatch(/HEAD: 125 Vitest/);
+    expect(pad).not.toMatch(/\u2014 2382\/2382/);
+    expect(pad).not.toMatch(/\| \*\*Total\*\* \| \*\*125\*\* \| \*\*2382 unit/);
+    expect(claude).not.toContain("Unit (Vitest, 2382 checks)");
+    expect(claude).not.toContain("(currently 2382)");
+    expect(claude).not.toContain("Vitest unit suites (2382 checks)");
+    expect(claude).not.toContain("`bun run test` (2382)");
+    expect(agents).not.toContain("|  Unit tests (2382 checks)");
+    expect(skill).not.toContain("| **unit total** | 125 files | **2382**");
   });
 
   // ------------------------------------------------------------------
@@ -1078,13 +1115,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-165 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-166 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s163 layer now beneath the s164 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s165 layer now beneath the s166 head)",
     ).toContain(
-      "+ beneath it 2347 unit checks + 161 e2e checks green; the session-163 layer (THE AUTH RETROFIT",
+      "+ beneath it 2382 unit checks + 161 e2e checks green; the session-165 layer (THE BOUNDED-READER PORT",
     );
   });
 
@@ -1244,9 +1281,12 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(skill).not.toContain("Environment variables (3 — count them, 3)");
   });
 
-  it("SKILL 14's validation line carries the s163 Zod reality (F-165f)", () => {
+  it("SKILL 14's validation line carries the Zod reality (F-165f + the s166 completion)", () => {
     const skill = read("neo-crm_SKILL.md");
-    expect(skill).toContain("the AUTH FAMILY rides the Zod seam");
+    // Session-166 re-anchor: the CRUD family joined the seam — the
+    // "incremental path" note retired with its completion.
+    expect(skill).toContain("EVERY body route rides the Zod seam");
+    expect(skill).not.toContain("the AUTH FAMILY rides the Zod seam");
     expect(skill).not.toContain("no schema library by");
   });
 
@@ -1255,6 +1295,63 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     const skill = read("neo-crm_SKILL.md");
     expect(pad).toContain("**ADR-014: In-app OTP/reset deliveries behind production kill-switches**");
     expect(skill).toContain("| ADR-014 | In-app OTP/reset deliveries behind");
+  });
+
+  // ------------------------------------------------------------------
+  // Session-166 (S166-P2): the four carriers the s165 round's own
+  // doc-truth sweep missed — README's file-tree route census, PAD's
+  // mermaid route-node label, PAD's file-tree e2e spec census, and
+  // PAD 8.2's env table (the three s163 knobs the .env.example +
+  // SKILL 3.3's six-knob table already carry). The L-165c1 doctrine:
+  // every carrier pinned against the LIVE source tree — the next
+  // staleness on EITHER face fails `bun run test`.
+  // ------------------------------------------------------------------
+
+  it("README's route-census carrier matches the LIVE source-tree census (F-166b)", () => {
+    const readme = read("README.md");
+    const routeFiles = listFiles("src/app/api").filter((f) => f.endsWith("/route.ts"));
+    const handlerCount = routeFiles.reduce((n, f) => {
+      const src = read(f);
+      return n + (src.match(/export async function (?:GET|POST|PUT|PATCH|DELETE)\(/g) ?? []).length;
+    }, 0);
+    expect(readme, "the README file-tree line must carry the live census").toContain(
+      `${routeFiles.length} REST route files, ${handlerCount} verb handlers`,
+    );
+    // the retired carrier never returns
+    expect(readme).not.toContain("27 REST route files, 39 verb handlers");
+  });
+
+  it("PAD's mermaid route-node label carries the live route-file census (F-166c)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    const routeFiles = listFiles("src/app/api").filter((f) => f.endsWith("/route.ts"));
+    expect(pad, "the mermaid node must carry the live census").toContain(
+      `/api/* route handlers \u00d7${routeFiles.length}`,
+    );
+    // the SITE-FORM anchor: history rows may QUOTE the retired form in
+    // arrow phrasing ("\u00d727 \u2192 \u00d729"), never the node
+    // construction itself (the F-100a2 doctrine).
+    expect(pad).not.toContain("route handlers \u00d727");
+  });
+
+  it("PAD's file-tree e2e line carries the live spec-file census (F-166d)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    const specFiles = listFiles("tests/e2e").filter((f) => f.endsWith(".spec.ts"));
+    expect(specFiles.length, "the live e2e spec-file census").toBe(10);
+    expect(pad, "the PAD file-tree line must carry the live census").toContain(
+      `${specFiles.length} spec files + setup project`,
+    );
+    // the SITE-FORM anchor: the tree-line construction never returns
+    // (a history row's quoted "\"9 spec files\" \u2192 10" is the
+    // documentation of the cure, not the carrier — the F-100a2 doctrine).
+    expect(pad).not.toContain("9 spec files + setup project");
+  });
+
+  it("PAD 8.2's env table carries the six-knob contract (F-166e)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    for (const knob of ["NEO_PROXY_HOPS", "NEO_DISABLE_IN_APP_OTP", "NEO_DISABLE_IN_APP_RESET"]) {
+      expect(pad, `the ${knob} row must sit in the 8.2 table`).toContain(`| \`${knob}\` |`);    }
+    // the quartet-only table never returns
+    expect(pad).not.toMatch(/\| \`E2E_PORT\` \| No \(CI\)[^\n]*\n\n### 8\.3/);
   });
 
   // ------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asNumber, asInt, asFKId, isBadFK, isBadNumber, isBadString, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
-import { ACCOUNT_STATUSES, ACCOUNT_HEALTH_STATUSES } from "@/lib/constants";
+import { ok, ERR, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { accountCreateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -28,80 +28,49 @@ export async function POST(req: Request) {
   const guard = await requireSession();
   if (isGuarded(guard)) return guard.response;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = read.value;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
-
-  const name = asString(body.name, { max: 120 });
-  if (!name) return ERR.BAD_REQUEST("Account name is required");
-
-  // Session-86 (M-86c2): the tier/isKey write seams RETIRED — the
-  // reference models NO stored tier (its tier is DERIVED from revenue
-  // at render time; its dialogs offer no tier field). A stored field
-  // nothing displays is the s42 silent-lie API class.
-  if (isBadString(body.status)) return ERR.BAD_REQUEST("Invalid status");
-  const status = asString(body.status, { optional: true }) ?? "active";
-  if (!(ACCOUNT_STATUSES as readonly string[]).includes(status)) return ERR.BAD_REQUEST("Invalid status");
-
-  // Session-44 (S44-P1): the last dead schema field — health was carried
-  // by the schema + wire type + seed + the badge/CSV readers but silently
-  // dropped on BOTH verbs (LIVE-proven: POST {"health":"At Risk"} → 200 +
-  // "Healthy"). The create-default semantics (the status shape): absent/
-  // ""/null keep the schema default, a present garbage string 400s.
-  if (isBadString(body.health)) return ERR.BAD_REQUEST("Invalid health status");
-  const health = asString(body.health, { optional: true, max: 20 }) ?? "Healthy";
-  if (!(ACCOUNT_HEALTH_STATUSES as readonly string[]).includes(health)) {
-    return ERR.BAD_REQUEST("Invalid health status");
-  }
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed).
+  // parseBody composes the s165 bounded reader (the content-type CSRF
+  // gate + the declared fast path + the stream counter) ahead of
+  // accountCreateSchema; every 400 message is the route's own string
+  // (the zero-message-drift doctrine); the field ORDER matches the
+  // s35-s44 guard ladder this form replaces. The FK-EXISTENCE check
+  // stays route-side (§7.3: parseBody → ownership/FK checks →
+  // mutation — a DB-bound check cannot live in a schema). The asString
+  // caps converted to honest .max() rejects (the s163 email precedent
+  // — a 121-char name now 400s instead of storing its 120-prefix).
+  const parsed = await parseBody(req, accountCreateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   // Session-36 (S36-P2): the FK guard + create are envelope-held now.
-  // Session-37 (S37-P3): a non-string FK payload is a 400, not a silent
-  // coercion to null; the dead asDate import removed.
+  // Session-37 (S37-P3): a non-string FK payload is a 400 (the schema),
+  // never a silent coercion to null.
   try {
-    if (isBadFK(body.ownerId)) return ERR.BAD_REQUEST("Invalid owner selection");
-    const ownerId = asFKId(body.ownerId);
-    if (ownerId) {
-      const owner = await db.user.findUnique({ where: { id: ownerId } });
+    if (body.ownerId) {
+      const owner = await db.user.findUnique({ where: { id: body.ownerId } });
       if (!owner) return ERR.BAD_REQUEST("Selected owner does not exist");
     }
 
-    // Session-40 (S40-P4): the POST-side inventing twins (revenue/
-    // employees silently nulled on a bad type).
-    if (isBadNumber(body.annualRevenue)) return ERR.BAD_REQUEST("Invalid annual revenue");
-    if (isBadNumber(body.employees)) return ERR.BAD_REQUEST("Invalid employee count");
-    // Session-41 (S41-P1): the create-inline string parses — the silent
-    // ?? null drops closed (the PUT twins' guards + vocabulary).
-    if (isBadString(body.industry)) return ERR.BAD_REQUEST("Invalid industry");
-    if (isBadString(body.email)) return ERR.BAD_REQUEST("Invalid email");
-    if (isBadString(body.phone)) return ERR.BAD_REQUEST("Invalid phone number");
-    if (isBadString(body.website)) return ERR.BAD_REQUEST("Invalid website");
-    // Session-86 (M-86c2): the isKey write seam RETIRED with the stored
-    // column (the reference models no key-account flag — its star rides
-    // the computed tier).
+    // Session-86 (M-86c2): the tier/isKey write seams RETIRED — the
+    // reference models NO stored tier (its tier is DERIVED from revenue
+    // at render time; its dialogs offer no tier field).
+    // Session-75 (N-75c1-6, bundle-decoded): NO lastActivityAt stamp —
+    // the reference's bce create form ships no last-activity field; a
+    // fresh account renders "No activity" in the table (the schema
+    // default null), exactly like the reference.
     const account = await db.account.create({
       data: {
-        name,
-        industry: asString(body.industry, { optional: true, max: 80 }) ?? null,
-        email: asString(body.email, { optional: true, max: 160 }) ?? null,
-        phone: asString(body.phone, { optional: true, max: 40 }) ?? null,
-        website: asString(body.website, { optional: true, max: 200 }) ?? null,
-        annualRevenue: asNumber(body.annualRevenue) ?? null,
-        employees: asInt(body.employees) ?? null,
-        status,
-        health,
-        ownerId,
-        // Session-75 (N-75c1-6, bundle-decoded): NO lastActivityAt stamp —
-        // the reference's bce create form ships no last-activity field;
-        // a fresh account renders "No activity" in the table (the schema
-        // default null), exactly like the reference.
+        name: body.name,
+        industry: body.industry,
+        email: body.email,
+        phone: body.phone,
+        website: body.website,
+        annualRevenue: body.annualRevenue,
+        employees: body.employees,
+        status: body.status,
+        health: body.health,
+        ownerId: body.ownerId,
       },
       include: { owner: { select: { id: true, name: true, avatarColor: true } } },
     });

@@ -55,20 +55,25 @@ describe("session-48: the source-vocabulary reconciliation (S48-P2)", () => {
     expect(src).toMatch(/export const CONTACT_SOURCE_OPTIONS/);
   });
 
-  it("the routes keep free-form source validation (NO enum membership — the parity posture)", () => {
+  it("the schema seam keeps free-form source validation (NO enum membership — the parity posture)", () => {
+    // Session-166 re-anchor: the source guard moved onto the schemas —
+    // the nullable/clearable source fields carry string-ness + the
+    // 40-char cap ONLY (never a membership); the routes consume the
+    // parsed field into their create/update data.
+    const schemas = stripComments(read("src/lib/schemas.ts") ?? "");
     const contacts = stripComments(read("src/app/api/contacts/route.ts") ?? "");
     const leads = stripComments(read("src/app/api/leads/route.ts") ?? "");
-    // The current shape: isBadString + the max:40 optional parse.
-    for (const src of [contacts, leads]) {
-      expect(src).toMatch(/if \(isBadString\(body\.source\)\) return ERR\.BAD_REQUEST\("Invalid source"\);/);
-      expect(src).toMatch(/asString\(body\.source, \{ optional: true, max: 40 \}\)/);
-    }
-    // …and NO source-vocabulary membership: neither route references any
+    expect(schemas).toContain('nullableString("Invalid source", 40, "Source must be reasonably sized")');
+    expect(schemas).toContain('clearableString("Invalid source", 40, "Source must be reasonably sized")');
+    expect(contacts).toMatch(/source: body\.source/);
+    expect(leads).toMatch(/source: body\.source/);
+    // …and NO source-vocabulary membership: neither face references any
     // of the vocabulary constants (the settings list is case-disjoint from
     // the functional one — a single-list guard would 400 dialogs or
     // imports, and the reference accepts arbitrary import strings).
     expect(contacts).not.toMatch(/CONTACT_SOURCE|LEAD_SOURCE/);
     expect(leads).not.toMatch(/CONTACT_SOURCE|LEAD_SOURCE/);
+    expect(schemas).not.toMatch(/CONTACT_SOURCE|LEAD_SOURCE/);
   });
 
   it("the settings contactSources defaults stay the reference's Capitalized six, verbatim", () => {

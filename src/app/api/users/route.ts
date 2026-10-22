@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
-import { asString, ok, isBadFK, readBoundedJson, isGuarded, requireSession, ERR } from "@/lib/api";
+import { ok, ERR, readBoundedJson, isGuarded, requireSession } from "@/lib/api";
+import { profileUpdateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -24,8 +25,15 @@ export async function GET() {
  * updateMe({display_name, profile_picture}) — an explicit null clears it,
  * an absent key leaves it untouched.
  * Session-72 (M-72c2): the body pre-gate — the 13th sessioned
- * req.json() route joins the F-68a2 family (the 72-c rotation's
- * find: the one sessioned writer outside it). */
+ * req.json() route joined the F-68a2 family at s72.
+ * Session-166: the profile joins the Zod seam through the ROUTE-LOCAL
+ * readBoundedJson + safeParse form (NOT parseBody) — this route's null
+ * body answers its own "Invalid JSON body" message (the one divergent
+ * sibling of the family's shared "Invalid request body"; the s165
+ * zero-message-drift doctrine extended at s166). The name ≥2 rule + the
+ * photoUrl prefix contract + the 500 cap live in profileUpdateSchema
+ * (the cap converting from the s37 slice(0,500) truncation to the
+ * honest reject — the s163 email precedent). */
 export async function PATCH(request: Request) {
   const guard = await requireSession();
   if (isGuarded(guard)) return guard.response;
@@ -36,40 +44,21 @@ export async function PATCH(request: Request) {
   const body = read.value;
   if (!body) return ERR.BAD_REQUEST("Invalid JSON body");
 
-  const name = asString(body.name, { max: 60 });
-  if (!name || name.trim().length < 2) return ERR.BAD_REQUEST("Name must be at least 2 characters");
-
-  // photoUrl: string | null | undefined (absent = keep the stored value).
-  // Session-36 (S36-P4): accepts only the documented URL shapes — our
-  // upload flow's /api/uploads/<name> or an https:// link like the
-  // reference's CDN data — never a data:/javascript: URL or an arbitrary
-  // tracker rendered to every viewer.
-  // Session-38 (S38-P2): a PRESENT non-string photoUrl is a 400 — it
-  // used to match NEITHER branch and was silently IGNORED (absent
-  // semantics), the users-side face of the same silent-coercion class
-  // the contacts writers cleared on. The trim harmonizes with the
-  // contacts writers (asString trims there): a leading-space https://
-  // URL stores trimmed on BOTH surfaces now, not 400 here only.
-  if (isBadFK(body.photoUrl)) return ERR.BAD_REQUEST("Invalid photo URL");
-  let photoUrl: string | null | undefined;
-  if (body.photoUrl === null) photoUrl = null;
-  else if (typeof body.photoUrl === "string") {
-    // Session-37 (S37-P5): the cap is 500 — the same ceiling the contacts
-    // writers use (asString max:500). The 300 truncation silently broke
-    // 301–500-char https:// URLs on the profile while contacts stored
-    // them whole (the s36 "normalized" claim, finally true).
-    const raw = body.photoUrl.trim().slice(0, 500);
-    if (!raw.startsWith("/api/uploads/") && !raw.startsWith("https://")) {
-      return ERR.BAD_REQUEST("Invalid photo URL");
-    }
-    photoUrl = raw;
+  // Session-166: the schema seam — the same issue-to-400 mapping
+  // parseBody carries, inlined so the null branch above keeps this
+  // route's own message.
+  const parsed = profileUpdateSchema.safeParse(body);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    return ERR.BAD_REQUEST(first?.message ?? "Invalid JSON body");
   }
+  const { name, photoUrl } = parsed.data;
 
   // Session-36 (S36-P2): the update is envelope-held.
   try {
     const user = await db.user.update({
       where: { id: guard.user.id },
-      data: { name: name.trim(), ...(photoUrl !== undefined ? { photoUrl } : {}) },
+      data: { name, ...(photoUrl !== undefined ? { photoUrl } : {}) },
       select: { id: true, email: true, name: true, avatarColor: true, photoUrl: true, role: true },
     });
     return ok(user);

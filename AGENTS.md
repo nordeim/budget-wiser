@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2382 checks)      | `bun run test`                         |
+|  Unit tests (2454 checks)      | `bun run test`                         |
 |  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2382) → `bun run build` → `bun run test:e2e` (161) — or the
+`bun run test` (2454) → `bun run build` → `bun run test:e2e` (161) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -8782,3 +8782,97 @@ the pin layer.
 - **THE VERIFICATION**: lint 0/0 · tsc 0 · **125/2382** · build (29
   routes) · e2e **161/161** · probe:ref #138 STABLE at the s147-s155
   fingerprint · the six drift gates CLEAN ×6 · db census MATCH.
+
+## Session-166 — THE CRUD-FAMILY ZOD SEAM + THE DOC-TRUTH CARRIERS (2026-10-22)
+
+**The round**: the post-165 audit (the web-app-foundation §7.2 "zod at
+every boundary" checklist rode it). The baseline gate GREEN at the s165
+ship state (lint 0/0 · tsc 0 · 125/2382 · build · e2e 161/161). The
+provenance note: this rotation was executed once in a workspace that
+was reset before its commit landed — re-executed from the fresh clone
+at `0abf8a3` following the same plan; nothing of the interrupted run
+survived.
+
+**THE CRUD-FAMILY ZOD SEAM** (the s163 incremental path completed —
+F-166a): the TWELVE body routes (accounts/activities/contacts/events/
+leads x[root+[id]] + settings + users) ride `parseBody(req, schema)`;
+the schemas live in `src/lib/schemas.ts` as the field-builder
+vocabulary (nullable/clearable/required-on-present/defaulted-enum/
+fkId/date/bool/photoUrl) — every asString/isBad* guard quadrant recast
+(the create defaults, the PUT three-state absent-clear-value semantics,
+the legacy hot/warm/cold priority mapping, the settings quartet's
+absent-no-write/null-default split), every 400 message the route's own
+string (the zero-message-drift doctrine extended family-wide), the
+field ORDER matching each route's guard ladder (parseBody answers the
+FIRST issue — the single-error message equivalence). The users PATCH
+keeps its route-local readBoundedJson + safeParse form (its divergent
+"Invalid JSON body" null-body message); reset keeps its custom confirm
+form; leads/[id] normalized to parseBody-before-404 (the §7.3 ordering
+its five siblings already carried — F-166a2); the asString silent-
+truncation caps converted to honest `.max()` rejects (F-166a3 — the
+s163 email precedent, the "must be reasonably sized" family); the
+FK-existence checks + the merged-record invariants stay route-side
+(§7.3: parseBody → ownership/FK checks → mutation); the guard helpers
+stay exported for the query-param GET family (events' from/to, the
+reports/export/search period+q parses) + their behavior battery.
+
+**THE DOC-TRUTH CARRIERS** (F-166b/c/d/e): README's file-tree route
+census 27/39 → the LIVE 29/41 · PAD's mermaid route-node ×27 → ×29 ·
+PAD's file-tree "9 spec files" → 10 · PAD §8.2's env table gains the
+three s163 knobs (the six-knob contract `.env.example` + SKILL §3.3
+already carry) — every carrier pinned against the LIVE source tree
+(the L-165c1 doctrine extended to all four).
+
+**THE SKILL APPEARANCE FIXES** (F-166f/g): the frontmatter's DUPLICATE
+`project_state:` key retired (the stale s141 layer comment-demoted +
+the head-bump-orphaned s143 tail folded — the single-key house form
+restored) + Appendix A's ADR-007 duplicate row removed.
+
+**THE TDD LEDGER**: RED birth 69 failing across the two NEW batteries
+(schemas-crud 38 — every field's quadrant matrix; crud-zod-seam 31 —
+the seam-adoption pins; 6 current-state pins green at birth) → GREEN
+with the in-flight calibration catches: the Zod 4 optin rule (an
+absent object key short-circuits past `.optional()` fields — the
+create normalization moved into non-optional nullable cores); the
+required-on-present enum's null routing (isBadString(null) is false —
+null rides the VALUE message, not the type message); the create-field
+absent → null fill (the PUT three-state stays undefined); the count
+re-census mid-ladder (the four carrier pins themselves add +4 — UNIT
+2450 → 2454, the ladder re-derived before the ship). The collateral
+re-anchors: 108 guard-form pins across api-robustness (the S37-S44
+tables keep their route+field+message triples; the assertion bodies
+flip to the schema-seam census + the parsed-field consumption forms —
+the s163 precedent), body-pregate (the parseBody form; the F-69a3
+ordering pin consolidated), source-vocabulary (the free-form source
+contract re-anchored onto the schema's no-membership fields).
+
+**THE COUNT LADDER**: UNIT 2382 → 2454 (+72 — schemas-crud +38 [the
+126th suite] · crud-zod-seam +31 [the 127th suite] · docs-counts +4
+[the carrier live-census pins] · body-pregate −1 [the F-69a3 ordering
+pin consolidated into the parseBody-before-DB pin]) · SUITES 125 → 127
+· E2E 161 held (the migration is behavior-preserving — the standing
+e2e suite IS the parity proof) · badge 2543 → 2615 — every live-tense
+site re-anchored in lockstep (count-ladder-166.py, assert-first,
+idempotent, unique-anchor) and the pin carriers (docs-counts
+UNIT/SUITES + the comment ladder + the head-layer pins → the s166 head
+· dialog-geometry CLAUDE ×4 + the 2382-form negatives · the §14
+Zod-reality pin → the completed-adoption form).
+
+**THE LESSONS**: L-166c1 the Zod 4 optin rule — an absent object key
+short-circuits every `.optional()` field BEFORE its preprocess runs;
+an absent→value mapping must live in a non-optional core (the probe
+caught it: the wrapped field returned undefined, the bare preprocess
+returned null — inside an object only the core parses the absent key)
+· L-166c2 the null-routing trap — a hand-rolled guard family answers
+null through its OWN coercion chain (isBadString(null)=false +
+non-optional asString(null)="" + !x fires): the schema port must trace
+the null path through the whole chain, not just the type predicate
+(the firstDayOfWeek two-message vocabulary caught it) · L-166c3 the
+count ladder must be derived AFTER the battery lands — the round's own
+carrier pins grew the suite mid-ladder (+4), and the first ladder pass
+(2450) was stale before it shipped; re-census before the lockstep.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **127/2454** · build (29
+routes) · e2e **161/161** (the migration's parity proof — the CRUD
+round-trips, the oversized-body probe, the settings flows all green
+through the Zod seam) · db census MATCH.

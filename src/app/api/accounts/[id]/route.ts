@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asNumber, asInt, asFKId, isBadFK, isBadString, isBadNumber, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
-import { ACCOUNT_STATUSES, ACCOUNT_HEALTH_STATUSES } from "@/lib/constants";
+import { ok, ERR, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { accountUpdateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -11,82 +11,28 @@ export async function PUT(req: Request, { params }: Params) {
   if (isGuarded(guard)) return guard.response;
   const { id } = await params;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = read.value;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed).
+  // The patch three-state lives in the schema: absent → undefined (no
+  // write below), null/"" → null (the explicit clear), a value → the
+  // trimmed value — the "X" in body + asString-optional ?? null pair
+  // this form replaces, message-for-message. The FK-EXISTENCE check
+  // stays route-side (§7.3).
+  const parsed = await parseBody(req, accountUpdateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const data: Record<string, unknown> = {};
-  if ("name" in body) {
-    const name = asString(body.name, { max: 120 });
-    if (!name) return ERR.BAD_REQUEST("Account name is required");
-    data.name = name;
-  }
-  // Session-40 (S40-P2): the silent-clear family — isBadFK's class,
-  // one parse-shape over (a present non-string rode the optional
-  // coercion to null on PUT).
-  if ("industry" in body) {
-    if (isBadString(body.industry)) return ERR.BAD_REQUEST("Invalid industry");
-    data.industry = asString(body.industry, { optional: true, max: 80 }) ?? null;
-  }
-  if ("email" in body) {
-    if (isBadString(body.email)) return ERR.BAD_REQUEST("Invalid email");
-    data.email = asString(body.email, { optional: true, max: 160 }) ?? null;
-  }
-  if ("phone" in body) {
-    if (isBadString(body.phone)) return ERR.BAD_REQUEST("Invalid phone number");
-    data.phone = asString(body.phone, { optional: true, max: 40 }) ?? null;
-  }
-  if ("website" in body) {
-    if (isBadString(body.website)) return ERR.BAD_REQUEST("Invalid website");
-    data.website = asString(body.website, { optional: true, max: 200 }) ?? null;
-  }
-  if ("annualRevenue" in body) {
-    // Number()'s truthy/array edges silently stored a number before.
-    if (isBadNumber(body.annualRevenue)) return ERR.BAD_REQUEST("Invalid annual revenue");
-    data.annualRevenue = asNumber(body.annualRevenue) ?? null;
-  }
-  if ("employees" in body) {
-    if (isBadNumber(body.employees)) return ERR.BAD_REQUEST("Invalid employee count");
-    data.employees = asInt(body.employees) ?? null;
-  }
-  // Session-37 (S37-P3): a non-string FK payload is a 400, not a silent
-  // coercion to null (the silent FK clear on PUT).
-  if ("ownerId" in body) {
-    if (isBadFK(body.ownerId)) return ERR.BAD_REQUEST("Invalid owner selection");
-    data.ownerId = asFKId(body.ownerId);
-  }
-  if ("status" in body) {
-    // Session-43 (S43-P2): the dead `?? "active"` / `?? "B"` removed
-    // (the s42-P5 shape — non-optional asString returns "", never
-    // undefined; the fallbacks could never fire).
-    const status = asString(body.status);
-    if (!status || !(ACCOUNT_STATUSES as readonly string[]).includes(status)) return ERR.BAD_REQUEST("Invalid status");
-    data.status = status;
-  }
-  // Session-86 (M-86c2): the tier PUT block RETIRED — the reference
-  // models NO stored tier (derived from revenue at render time); a
-  // stored-but-never-displayed write seam is the s42 silent-lie class.
-  // Session-44 (S44-P1): health joins the PUT vocabulary — the badge's
-  // stored value was frozen at its seed forever (neither verb accepted a
-  // health payload). Present "" is the sibling enums' 400 (a required
-  // enum on a defaulted column — a bad value, not a clear); absent is
-  // no-change.
-  if ("health" in body) {
-    if (isBadString(body.health)) return ERR.BAD_REQUEST("Invalid health status");
-    const health = asString(body.health, { max: 20 });
-    if (!health || !(ACCOUNT_HEALTH_STATUSES as readonly string[]).includes(health)) {
-      return ERR.BAD_REQUEST("Invalid health status");
-    }
-    data.health = health;
-  }
+  if (body.name !== undefined) data.name = body.name;
+  if (body.industry !== undefined) data.industry = body.industry;
+  if (body.email !== undefined) data.email = body.email;
+  if (body.phone !== undefined) data.phone = body.phone;
+  if (body.website !== undefined) data.website = body.website;
+  if (body.annualRevenue !== undefined) data.annualRevenue = body.annualRevenue;
+  if (body.employees !== undefined) data.employees = body.employees;
+  if (body.ownerId !== undefined) data.ownerId = body.ownerId;
+  if (body.status !== undefined) data.status = body.status;
+  if (body.health !== undefined) data.health = body.health;
 
   // Session-35 (S35-P5): FK existence guard on PUT — the POST-side
   // vocabulary — plus the envelope-held failure path. Session-36 (S36-P2):

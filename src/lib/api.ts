@@ -209,9 +209,15 @@ export async function parseBody<S extends z.ZodTypeAny>(
   return { ok: true, data: parsed.data };
 }
 
-// ---- hand-rolled validation helpers (the CRUD family's guards — -------
-// the auth family moved to the Zod seam above in session-163; these
-// stay for the thirteen CRUD routes, the documented adoption path)
+// ---- hand-rolled validation helpers (the query-param GET family + the -----
+// behavior battery — the CRUD body-guard forms RETIRED at session-166:
+// the twelve body routes ride parseBody/safeParse against
+// src/lib/schemas.ts now; asString/asDate survive on the URL-param
+// surfaces — events' from/to windows, the reports/export/search
+// period+q parses — and the isBad*/asFKId/asNumber/asInt predicates
+// stay exported for their pure-function battery,
+// tests/coercion-guards.test.ts, the living record of the semantics
+// the schema field-builders recast)
 
 export function asString(v: unknown, { max = 500, optional = false } = {}): string | undefined {
   if (v === undefined || v === null) return optional ? undefined : "";

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asDate, asFKId, isBadFK, isBadDate, isBadString, isBadBool, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
-import { EVENT_TYPES } from "@/lib/constants";
+import { ok, ERR, asDate, isBadDate, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { eventCreateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +15,9 @@ export async function GET(req: Request) {
   // the period param's own 400-on-garbage precedent). isBadDate
   // semantics for URL params: absent (null) passes, empty "" passes
   // (≡ absent, the house GET convention), a garbage string rejects.
+  // Session-166: the query-param family KEEPS the guard helpers (the
+  // Zod seam is the BODY boundary — URL params are the GET family's
+  // own surface, validated in place).
   const fromRaw = url.searchParams.get("from");
   const toRaw = url.searchParams.get("to");
   if (isBadDate(fromRaw)) return ERR.BAD_REQUEST("Invalid from date");
@@ -51,86 +54,47 @@ export async function POST(req: Request) {
   const guard = await requireSession();
   if (isGuarded(guard)) return guard.response;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed).
+  // parseBody composes the s165 bounded reader ahead of
+  // eventCreateSchema; every 400 message is the route's own string; the
+  // field ORDER matches the s36-s44 guard ladder this form replaces.
+  // The end≥start invariant + the FK-EXISTENCE checks stay route-side
+  // (§7.3 — the invariant needs both parsed values, the checks need the
+  // DB).
+  const parsed = await parseBody(req, eventCreateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
-  const body = read.value;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
+  // Session-36 (S36-P1): the end≥start invariant the POST side enforces.
+  const endAt = body.endAt ?? null;
+  if (endAt && endAt < body.startAt) return ERR.BAD_REQUEST("End time must be after start time");
 
-  const title = asString(body.title, { max: 160 });
-  if (!title) return ERR.BAD_REQUEST("Event title is required");
-
-  const startAt = asDate(body.startAt);
-  if (!startAt) return ERR.BAD_REQUEST("Start date and time are required");
-
-  // Session-41 (S41-P1): the POST-side lenient-create completion — the
-  // enum type-gaps closed (a non-string type/status used to silently
-  // default to "meeting"/"scheduled"). The PUT twins' guards + vocabulary.
-  if (isBadString(body.type)) return ERR.BAD_REQUEST("Invalid event type");
-  const type = asString(body.type, { optional: true }) ?? "meeting";
-  if (!(EVENT_TYPES as readonly string[]).includes(type)) return ERR.BAD_REQUEST("Invalid event type");
-
-  if (isBadString(body.status)) return ERR.BAD_REQUEST("Invalid status");
-  const status = asString(body.status, { optional: true }) ?? "scheduled";
-  if (!["scheduled", "completed", "cancelled"].includes(status)) return ERR.BAD_REQUEST("Invalid status");
-
-  // Session-40 (S40-P4): the invariant twin — a bad-type endAt
-  // silently nulled the end time (the end≥start check below skips a
-  // null endAt, the s36 invariant's own bypass).
-  if (isBadDate(body.endAt)) return ERR.BAD_REQUEST("Invalid end date");
-  const endAt = asDate(body.endAt);
-  if (endAt && endAt < startAt) return ERR.BAD_REQUEST("End time must be after start time");
-
-  // Session-37 (S37-P3): a non-string FK payload is a 400, not a silent
-  // coercion to null.
-  if (isBadFK(body.contactId)) return ERR.BAD_REQUEST("Invalid contact selection");
-  const contactId = asFKId(body.contactId);
-  if (isBadFK(body.accountId)) return ERR.BAD_REQUEST("Invalid company selection");
-  const accountId = asFKId(body.accountId);
-  // Session-35 (S35-P5): the accountId FK guard the POST side was missing
-  // (contactId was already checked) + the envelope-held failure path.
-  // Session-36 (S36-P2): the contactId guard moved INSIDE the try — every
-  // DB call in the handler is envelope-held.
+  // Session-36 (S36-P2): the contactId guard INSIDE the try — every DB
+  // call in the handler is envelope-held.
   try {
-    if (contactId) {
-      const contact = await db.contact.findUnique({ where: { id: contactId } });
+    if (body.contactId) {
+      const contact = await db.contact.findUnique({ where: { id: body.contactId } });
       if (!contact) return ERR.BAD_REQUEST("Selected contact does not exist");
     }
-    if (accountId) {
-      const account = await db.account.findUnique({ where: { id: accountId } });
+    if (body.accountId) {
+      const account = await db.account.findUnique({ where: { id: body.accountId } });
       if (!account) return ERR.BAD_REQUEST("Selected company does not exist");
     }
-    // Session-41 (S41-P1): the create-inline string parses — the silent
-    // ?? null drops closed (the PUT twins' guards + vocabulary).
-    if (isBadString(body.description)) return ERR.BAD_REQUEST("Invalid description");
-    if (isBadString(body.location)) return ERR.BAD_REQUEST("Invalid location");
-    if (isBadString(body.relatedType)) return ERR.BAD_REQUEST("Invalid related type");
-    if (isBadString(body.relatedName)) return ERR.BAD_REQUEST("Invalid related name");
-    // Session-42 (S42-P2): the strict-bool silent-clear family —
-    // {"allDay":"yes"} used to silently store false (the === true
-    // idiom's non-boolean edge; the event dialog has no all-day
-    // control, so the surface is API-only).
-    if (isBadBool(body.allDay)) return ERR.BAD_REQUEST("Invalid all-day flag");
     const event = await db.event.create({
       data: {
-        title,
-        description: asString(body.description, { optional: true, max: 1000 }) ?? null,
-        type,
-        status,
-        startAt,
+        title: body.title,
+        description: body.description,
+        type: body.type,
+        status: body.status,
+        startAt: body.startAt,
         endAt,
-        allDay: body.allDay === true,
-        location: asString(body.location, { optional: true, max: 200 }) ?? null,
-        relatedType: asString(body.relatedType, { optional: true, max: 40 }) ?? null,
-        relatedName: asString(body.relatedName, { optional: true, max: 160 }) ?? null,
-        accountId,
-        contactId,
+        allDay: body.allDay,
+        location: body.location,
+        relatedType: body.relatedType,
+        relatedName: body.relatedName,
+        accountId: body.accountId,
+        contactId: body.contactId,
         ownerId: guard.user.id,
       },
       include: {

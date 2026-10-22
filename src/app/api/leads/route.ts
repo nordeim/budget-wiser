@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asNumber, asDate, asFKId, isBadFK, isBadNumber, isBadDate, isBadString, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
-import { LEAD_STAGES } from "@/lib/constants";
+import { ok, ERR, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { leadCreateSchema } from "@/lib/schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -26,96 +26,55 @@ export async function POST(req: Request) {
   const guard = await requireSession();
   if (isGuarded(guard)) return guard.response;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = read.value;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
-
-  const name = asString(body.name, { max: 120 });
-  if (!name) return ERR.BAD_REQUEST("Lead name is required");
-
-  // Session-41 (S41-P1): the POST-side lenient-create completion — the
-  // enum type-gaps closed (a non-string stage used to silently default to
-  // "new"; the string fields silently nulled). The PUT twins' guards +
-  // vocabulary; null/absent keep the default/null semantics.
-  if (isBadString(body.stage)) return ERR.BAD_REQUEST("Invalid stage");
-  const stage = asString(body.stage, { optional: true }) ?? "new";
-  if (!(LEAD_STAGES as readonly string[]).includes(stage)) return ERR.BAD_REQUEST("Invalid stage");
-
-  // Session-48 (S48-P2): source stays FREE-FORM — the s48 reconciliation
-  // record (constants.ts's Session-48 comment). NO enum-membership (the
-  // stage above IS enum-checked — the contrast is deliberate): the
-  // vocabulary is deliberately fragmented across five surfaces, every
-  // candidate list is case-disjoint from another, and the reference
-  // itself accepts arbitrary import strings for source. String-ness +
-  // the 40-char cap only.
-  if (isBadString(body.source)) return ERR.BAD_REQUEST("Invalid source");
-  const source = asString(body.source, { optional: true, max: 40 }) ?? null;
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed).
+  // parseBody composes the s165 bounded reader ahead of leadCreateSchema;
+  // every 400 message is the route's own string; the field ORDER matches
+  // the s41-s44 guard ladder this form replaces. The stage→closed/
+  // status/closedAt derivation + the FK-EXISTENCE checks stay route-side
+  // (§7.3).
+  const parsed = await parseBody(req, leadCreateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   // Session-36 (S36-P2): the FK guards + create are envelope-held now.
-  // Session-37 (S37-P3): a non-string FK payload is a 400, not a silent
-  // coercion to null.
   try {
-    if (isBadFK(body.ownerId)) return ERR.BAD_REQUEST("Invalid owner selection");
-    const ownerId = asFKId(body.ownerId);
-    if (ownerId) {
-      const owner = await db.user.findUnique({ where: { id: ownerId } });
+    if (body.ownerId) {
+      const owner = await db.user.findUnique({ where: { id: body.ownerId } });
       if (!owner) return ERR.BAD_REQUEST("Selected owner does not exist");
     }
 
-    if (isBadFK(body.accountId)) return ERR.BAD_REQUEST("Invalid company selection");
-    const accountId = asFKId(body.accountId);
-    if (accountId) {
-      const account = await db.account.findUnique({ where: { id: accountId } });
+    if (body.accountId) {
+      const account = await db.account.findUnique({ where: { id: body.accountId } });
       if (!account) return ERR.BAD_REQUEST("Selected company does not exist");
     }
 
-    // Session-43 (S43-P1): Lead.contactId joins the FK family — the
-    // schema + wire type carried the relation but this create silently
-    // DROPPED the payload (LIVE-proven: {"contactId":<id>} → 200 +
-    // null). The ownerId/accountId shape, verbatim.
-    if (isBadFK(body.contactId)) return ERR.BAD_REQUEST("Invalid contact selection");
-    const contactId = asFKId(body.contactId);
-    if (contactId) {
-      const contact = await db.contact.findUnique({ where: { id: contactId } });
+    // Session-43 (S43-P1): the contactId FK family — the schema + wire
+    // type carried the relation since the s43 round (the create stores
+    // the parsed field; the existence check is the POST's own
+    // vocabulary).
+    if (body.contactId) {
+      const contact = await db.contact.findUnique({ where: { id: body.contactId } });
       if (!contact) return ERR.BAD_REQUEST("Selected contact does not exist");
     }
 
-    const closed = stage === "won" || stage === "lost";
-    // Session-40 (S40-P4): the POST-side inventing twins — a bad type
-    // silently INVENTED data (value→0, the dates→null) instead of
-    // rejecting. The PUT guards' exact shapes.
-    if (isBadNumber(body.value)) return ERR.BAD_REQUEST("Invalid value");
-    if (isBadDate(body.expectedCloseDate)) return ERR.BAD_REQUEST("Invalid expected close date");
-    if (isBadDate(body.nextFollowUp)) return ERR.BAD_REQUEST("Invalid follow-up date");
-    // Session-41 (S41-P1): the create-inline string parses — the silent
-    // ?? null drops closed (the PUT twins' guards + vocabulary).
-    if (isBadString(body.email)) return ERR.BAD_REQUEST("Invalid email");
-    if (isBadString(body.phone)) return ERR.BAD_REQUEST("Invalid phone number");
-    if (isBadString(body.company)) return ERR.BAD_REQUEST("Invalid company");
+    const closed = body.stage === "won" || body.stage === "lost";
     const lead = await db.lead.create({
       data: {
-        name,
-        email: asString(body.email, { optional: true, max: 160 }) ?? null,
-        phone: asString(body.phone, { optional: true, max: 40 }) ?? null,
-        company: asString(body.company, { optional: true, max: 120 }) ?? null,
-        value: asNumber(body.value) ?? 0,
-        stage,
-        source,
-        status: closed ? (stage === "won" ? "closed_won" : "closed_lost") : "open",
-        expectedCloseDate: asDate(body.expectedCloseDate) ?? null,
+        name: body.name,
+        email: body.email,
+        phone: body.phone,
+        company: body.company,
+        value: body.value ?? 0,
+        stage: body.stage,
+        source: body.source,
+        status: closed ? (body.stage === "won" ? "closed_won" : "closed_lost") : "open",
+        expectedCloseDate: body.expectedCloseDate,
         closedAt: closed ? new Date() : null,
-        nextFollowUp: asDate(body.nextFollowUp) ?? null,
-        accountId,
-        ownerId,
-        contactId,
+        nextFollowUp: body.nextFollowUp,
+        accountId: body.accountId,
+        ownerId: body.ownerId,
+        contactId: body.contactId,
       },
       include: {
         account: { select: { id: true, name: true } },

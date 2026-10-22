@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asInt, isBadString, isBadNumber, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
+import { ok, ERR, parseBody, isGuarded, requireSession } from "@/lib/api";
+import { settingsUpdateSchema } from "@/lib/schemas";
 import { ACCOUNT_TIERS, LEAD_STAGES } from "@/lib/constants";
 import type { Settings } from "@/types";
 
@@ -66,97 +67,75 @@ export async function PUT(req: Request) {
   const guard = await requireSession();
   if (isGuarded(guard)) return guard.response;
 
-  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
-  // the bounded reader BEFORE the parse — the N-67d declared-length
-  // fast path, the content-type CSRF gate, and the chunked-stream
-  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
-  // and regardless of content-type; the honest CRUD bodies are far
-  // smaller than the 16KB ceiling).
-  const read = await readBoundedJson(req);
-  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = read.value;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
+  // Session-166: the CRUD family joins the Zod seam (the §7.2 "zod at
+  // every boundary" doctrine — the s163 incremental path completed).
+  // The patch three-state lives in the schema: the five picklists +
+  // the quartet + followUpDays + calendarView + firstDayOfWeek, every
+  // 400 message the route's own string, the field ORDER the s40/s43
+  // guard ladder's. The quartet's ?? DEFAULTS (the s40-P3 revival —
+  // absent → undefined here, null/'' → the route's default), the
+  // toUpperCase, and the followUpDays 0-90 range stay route-side
+  // (§7.3 — the pinned literals; the schema's absent → undefined is
+  // the NO-WRITE contract).
+  const parsed = await parseBody(req, settingsUpdateSchema);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const data: Record<string, unknown> = {};
 
-  const listKeys = ["contactSources", "leadStages", "activityTypes", "accountTiers", "industries"] as const;
-  for (const key of listKeys) {
-    if (key in body) {
-      const raw = body[key];
-      if (!Array.isArray(raw) || !raw.every((x) => typeof x === "string" && x.trim().length > 0 && x.length <= 60)) {
-        return ERR.BAD_REQUEST(`${key} must be a list of non-empty labels`);
-      }
-      if (raw.length > 40) return ERR.BAD_REQUEST(`${key} is limited to 40 entries`);
-      data[key] = JSON.stringify(raw.map((x) => (x as string).trim()));
-    }
-  }
+  // The five picklists — the schema trims + caps the members; the
+  // storage is the JSON string (the ConfigEditor's own format).
+  if (body.contactSources !== undefined) data.contactSources = JSON.stringify(body.contactSources);
+  if (body.leadStages !== undefined) data.leadStages = JSON.stringify(body.leadStages);
+  if (body.activityTypes !== undefined) data.activityTypes = JSON.stringify(body.activityTypes);
+  if (body.accountTiers !== undefined) data.accountTiers = JSON.stringify(body.accountTiers);
+  if (body.industries !== undefined) data.industries = JSON.stringify(body.industries);
 
-  // Session-40 (S40-P3): the dead-fallback revival — the quartet used
-  // NON-optional asString, and "" is not nullish, so `?? "default"
-  // NEVER fired: a present non-string (or "") silently stored ""
-  // (LIVE-proven: {"defaultCurrency":123} → 200 + ""). The s38
-  // signup-name fix shape: optional:true makes the fallback live, and
-  // the type guard makes a bad payload a 400 instead of a silent
-  // empty-string corruption.
-  if ("defaultCurrency" in body) {
-    if (isBadString(body.defaultCurrency)) return ERR.BAD_REQUEST("Invalid currency");
-    const currency = asString(body.defaultCurrency, { max: 8, optional: true }) ?? "AED";
-    data.defaultCurrency = currency.toUpperCase();
+  // Session-40 (S40-P3): the dead-fallback revival — the quartet's
+  // absent → undefined (no write), null/'' → the schema's null → the
+  // ?? DEFAULT here (a present non-string used to silently store "";
+  // LIVE-proven at s40 — now the schema's 400).
+  if (body.defaultCurrency !== undefined) {
+    data.defaultCurrency = (body.defaultCurrency ?? "AED").toUpperCase();
   }
-  if ("defaultLeadStage" in body) {
-    if (isBadString(body.defaultLeadStage)) return ERR.BAD_REQUEST("Invalid default lead stage");
+  if (body.defaultLeadStage !== undefined) {
     // Session-43 (S43-P3): membership vs LEAD_STAGES — the create
     // routes' own vocabulary. A poisoned default (LIVE-proven:
     // "banana-probe" saved verbatim) flowed into the lead dialog's
     // initial stage and made every subsequent create 400 confusingly.
-    // The optional parse keeps the s40-P3 revival (""/null → the
-    // default, not a 400).
-    const stage = asString(body.defaultLeadStage, { max: 40, optional: true }) ?? "new";
+    // The schema carries the membership; the ?? default's own check
+    // stays (the null → "new" path).
+    const stage = body.defaultLeadStage ?? "new";
     if (!(LEAD_STAGES as readonly string[]).includes(stage)) return ERR.BAD_REQUEST("Default lead stage must be a valid stage");
     data.defaultLeadStage = stage;
   }
-  if ("defaultTier" in body) {
-    if (isBadString(body.defaultTier)) return ERR.BAD_REQUEST("Invalid default tier");
+  if (body.defaultTier !== undefined) {
     // Session-43 (S43-P3): membership vs ACCOUNT_TIERS (the accounts
     // routes' own vocabulary — the tier default seeds the account
     // dialog's initial value).
-    const tier = asString(body.defaultTier, { max: 4, optional: true }) ?? "B";
+    const tier = body.defaultTier ?? "B";
     if (!(ACCOUNT_TIERS as readonly string[]).includes(tier)) return ERR.BAD_REQUEST("Default account tier must be A, B or C");
     data.defaultTier = tier;
   }
-  if ("followUpDays" in body) {
-    if (isBadNumber(body.followUpDays)) return ERR.BAD_REQUEST("Invalid follow-up days");
-    const days = asInt(body.followUpDays) ?? 3;
+  if (body.followUpDays !== undefined) {
+    const days = body.followUpDays ?? 3;
     if (days < 0 || days > 90) return ERR.BAD_REQUEST("Follow-up days must be between 0 and 90");
     data.followUpDays = days;
   }
-  if ("calendarView" in body) {
-    if (isBadString(body.calendarView)) return ERR.BAD_REQUEST("Invalid calendar view");
+  if (body.calendarView !== undefined) {
     // Session-43 (S43-P3): membership vs the settings UI's own Select
     // vocabulary (the settings-page dropdown is the only writer).
     // Session-72 (M-72c3, bundle-decoded): the reference's Select
     // ships exactly month/week — the invented third option retired.
-    // Session-63 (N-63b): the `!view` fragment retired — asString's
-    // optional+trim contract returns undefined-or-a-non-empty-string,
-    // so after `?? "month"` the value can never be falsy (unreachable
-    // by construction, the N-62c class).
-    const view = asString(body.calendarView, { max: 20, optional: true }) ?? "month";
+    const view = body.calendarView ?? "month";
     if (!["month", "week"].includes(view)) return ERR.BAD_REQUEST("Calendar view must be month or week");
     data.calendarView = view;
   }
-  if ("firstDayOfWeek" in body) {
-    // Session-42 (S42-P5): the dead `?? "monday"` removed — non-optional
-    // asString returns "" (never undefined), so the fallback could never
-    // fire; a present "" already 400s on the enum below (the s40
-    // dead-?? shape).
-    // Session-43 (S43-P3): the isBadString guard its sibling quintet
-    // has — a non-string now 400s with the type vocabulary, not the
-    // enum message.
-    if (isBadString(body.firstDayOfWeek)) return ERR.BAD_REQUEST("Invalid first day of week");
-    const dow = asString(body.firstDayOfWeek, { max: 10 });
-    if (!dow || !["monday", "sunday"].includes(dow)) return ERR.BAD_REQUEST("First day of week must be monday or sunday");
-    data.firstDayOfWeek = dow;
+  if (body.firstDayOfWeek !== undefined) {
+    // Session-42 (S42-P5) + Session-43 (S43-P3): the required-on-present
+    // shape — the schema's enum (a present "" is a bad value, not a
+    // clear; the membership lives there now).
+    data.firstDayOfWeek = body.firstDayOfWeek;
   }
 
   // Session-36 (S36-P2): the upsert + re-read are envelope-held.
