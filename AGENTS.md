@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2454 checks)      | `bun run test`                         |
+|  Unit tests (2480 checks)      | `bun run test`                         |
 |  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2454) → `bun run build` → `bun run test:e2e` (161) — or the
+`bun run test` (2480) → `bun run build` → `bun run test:e2e` (161) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -8876,3 +8876,116 @@ carrier pins grew the suite mid-ladder (+4), and the first ladder pass
 routes) · e2e **161/161** (the migration's parity proof — the CRUD
 round-trips, the oversized-body probe, the settings flows all green
 through the Zod seam) · db census MATCH.
+
+## Session-167 — THE STALE-SITE CLOSURE + THE SCHEMA LIVE-CENSUS (2026-10-22)
+
+**The round**: the post-166 audit (the web-app-foundation §14 gate +
+§15 documentation-contract checklists rode it). The baseline gate GREEN
+at the s166 ship state (lint 0/0 · tsc 0 · 127/2454 · build · e2e
+161/161 · probe:ref #139 STABLE · the six drift gates CLEAN ×6 · the
+mobile drawer 7/7 live at 390×844 · the Tailwind v4 state clean ·
+sitemap 11 routes + robots 200 + manifest 200 · bun audit's 9-advisory
+dev-toolchain posture unchanged · db census MATCH). One environment
+note (sandbox-only, no repo defect): this sandbox exports a stale
+ambient `DATABASE_URL` pointing at a retired sandbox-era mirror — every
+DB-touching command ran with the ambient var scrubbed so the repo's
+own `.env` + the db-path seam resolve `<repo>/db/custom.db` (the
+census PRINT confirms the resolved file).
+
+**THE FINDINGS (all reproduced live)**: F-167a SKILL §11's pre-ship
+gate block carried the retired 2382/2382 — the exact site class s165
+called "the worst possible stale site", recurred ONE ROUND after its
+cure because the block rode no pin (the F-99a1/F-102a2 genus) ·
+F-167b SKILL §7.4's auth doctrine still said "the CRUD family keeps
+the asString guards" (the pre-s166 incremental-path form) + the
+heading's schemas.ts line census 103 vs the live 716 · F-167c the
+SKILL head layer's OWN ladder clause carried L-166c3's stale first
+pass (2450/+68/2611 vs the canonical 2454/+72/2615) · F-167d SKILL
+§15.1's canonical route example counted 27 routes and taught the bare
+`req.json()` + asString idiom the s165/s166 rounds eradicated ·
+F-167e README's env table stayed at 3 knobs vs the six-knob contract ·
+F-167f the README suite enumeration lagged 6 batteries · F-167g README
+carried zero Zod/parseBody mention + the file-tree root line omitted
+SKILL/worklog · F-167h PAD's header date three weeks stale · F-167i
+PAD §7.3's "all 7 regression checks" vs the live 10 · F-167j PAD
+§7.1's inventory table structurally broken (the Total row mid-table,
+the s86-s91 rows orphaned below as headerless fragments) · F-167k the
+s166 seam's own census unpinned (the s166 round's own next-round
+candidate list named it: "the schemas' OWN live-census — a
+schema-field-count pin family").
+
+**THE SCHEMA LIVE-CENSUS** (F-167k — `tests/schemas-census.test.ts`,
+the 128th suite, +21): the L-165c1 doctrine extended to the seam the
+s166 round built — the field-inventory pins (`Object.keys(schema.shape)`
+for every exported object schema, in the route-guard order: the drift
+guard against a silent field drop [API widening] or add [API
+narrowing]) + the exported-schema census (the 20 members read live
+from source) + the line-census carrier pin (SKILL §7.4's schemas.ts
+line count read LIVE from disk — RED at birth on the stale 103, GREEN
+at the live 716). Mutation-proven at birth: a planted `nickname` field
+→ exactly 3 RED (the create inventory + the update-equality + the
+line-census) → reverted → GREEN. One calibration catch: the leads PUT
+ladder orders accountId BEFORE ownerId (the route's own guard order,
+unlike the create form) — the census pinned the true order, not the
+assumed symmetry.
+
+**THE STALE-SITE CLOSURE** (F-167a-j): the ten sites flipped — the §11
+gate block → the live form · the §7.4 doctrine clause → the
+completed-adoption form + the line census → 716 · the head layer's
+ladder numbers → the canonical +72/2615 forms · the §15.1 example →
+the parseBody(req, accountCreateSchema) canonical idiom + the 29 count
+· the README env table → the six-knob contract (the three NEO_* knobs)
+· the suite enumeration → + the six missing batteries · the README
+file tree → the Zod seam named + the root line's two omitted docs ·
+the PAD header date → 2026-10-22 · the §7.3 doctrine → 10 checks ·
+the §7.1 surgery (the s86-s91 rows re-seated chronologically between
+s85 and s92, the Total row terminating the table again below the s166
+row, the counting-convention footnote documenting BOTH row forms —
+guarded by structure assertions before and after).
+
+**THE PIN EXTENSION** (the recurrence root-cure, +5 in docs-counts):
+five previously-UNPINNED live-tense sites join the pin family — the
+§11 gate-block form (`bun run test # ${UNIT}/${UNIT}` + the retired
+2382/2382 and 2454/2454 negatives) · the §7.4 doctrine line (the
+completed-adoption positive + the retired "keeps the asString guards"
+negative) · the §15.1 example idiom (the parseBody positive + the
+27-count and bare-req.json negatives) · the README env table (the
+six-knob rows) · the PAD §7.3 ten-check form — the sites that had to
+be fixed by hand at s99/s102/s106/s165/s166 now fail the gate the day
+they drift.
+
+**THE TDD LEDGER**: RED birth 6 (the line-census carrier pin + the
+five docs-counts carrier pins — all stale-site findings) → GREEN with
+the flips; the mutation proof (the planted field); three ladder
+co-flip catches live-caught by the suite itself (the dialog-geometry
+CLAUDE ×3 forms and the Appendix B wall-clock phrase the first ladder
+census missed — the pin family policing its own ladder, exactly the
+L-165c1 design).
+
+**THE COUNT LADDER**: UNIT 2454 → 2480 (+26 — schemas-census +21 [the
+128th suite] · docs-counts +5 [the carrier pins]) · SUITES 127 → 128 ·
+E2E 161 held · badge 2615 → 2641 — every live-tense site re-anchored
+in lockstep (count-ladder-167.py, assert-first, idempotent,
+unique-anchor) and the pin carriers (docs-counts UNIT/SUITES + the
+head-layer pins → the s167 head [the s166 layer comment-demoted, the
+single-key house form] · dialog-geometry CLAUDE ×4 + the 2454-form
+negatives · the Appendix B unit-total row + wall-clock phrase · the
+SKILL v1.163.0 → v1.164.0 frontmatter + H1 lockstep).
+
+**THE LESSONS**: L-167c1 an unpinned live-tense site is a scheduled
+recurrence — the §11 gate block had been hand-fixed at s165 and
+re-staled within one round because no pin read it; the cure is never
+"remember to flip it" but "make forgetting fail" (the five new carrier
+pins retire the genus on these axes) · L-167c2 the ladder's own pin
+carriers police the ladder — the first ladder pass missed three
+dialog-geometry CLAUDE forms and the Appendix B wall-clock phrase, and
+the suite itself caught each one on the next run (the count ladder is
+not done when the script exits; it is done when the suite is green) ·
+L-167c3 a census pin must pin the TRUE order, not the assumed symmetry
+(the leads PUT ladder's accountId-before-ownerId caught the assumption
+the moment the battery ran).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **128/2480** · build (29
+routes) · e2e **161/161** · db census MATCH · the six drift gates
+CLEAN ×6 at the audit leg (the round touches docs + tests only — no
+visual source changed, the standing parity verdict carries).

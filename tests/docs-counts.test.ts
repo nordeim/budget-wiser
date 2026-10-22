@@ -149,7 +149,7 @@ const E2E = 161;
 // S148-A/S75-B port's pin suite).
 // Session-166: SUITES 125 -> 127 (the schemas-crud + crud-zod-seam
 // files — the CRUD-family Zod seam's two batteries).
-const SUITES = 127;
+const SUITES = 128;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -651,7 +651,7 @@ const SUITES = 127;
 // pure seam x3 + the watermark-holds skip + the crossing re-opens the
 // walk + the O(1)-gate source pin]; SUITES stays 124; E2E stays 161 —
 // the settings Defaults starved-read hardening lands IN PLACE.)
-const UNIT = 2454;
+const UNIT = 2480;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1073,6 +1073,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(claude).not.toContain("`bun run test` (2382)");
     expect(agents).not.toContain("|  Unit tests (2382 checks)");
     expect(skill).not.toContain("| **unit total** | 125 files | **2382**");
+    expect(skill).not.toContain("| **unit total** | 127 files | **2454**");
   });
 
   // ------------------------------------------------------------------
@@ -1115,13 +1116,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-166 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-167 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s165 layer now beneath the s166 head)",
     ).toContain(
-      "+ beneath it 2382 unit checks + 161 e2e checks green; the session-165 layer (THE BOUNDED-READER PORT",
+      "+ beneath it 2454 unit checks + 161 e2e checks green; the session-166 layer (THE CRUD-FAMILY ZOD SEAM",
     );
   });
 
@@ -1562,5 +1563,77 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       "the types/index.ts header (:6312 — one line OFF the live value)",
     ).toContain(`\`src/types/index.ts\` (${live.types} lines)`);
     expect(skill).not.toContain("`src/types/index.ts` (277 lines)");
+  });
+
+  // ------------------------------------------------------------------
+  // Session-167 (S167-P3): the recurrence root-cure — four previously
+  // UNPINNED live-tense sites join the pin family (the F-99a1/F-102a2
+  // genus retired on these axes). F-167a: SKILL §11's pre-ship gate
+  // block carried the retired 2382/2382 — the very site class s165
+  // called "the worst possible stale site", recurred ONE ROUND after
+  // its cure because the block rode no pin. F-167b: SKILL §7.4's auth
+  // doctrine still said "the CRUD family keeps the asString guards"
+  // (the pre-s166 incremental-path form). F-167e: README's env table
+  // stayed at 3 knobs while .env.example + PAD §8.2 + SKILL §3.3
+  // carry the six-knob contract. F-167i: PAD §7.3's drawer doctrine
+  // said "all 7 regression checks" (the live suite is 10 — the count
+  // MOBILE_NAV_E2E itself is live-census-pinned above). F-167d:
+  // SKILL §15.1's heading counted 27 routes and its canonical example
+  // taught the bare req.json + asString idiom the s165/s166 rounds
+  // eradicated.
+  // ------------------------------------------------------------------
+
+  it("SKILL 11's pre-ship gate block carries the live counts (F-167a — the unpinned site that let the s165 number recur one round after its cure)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    expect(skill).toContain(`bun run test         # ${UNIT}/${UNIT}`);
+    expect(skill).toContain(`bun run test:e2e     # ${E2E}/${E2E} (build first`);
+    // the retired gate-block form never returns
+    expect(skill).not.toContain("bun run test         # 2382/2382");
+    expect(skill).not.toContain("bun run test         # 2454/2454");
+  });
+
+  it("SKILL 7.4's auth doctrine carries the completed-adoption form (F-167b — the section that still taught the incremental path joins the §14 reality)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    expect(skill).toContain("the CRUD family joined at session-166");
+    // the retired pre-s166 clause never returns to the live-tense section
+    expect(skill).not.toContain("family keeps the `asString` guards");
+  });
+
+  it("SKILL 15.1's canonical route example teaches the CURRENT idiom (F-167d — the parseBody seam form + the live route count)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    const routeFiles = listFiles("src/app/api").filter((f) =>
+      f.endsWith("/route.ts"),
+    );
+    expect(skill).toContain(
+      `every one of the ${routeFiles.length} follows this`,
+    );
+    expect(skill).toContain("parseBody(req, accountCreateSchema)");
+    // the retired forms never return to the canonical example
+    expect(skill).not.toContain("every one of the 27");
+    expect(skill).not.toContain("await req.json().catch(() => null)");
+  });
+
+  it("README's env table carries the six-knob contract (F-167e — the onboarding doc joins .env.example + PAD 8.2 + SKILL 3.3)", () => {
+    const readme = read("README.md");
+    for (const knob of [
+      "DATABASE_URL",
+      "AUTH_SECRET",
+      "NEXT_PUBLIC_SITE_URL",
+      "NEO_PROXY_HOPS",
+      "NEO_DISABLE_IN_APP_OTP",
+      "NEO_DISABLE_IN_APP_RESET",
+    ]) {
+      expect(readme, `the ${knob} row must sit in the README env table`).toContain(
+        `| \`${knob}\` |`,
+      );
+    }
+  });
+
+  it("PAD 7.3's drawer doctrine carries the live 10-check form (F-167i)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    expect(pad).toContain("all 10 regression checks");
+    // the retired 7-check doctrine line never returns (an inventory row
+    // may QUOTE its era; the §7.3 doctrine line is live-tense)
+    expect(pad).not.toContain("all 7 regression checks");
   });
 });
