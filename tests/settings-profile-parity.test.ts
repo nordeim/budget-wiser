@@ -211,15 +211,16 @@ describe("session-72: the export-button icons + the defaults input parity (L-72c
 });
 
 describe("session-72: the users PATCH body pre-gate (M-72c2)", () => {
-  it("the users route imports isBodyTooLarge and gates BEFORE the parse", () => {
+  it("the users route imports the bounded reader and reads BEFORE any body use (re-anchored s165 — the S148-A/S75-B port)", () => {
     const src = usersRoute();
-    expect(src).toMatch(/isBodyTooLarge/);
-    const gate = src.indexOf("isBodyTooLarge(request)");
-    const parse = src.indexOf("request.json()");
-    expect(gate).toBeGreaterThanOrEqual(0);
-    expect(parse).toBeGreaterThan(gate);
+    expect(src).toMatch(/readBoundedJson/);
+    const seam = src.indexOf("readBoundedJson(request)");
+    expect(seam).toBeGreaterThanOrEqual(0);
+    // the s165 form: the seam call is the rejection point; no bare
+    // request.json() parse survives (the pre-165 direct parse retired)
+    expect(src.indexOf("request.json()")).toBe(-1);
     expect(src).toContain(
-      'if (isBodyTooLarge(request)) return ERR.BAD_REQUEST("Request body too large");',
+      'if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");',
     );
   });
 });

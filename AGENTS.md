@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2362 checks)      | `bun run test`                         |
+|  Unit tests (2382 checks)      | `bun run test`                         |
 |  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2362) → `bun run build` → `bun run test:e2e` (161) — or the
+`bun run test` (2382) → `bun run build` → `bun run test:e2e` (161) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -188,7 +188,7 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   hidden` element SILENTLY NO-OPS (keyboard users Tabbed through the
   background behind the aria-modal dialog). The panel also uses
   `h-dvh` (not `h-full`) so it tracks the dynamic viewport on mobile
-  browsers. `tests/e2e/mobile-navigation.spec.ts` (11 checks, 390/700px
+  browsers. `tests/e2e/mobile-navigation.spec.ts` (10 checks, 390/700px
   viewports — the focus-entry test + the ten-route zero-overflow sweep
   included) is the
   regression suite — do not weaken it.
@@ -8690,4 +8690,95 @@ Mutation-proven: the pin disabled → exactly 3 RED.
   distilled AFTER digma is).
 - **THE VERIFICATION**: lint 0/0 · tsc 0 · **124/2362** · build (29
   routes) · e2e **161/161** · probe:ref #137 STABLE at the s147-s155
+  fingerprint · the six drift gates CLEAN ×6 · db census MATCH.
+
+## Session-165 — THE BOUNDED-READER PORT + THE CONTENT-TYPE CSRF GATE + THE E2E-CENSUS DOCTRINE (2026-10-22)
+
+The post-164 audit round (the baseline gate GREEN at the exact s164 ship
+state: lint 0/0 · tsc 0 · 124/2362 · build · e2e 161/161 · probe:ref
+#138 STABLE · census MATCH — the test-isolation cure holding in the
+ambient workspace). The audit rode the web-app-foundation §7.2
+checklist ("zod at every boundary; bounded reader; **reject non-JSON
+content types on mutating routes**; count streamed chunks") against
+the parse seam digma itself had hardened at S148-A/S75-B.
+
+- **F-165a THE CONTENT-TYPE CSRF GATE (absent)**: `req.json()` parses
+  regardless of Content-Type, so a cross-site `<form method="POST"
+  enctype="text/plain">` posting a JSON-shaped body reaches the auth
+  family's cookie-MINTING verbs — the login-CSRF class (SameSite=Lax
+  gates cookie SENDING on cross-site POSTs, never cookie SETTING).
+  First-party census lead-verified: every JSON consumer already sent
+  `application/json` (the call() seam, the login-card fetches, the
+  reset screen, the e2e in-page headers, Playwright's object-data
+  default) — the gate lands with zero first-party breakage.
+- **F-165b THE CHUNKED-BODY BYPASS**: `isBodyTooLarge` checked only the
+  DECLARED Content-Length; a Transfer-Encoding: chunked request carries
+  none, so the 16KB cap passed and `req.json()` buffered unbounded —
+  api.ts's own comment documented the gap as an accepted backstop.
+- **F-165c THE MOBILE-NAV MISCOUNT**: `MOBILE_NAV_E2E = 11` for a
+  **10-test spec since s147** (git-verified: landing.spec gained that
+  round's +1 e2e while the constant got the bump) — seven pinned doc
+  sites carried the wrong number for 17 sessions; no live-census pin
+  existed on the axis.
+- **F-165d THE APPENDIX B E2E ROWS**: landing 12 vs live 14 · crm 111
+  vs live 112 · the s163 reset-password spec absent from the Test
+  Inventory since birth — the F-107a1 genus recurring on the e2e axis
+  (the totals were re-anchored at s163; the rows were not).
+- **F-165e/F-165f/F-165g THE DOCS-TRUTH CARRIERS**: PAD's 27-files/
+  39-handlers route census (live 29/41) · the PAD HEAD line's 9-spec
+  enumeration (live 10) · SKILL §3.3's "3 — count them, 3" env table
+  (live 6) · SKILL §11's era-s12 65/65 + 20/20 gate block · SKILL
+  §14's no-schema-library contradiction · ADR-014 referenced since
+  s163, never written.
+
+**THE REMEDIATION (TDD — RED 20 → GREEN)**: `readBoundedJson` joins
+api.ts (the digma S148-A/S75-B construction adapted: the content-type
+gate FIRST with the stream cancelled → the declared fast path → the
+body-less pass-through → the stream counter with mid-read producer
+cancel → the merged-decode parse tail on the null-on-unparseable
+contract); `parseBody` composes it (the auth family inherits both
+gates); the THIRTEEN sessioned CRUD sites swapped via the assert-first
+crud-seam-swap-165.py — every 400 message preserved VERBATIM (incl.
+the divergent siblings: users' "Invalid JSON body", reset's
+'Type "RESET" to confirm' fallthrough), the F-69a3 gate-before-DB
+ordering carried onto the seam form. The e2e CSRF probe joined the
+auth spec's 4xx battery (the trio became the quartet — the probe rides
+its own XFF bucket, E2E held at 161). The mobile-nav constant flipped
+to 10 + the seven carriers + **the LIVE-CENSUS pin** (the count read
+FROM the spec file — the schema/seed doctrine extended to the e2e
+axis); the Appendix B e2e rows re-censused (landing 14 · crm 112 ·
+the NEW reset-password row 8 · the doctrine note narrowed: the UNIT
+rows stay the s12 snapshot, the e2e rows are live-tense, all pinned)
++ THE SUM GUARD (rows + setup must sum to the E2E constant). PAD/SKILL
+carriers re-anchored + ADR-014 formalized (PAD §1.3's full entry + both
+indexes) + every touched site pinned (the route census read LIVE from
+the source tree).
+
+**THE VACUOUS-PIN CATCH**: the row-census pin's first draft rode a
+`new RegExp` template whose `\|` escapes collapsed to alternation —
+the pin matched EVERYTHING. Caught live by the arithmetic not adding
+up (the auth row said 12 while the spec said 11 — and the pin passed),
+replaced with the toContain filename-cell form, mutation-proven: a
+planted 12 → exactly 1 RED → reverted → GREEN. L-164c2 re-learned at
+the pin layer.
+
+- **THE COUNT LADDER**: UNIT 2362 → 2382 (+20 — bounded-reader +11
+  [the 125th suite] · parse-body +2 · body-pregate +1 · docs-counts
+  +6) · SUITES 124 → 125 · E2E 161 held · badge 2523 → 2543 — every
+  live-tense site re-anchored in lockstep (count-ladder-165.py,
+  assert-first, idempotent, unique-anchor) and the pin carriers
+  (docs-counts UNIT/SUITES + the comment ladder · dialog-geometry
+  CLAUDE ×4 + the 2362-form negatives · the mobile-nav 11-check-form
+  negatives · the FIRST-layer pin → the s165 head).
+- **THE LESSONS**: L-165c1 a pin that checks doc-consistency with a
+  constant never checks the constant against the thing it claims to
+  census — the live-census doctrine (read the source) is the only root
+  cure for count drift · L-165c2 the RegExp-from-template escaping
+  trap (`"\|"` is alternation, not a pipe) — a regex pin must be
+  mutation-proven at birth or it matches nothing (or everything) ·
+  L-165c3 the e2e rows are only 10 — the "too many rows to pin"
+  excuse that left them a stale snapshot dies at that scale (the unit
+  rows stay snapshot by doctrine; the e2e axis is cheap to pin live).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **125/2382** · build (29
+  routes) · e2e **161/161** · probe:ref #138 STABLE at the s147-s155
   fingerprint · the six drift gates CLEAN ×6 · db census MATCH.

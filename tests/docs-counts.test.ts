@@ -109,12 +109,29 @@
 //   "6 spec" → "7 spec", and the Appendix B e2e-total row grows
 //   "6 spec files" → "7 spec files".)
 
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 const root = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
+
+// Session-165 (S165-P2): the LIVE source-tree file census (the route
+// carrier pins read the actual tree — the e2e-row doctrine extended).
+const listFiles = (rel: string): string[] => {
+  const dir = path.join(root, rel);
+  const out: string[] = [];
+  const walk = (d: string) => {
+    for (const entry of readdirSync(d, { withFileTypes: true })) {
+      const full = path.join(d, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else out.push(full);
+    }
+  };
+  walk(dir);
+  // repo-RELATIVE paths (the read() helper joins root itself)
+  return out.map((f) => path.relative(root, f).split(path.sep).join("/"));
+};
 
 // Session-145: E2E 149 -> 150 (+1 — the guest 390 drawer e2e: the
 // hamburger + the 8 links on the guest /About, the fix extending to
@@ -128,7 +145,9 @@ const E2E = 161;
 // standing sixth gate's pin suite).
 // Session-159: SUITES 119 -> 120 (the settings-rhythm-tool file — the
 // intraday-rhythm observation instrument's pin suite).
-const SUITES = 124;
+// Session-165: SUITES 124 -> 125 (the bounded-reader file — the digma
+// S148-A/S75-B port's pin suite).
+const SUITES = 125;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -589,6 +608,21 @@ const SUITES = 124;
 // + the atomic-0600 write + the freshness pure seam + the header
 // doctrine + the SEED's ID-STABILITY contract [the PASS-1 root cause];
 // SUITES stays 120; E2E stays 153.)
+// Session-165: 2362 -> 2382 (+20 — the digma S148-A/S75-B port: the
+// bounded-reader suite +11 [the 125th file — the readBoundedJson seam's
+// contract battery: the content-type CSRF gate family + the charset/
+// case tolerance + the declared fast path + the stream counter UNDER
+// and OVER + the parse tail + the body-less branch + the 16KB ceiling]
+// + the parse-body suite +2 [the CSRF-gate pin through parseBody + the
+// chunked-bound pin] + the body-pregate suite +1 [the seam re-anchors —
+// the no-bare-parse retirement + the message-preservation contract
+// with the users/reset divergent siblings] + the docs-counts suite +6
+// [the mobile-nav LIVE-CENSUS pin + the Appendix B e2e-row census +
+// THE SUM GUARD + the four touched-site pins: the route census read
+// live from the tree + the six-knob env table + the Zod-reality line +
+// the ADR-014 indexes]; SUITES 124 -> 125; E2E stays 161 — the CSRF
+// probe rides the existing 4xx-negatives test [the API trio became
+// the quartet], zero new e2e checks.)
 // Session-164: 2347 -> 2362 (+15 — the test-isolation cure + the
 // reset-token hash + the amortized sweep, all in EXISTING files: the
 // auth suite +2 [the env-pinning regression pin + the foreign-key
@@ -600,11 +634,15 @@ const SUITES = 124;
 // pure seam x3 + the watermark-holds skip + the crossing re-opens the
 // walk + the O(1)-gate source pin]; SUITES stays 124; E2E stays 161 —
 // the settings Defaults starved-read hardening lands IN PLACE.)
-const UNIT = 2362;
+const UNIT = 2382;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
-// seeded-state guard.
-const MOBILE_NAV_E2E = 11;
+// seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
+// miscount cured (landing.spec gained that round's +1 e2e while this
+// constant got the bump; the spec has carried 10 test() declarations
+// since s104). The LIVE-CENSUS pin above now reads the spec file, so
+// the constant can never again drift from the census it claims.
+const MOBILE_NAV_E2E = 10;
 
 describe("session-102 (S102-P1): the secondary-sites lockstep — every live-tense count site pinned", () => {
   it("README badge carries the unit + e2e arithmetic (1942 + 137 = 2079)", () => {
@@ -674,8 +712,12 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
 
   it("PAD HEAD line carries the live counts (the site-form anchor)", () => {
     const pad = read("Project_Architecture_Document.md");
+    // Session-165 (F-165d): the HEAD line's spec-file census re-anchored
+    // 9 -> 10 with the live enumeration (the pin itself had carried the
+    // stale 9-spec form — landing, marketing-mobile and the s163
+    // reset-password spec were absent from the line's own list).
     expect(pad).toContain(
-      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 9 spec`,
+      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 10 spec`,
     );
   });
 
@@ -987,6 +1029,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(pad).not.toMatch(/9-check mobile drawer regression suite/);
     expect(agents).not.toMatch(/\(9 checks, 390\/700px/);
     expect(skill).not.toMatch(/\(9 checks, 390\/700px/);
+    // Session-165: the retired s147-miscount forms (11 for a 10-test
+    // spec) join the negatives ladder — the miscount can never return.
+    expect(readme).not.toMatch(/a 11-check mobile-nav regression suite/);
+    expect(claude).not.toMatch(/11-check regression suite for the drawer/);
+    expect(pad).not.toMatch(/11-check mobile drawer regression suite/);
+    expect(agents).not.toMatch(/\(11 checks, 390\/700px/);
+    expect(skill).not.toMatch(/\(11 checks, 390\/700px/);
   });
 
   // ------------------------------------------------------------------
@@ -1029,7 +1078,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-164 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-165 layer`,
     );
     expect(
       skill,
@@ -1086,6 +1135,126 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // name cannot match)
     expect(appendix).not.toMatch(/\| \*\*unit total\*\* \| 12 files/);
     expect(appendix).not.toMatch(/\| \*\*e2e total\*\* \| 4 files/);
+  });
+
+  // ------------------------------------------------------------------
+  // Session-165 (S165-P1): THE E2E LIVE-CENSUS DOCTRINE — the
+  // F-165c/F-165d cure. The s147 miscount (MOBILE_NAV_E2E = 11 for a
+  // 10-test spec — landing.spec gained that round's +1 e2e while the
+  // mobile-nav constant got the bump; git-verified: the spec has
+  // carried exactly 10 test() declarations since s104, through s147's
+  // pure drawer→sheet renames) survived 17 sessions because the pin
+  // family checked doc-consistency with the CONSTANT, never the
+  // constant against the spec file it claims to census. The Appendix B
+  // e2e rows drifted the same way (landing 12 vs live 14 · crm 111 vs
+  // live 112 · the s163 reset-password spec absent from the table
+  // entirely) — the F-107a1 genus recurring on the e2e axis: the
+  // totals were re-anchored at s163 but the rows were not. THE CURE:
+  // the counts read FROM THE SPEC FILES — the schema.prisma/seed.ts
+  // LIVE-CENSUS doctrine (F-109a1) extended to the e2e axis. A row
+  // that drifts, or a spec that gains/loses a test without its row,
+  // now fails `bun run test`.
+  // ------------------------------------------------------------------
+
+  it("the mobile-nav count constant matches the LIVE spec census (the s147 miscount's root-cause cure)", () => {
+    const spec = read("tests/e2e/mobile-navigation.spec.ts") ?? "";
+    const live = (spec.match(/^\s*test\(/gm) ?? []).length;
+    expect(
+      live,
+      "the MOBILE_NAV_E2E constant must equal the spec's own test() census — the seven pinned doc sites ride it",
+    ).toBe(MOBILE_NAV_E2E);
+  });
+
+  it("every Appendix B e2e row carries its spec's LIVE test() census (the F-107a1 doctrine extended to the rows)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    const appendix = skill.slice(skill.indexOf("## Appendix B"));
+    const E2E_ROWS: Array<[string, string]> = [
+      ["e2e landing", "tests/e2e/landing.spec.ts"],
+      ["e2e auth", "tests/e2e/auth.spec.ts"],
+      ["e2e golden path", "tests/e2e/crm.spec.ts"],
+      ["e2e mobile nav regression", "tests/e2e/mobile-navigation.spec.ts"],
+      ["e2e reports-mobile", "tests/e2e/reports-mobile.spec.ts"],
+      ["e2e settings-mobile", "tests/e2e/settings-mobile.spec.ts"],
+      ["e2e calendar-mobile", "tests/e2e/calendar-mobile.spec.ts"],
+      ["e2e activities-mobile", "tests/e2e/activities-mobile.spec.ts"],
+      ["e2e marketing-mobile", "tests/e2e/marketing-mobile.spec.ts"],
+      ["e2e reset-password", "tests/e2e/reset-password.spec.ts"],
+    ];
+    for (const [rowLabel, specPath] of E2E_ROWS) {
+      const spec = read(specPath) ?? "";
+      const live = (spec.match(/^\s*test\(/gm) ?? []).length;
+      expect(
+        appendix,
+        `${rowLabel}: the row must carry the live census ${live} (read from ${specPath})`,
+      ).toContain(`| \`${specPath}\` | ${live} |`);
+    }
+    // the setup project row stays pinned at 1
+    expect(appendix).toContain("| e2e setup (login) | `tests/e2e/auth.setup.ts` | 1 |");
+    // THE SUM GUARD: the per-spec census + the setup row must sum to the
+    // E2E constant the totals ride — a row re-census that forgets the
+    // ladder (or a ladder that forgets a row) fails here.
+    {
+      let sum = 1; // the setup project's own login check
+      for (const [, specPath] of E2E_ROWS) {
+        sum += ((read(specPath) ?? "").match(/^\s*test\(/gm) ?? []).length;
+      }
+      expect(sum, "the e2e rows + setup must sum to the E2E constant").toBe(E2E);
+    }
+    // the retired s147-vintage row forms never return (SITE-FORM
+    // anchors — the table's own row constructions)
+    expect(appendix).not.toMatch(/\| e2e landing [^|]*\| `tests\/e2e\/landing\.spec\.ts` \| 12 \|/);
+    expect(appendix).not.toMatch(/\| e2e golden path [^|]*\| `tests\/e2e\/crm\.spec\.ts` \| 111 \|/);
+    expect(appendix).not.toMatch(/\| e2e mobile nav regression [^|]*\| `tests\/e2e\/mobile-navigation\.spec\.ts` \| 11 \|/);
+  });
+
+  // ------------------------------------------------------------------
+  // Session-165 (S165-P2): the touched-site pins — the F-99a1 doctrine
+  // (an unpinned live-tense site re-stales). The F-165e/F-165f/F-165g
+  // fixes: PAD's route-census carriers (27-files/39-handlers — stale
+  // since s163's 27->29 growth), SKILL 3.3's "3 — count them, 3" env
+  // table (the three s163 knobs absent), SKILL 14's "no schema
+  // library by design" (contradicting the s163 Zod seam the SKILL's
+  // own head layer records), and ADR-014 (referenced twice, never
+  // written). The route census is read LIVE from the source tree —
+  // the same doctrine as the e2e rows above.
+  // ------------------------------------------------------------------
+
+  it("PAD's route-census carriers match the LIVE source-tree census (F-165e)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    const routeFiles = listFiles("src/app/api").filter((f) => f.endsWith("/route.ts"));
+    const handlerCount = routeFiles.reduce((n, f) => {
+      const src = read(f);
+      return n + (src.match(/export async function (?:GET|POST|PUT|PATCH|DELETE)\(/g) ?? []).length;
+    }, 0);
+    expect(routeFiles.length, "the live route-file census").toBe(29);
+    expect(handlerCount, "the live verb-handler census").toBe(41);
+    expect(pad).toContain("grep-verified across the 29 route files");
+    expect(pad).toContain("All 41 API handlers respond with");
+    // the retired carriers never return
+    expect(pad).not.toContain("across all 27 files");
+    expect(pad).not.toContain("All 39 API handlers");
+  });
+
+  it("SKILL 3.3's env contract carries the six-knob table (F-165f)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    expect(skill).toContain("### 3.3 Environment variables (6 — count them, 6)");
+    for (const knob of ["NEO_PROXY_HOPS", "NEO_DISABLE_IN_APP_OTP", "NEO_DISABLE_IN_APP_RESET"]) {
+      expect(skill, `the ${knob} row must sit in the 3.3 table`).toContain(`| \`${knob}\` |`);
+    }
+    expect(skill).not.toContain("Environment variables (3 — count them, 3)");
+  });
+
+  it("SKILL 14's validation line carries the s163 Zod reality (F-165f)", () => {
+    const skill = read("neo-crm_SKILL.md");
+    expect(skill).toContain("the AUTH FAMILY rides the Zod seam");
+    expect(skill).not.toContain("no schema library by");
+  });
+
+  it("ADR-014 is written up in BOTH indexes (F-165g — referenced since s163, formalized s165)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    const skill = read("neo-crm_SKILL.md");
+    expect(pad).toContain("**ADR-014: In-app OTP/reset deliveries behind production kill-switches**");
+    expect(skill).toContain("| ADR-014 | In-app OTP/reset deliveries behind");
   });
 
   // ------------------------------------------------------------------

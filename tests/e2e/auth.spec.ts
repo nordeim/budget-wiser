@@ -268,7 +268,7 @@ test("the /signup page renders the same minimal signup view", async ({ page }) =
   await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toHaveCount(0);
 });
 
-test("the signup 4xx negatives: the duplicate surfaces in the card + the API trio (S73-P7b)", async ({ page }) => {
+test("the signup 4xx negatives: the duplicate surfaces in the card + the API quartet (S73-P7b + the S165-P1 CSRF probe)", async ({ page }) => {
   await page.goto("/login");
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
   await expect(page.getByLabel("Confirm Password")).toBeVisible();
@@ -283,9 +283,10 @@ test("the signup 4xx negatives: the duplicate surfaces in the card + the API tri
   await page.getByRole("button", { name: "Create account" }).click();
   await expect(page.getByText("A user with this email already exists")).toBeVisible();
 
-  // The API-level trio (the s69 sessioned-pre-gate probe pattern): the
-  // invalid email, the short password, and the oversized body — the
-  // route's own 4xx vocabulary, pinned at the envelope level.
+  // The API-level quartet (the s69 sessioned-pre-gate probe pattern,
+  // + the s165 CSRF probe): the invalid email, the short password, the
+  // oversized body, and the text/plain login-CSRF shape — the route's
+  // own 4xx vocabulary, pinned at the envelope level.
   const invalidEmail = await page.request.post("/api/auth/signup", {
     data: { email: "not-an-email", password: "TestPass123" },
   });
@@ -308,4 +309,22 @@ test("the signup 4xx negatives: the duplicate surfaces in the card + the API tri
   expect(oversized.status()).toBe(400);
   const oversizedBody = await oversized.json();
   expect(oversizedBody.error.message).toBe("Request body too large");
+
+  // Session-165 (WP-1 — the digma S148-A port): the content-type CSRF
+  // gate's live pin. The login-CSRF attack shape: a text/plain body
+  // carrying a VALID JSON credential payload (the enctype="text/plain"
+  // cross-site form family) — the bounded reader rejects it
+  // by-policy BEFORE the schema ever runs, answering the parse seam's
+  // own invalid-body 400. The probe rides its OWN rate-limit bucket
+  // (the dedicated XFF hop, the s163 reset-round-trip doctrine — the
+  // login route buckets before it parses, so a rejected probe still
+  // spends the shared localhost budget otherwise); no session cookie
+  // is minted either way.
+  const csrfShape = await page.request.post("/api/auth/login", {
+    headers: { "content-type": "text/plain", "x-forwarded-for": "198.51.100.165" },
+    data: JSON.stringify({ email: "sepnetflix2023@outlook.com", password: "$Abcd1234" }),
+  });
+  expect(csrfShape.status()).toBe(400);
+  const csrfBody = await csrfShape.json();
+  expect(csrfBody.error.message).toBe("Invalid request body");
 });

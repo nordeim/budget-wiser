@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { asString, ok, isBadFK, isBodyTooLarge, isGuarded, requireSession, ERR } from "@/lib/api";
+import { asString, ok, isBadFK, readBoundedJson, isGuarded, requireSession, ERR } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
@@ -30,9 +30,10 @@ export async function PATCH(request: Request) {
   const guard = await requireSession();
   if (isGuarded(guard)) return guard.response;
 
-  if (isBodyTooLarge(request)) return ERR.BAD_REQUEST("Request body too large");
+  const read = await readBoundedJson(request);
+  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
 
-  const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
+  const body = read.value;
   if (!body) return ERR.BAD_REQUEST("Invalid JSON body");
 
   const name = asString(body.name, { max: 60 });

@@ -65,4 +65,54 @@ describe("parseBody (session-163)", () => {
     const bad = await parseBody(jsonRequest({ email: 42 }), schema);
     expect(bad.ok).toBe(false);
   });
+
+  // Session-165 (WP-1 — the digma S148-A port): parseBody composes the
+  // bounded reader, so the CONTENT-TYPE CSRF GATE sits ahead of the
+  // schema. The login-CSRF class: an enctype="text/plain" cross-site
+  // form POST whose body parses as valid JSON — the parse seam rejects
+  // by policy BEFORE safeParse ever runs, the route's existing
+  // "Invalid request body" vocabulary unchanged.
+  it("THE CSRF GATE: a text/plain body carrying a VALID login body answers the invalid-body envelope (the schema never runs)", async () => {
+    const result = await parseBody(
+      new Request("http://x/api/auth/login", {
+        method: "POST",
+        headers: { "content-type": "text/plain" },
+        body: JSON.stringify({ email: "a@b.co", password: "Demo1234!" }),
+      }),
+      loginSchema,
+    );
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.response.status).toBe(400);
+      const body = await result.response.json();
+      expect(body).toEqual({ ok: false, error: { code: "BAD_REQUEST", message: "Invalid request body" } });
+    }
+  });
+
+  it("THE CHUNKED BOUND: a stream body over the ceiling answers the too-large envelope (no Content-Length exists to pre-gate it)", async () => {
+    // The S75-B family through the composed seam: a ReadableStream
+    // body (no Content-Length) whose ACTUAL streamed bytes exceed
+    // MAX_AUTH_BODY_BYTES — the stream counter's mid-read rejection.
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (let i = 0; i < 3; i++) controller.enqueue(encoder.encode("x".repeat(6 * 1024)));
+        controller.close();
+      },
+    });
+    const result = await parseBody(
+      new Request("http://x/api/auth/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: stream,
+        ...({ duplex: "half" } as Record<string, unknown>),
+      }),
+      loginSchema,
+    );
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      const body = await result.response.json();
+      expect(body.error.message).toBe("Request body too large");
+    }
+  });
 });

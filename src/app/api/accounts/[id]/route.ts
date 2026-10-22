@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, asNumber, asInt, asFKId, isBadFK, isBadString, isBadNumber, isBodyTooLarge, isGuarded, requireSession  } from "@/lib/api";
+import { ok, ERR, asString, asNumber, asInt, asFKId, isBadFK, isBadString, isBadNumber, readBoundedJson, isGuarded, requireSession  } from "@/lib/api";
 import { ACCOUNT_STATUSES, ACCOUNT_HEALTH_STATUSES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -11,13 +11,16 @@ export async function PUT(req: Request, { params }: Params) {
   if (isGuarded(guard)) return guard.response;
   const { id } = await params;
 
-  // Session-68 (F-68a2): the declared-size pre-gate BEFORE the parse —
-  // the N-67d auth-family gate extended to the sessioned CRUD family
-  // (req.json() buffers with no default cap in App Router handlers;
-  // the honest CRUD bodies are far smaller than the 16KB ceiling).
-  if (isBodyTooLarge(req)) return ERR.BAD_REQUEST("Request body too large");
+  // Session-68 (F-68a2) + session-165 (the digma S148-A/S75-B port):
+  // the bounded reader BEFORE the parse — the N-67d declared-length
+  // fast path, the content-type CSRF gate, and the chunked-stream
+  // counter in ONE seam (the pre-165 form parsed req.json() unbounded
+  // and regardless of content-type; the honest CRUD bodies are far
+  // smaller than the 16KB ceiling).
+  const read = await readBoundedJson(req);
+  if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");
 
-  const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
+  const body = read.value;
   if (!body) return ERR.BAD_REQUEST("Invalid request body");
 
   const data: Record<string, unknown> = {};

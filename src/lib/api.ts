@@ -82,24 +82,124 @@ export function isBodyTooLarge(req: Request): boolean {
   return Number(req.headers.get("content-length") ?? 0) > MAX_AUTH_BODY_BYTES;
 }
 
+// ---- the bounded body reader (session-165 — the digma S148-A/S75-B -----
+// port): the ONE seam every JSON body parse site consumes.
+
+/** The bounded read result: `tooLarge` answers the shared "Request body
+ *  too large" 400; `value` carries the parsed JSON (null when
+ *  unparseable OR unparseable-by-policy — the sites' historical
+ *  `.catch(() => null)` contract, digma's documented form). */
+export type BoundedJson =
+  | { tooLarge: true }
+  | { tooLarge: false; value: Record<string, unknown> | null };
+
+/** Session-165: read + bound a JSON request body. Two closed classes,
+ *  both digma ports (the s163 doctrine: the auth-mechanics reference
+ *  is the port donor):
+ *
+ *  THE CONTENT-TYPE CSRF GATE (digma S148-A / B148-L1): a JSON-parse
+ *  seam blocks unparseable bodies, never form-originated transports —
+ *  an HTML `<form method="POST" enctype="text/plain">` (the classic
+ *  name/value trick) posts a body that parses as valid JSON, so
+ *  req.json() alone never barred the cross-site form POST, and the
+ *  public auth family MINTS cookies on POST (login/signup/verify) —
+ *  the login-CSRF class: the attacker's session planted in the
+ *  victim's jar (SameSite=Lax gates cookie SENDING on cross-site
+ *  POSTs, never cookie SETTING). The gate: a Content-Type not
+ *  carrying application/json (case-insensitive; the "; charset="
+ *  suffix tolerated) is unparseable-by-policy — the null contract
+ *  below, the call sites' 400 vocabulary untouched, zero call-site
+ *  changes. First-party consumers all send application/json (the
+ *  lead-verified census: the store's call() seam, the five
+ *  login-card fetches, the reset screen, the e2e in-page fetch
+ *  headers, Playwright's object-data default, the sweep's UI-form
+ *  login). The stream is cancelled like the tooLarge path — a
+ *  kept-open stream would hold the connection.
+ *
+ *  THE STREAM COUNTER (digma S75-B / B75-F1): the pre-165 form (the
+ *  isBodyTooLarge declared-length check before an unbounded
+ *  req.json()) left the chunked-transfer family open — a
+ *  Transfer-Encoding: chunked request carries NO Content-Length, so
+ *  the gate passed and the parse buffered the whole body before any
+ *  per-field cap ran. The counter: request.body read chunk-by-chunk,
+ *  rejecting + cancelling the read past MAX_AUTH_BODY_BYTES. The
+ *  declared fast path (isBodyTooLarge — the N-67d lineage, unchanged)
+ *  stays ahead of it so an over-declared body rejects before ANY read. */
+export async function readBoundedJson(req: Request): Promise<BoundedJson> {
+  // Layer 1 — the content-type CSRF gate, ahead of every byte read.
+  const contentType = req.headers.get("content-type") ?? "";
+  if (!contentType.toLowerCase().includes("application/json")) {
+    await req.body?.cancel().catch(() => {});
+    return { tooLarge: false, value: null };
+  }
+  // Layer 2 — the declared-length fast path (an over-declared body
+  // rejects before any byte is read; the unconsumed stream is
+  // cancelled — the symmetric twin of the counter's own cancel below).
+  if (isBodyTooLarge(req)) {
+    await req.body?.cancel().catch(() => {});
+    return { tooLarge: true };
+  }
+  const body = req.body;
+  if (!body) {
+    // No stream to bound (a body-less request): the standard parse,
+    // guarded the same way the sites' old form was.
+    try {
+      return { tooLarge: false, value: (await req.json()) as Record<string, unknown> };
+    } catch {
+      return { tooLarge: false, value: null };
+    }
+  }
+  // Layer 3 — the stream counter: the chunked family's only bound.
+  const reader = body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (value) {
+      total += value.byteLength;
+      if (total > MAX_AUTH_BODY_BYTES) {
+        // Stop the producer before returning — a kept-open stream
+        // would hold the connection and buffer the remaining chunks
+        // server-side.
+        await reader.cancel().catch(() => {});
+        return { tooLarge: true };
+      }
+      chunks.push(value);
+    }
+  }
+  // The decode+parse tail keeps the null-on-unparseable contract, so
+  // the call sites' field narrowing is untouched.
+  const merged = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    merged.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  try {
+    return { tooLarge: false, value: JSON.parse(new TextDecoder().decode(merged)) as Record<string, unknown> };
+  } catch {
+    return { tooLarge: false, value: null };
+  }
+}
+
 // ---- the Zod parse seam (session-163 — the auth family's validation) ----
 
 /** Session-163: parse + validate a JSON body against a Zod schema.
- *  Composes the declared-size pre-gate (the N-67d contract) with
- *  safeParse, and maps the first schema issue onto the BAD_REQUEST
- *  envelope as a ready-made response — the route returns it verbatim.
- *  The schemas live in src/lib/schemas.ts (the seam). */
+ *  Session-165: composes the bounded reader (readBoundedJson — the
+ *  content-type CSRF gate + the declared fast path + the stream
+ *  counter) ahead of safeParse, and maps the first schema issue onto
+ *  the BAD_REQUEST envelope as a ready-made response — the route
+ *  returns it verbatim. The schemas live in src/lib/schemas.ts (the
+ *  seam). */
 export async function parseBody<S extends z.ZodTypeAny>(
   req: Request,
   schema: S,
 ): Promise<{ ok: true; data: z.output<S> } | { ok: false; response: NextResponse }> {
-  if (isBodyTooLarge(req)) return { ok: false, response: ERR.BAD_REQUEST("Request body too large") };
-  let raw: unknown;
-  try {
-    raw = await req.json();
-  } catch {
-    return { ok: false, response: ERR.BAD_REQUEST("Invalid request body") };
-  }
+  const read = await readBoundedJson(req);
+  if (read.tooLarge) return { ok: false, response: ERR.BAD_REQUEST("Request body too large") };
+  const raw: unknown = read.value;
+  if (raw === null) return { ok: false, response: ERR.BAD_REQUEST("Invalid request body") };
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
     const first = parsed.error.issues[0];

@@ -249,3 +249,24 @@ Stage Summary:
 - THE VERIFICATION: lint 0/0 · tsc 0 · 124/2362 · build (29 routes) · e2e 161/161 · probe:ref #137 STABLE · the six drift gates CLEAN x6 · census MATCH
 - The lessons: L-164c1 pin the env or the test is environment-dependent (a hard-coded fallback constant inherits every ambient env leak of its import graph) · L-164c2 the vacuous green is worse than the red · L-164c3 the distilled skill outranks its source repos (digma's plaintext parity was not the bar)
 - SHIPPED: the remediated codebase committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)
+
+---
+Task ID: 165
+Agent: main (Z.ai)
+Task: The session-165 post-164 audit round — THE BOUNDED-READER PORT + THE CONTENT-TYPE CSRF GATE + THE E2E-CENSUS DOCTRINE — TDD remediation, docs lockstep, push to main via the SSH wrapper.
+
+Work Log:
+- The workspace refreshed to 021fb74 (git pull; prisma generate re-run out of caution); the baseline gate GREEN at the exact s164 ship state (lint 0/0 · tsc 0 · 124/2362 · build · e2e 161/161) — the test-isolation cure holding in the ambient workspace; probe:ref #138 STABLE; census MATCH
+- The audit (the web-app-foundation §7.2 checklist + digma as the port donor): F-165a the content-type CSRF gate absent at every JSON parse site (the login-CSRF class — SameSite=Lax gates cookie SENDING on cross-site POSTs, never cookie SETTING; first-party census lead-verified: every JSON consumer already sends application/json) · F-165b the chunked-body bypass (isBodyTooLarge checked only the DECLARED Content-Length) · F-165c the mobile-nav e2e-count miscount (MOBILE_NAV_E2E = 11 for a 10-test spec since s147 — landing.spec gained that round's +1 while the constant got the bump, git-verified) · F-165d the Appendix B e2e rows drifted (landing 12/14 · crm 111/112 · the s163 reset-password spec absent) · F-165e/f/g the PAD route-census carriers + the SKILL §3.3/§11/§14 stale spots + ADR-014 never written
+- The plan landed at docs/plans/2026-10-22-session165-bounded-reader-csrf-gate-e2e-census.md; validated against the codebase; executed TDD (RED 20 → GREEN)
+- WP-1: readBoundedJson in src/lib/api.ts (the digma S148-A/S75-B construction — the content-type gate + the declared fast path + the stream counter + the null-on-unparseable tail); parseBody composes it; the 13 sessioned CRUD sites swapped via crud-seam-swap-165.py (assert-first, every 400 message preserved verbatim incl. the users/reset divergent siblings; the F-69a3 gate-before-DB ordering carried); the e2e CSRF probe joined the auth 4xx quartet on its own XFF bucket (E2E held 161)
+- WP-2: the mobile-nav constant 11 → 10 + the seven doc carriers + the LIVE-CENSUS pin (the count read FROM the spec file); the Appendix B e2e rows re-censused + the NEW reset-password row + the sum guard + the doctrine note narrowed; THE VACUOUS-PIN CATCH (the RegExp-template pipe escape collapsed to alternation — the pin matched everything; caught live, replaced with toContain, mutation-proven)
+- WP-3: PAD's route census → the LIVE 29/41 (read from the tree by the pin) · the HEAD line's 10-spec enumeration · SKILL §3.3's six-knob table · §11's live gate-block counts · §14's Zod reality · ADR-014 formalized in PAD §1.3 + both indexes
+- WP-4: the count ladder 2362 → 2382 (+20) · SUITES 124 → 125 · badge 2523 → 2543 (count-ladder-165.py, assert-first, idempotent; the docs-counts comment ladder + the dialog-geometry CLAUDE carriers + the 2362-form negatives + the 11-check-form negatives + the FIRST-layer pin → the s165 head)
+- The docs: the AGENTS Session-165 section · the PAD session-165 row · the SKILL v1.162.0 + the s165 head layer + §7.4's bounded-reader facts · session_351.md · the plan's execution record · this entry
+
+Stage Summary:
+- The captures 397-400 (the login card + the reset-password landing at phone + desktop — the auth-family surfaces the bounded reader hardens)
+- THE VERIFICATION: lint 0/0 · tsc 0 · 125/2382 · build (29 routes) · e2e 161/161 · probe:ref #138 STABLE · the six drift gates CLEAN ×6 · census MATCH
+- The lessons: L-165c1 the live-census doctrine (a pin that checks doc-consistency with a constant never checks the constant against its census) · L-165c2 the RegExp-from-template escaping trap (mutation-prove regex pins at birth) · L-165c3 the e2e rows are only 10 — pin them live
+- SHIPPED: the remediated codebase committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)
