@@ -1,9 +1,11 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, isBadFK, isBodyTooLarge } from "@/lib/api";
+import { ok, ERR, parseBody } from "@/lib/api";
 import { hashPassword } from "@/lib/auth";
+import { signupSchema } from "@/lib/schemas";
 import { clientKey, rateLimit, sweepRateLimits } from "@/lib/rate-limit";
 import { VERIFICATION_TTL_MS } from "@/lib/verification";
-import { generateVerificationCode, hashVerificationCode } from "@/lib/verification-server";
+import { hashVerificationCode } from "@/lib/verification-server";
+import { generateVerifyCode } from "@/lib/password";
 
 export const dynamic = "force-dynamic";
 
@@ -38,34 +40,17 @@ export async function POST(req: Request) {
   // like the rest of the family.
   if (!limit.allowed) return ERR.RATE_LIMITED(limit.retryAfterSec);
 
-  // Session-67 (N-67d): the declared-size pre-gate BEFORE the parse —
-  // req.json() buffers with no default cap in App Router handlers.
-  if (isBodyTooLarge(req)) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
-
-  // Session-21 (S21-P4): the reference's signup form has NO name field —
-  // the name is derived from the email local part. The optional body name
-  // stays accepted (API compatibility) but is no longer required.
-  // Session-38 (S38-P1): the parse is OPTIONAL — asString's non-optional
-  // form returns "" for an absent name, and "" ?? fallback keeps "" (an
-  // empty string is not nullish), so the nameFromEmail fallback was DEAD
-  // CODE for 16 sessions: every UI signup stored name: "" (the "?"
-  // avatars). The optional form returns undefined, so the ?? fires.
-  // Session-39 (S39-P4): a PRESENT non-string name is a 400 — the same
-  // type contract the s38 photoUrl guards enforce one field over
-  // ({"name": 123} used to ride the optional coercion to undefined and
-  // silently derive). The derived name is capped at the explicit-name
+  // Session-163: the Zod parse seam — the pre-gate + the name/email/
+  // password contract (the s38/s39/s21 semantics: optional trimmed name
+  // <= 80 with the empty-string -> undefined normalization, the derived
+  // fallback, the email format, the 8-char password floor) ride the
+  // signupSchema in one call. The derived name keeps the explicit-name
   // ceiling: nameFromEmail returns the email local part, up to ~150
   // chars under the 160 email cap.
-  if (isBadFK(body.name)) return ERR.BAD_REQUEST("Invalid name");
-  const name = (asString(body.name, { max: 80, optional: true }) ?? nameFromEmail(asString(body.email, { max: 160 }) ?? "")).slice(0, 80);
-  const email = (asString(body.email, { max: 160 }) ?? "").toLowerCase();
-  const password = typeof body.password === "string" ? body.password : "";
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return ERR.BAD_REQUEST("Enter a valid email address");
-  if (password.length < 8) return ERR.BAD_REQUEST("Password must be at least 8 characters");
+  const parsed = await parseBody(req, signupSchema);
+  if (!parsed.ok) return parsed.response;
+  const name = (parsed.data.name ?? nameFromEmail(parsed.data.email)).slice(0, 80);
+  const { email, password } = parsed.data;
 
   // Session-37 (S37-P1): the auth family joins the envelope — the
   // findUnique/count/create failures (SQLITE_BUSY-class) stay inside
@@ -89,7 +74,7 @@ export async function POST(req: Request) {
     // expiry; a self-hosted deployment has no mail transport, so the code
     // is logged to the SERVER console for the demo workflow (never shipped
     // to the client, never committed).
-    const code = generateVerificationCode();
+    const code = generateVerifyCode();
     const user = await db.user.create({
       data: {
         name,
@@ -105,7 +90,18 @@ export async function POST(req: Request) {
 
     console.info(`[verification] code for ${email}: ${code} (expires in 15 minutes)`);
 
-    return ok({ id: user.id, email: user.email, requiresVerification: true });
+    // Session-163 (the digma ADR-014 port): the SELF-HOSTED in-app OTP
+    // delivery — the code rides the response for existing demo workflows
+    // (and the e2e scratch-account funnel) exactly as digma's register
+    // carries it. NEO_DISABLE_IN_APP_OTP=1 nulls it for production (an
+    // email service owns the delivery); the console log stays either way.
+    const inAppOtpEnabled = process.env.NEO_DISABLE_IN_APP_OTP !== "1";
+    return ok({
+      id: user.id,
+      email: user.email,
+      requiresVerification: true,
+      verificationCode: inAppOtpEnabled ? code : null,
+    });
   } catch {
     return ERR.INTERNAL();
   }

@@ -55,8 +55,11 @@ test("unauthenticated visits to app pages login-wall with from_url (the s147 mir
 
 // Session-11 (S11-P1): the reference's Forgot-password flow — an in-card
 // view swap (no URL change). The reset view replaces the login column (no
-// logo / Google button / divider); the sent view is client-side only (the
-// reference's demo never sends an email — no network call fires).
+// logo / Google button / divider). Session-163: the sent view is now the
+// REAL endpoint's answer — the pre-163 form was client-side theater (no
+// network call fired; the reference's own demo behavior); the retrofit
+// wires POST /api/auth/forgot-password, whose no-enumeration 200 swaps
+// the card for known and unknown emails alike.
 test("forgot password swaps the card to the reset view and back", async ({ page }) => {
   await page.goto("/login");
   await page.getByRole("button", { name: "Forgot password?" }).click();

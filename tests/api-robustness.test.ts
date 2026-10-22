@@ -464,11 +464,15 @@ describe("session-37: photoUrl cap parity across the three writers (S37-P5)", ()
 describe("session-38: the signup name-fallback revival (S38-P1)", () => {
   it("the name parse is OPTIONAL so the ?? nameFromEmail fallback actually fires", () => {
     const post = handlerBlock(route("src/app/api/auth/signup/route.ts"), "POST");
-    // The trap: asString's NON-optional form returns "" for an absent
-    // name, and "" ?? fallback keeps "" (empty string is not nullish) —
-    // the fallback has been dead since s21. The optional form returns
-    // undefined, which is nullish, so the ?? fires.
-    expect(post).toMatch(/asString\(body\.name,\s*\{\s*max:\s*80,\s*optional:\s*true\s*\}\)/);
+    // The trap: asString's NON-optional form returned "" for an absent
+    // name, and "" ?? fallback kept "" (empty string is not nullish) —
+    // the fallback had been dead since s21. The optional form returned
+    // undefined, which is nullish, so the ?? fired.
+    // Session-163 re-anchor: the optional-name semantics moved onto the
+    // signupSchema (z.string().trim().max(80).transform("" -> undefined)
+    // .optional()) — the route's ?? fires on the schema's undefined.
+    const schemaSrc = route("src/lib/schemas.ts");
+    expect(schemaSrc).toMatch(/\.transform\(\(v\) => \(v === "" \? undefined : v\)\)\s*\.optional\(\)/);
     expect(post).toMatch(/\?\?\s*nameFromEmail\(/);
   });
 
@@ -477,8 +481,10 @@ describe("session-38: the signup name-fallback revival (S38-P1)", () => {
     expect(src).toMatch(/function nameFromEmail\(/);
     // The fallback must survive the optional-parse fix (not be deleted
     // as "unused" — it is the absent-name path). Session-39 re-anchor:
-    // the expression is now parenthesized for the .slice(0, 80) cap.
-    expect(src).toMatch(/const name = \(asString\(body\.name/);
+    // the expression is parenthesized for the .slice(0, 80) cap.
+    // Session-163 re-anchor: the schema's parsed.data.name substitutes
+    // the asString read; the parenthesized .slice(0, 80) cap survives.
+    expect(src).toMatch(/const name = \(parsed\.data\.name \?\? nameFromEmail\(parsed\.data\.email\)\)\.slice\(0, 80\)/);
   });
 });
 
@@ -667,8 +673,13 @@ describe("session-39: the signup name family completion (S39-P4)", () => {
     // {"name": 123} used to ride asString's optional coercion to
     // undefined and silently derive from the email — the same
     // coercion class the s38 photoUrl guards closed.
-    expect(post).toMatch(/isBadFK\(body\.name\)/);
-    expect(post).toMatch(/Invalid name/);
+    // Session-163 re-anchor: the guard moved onto the signupSchema —
+    // z.string({ message: "Invalid name" }) rejects the non-string
+    // with the SAME 400 text (parseBody maps the issue onto the
+    // BAD_REQUEST envelope).
+    const schemaSrc = route("src/lib/schemas.ts");
+    expect(schemaSrc).toMatch(/z\s*\.string\(\{ message: "Invalid name" \}\)/);
+    expect(post).toMatch(/parseBody\(req, signupSchema\)/);
   });
 
   it("the DERIVED name is capped at the explicit-name ceiling (80)", () => {

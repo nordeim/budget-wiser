@@ -1,13 +1,12 @@
 import { db } from "@/lib/db";
-import { ok, fail, ERR, asString, isBodyTooLarge } from "@/lib/api";
+import { ok, fail, ERR, parseBody } from "@/lib/api";
 import { setSessionCookie } from "@/lib/auth";
+import { verifySchema } from "@/lib/schemas";
 import { clientKey, rateLimit, sweepRateLimits } from "@/lib/rate-limit";
 import {
-  VERIFICATION_CODE_LENGTH,
   VERIFICATION_MAX_ATTEMPTS,
   isVerificationLockedOut,
   isVerificationPending,
-  verificationIncompleteMessage,
   verificationLockoutMessage,
   verificationRemainingMessage,
 } from "@/lib/verification";
@@ -35,19 +34,11 @@ export async function POST(req: Request) {
   // like the rest of the family.
   if (!limit.allowed) return ERR.RATE_LIMITED(limit.retryAfterSec);
 
-  // Session-67 (N-67d): the declared-size pre-gate BEFORE the parse —
-  // req.json() buffers with no default cap in App Router handlers.
-  if (isBodyTooLarge(req)) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
-
-  const email = (asString(body.email, { max: 160 }) ?? "").toLowerCase();
-  const code = typeof body.code === "string" ? body.code.replace(/\D/g, "") : "";
-  if (!email) return ERR.BAD_REQUEST("Email is required");
-  if (code.length !== VERIFICATION_CODE_LENGTH) {
-    return ERR.BAD_REQUEST(verificationIncompleteMessage());
-  }
+  // Session-163: the Zod parse seam (pre-gate + email/code schema in one
+  // call — the digit-stripping and the 6-length check ride the schema).
+  const parsed = await parseBody(req, verifySchema);
+  if (!parsed.ok) return parsed.response;
+  const { email, code } = parsed.data;
 
   // Session-37 (S37-P1): the whole DB tail joins the envelope — the
   // findUnique and both user.update failures stay inside { ok, error }.
@@ -95,7 +86,9 @@ export async function POST(req: Request) {
         verificationExpiresAt: null,
       },
     });
-    await setSessionCookie(user.id);
+    // Session-163 (the digma S67-A port): the mint carries the live
+    // row's tokenVersion.
+    await setSessionCookie(user.id, user.tokenVersion);
     return ok({ id: user.id, email: user.email, verified: true });
   } catch {
     return ERR.INTERNAL();

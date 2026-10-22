@@ -390,9 +390,16 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // links on the guest /About; the retired form joins its negatives).
     expect(src).not.toContain("**E2E (Playwright, 149 checks)**");
     expect(src).not.toContain("**E2E (Playwright, 152 checks)**");
+    // session-163 lockstep carry-forward: the carrier re-anchored
+    // 153 -> 161 (the reset-password spec's 8 checks join the e2e
+    // census; the retired 153 form joins its negatives, the doctrine
+    // unchanged).
+    expect(src).not.toContain("**E2E (Playwright, 153 checks)**");
     // session-150 lockstep carry-forward: 152 -> 153 (the walk40
     // marketing-mobile spec — the internal-scroller scroll model).
-    expect(src).toContain("**E2E (Playwright, 153 checks)**");
+    // session-163 lockstep carry-forward: 153 -> 161 (the reset-password
+    // spec — the digma reset-funnel port's 8 checks).
+    expect(src).toContain("**E2E (Playwright, 161 checks)**");
   });
 });
 

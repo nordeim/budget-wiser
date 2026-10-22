@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
-import { ok, fail, ERR, asString, isBodyTooLarge } from "@/lib/api";
-import { verifyPassword, setSessionCookie } from "@/lib/auth";
+import { ok, fail, ERR, parseBody } from "@/lib/api";
+import { verifyPassword, timingEqualizerHash, setSessionCookie } from "@/lib/auth";
+import { loginSchema } from "@/lib/schemas";
 import { clientKey, rateLimit, sweepRateLimits } from "@/lib/rate-limit";
 import { isVerificationPending, verificationRequiredMessage } from "@/lib/verification";
 
@@ -14,19 +15,12 @@ export async function POST(req: Request) {
   // moves into ERR.RATE_LIMITED so every auth route ships it.
   if (!limit.allowed) return ERR.RATE_LIMITED(limit.retryAfterSec);
 
-  // Session-67 (N-67d): the declared-size pre-gate BEFORE the parse —
-  // req.json() buffers with no default cap in App Router handlers.
-  if (isBodyTooLarge(req)) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
-
-  // Session-63 (N-63i): the email cap joins the 160 family (signup/
-  // resend/verify) — asString TRUNCATES, so a >160-char email stored
-  // truncated by signup could never log in under the old default (500).
-  const email = (asString(body.email, { max: 160 }) ?? "").toLowerCase();
-  const password = typeof body.password === "string" ? body.password : "";
-  if (!email || !password) return ERR.BAD_REQUEST("Email and password are required");
+  // Session-163: the Zod parse seam (the declared-size pre-gate + the
+  // schema + the composite required message, one call — the N-67d pre-gate
+  // and the N-63i email cap ride inside parseBody).
+  const parsed = await parseBody(req, loginSchema);
+  if (!parsed.ok) return parsed.response;
+  const { email, password } = parsed.data;
 
   // Session-40 (S40-P5): the read + verification + cookie-set tail
   // joins the envelope — this was the ONLY auth-route DB read left
@@ -37,6 +31,12 @@ export async function POST(req: Request) {
   try {
     const user = await db.user.findUnique({ where: { email } });
     if (!user || !verifyPassword(password, user.passwordHash)) {
+      // Session-163 (the digma S72-C port): the timing equalizer — the
+      // miss branch burns the SAME scrypt work against a precomputed
+      // throwaway-constant hash, so response latency no longer
+      // distinguishes registered emails (the 401 envelope stays
+      // byte-identical; the burn is LAZY-memoized at the pure seam).
+      if (!user) verifyPassword(password, timingEqualizerHash());
       // Session-21 (S21-P1): the reference's banner text — "Invalid email or
       // password" (ours said "Incorrect…"; wrong-password probes on both apps).
       return fail("INVALID_CREDENTIALS", "Invalid email or password", 401);
@@ -51,7 +51,10 @@ export async function POST(req: Request) {
       return fail("VERIFICATION_REQUIRED", verificationRequiredMessage(), 403);
     }
 
-    await setSessionCookie(user.id);
+    // Session-163 (the digma S67-A port): the mint carries the live row's
+    // tokenVersion — a later reset increments it and this cookie dies at
+    // the getSessionUser comparison.
+    await setSessionCookie(user.id, user.tokenVersion);
     return ok({
       id: user.id,
       email: user.email,

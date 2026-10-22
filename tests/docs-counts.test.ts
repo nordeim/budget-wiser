@@ -123,12 +123,12 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 // content-varied preview family e2e [the micro-table + the 7-bar card]).
 // Session-150: E2E 152 -> 153 (+1 — the marketing-mobile spec: the
 // walk40 scroll model + the census).
-const E2E = 153;
+const E2E = 161;
 // Session-152: SUITES 118 -> 119 (the interior-census-tool file — the
 // standing sixth gate's pin suite).
 // Session-159: SUITES 119 -> 120 (the settings-rhythm-tool file — the
 // intraday-rhythm observation instrument's pin suite).
-const SUITES = 120;
+const SUITES = 124;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -589,7 +589,7 @@ const SUITES = 120;
 // + the atomic-0600 write + the freshness pure seam + the header
 // doctrine + the SEED's ID-STABILITY contract [the PASS-1 root cause];
 // SUITES stays 120; E2E stays 153.)
-const UNIT = 2271;
+const UNIT = 2347;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -1018,13 +1018,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-162 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-163 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s160 layer now beneath the s161 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s162 layer now beneath the s163 head)",
     ).toContain(
-      "+ beneath it 2262 unit checks + 153 e2e checks green; the session-161 layer (THE RHYTHM LOGIN CONSOLIDATION",
+      "+ beneath it 2271 unit checks + 153 e2e checks green; the session-162 layer (THE SWEEP LOGIN CONSOLIDATION",
     );
   });
 
@@ -1052,7 +1052,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B e2e-total row must carry the live spec-file + check counts",
-    ).toContain(`| **e2e total** | 9 spec files + the setup project | **${E2E}** |`);
+    ).toContain(`| **e2e total** | 10 spec files + the setup project | **${E2E}** |`);
     // Session-111 (F-111a1): the Appendix B wall-clock PROSE line is a
     // live-tense count site — the s110 realignment updated the table
     // rows but missed the phrase (it read "108 suites" for one session

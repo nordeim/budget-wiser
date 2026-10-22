@@ -2,6 +2,7 @@
 // Every handler returns { ok, data } | { ok, error: { code, message } }.
 
 import { NextResponse } from "next/server";
+import type { z } from "zod";
 import { getSessionUser, type SessionUser } from "./auth";
 
 export type ApiError = { code: string; message: string };
@@ -81,7 +82,36 @@ export function isBodyTooLarge(req: Request): boolean {
   return Number(req.headers.get("content-length") ?? 0) > MAX_AUTH_BODY_BYTES;
 }
 
-// ---- hand-rolled validation helpers (no schema lib — scaffold style) -------
+// ---- the Zod parse seam (session-163 — the auth family's validation) ----
+
+/** Session-163: parse + validate a JSON body against a Zod schema.
+ *  Composes the declared-size pre-gate (the N-67d contract) with
+ *  safeParse, and maps the first schema issue onto the BAD_REQUEST
+ *  envelope as a ready-made response — the route returns it verbatim.
+ *  The schemas live in src/lib/schemas.ts (the seam). */
+export async function parseBody<S extends z.ZodTypeAny>(
+  req: Request,
+  schema: S,
+): Promise<{ ok: true; data: z.output<S> } | { ok: false; response: NextResponse }> {
+  if (isBodyTooLarge(req)) return { ok: false, response: ERR.BAD_REQUEST("Request body too large") };
+  let raw: unknown;
+  try {
+    raw = await req.json();
+  } catch {
+    return { ok: false, response: ERR.BAD_REQUEST("Invalid request body") };
+  }
+  const parsed = schema.safeParse(raw);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    const message = first?.message ?? "Invalid request body";
+    return { ok: false, response: ERR.BAD_REQUEST(message) };
+  }
+  return { ok: true, data: parsed.data };
+}
+
+// ---- hand-rolled validation helpers (the CRUD family's guards — -------
+// the auth family moved to the Zod seam above in session-163; these
+// stay for the thirteen CRUD routes, the documented adoption path)
 
 export function asString(v: unknown, { max = 500, optional = false } = {}): string | undefined {
   if (v === undefined || v === null) return optional ? undefined : "";

@@ -2,9 +2,19 @@
 // family conventions): scrypt password hashes + HMAC-SHA256 signed
 // stateless cookie (`neo_session`, 7-day TTL).
 //
-// Cookie payload: base64url(JSON{uid,iat,exp}) + "." + hex HMAC.
+// Cookie payload: base64url(JSON{uid,iat,exp,v}) + "." + hex HMAC — the
+// `v` (session-163, the digma S67-A port) is the revocation dimension: a
+// password reset increments the row's tokenVersion and every previously
+// minted cookie dies at the getSessionUser comparison.
 
-import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
+// Session-163 (the digma S70-D port): the pure crypto trio lives in
+// src/lib/password.ts (the node:crypto-only seam the seed script can
+// import); this module re-exports it so the routes' existing import
+// surface (import { hashPassword } from "@/lib/auth") survives
+// byte-identically.
+import { hashPassword, timingEqualizerHash, verifyPassword } from "@/lib/password";
+export { hashPassword, timingEqualizerHash, verifyPassword };
 import { cookies } from "next/headers";
 import { db } from "./db";
 
@@ -31,23 +41,8 @@ function secret(): string {
 }
 
 // ---- password hashing ------------------------------------------------------
-
-export function hashPassword(password: string): string {
-  const salt = randomBytes(16).toString("hex");
-  const hash = scryptSync(password, salt, 64).toString("hex");
-  return `scrypt:${salt}:${hash}`;
-}
-
-export function verifyPassword(password: string, stored: string): boolean {
-  const parts = stored.split(":");
-  if (parts.length !== 3 || parts[0] !== "scrypt") return false;
-  const [, salt, expected] = parts;
-  const actual = scryptSync(password, salt, 64).toString("hex");
-  const a = Buffer.from(actual, "hex");
-  const b = Buffer.from(expected, "hex");
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
+// (Session-163: the implementation moved to the pure seam —
+// src/lib/password.ts — re-exported above.)
 
 // ---- session token ---------------------------------------------------------
 
@@ -55,6 +50,14 @@ export interface SessionPayload {
   uid: string;
   iat: number;
   exp: number;
+  // Session-163 (the digma S67-A port): the revocation dimension. The
+  // version rides the SIGNED payload — a password reset increments the
+  // live row's tokenVersion and every previously minted cookie dies at
+  // the getSessionUser comparison. A MISSING v (a pre-163 token) reads as
+  // 0 — the pre-retrofit rows' value — so the fleet is not force-logged
+  // out at deploy; the first reset/eviction event is what separates the
+  // eras.
+  v: number;
 }
 
 function b64url(input: string): string {
@@ -65,11 +68,12 @@ function unb64url(input: string): string {
   return Buffer.from(input, "base64url").toString("utf8");
 }
 
-export function signSession(uid: string, now = Date.now()): string {
+export function signSession(uid: string, tokenVersion = 0, now = Date.now()): string {
   const payload: SessionPayload = {
     uid,
     iat: now,
     exp: now + SESSION_TTL_MS,
+    v: tokenVersion,
   };
   const body = b64url(JSON.stringify(payload));
   const sig = createHmac("sha256", secret()).update(body).digest("hex");
@@ -87,10 +91,17 @@ export function verifySessionToken(token: string | undefined | null, now = Date.
   const b = Buffer.from(expected, "utf8");
   if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
   try {
-    const payload = JSON.parse(unb64url(body)) as SessionPayload;
+    const payload = JSON.parse(unb64url(body)) as Partial<SessionPayload>;
     if (typeof payload.uid !== "string" || typeof payload.exp !== "number") return null;
     if (payload.exp < now) return null;
-    return payload;
+    // Session-163: the version's own shape guard — a non-integer,
+    // fractional, or negative v is rejected even under a valid signature
+    // (unforgeable in practice — the v rides the HMAC payload — but the
+    // parse must never widen what the mint sites can write). A MISSING v
+    // is the pre-163 form and reads as 0.
+    const version = payload.v ?? 0;
+    if (typeof version !== "number" || !Number.isInteger(version) || version < 0) return null;
+    return { uid: payload.uid, iat: payload.iat ?? 0, exp: payload.exp, v: version };
   } catch {
     return null;
   }
@@ -98,9 +109,9 @@ export function verifySessionToken(token: string | undefined | null, now = Date.
 
 // ---- request helpers -------------------------------------------------------
 
-export async function setSessionCookie(uid: string): Promise<void> {
+export async function setSessionCookie(uid: string, tokenVersion = 0): Promise<void> {
   const store = await cookies();
-  store.set(SESSION_COOKIE, signSession(uid), {
+  store.set(SESSION_COOKIE, signSession(uid, tokenVersion), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -141,7 +152,14 @@ export async function getSessionUser(): Promise<SessionUser | null> {
   const payload = verifySessionToken(token);
   if (!payload) return null;
   const user = await db.user.findUnique({ where: { id: payload.uid } });
-  if (!user) return null;
+  // Session-163 (the digma S67-A port): the database-seam version check —
+  // a token minted before a password reset still parses and still carries
+  // a valid signature, but its embedded version no longer matches the
+  // holder's live row. This is the eviction the stateless format needed:
+  // the reset increments tokenVersion and every pre-reset cookie dies
+  // with it (a stolen/observed session no longer outlives the reset
+  // performed specifically to kill it).
+  if (!user || user.tokenVersion !== payload.v) return null;
   return {
     id: user.id,
     email: user.email,

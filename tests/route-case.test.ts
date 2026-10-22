@@ -219,9 +219,13 @@ describe("session-24: URL-state parity holds (the s39 pointer, CLOSED)", () => {
       // back to /About). An auth-flow INPUT read, never filter/view
       // state serialization: the s39 contract is "no page WRITES UI
       // state to the URL", and the login card never writes it.
+      // Session-163: the reset-password screen READS ?token — the digma
+      // RA-66 landing contract (a non-empty token opens the set-password
+      // form). The same auth-flow INPUT class; it never writes it.
       (f) =>
         /\.(tsx|jsx)$/.test(f) &&
         !f.endsWith("login-card.tsx") &&
+        !f.endsWith("reset-password-screen.tsx") &&
         /useSearchParams|history\.pushState|history\.replaceState/.test(readFileSync(f, "utf8")),
     );
     expect(offenders).toEqual([]);

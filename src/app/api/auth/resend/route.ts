@@ -1,8 +1,10 @@
 import { db } from "@/lib/db";
-import { ok, ERR, asString, isBodyTooLarge } from "@/lib/api";
+import { ok, ERR, parseBody } from "@/lib/api";
+import { resendSchema } from "@/lib/schemas";
 import { clientKey, rateLimit, sweepRateLimits } from "@/lib/rate-limit";
 import { VERIFICATION_TTL_MS, isVerificationPending, verificationResentMessage } from "@/lib/verification";
-import { generateVerificationCode, hashVerificationCode } from "@/lib/verification-server";
+import { hashVerificationCode } from "@/lib/verification-server";
+import { generateVerifyCode } from "@/lib/password";
 
 export const dynamic = "force-dynamic";
 
@@ -25,15 +27,10 @@ export async function POST(req: Request) {
   // like the rest of the family.
   if (!limit.allowed) return ERR.RATE_LIMITED(limit.retryAfterSec);
 
-  // Session-67 (N-67d): the declared-size pre-gate BEFORE the parse —
-  // req.json() buffers with no default cap in App Router handlers.
-  if (isBodyTooLarge(req)) return ERR.BAD_REQUEST("Request body too large");
-
-  const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
-  if (!body) return ERR.BAD_REQUEST("Invalid request body");
-
-  const email = (asString(body.email, { max: 160 }) ?? "").toLowerCase();
-  if (!email) return ERR.BAD_REQUEST("Email is required");
+  // Session-163: the Zod parse seam (pre-gate + the email contract).
+  const parsed = await parseBody(req, resendSchema);
+  if (!parsed.ok) return parsed.response;
+  const { email } = parsed.data;
 
   // Session-37 (S37-P1): the auth family joins the envelope — the
   // findUnique/update failures stay inside { ok, error }.
@@ -45,7 +42,7 @@ export async function POST(req: Request) {
       return ok({ resent: true, message: verificationResentMessage() });
     }
 
-    const code = generateVerificationCode();
+    const code = generateVerifyCode();
     await db.user.update({
       where: { id: user.id },
       data: {
@@ -57,7 +54,15 @@ export async function POST(req: Request) {
 
     console.info(`[verification] code for ${email}: ${code} (expires in 15 minutes)`);
 
-    return ok({ resent: true, message: verificationResentMessage() });
+    // Session-163 (the digma ADR-014 port): the in-app OTP delivery —
+    // the fresh code rides the response for the demo workflow (and the
+    // e2e resend funnel), NEO_DISABLE_IN_APP_OTP=1 gated.
+    const inAppOtpEnabled = process.env.NEO_DISABLE_IN_APP_OTP !== "1";
+    return ok({
+      resent: true,
+      message: verificationResentMessage(),
+      verificationCode: inAppOtpEnabled ? code : null,
+    });
   } catch {
     return ERR.INTERNAL();
   }

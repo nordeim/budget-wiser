@@ -5,8 +5,14 @@
 // Demo login (mirrors the reference app): sepnetflix2023@outlook.com / $Abcd1234
 
 import { PrismaClient, type Account, type Contact } from "@prisma/client";
-import { scryptSync, randomBytes } from "crypto";
 import { runtimeDatabaseUrl } from "../src/lib/db-path";
+// Session-163 (the digma S70-D port): the PURE crypto seam — the seed
+// script used to DUPLICATE the scrypt parameter set (16-byte salt,
+// 64-byte key, `scrypt:salt:hash`), and a change in src/lib/auth.ts
+// (un-importable here: its transitive next/headers + Prisma imports)
+// silently broke demo login. The seam is node:crypto-only; both
+// consumers import the ONE implementation.
+import { hashPassword } from "../src/lib/password";
 
 // Explicit datasource URL: never let the Prisma engine (or bun's .env
 // absolutization) pick the database location — the shared resolver pins
@@ -14,12 +20,6 @@ import { runtimeDatabaseUrl } from "../src/lib/db-path";
 const db = new PrismaClient({
   datasources: { db: { url: runtimeDatabaseUrl() } },
 });
-
-function hashPassword(password: string): string {
-  const salt = randomBytes(16).toString("hex");
-  const hash = scryptSync(password, salt, 64).toString("hex");
-  return `scrypt:${salt}:${hash}`;
-}
 
 function d(offsetDays: number, hour = 10, minute = 0): Date {
   const x = new Date();

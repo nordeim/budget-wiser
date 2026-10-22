@@ -82,6 +82,14 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
   // Session-67 (N-67k): the resend's own in-flight flag — the link's
   // budget is 5/15 min, so a double-click must not burn two sends.
   const [resending, setResending] = React.useState(false);
+  // Session-163 (the digma ADR-014 port): the SELF-HOSTED in-app
+  // deliveries — the reset link the forgot-password response carries
+  // (rendered in the sent view only when present) and the verification
+  // code hint (signup/resend responses). Both degrade to nothing when a
+  // production deploy sets the NEO_DISABLE_* knobs — the sent card and
+  // the verify view render exactly as before.
+  const [resetUrl, setResetUrl] = React.useState<string | null>(null);
+  const [verifyCodeHint, setVerifyCodeHint] = React.useState("");
   // Session-11 (S11-P1) + session-21: the card's five in-place views.
   const [view, setView] = React.useState<LoginView>(mode === "signup" ? "signup" : "signin");
   // S21-P5: the six single-digit code inputs.
@@ -163,6 +171,9 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
       setCodeDigits(Array(VERIFICATION_CODE_LENGTH).fill(""));
       setError(null);
       setInfo(null);
+      // Session-163 (the digma ADR-014 port): the code hint rides the
+      // signup response for the self-hosted demo workflow.
+      setVerifyCodeHint(String(body?.data?.verificationCode ?? ""));
       setView("verify");
     } catch {
       setError("Network error — check your connection and try again.");
@@ -224,6 +235,10 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
         return;
       }
       setInfo(body?.data?.message ?? verificationResentMessage());
+      // Session-163 (the digma ADR-014 port): the fresh code rides the
+      // response for the self-hosted demo workflow.
+      setVerifyCodeHint(String(body?.data?.verificationCode ?? ""));
+      setCodeDigits(Array(VERIFICATION_CODE_LENGTH).fill(""));
     } catch {
       setError("Network error — check your connection and try again.");
     } finally {
@@ -231,17 +246,43 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
     }
   }
 
-  /** S11-P1: the reset view's submit — valid email swaps to the sent view
-   *  (the reference renders the confirmation without any network call;
-   *  a real sender can be wired behind canSubmitReset later). */
-  function onSendResetLink(e: React.FormEvent) {
+  /** Session-163 (the digma S46 port): the reset view's submit — the
+   *  CLIENT-SIDE THEATER retires. The pre-163 form swapped to the sent
+   *  view from pure client state (the reference app's own demo never
+   *  fired a network call); the retrofit wires the REAL forgot-password
+   *  endpoint. The no-enumeration contract: a 2xx swaps to the sent view
+   *  for known AND unknown emails alike; the in-app reset link rides the
+   *  response when the self-hosted delivery is enabled. */
+  async function onSendResetLink(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmitReset(email)) {
       setError("Enter a valid email address to reset your password.");
       return;
     }
+    if (pending) return;
+    setPending(true);
     setError(null);
-    setView("sent");
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok || !body?.ok) {
+        setError(body?.error?.message ?? "Could not send the reset link. Try again.");
+        return;
+      }
+      // The graceful form: the link renders in the sent view only when
+      // the field is a string (the knob-off production posture answers
+      // null and the card renders exactly as before).
+      setResetUrl(typeof body?.data?.resetUrl === "string" ? body.data.resetUrl : null);
+      setView("sent");
+    } catch {
+      setError("Network error — check your connection and try again.");
+    } finally {
+      setPending(false);
+    }
   }
 
   /** S21-P5: a single code input's change — keep the LAST digit typed and
@@ -492,6 +533,18 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                             <p className={LOGIN_VERIFY_LAYOUT.hint}>
                               {LOGIN_VERIFY_LAYOUT.hintLine}
                             </p>
+                            {/* Session-163 (the digma ADR-014 port): the
+                                self-hosted code hint — the signup/resend
+                                response carries the 6-digit code for the
+                                demo workflow (no mail transport); renders
+                                only when present, and never when the
+                                NEO_DISABLE_IN_APP_OTP knob is set. */}
+                            {verifyCodeHint && (
+                              <p className="text-sm text-slate-500">
+                                Demo code:{" "}
+                                <span className="font-semibold text-slate-700">{verifyCodeHint}</span>
+                              </p>
+                            )}
                           </div>
 
                           {error && <ErrorCallout message={error} />}
@@ -540,6 +593,20 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                             Please check your email for the password reset link. It may take a few
                             minutes to arrive.
                           </div>
+                          {/* Session-163 (the digma ADR-014 port): the
+                              self-hosted in-app delivery — the reset link
+                              rides the forgot-password response (graceful:
+                              renders only when the field is a string; a
+                              knob-off production deploy sees exactly the
+                              pre-163 card). */}
+                          {resetUrl && (
+                            <a
+                              href={resetUrl}
+                              className="mt-2 block break-all text-sm font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700"
+                            >
+                              Open your password reset link
+                            </a>
+                          )}
                         </div>
                         <button type="button" className={LOGIN_RESET_LAYOUT.sentBack} onClick={() => goto("back")}>
                           <ArrowLeft className={LOGIN_RESET_LAYOUT.backIcon} aria-hidden="true" />

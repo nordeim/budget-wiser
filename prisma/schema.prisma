@@ -31,6 +31,19 @@ model User {
   verificationCodeHash   String?
   verificationAttempts   Int      @default(0)
   verificationExpiresAt  DateTime?
+  // Session-163 (the digma S67-A port): the revocation dimension. Every
+  // session token embeds the row's tokenVersion at mint time; a password
+  // reset increments it and every previously minted cookie dies at the
+  // getSessionUser comparison (a stolen session no longer outlives the
+  // reset performed specifically to kill it).
+  tokenVersion Int @default(0)
+  // Session-163 (the digma S46/S64 port): the password-reset funnel. A
+  // NULL resetToken means "no reset pending"; the token is a 32-byte
+  // crypto-random hex consumed ATOMICALLY and SINGLE-USE (the conditional
+  // updateMany carries token + live expiry in its WHERE — a racing replay
+  // lands count 0 and answers the invalid-token 400). 60-minute TTL.
+  resetToken           String?
+  resetTokenExpiresAt  DateTime?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

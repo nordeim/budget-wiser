@@ -208,3 +208,21 @@ Work Log:
 
 Stage Summary:
 - SHIPPED: the session-152 two-commit pattern pushed to main via the SSH wrapper — the dead zone (below-every-fold, invisible to all five pixel gates by construction) closed STRUCTURALLY: the interior census is a standing one-command gate, byte-parity zero margin, every delta attributed to a named genus or RED; the lessons L-152c1 (the structural closure) · L-152c2 (geometry gates carry no margin) · L-152c3 (the census is a layout-tree instrument — the glyph interiors excluded) · L-152c4 (the alignment unit follows the data topology)
+
+---
+Task ID: 163
+Agent: main (Z.ai)
+Task: The session-163 AUTH RETROFIT + ZOD LAYER — port digma's auth mechanics onto neo-crm (TDD), evaluate + adopt Zod, align all docs, push to main via the SSH wrapper.
+
+Work Log:
+- Both repos refreshed (git pull); the digma auth seams re-read file-by-file (auth/password/rate-limit/validation + the 8 auth routes + the reset spec); the neo-crm gaps censused into the G1-G7 register (no revocation, no reset flow, the timing oracle, first-hop XFF trust, the seed's duplicated scrypt, console-only OTP)
+- The Zod feasibility evaluation: digma is Zod-FREE (hand-rolled clamps); zero-balance is the family's actual Zod reference (^4.6.5) — verdict FEASIBLE + RECOMMENDED incrementally; the plan landed at docs/plans/2026-10-22-session163-auth-retrofit-zod.md
+- TDD RED (31 failing): password-seam + schemas + parse-body + auth-reset + auth versioning + rate-limit depth batteries
+- GREEN: src/lib/password.ts (the pure seam) · the v-dimension in auth.ts · the forgot/reset routes (atomic single-use + eviction) · the timing equalizer · the last-hop/NEO_PROXY_HOPS clientKey · zod ^4.6.7 (schemas.ts + parseBody) · the /reset-password page + the login-card wiring + the ADR-014 deliveries
+- The collateral re-anchors: S38-P1/S39-P4/S67-P2/N-62a/N-63i/N-66e + the space-y census 20/114 -> 21/117 + the login-family e2e carrier
+- The count ladder: UNIT 2271 -> 2347 · SUITES 120 -> 124 · E2E 153 -> 161 · badge 2424 -> 2508 · routes 27 -> 29/39 -> 41 — every live-tense site + pin carrier re-anchored in lockstep
+- The docs: .env.example (+3 vars) · AGENTS (auth bullet + Session-163) · CLAUDE ×6 · PAD (ADR-003 + the inventory row) · SKILL v1.160.0 (the s163 head + 7.4 + deps + Appendix B) · session_347.md
+
+Stage Summary:
+- THE VERIFICATION: lint 0/0 · tsc 0 · 124/2347 · build (29 routes) · e2e 161/161 (the reset round-trip + the behavioral eviction green on the first run)
+- SHIPPED: the retrofit + the Zod layer + the aligned docs, committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)

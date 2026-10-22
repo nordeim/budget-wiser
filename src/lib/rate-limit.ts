@@ -37,10 +37,46 @@ export function rateLimit(key: string, limit: number, windowMs: number): RateLim
 }
 
 export function clientKey(req: Request): string {
+  // Session-163 (the digma S62-D/S69-A port): the limiter keys on the
+  // LAST x-forwarded-for hop — the proxy-APPENDED real IP. The pre-163
+  // FIRST-hop keying trusted a client-suppliable value: a spoofing client
+  // PREPENDS a fake IP and the proxy appends the real one after it, so
+  // the first hop was attacker-chosen and the brute-force defense
+  // (10/IP/15min) was evadable by rotating the header. A single-value
+  // header (the e2e suites' dedicated-bucket form) is both first and
+  // last — unaffected.
+  //
+  // The trust depth is DEPLOY-DECLARED through NEO_PROXY_HOPS: unset
+  // (the default) = 1 — exactly one appending proxy. 0 = direct exposure
+  // (the client-suppliable header family is ignored entirely — one
+  // honest shared bucket instead of a per-request rotation that fully
+  // bypasses the limiter). N >= 2 = N trusted appending proxies (keys on
+  // the hop the Nth trusted proxy preserved). Unparsable or negative
+  // values fail CLOSED onto the default — a bad env var never widens
+  // trust. A list shorter than the declared depth fails closed onto
+  // "unknown" (an attacker sending single-value headers under a declared
+  // depth of 2 cannot rotate buckets). The x-real-ip fallback applies
+  // only at depth >= 1 with XFF absent — ignored entirely at depth 0.
+  const depth = proxyHopDepth();
+  if (depth === 0) return "unknown";
   const fwd = req.headers.get("x-forwarded-for");
-  const first = fwd?.split(",")[0]?.trim();
-  if (first) return first;
-  return req.headers.get("x-real-ip") ?? "unknown";
+  if (fwd) {
+    const hops = fwd.split(",").map((hop) => hop.trim()).filter(Boolean);
+    if (hops.length < depth) return "unknown";
+    return hops[hops.length - depth] ?? "unknown";
+  }
+  return req.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+/** Session-163 (the digma S69-A port): the declared proxy-topology trust
+ *  depth. NEO_PROXY_HOPS: unset/empty = 1; unparsable or negative fails
+ *  CLOSED onto 1; 0 = direct exposure; N >= 2 = N appending proxies. */
+export function proxyHopDepth(): number {
+  const raw = process.env.NEO_PROXY_HOPS;
+  if (raw === undefined || raw === "") return 1;
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed) || parsed < 0) return 1;
+  return parsed;
 }
 
 // Opportunistic cleanup so the map never grows unbounded.

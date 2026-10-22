@@ -17,8 +17,8 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2271 checks)      | `bun run test`                         |
-|  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
+|  Unit tests (2347 checks)      | `bun run test`                         |
+|  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
 | Prisma client after schema edit | `bunx prisma generate`                 |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2271) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2347) → `bun run build` → `bun run test:e2e` (161) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -44,14 +44,32 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
 
 ## Architecture facts you would otherwise guess wrong
 
-- **Auth is hand-rolled** (`src/lib/auth.ts`): scrypt password hashes
-  (`scrypt:salt:hash`) + HMAC-SHA256 signed stateless cookie `neo_session`
-  (7-day TTL). `requireSession()` + the `isGuarded()` narrowing helper guard
-  every route handler; the `(app)` route-group layout redirects unauthenticated
-  page visits. No NextAuth, no JWTs, no middleware/proxy. The public auth
-  routes are rate-limited per IP/15 min — login 10, signup 10, resend 5,
-  verify 20 (session-67 adds the sessioned upload route at 20;
-  `src/lib/rate-limit.ts`, per-process).
+- **Auth is hand-rolled** (`src/lib/auth.ts` + the pure `src/lib/password.ts`
+  seam): scrypt password hashes (`scrypt:salt:hash`) + HMAC-SHA256 signed
+  stateless cookie `neo_session` (7-day TTL) whose payload carries a
+  **tokenVersion** revocation dimension (`uid,iat,exp,v` — session-163, the
+  digma S67-A port: a password reset increments the live row's version and
+  every pre-reset cookie dies at the `getSessionUser` comparison; a missing
+  `v` reads as 0, so pre-163 sessions survive). The **password-reset funnel**
+  (session-163, the digma port): `POST /api/auth/forgot-password` (the
+  no-enumeration 200, 32-byte crypto-random token, 60-min TTL, the in-app
+  `resetUrl` delivery behind `NEO_DISABLE_IN_APP_RESET`) +
+  `POST /api/auth/reset-password` (token-first ordering, ATOMIC single-use
+  conditional consumption, `tokenVersion` eviction, P2024/P2028→503) + the
+  `/reset-password` landing page. The login miss branch burns the **timing
+  equalizer** scrypt (digma S72-C). `requireSession()` + the `isGuarded()`
+  narrowing helper guard every route handler; the `(app)` route-group layout
+  redirects unauthenticated page visits. No NextAuth, no JWTs, no
+  middleware/proxy. The public auth routes are rate-limited per IP/15 min —
+  login 10, signup 10, resend 5, verify 20, forgot 10, reset 10 (session-67
+  adds the sessioned upload route at 20; `src/lib/rate-limit.ts`,
+  per-process) — keyed on the **LAST x-forwarded-for hop** behind the
+  deploy-declared `NEO_PROXY_HOPS` depth (session-163, digma S62-D/S69-A:
+  unset=1, 0=direct/unknown, N≥2=Nth-from-last, unparsable fails closed).
+  The auth family validates through the **Zod seam** (session-163):
+  `src/lib/schemas.ts` + `parseBody()` in `src/lib/api.ts` (zod ^4 — the
+  CRUD family keeps the `asString` guards, the documented incremental
+  adoption path).
 - **API envelope is `{ ok, data } | { ok, error: { code, message } }`** — build
   responses with `ok()` / `fail()` / `ERR.*` from `src/lib/api.ts`. The store's
   `call()` helper (`src/stores/crm-store.ts`) is the only sanctioned client.
@@ -8496,3 +8514,98 @@ pair, the next three reuse it; the chain's our-login count drops
   surface: the sweep family's own apples-to-apples state; mainH
   byte-equal both apps [phone 2851/2851 · desktop 1274/1274],
   in-frame verified, the state file reused by the driver itself).
+
+### Session-163 (2026-10-22) — THE AUTH RETROFIT + THE ZOD LAYER (the digma-reference port)
+
+**Context**: the four-repo family evaluation (neo-crm 8.1 · zero-balance 7.7
+· digma 7.1 · project-management 6.5) recommended "neo-crm base + port
+digma's auth completions" — this session executes that recommendation:
+retrofit proper auth mechanics + functionality onto neo-crm using digma as
+the reference/sample template, evaluate + adopt the Zod layer, TDD
+throughout, docs aligned, pushed to main via the SSH wrapper.
+
+- **THE GAP REGISTER** (the audit that motivated the round): G1 no session
+  revocation (the token had no version dimension) · G2 NO password-reset
+  flow at all (the login card's "Forgot password?" was CLIENT-SIDE THEATER
+  since session 11 — the reference app's own demo behavior, no network call
+  fired) · G3 the login timing oracle (`!user || !verify` short-circuited —
+  unknown emails answered measurably faster) · G4 FIRST-hop XFF trust (the
+  limiter key was client-suppliable — header rotation evaded the
+  brute-force budget) · G5 the seed script DUPLICATED the scrypt parameter
+  set (the drift class digma's S70-D seam solved) · G7 the OTP was
+  console-logged only (no in-response delivery — the e2e/demo funnel could
+  not complete programmatically).
+- **WP-1 THE PURE PASSWORD SEAM** (digma S70-D): `src/lib/password.ts` —
+  node:crypto ONLY (`hashPassword`, `verifyPassword`,
+  `timingEqualizerHash`, `generateVerifyCode`); `auth.ts` re-exports (the
+  routes' import surface survives); `prisma/seed.ts` imports the seam (the
+  duplicated params die); `verification-server.ts` keeps verification-shaped
+  wrappers on the seam.
+- **WP-2 THE REVOCATION DIMENSION** (digma S67-A): `SessionPayload` gains
+  `v`; `signSession(uid, tokenVersion = 0, now)`; the parse rejects
+  non-integer/fractional/negative `v` under a valid signature; a MISSING `v`
+  reads as 0 (no forced fleet re-login — the first eviction event separates
+  the eras); `getSessionUser` evicts on `user.tokenVersion !== payload.v`;
+  login/verify mint with the live row's version.
+- **WP-3 THE RESET FUNNEL** (digma S46/S64/S66/S67-A/S76-A/S102-B/S124-A):
+  schema columns `resetToken`/`resetTokenExpiresAt`; the two routes (the
+  no-enumeration 200 message verbatim, `randomBytes(32)`, 60-min TTL, the
+  RELATIVE resetUrl behind `NEO_DISABLE_IN_APP_RESET`, P2025-swallow +
+  P2024/P2028→503; the atomic conditional `updateMany` with token + live
+  expiry in the WHERE, count 0 → the invalid-token 400, `tokenVersion`
+  increment, single-use clearing); the login card's `onSendResetLink` wired
+  to the REAL endpoint (the theater retired); the sent card renders the
+  in-app link when the field is a string (graceful degrade); the
+  `/reset-password` landing page (the invalid-link card vs the set-password
+  form, keyed on `?token=`).
+- **WP-4 THE TIMING EQUALIZER** (digma S72-C): the login miss branch burns
+  `verifyPassword(password, timingEqualizerHash())` — the lazy-memoized
+  throwaway-constant hash; the 401 envelope stays byte-identical.
+- **WP-5 THE PROXY-DEPTH IP** (digma S62-D/S69-A): `clientKey` re-keys onto
+  the LAST XFF hop; `NEO_PROXY_HOPS` (unset=1 · 0=direct/"unknown" · N≥2
+  the Nth-from-last hop · unparsable/negative fails CLOSED); short lists →
+  "unknown"; `x-real-ip` only at depth ≥ 1. Single-value headers (the e2e
+  isolation form) are unaffected — first == last.
+- **WP-6 THE ZOD LAYER** (zero-balance's pattern at digma's seam placement):
+  `zod ^4.6.7`; `src/lib/schemas.ts` (login/signup/verify/resend/
+  forgot/reset schemas — EVERY message the current route string, zero drift;
+  the N-63i 160-cap rides the login schema; >160 now REJECTS honestly where
+  asString truncated silently — the reference repos' posture); `parseBody()`
+  in `api.ts` (the declared-size pre-gate + safeParse + the first issue →
+  the BAD_REQUEST envelope); the auth family retrofitted; the CRUD family
+  keeps `asString` (the documented incremental path); signup/resend answer
+  `verificationCode` behind `NEO_DISABLE_IN_APP_OTP` (the digma ADR-014
+  in-app delivery — also what makes the e2e scratch funnel possible), the
+  verify view renders the demo code hint when present.
+- **THE PINS (TDD)**: RED-first — `tests/password-seam.test.ts` (+8),
+  `tests/schemas.test.ts` (+27), `tests/parse-body.test.ts` (+5),
+  `tests/auth-reset.test.ts` (+24: the route contracts — no-enumeration
+  message, atomic consumption, eviction, equalizer, knob gates),
+  `tests/auth.test.ts` (+6 version tests, the 3 legacy token tests
+  re-anchored onto the `(uid, version, now)` signature),
+  `tests/rate-limit.test.ts` (the clientKey battery rewritten onto the
+  last-hop/depth contract, 2 → 9 checks), `tests/e2e/reset-password.spec.ts`
+  (NEW, +8: the landing cards, the form guards, the invalid-token alert, the
+  FULL ROUND-TRIP on a dedicated scratch account with its own XFF bucket —
+  forgot → sent card carries the link → reset → old password dead → new
+  password live → /me resolves — plus the BEHAVIORAL EVICTION pin: a
+  pre-reset session dies at the version comparison and the consumed token
+  replay answers 400); the collateral re-anchors (api-robustness S38-P1/
+  S39-P4, auth-contract S67-P2, dead-code-hygiene N-62a/N-63i, route-case
+  N-66e exclusion for the token read, the space-y census 20/114 → 21/117,
+  the login-family e2e carrier 153 → 161).
+- **THE COUNT LADDER**: UNIT 2271 → 2347 (+76) · SUITES 120 → 124 · E2E
+  153 → 161 (+8) · badge 2424 → 2508 · routes 27 → 29 files / 39 → 41
+  handlers · every live-tense site re-anchored in lockstep (README ×6 +
+  Tested row + badge · AGENTS ×3 + the auth bullet · CLAUDE ×6 · PAD ×8 +
+  the route/layer diagrams · SKILL head v1.160.0 + the s163 layer + §7 line
+  counts + Appendix B) and the pin carriers (docs-counts UNIT/E2E/SUITES/
+  layer-axis/Appendix-B · dialog-geometry CLAUDE ×4 · login-family e2e).
+- **THE ZOD FEASIBILITY EVALUATION** (the honest finding, in the plan):
+  digma itself is Zod-FREE (hand-rolled clamps in `src/lib/validation.ts`)
+  — the family's actual Zod reference is zero-balance (^4.6.5). Verdict:
+  FEASIBLE + RECOMMENDED incrementally; adopted for the auth family this
+  session, the CRUD path documented.
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **124/2347** · build (29 routes,
+  /reset-password live) · e2e **161/161** (the reset round-trip + the
+  behavioral eviction green on the first run).

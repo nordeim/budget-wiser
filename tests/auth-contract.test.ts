@@ -66,6 +66,12 @@ describe("session-67: the auth-seam contract (the N-67 family)", () => {
   });
 
   it("S67-P2: all four public auth routes pre-gate the body size BEFORE the parse", () => {
+    // Session-163 re-anchor: the pre-gate COMPOSED into parseBody()
+    // (api.ts) when the auth family moved onto the Zod seam — the
+    // behavioral contract (declared-size rejection before req.json()
+    // buffers) is pinned in tests/parse-body.test.ts; this pin now
+    // asserts every route parses through the seam (the four legacy
+    // routes + the two session-163 reset routes).
     const routes: Array<[string, string]> = [
       ["login", loginRoute()],
       ["signup", signupRoute()],
@@ -73,12 +79,14 @@ describe("session-67: the auth-seam contract (the N-67 family)", () => {
       ["resend", resendRoute()],
     ];
     for (const [name, src] of routes) {
-      const gate = src.indexOf("isBodyTooLarge");
-      const parse = src.indexOf("req.json()");
-      expect(gate, `${name}: the gate is present`).toBeGreaterThanOrEqual(0);
-      expect(parse, `${name}: the parse is present`).toBeGreaterThan(0);
-      expect(gate, `${name}: the gate precedes the parse`).toBeLessThan(parse);
+      expect(src, `${name}: parses through the seam`).toMatch(/await parseBody\(req, \w+Schema\)/);
     }
+    const apiSrc = apiLib();
+    const gate = apiSrc.indexOf("isBodyTooLarge(req)");
+    const parse = apiSrc.indexOf("req.json()");
+    expect(gate).toBeGreaterThanOrEqual(0);
+    expect(parse).toBeGreaterThan(0);
+    expect(gate).toBeLessThan(parse);
   });
 
   it("S67-P3: the upload route is rate-limited after the session guard", () => {

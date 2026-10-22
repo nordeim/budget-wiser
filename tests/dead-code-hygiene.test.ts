@@ -725,8 +725,9 @@ describe("session-62: the manifest honesty + the dead-arm retirement", () => {
     const script = read("scripts/install_packages.sh") ?? "";
     expect(script).not.toContain("@radix-ui/react-toast");
     expect(script).toContain("@types/node");
-    // 19 runtime + 11 dev = the 30-token set.
-    expect(Object.keys(pkg.dependencies ?? {}).length).toBe(19);
+    // 20 runtime + 11 dev (session-163: zod joins as the 20th runtime
+    // dep — the validation layer for the auth family).
+    expect(Object.keys(pkg.dependencies ?? {}).length).toBe(20);
     expect(Object.keys(pkg.devDependencies ?? {}).length).toBe(11);
   });
 
@@ -826,13 +827,18 @@ describe("session-63: the foreign-doc retirement + the dead-arm split + the micr
   });
 
   it("login's email cap joins the 160 family (N-63i)", () => {
-    // signup (:57-58), resend (:29) and verify (:39) all read the email
-    // at { max: 160 }; login rode the asString default (500). Beyond
-    // the inconsistency, a >160-char email stored TRUNCATED by signup
-    // could never log in (login's untruncated read mismatches the
-    // stored prefix). 160 everywhere = the truncation-parity contract.
+    // signup, resend and verify all read the email at { max: 160 };
+    // login rode the asString default (500). Beyond the inconsistency,
+    // a >160-char email stored TRUNCATED by signup could never log in
+    // (login's untruncated read mismatches the stored prefix). 160
+    // everywhere = the truncation-parity contract.
+    // Session-163 re-anchor: the cap moved onto the Zod seam — the
+    // loginSchema's email field carries .max(160) alongside the signup
+    // family's shared emailField (both in src/lib/schemas.ts, the one
+    // seam — the behavioral pins live in tests/schemas.test.ts).
+    const schemaSrc = stripComments(read("src/lib/schemas.ts") ?? "");
+    expect(schemaSrc).toMatch(/\.max\(160, "Email must be reasonably sized"\)/);
     const loginRoute = stripComments(read("src/app/api/auth/login/route.ts") ?? "");
-    expect(loginRoute).toMatch(/asString\(body\.email, \{ max: 160 \}\)/);
     expect(loginRoute).not.toMatch(/asString\(body\.email\) \?\?/);
   });
 });
