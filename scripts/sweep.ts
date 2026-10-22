@@ -8,8 +8,12 @@
 //      standing state (its workspace has been empty for 13 censuses) —
 //      via scripts/zero-data.ts (the s91 tool, reused not duplicated;
 //      users + the Setting singleton stay functional)
-//   3. logs into BOTH apps, captures the ten pages per app at the given
-//      viewport (default 1440x900; the reference's Base44 badge closed,
+//   3. resolves the CROSS-PROCESS auth pair state
+//      (scripts/sweep-state.ts — the 162-c login consolidation: the
+//      first invocation pays the login pair and writes the state file,
+//      the next invocations reuse it while fresh; ZERO logins on a
+//      reuse), captures the ten pages per app at the given viewport
+//      (default 1440x900; the reference's Base44 badge closed,
 //      content-waits per page)
 //   4. pairwise pixel-diffs each page (per-channel tolerance 12, the
 //      s91 value) — the PNGs decode in a browser canvas (getImageData);
@@ -92,11 +96,28 @@
 //       REF_URL (default https://neo-crm-8ab2c17c.base44.app)
 //       REF_EMAIL / REF_PASSWORD (the documented demo login defaults)
 //       HEADLESS=0 to watch the captures
+//
+// Session-162 (the 162-c rotation): the CROSS-PROCESS LOGIN
+// CONSOLIDATION — the login-consolidation doctrine's third application
+// (s160 census · s161 rhythm · s162 sweeps). The four sweep invocations
+// are SEPARATE PROCESSES, so the per-invocation pre-flight form cannot
+// cure this seam — each process would still pay its own login. The
+// cure is the shared state FILE (scripts/.sweep-auth-state.json, the
+// combined pair state — two origins one jar): the chain's our-login
+// count drops 4 -> 1 (L-160c1: the count is the budget's true axis —
+// never the arrival rate). The guards: a 15-min TTL (the login-window
+// semantics — reuse within one chain) + the authenticated probe
+// (validation-by-use: both apps' /dashboard must not redirect to
+// /login; any miss self-heals through the fresh login pair — the
+// stateless cookie license is L-160c2). The file follows the
+// db-binary discipline: git-ignored, 0600, TTL-bounded (L-162c3).
 
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { chromium } from "@playwright/test";
+
+import { preflightPairState } from "./sweep-state";
 
 export const PAGES = [
   // Session-142 (D-142a6): the dashboard entry re-anchored to /dashboard
@@ -994,15 +1015,21 @@ async function main() {
 
     // 3-4. capture both sides + diff
     const browser = await chromium.launch({ headless: process.env.HEADLESS === "0" ? false : true });
-    const ctx = await browser.newContext({ viewport: { width: WIDTH, height: HEIGHT } });
+
+    // Session-162 (the 162-c rotation): the CROSS-PROCESS LOGIN
+    // CONSOLIDATION — the two in-loop logins (one our-login per
+    // invocation, FOUR per gate:full chain) are retired; the pair
+    // state comes from scripts/sweep-state.ts: the first invocation
+    // pays the login pair and writes the state file, the next three
+    // reuse it (the TTL + authenticated-probe guard pair — the
+    // self-heal re-derives on any miss). The chain's our-login count
+    // drops 4 -> 1; the app's own limiter is never touched.
+    const pairState = await preflightPairState(browser);
+    const ctx = await browser.newContext({ viewport: { width: WIDTH, height: HEIGHT }, storageState: pairState });
     const refPage = await ctx.newPage();
-    log(`logging into the reference ${REF_URL}…`);
-    await login(refPage, REF_URL);
     await captureAll(refPage, REF_URL, path.join(shots, "ref"), pages);
 
     const ourPage = await ctx.newPage();
-    log(`logging into ours ${OUR_URL}…`);
-    await login(ourPage, OUR_URL);
     await captureAll(ourPage, OUR_URL, path.join(shots, "ours"), pages);
 
     const diffPage = await ctx.newPage();

@@ -18,7 +18,7 @@
 // REPORTED, not failed — the tool is a drift REPORT; pass --max-diff
 // to gate a threshold in CI-style use.
 
-import { readFileSync } from "node:fs";
+import { readFileSync, rmSync, utimesSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -903,5 +903,117 @@ describe("session-123: the dev-server spawn guards the platform DATABASE_URL ove
     // the value itself unchanged — 3.8 (the s148 re-anchor; the wobble
     // documented, the margin NOT widened)
     expect(entry).toMatch(/settings:\s*3\.8,/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-162 (the 162-c rotation): the sweep LOGIN CONSOLIDATION — the
+// cross-process storageState file. The s160/s161 doctrine's third
+// application: the four SEPARATE-PROCESS sweep invocations each logged
+// in fresh (one our-login per invocation, FOUR per gate:full chain —
+// this round's own 162-b audit burned the four live). A per-invocation
+// pre-flight cannot cure a per-PROCESS seam; the cure is a shared state
+// FILE (scripts/.sweep-auth-state.json — the combined pair state, two
+// origins one jar) written once and reused by every subsequent
+// invocation while fresh. The our-login count drops 4 -> 1 per chain.
+// ---------------------------------------------------------------------------
+
+describe("session-162: the sweep LOGIN CONSOLIDATION (the cross-process storageState file)", () => {
+  it("the STATE MODULE exists — scripts/sweep-state.ts: the file path (a dotfile in scripts/, never committed), the 15-min TTL (the login-window semantics — reuse within one gate chain, never across rounds), and the three seam functions (load · save · preflightPairState)", () => {
+    const src = read("scripts/sweep-state.ts");
+    expect(src).toMatch(/SWEEP_STATE_FILE\s*=\s*path\.join\([^)]*\.sweep-auth-state\.json/);
+    // the TTL: 15 minutes — the login-window semantics
+    expect(src).toMatch(/SWEEP_STATE_TTL_MS\s*=\s*15\s*\*\s*60\s*\*\s*1000/);
+    expect(src).toMatch(/export function loadSweepState/);
+    expect(src).toMatch(/export function saveSweepState/);
+    expect(src).toMatch(/export async function preflightPairState/);
+  });
+
+  it("the ONE-LOGIN-PER-CHAIN contract: the sweep main's capture path is LOGIN-FREE — the two in-loop logins (`await login(refPage…)` + `await login(ourPage…)`) are RETIRED; the preflightPairState call stands in their place and the single capture context carries the combined `storageState` (both pages ride the one jar — the s160 proven form)", () => {
+    const src = read("scripts/sweep.ts");
+    const mainBody = src.slice(src.indexOf("async function main()"));
+    // the capture phase: NO login call inside main (the logins live in
+    // the state module's fall-back pair only)
+    expect(mainBody).not.toMatch(/await login\(refPage/);
+    expect(mainBody).not.toMatch(/await login\(ourPage/);
+    // the pre-flight call site + the state-fed capture context
+    expect(mainBody).toMatch(/preflightPairState\(browser\)/);
+    expect(mainBody).toMatch(/newContext\(\{ viewport: \{ width: WIDTH, height: HEIGHT \}, storageState: pairState \}\)/);
+  });
+
+  it("the SELF-HEAL guard (validation-by-use — L-162c2): a fresh cached file is PROBED before reuse — one throwaway context with the state, an authenticated check per app (the /dashboard probe, the redirect-to-/login detection), BOTH must pass; any miss falls back to the fresh login pair and REWRITES the file (the failure modes — rotated AUTH_SECRET · the cookie TTL · the ref platform session loss · a corrupt file — all surface as the same redirect, one guard covers them all)", () => {
+    const src = read("scripts/sweep-state.ts");
+    // the probe: the authenticated check helper + the reuse branch
+    expect(src).toMatch(/async function ctxAuthenticated/);
+    // the redirect detection: a pathname/endsWith comparison against
+    // "/login" (either polarity — the shared login() helper's own
+    // waitForURL idiom inverted)
+    expect(src).toMatch(/pathname !== "\/login"|pathname === "\/login"|endsWith\("\/login"\)/);
+    // the fall-back: the login pair (the census's preflightLoginPair
+    // construction — ONE context, ref then ours, storageState()) + the
+    // rewrite
+    expect(src).toMatch(/await login\(page, REF_URL\)/);
+    expect(src).toMatch(/await login\(page, OUR_URL\)/);
+    expect(src).toMatch(/saveSweepState\(state\)/);
+  });
+
+  it("the 429-DIAGNOSTIC (the s159/s160/s161 contract): the pre-flight login-pair failure logs the budget hint to STDERR (console.error — the dev-server restart / wait-it-out doctrine, L-158c3/L-160c1) then RETHROWS (fail-fast, never a silent fall-back)", () => {
+    const src = read("scripts/sweep-state.ts");
+    expect(src).toMatch(/10-per-IP\/15-min/);
+    expect(src).toMatch(/L-158c3/);
+    expect(src).toMatch(/console\.error\([\s\S]*?10-per-IP\/15-min/);
+    expect(src).toMatch(/throw e/);
+  });
+
+  it("the SECURITY pin (L-162c3 — session material on disk follows the database-binary discipline): .gitignore covers the state file path — live auth state NEVER enters the tree", () => {
+    const gi = read(".gitignore");
+    expect(gi).toMatch(/\.sweep-auth-state\.json/);
+  });
+
+  it("the ATOMIC + PRIVATE write: saveSweepState lands through a tmp-file rename with 0600 perms (the db-binary discipline — the file is live session material)", () => {
+    const src = read("scripts/sweep-state.ts");
+    expect(src).toMatch(/chmodSync\([^)]*0o600/);
+    expect(src).toMatch(/renameSync/);
+  });
+
+  it("the FRESHNESS pure seam (node-testable): loadSweepState loads a fresh file, rejects a STALE one (mtime past the 15-min TTL), rejects a CORRUPT one, and returns null on a MISS", async () => {
+    const { loadSweepState, saveSweepState, SWEEP_STATE_TTL_MS } = await import("../scripts/sweep-state");
+    const tmp = path.join(root, "scripts", ".scratch-state-test.json");
+    const state = { cookies: [], origins: [] };
+    // fresh: saved now, loaded immediately
+    saveSweepState(state, tmp);
+    expect(loadSweepState(tmp)).toEqual(state);
+    // stale: the mtime pushed past the TTL -> null (rejected)
+    const stale = new Date(Date.now() - SWEEP_STATE_TTL_MS - 1000);
+    utimesSync(tmp, stale, stale);
+    expect(loadSweepState(tmp)).toBeNull();
+    // corrupt: a garbage JSON body -> null (never a throw)
+    writeFileSync(tmp, "{not json", "utf8");
+    expect(loadSweepState(tmp)).toBeNull();
+    // miss: no file at all -> null
+    rmSync(tmp, { force: true });
+    expect(loadSweepState(tmp)).toBeNull();
+  });
+
+  it("the SEED's ID-STABILITY contract (the PASS-1 live decode — the root cause of the first self-heal): prisma/seed.ts's users block is UPSERT-BY-EMAIL, NEVER deleteMany — a re-seed preserves the users' ids, so the cross-process state file's cookie uid survives every sweep's end-of-run db:seed restore (the rotation orphaned the cookie uid on EVERY invocation: the sweep restored the seed at its end, the next sweep's probe found the uid deleted, the self-heal re-logged-in — the consolidation saved nothing). The documented 'idempotent in place' claim is now true in the strong sense: the same users keep their ids", () => {
+    const src = read("prisma/seed.ts");
+    // the wipe is GONE from the users block (the domain tables keep theirs)
+    expect(src).not.toMatch(/db\.user\.deleteMany\(\)/);
+    // the four users land through upsert keyed on the email (the unique)
+    expect(src.match(/db\.user\.upsert\(/g)?.length).toBe(4);
+    expect(src).toMatch(/where:\s*\{\s*email:\s*"sepnetflix2023@outlook\.com"\s*\}/);
+    // the update path resets the seeded fields (a re-seed restores the
+    // demo state on the SAME rows — password, name, avatar, role, the
+    // verification fields cleared)
+    expect(src).toMatch(/update:\s*\{[\s\S]*?passwordHash/);
+    expect(src).toMatch(/verificationExpiresAt:\s*null/);
+  });
+
+  it("the HEADER DOCTRINE (L-160c1/c2 + the 162-c layer): the sweep header documents the cross-process consolidation — the count-not-arrival decode, the stateless-cookie license, and the file/TTL/probe guard trio", () => {
+    const src = read("scripts/sweep.ts");
+    expect(src).toMatch(/162-c/);
+    expect(src).toMatch(/cross-process/i);
+    expect(src).toMatch(/sweep-state/);
+    expect(src).toMatch(/L-160c1/);
   });
 });

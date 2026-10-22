@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2262 checks)      | `bun run test`                         |
+|  Unit tests (2271 checks)      | `bun run test`                         |
 |  Browser E2E (153 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2262) → `bun run build` → `bun run test:e2e` (153) — or the
+`bun run test` (2271) → `bun run build` → `bun run test:e2e` (153) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -8372,3 +8372,127 @@ app's own login limiter stays byte-identical.**
   settings pair at phone + desktop — the round's subject surface: the
   rhythm instrument's own page; the seeded remediated codebase,
   settled + verified in-frame at the standing mainH values).
+
+### Session-162 (2026-10-22) — the sweep LOGIN CONSOLIDATION (the 162-c rotation)
+
+The workspace stood (the fresh clone + the standing env: `.env` from
+`.env.example` + `db:push`/`db:seed` census MATCH · the Playwright
+chromium installed · the dev server standing). probe:ref **#136
+STABLE** at the s147–s155 fingerprint — a rotation round on **the
+login-consolidation doctrine's THIRD application** (s160 census · s161
+rhythm · s162 sweeps), the worklog Task ID 161's last-listed
+candidate: the four SEPARATE-PROCESS sweep invocations each logged in
+fresh — one our-login per invocation, FOUR per `gate:full` chain (the
+162-b audit's own four the live evidence). **The sweeps now share ONE
+cross-process storageState FILE — the first invocation pays the login
+pair, the next three reuse it; the chain's our-login count drops
+4 → 1; the app's own login limiter stays byte-identical.**
+
+- **162-a**: the baseline gate GREEN — lint 0/0 · tsc 0 · **120/2262**
+  (clean exit) · build · **e2e 153/153** (clean first run — the drawer
+  battery inside, the mobile-nav contract).
+- **162-b**: probe:ref **#136 STABLE** · **the SIX drift gates CLEAN
+  ×6** (the four viewport sweeps + the fullpage at the exact standing
+  values 0.093%/0.316% at equal heights 4990/7259 + the census gate at
+  `--parallel 4`: 52 page-axis runs, all zero unexplained, exit 0 —
+  the census leg at the 160-c form, EXACTLY ONE our-login per
+  invocation, the dev-log POST-200 delta 4→5 verified live) · sitemap
+  11 routes + robots 200 · db census MATCH · the tree clean · zero
+  dep changes. TWO supplemental live checks: the mobile drawer
+  verified in-browser at 390×844 (**10/10 PASS** — trigger unique ·
+  the rail hidden · `data-state=open` · 8/8 links · the MAIN-scroller
+  lock · close-on-navigate + the URL change · Escape + the lock
+  release), and the Tailwind v4 state clean (the postcss
+  `@tailwindcss/postcss` plugin · the `@theme` `--shadow-sm`/
+  `--blur-sm` re-pins · design-tokens 16/16).
+- **THE CONSOLIDATION** (`scripts/sweep-state.ts` + the sweep main
+  re-wiring): a per-invocation pre-flight cannot cure a per-PROCESS
+  seam — the cure crosses the boundary: **`scripts/.
+  sweep-auth-state.json`**, the combined pair state (the ref's Base44
+  cookie + our stateless `neo_session`, two origins one jar — the
+  s160 combined form). `preflightPairState(browser)`: a fresh cached
+  file is PROBED (one throwaway context, an authenticated check per
+  app — `/dashboard` must not redirect to `/login`; every failure
+  mode [rotated AUTH_SECRET · the 7-day cookie TTL · the ref platform
+  session loss · a corrupt file] surfaces as that same redirect, one
+  guard covers them all); any miss falls back to the fresh login pair
+  + REWRITES the file (the self-heal). The 429-diagnostic mirrors the
+  census/rhythm form (STDERR budget hint → rethrow, fail-fast). The
+  guard trio: the **15-min TTL** (the login-window semantics — reuse
+  within one chain, never across rounds) + the authenticated probe
+  (validation-by-use) + the mid-run backstop (a login-wall screenshot
+  is a catastrophic drift — the gate fails LOUDLY, never silently).
+  The security posture (L-162c3, the db-binary discipline): git-ignored
+  (the `.gitignore` line PINNED by test) · 0600 · atomic tmp+rename ·
+  TTL-bounded. The sweep main's two in-loop logins DELETED; the single
+  capture context carries `storageState: pairState`.
+- **THE LIVE DECODE (the PASS-1 root cause — the round's own find)**:
+  the first four-sweep proof run self-healed on EVERY invocation — the
+  consolidation saved nothing. Decoded live: `prisma/seed.ts`'s users
+  block was `db.user.deleteMany()` + recreate — **every `db:seed`
+  rotated ALL user cuids**, and each sweep's END-OF-RUN seed restore
+  orphaned the state file's cookie uid (the next invocation's probe
+  found the uid deleted → GuestLoginRedirect → self-heal → a fresh
+  login pair). **The cure: the users block rebuilt as UPSERT-BY-EMAIL**
+  — the ids STABLE across re-seeds (the "idempotent in place" claim
+  now true in the strong sense: the same rows, the demo state restored
+  onto them; the domain tables keep their wipe+recreate). The
+  measurement lesson recorded with it: never pipe a long-running tool
+  through `head` — the early-close orphans the process (bun survives
+  SIGPIPE), the bash returns early, and the gate verdict is lost to
+  the broken pipe.
+- **THE LIVE PROOFS**: **PASS 1 the budget** — the four-sweep chain
+  (1440×900 · 390×844 · 768×1024 · 1024×768, run serially after a
+  dev-server restart) burns **EXACTLY ONE our-login** (POST 0→1, was
+  4; zero 429s); **PASS 2 the byte-parity** — all four drift gates
+  CLEAN at the standing margins (the read side provably unchanged);
+  **PASS 3 the self-heal** — the state file TAMPERED (a bogus
+  cookie), one sweep re-run: the probe detects (`ours=false`), the
+  fresh pair fires (POST +1), the file rewritten, the sweep CLEAN;
+  **PASS 4 the cross-process reuse** — sweeps 2-4 each logged
+  "reusing the fresh sweep auth state — ZERO logins this invocation",
+  the state file mtime UNCHANGED across the chain. **The FIFTH
+  process**: the captures driver itself reused the state file (POST
+  delta 0) — the reuse proven beyond the four-sweep chain.
+- **THE PINS (TDD)**: `tests/sweep-tool.test.ts` (the session-162
+  describe) **+9** — the state module (the file path · the 15-min TTL
+  · the three functions) + the one-login-per-chain contract (the
+  capture path login-free, the pre-flight call, the context carries
+  the state) + the self-heal guard (the authenticated probe + the
+  fall-back pair + the rewrite) + the 429-diagnostic (STDERR +
+  rethrow) + the security pin (the `.gitignore` line) + the
+  atomic-0600 write + the freshness pure seam (fresh loaded · stale
+  rejected · corrupt rejected · miss null — node-testable) + the
+  SEED's ID-STABILITY contract + the header doctrine — **8 RED at
+  birth → the implementation → GREEN** (the seed pin born RED with
+  the live decode; the freshness seam born with it). The count ladder
+  **UNIT 2262→2271 (+9) · SUITES 120 held · badge 2415→2424**
+  (count-ladder-162.py, assert-first, idempotent, unique-anchor
+  replacements; the historicals preserved) · the CLAUDE-carrier
+  negatives grew the 2262 forms (all four carrier families) · the
+  SKILL **v1.159.0** + the s162 head (the s161 layer demoted beneath)
+  + the Appendix B totals + the seed line-count site (466 → 516, the
+  docs-counts LIVE-CENSUS catch).
+- **THE LESSONS**: **L-162c1 the process boundary is the last
+  consolidation axis** (when the per-invocation logins are already
+  collapsed, the remaining multiplier is the INVOCATION COUNT itself;
+  a shared file beats a per-process pre-flight wherever the processes
+  run serially against one budget) · **L-162c2 a cached credential's
+  guard is VALIDATION-BY-USE, not trust** (the TTL bounds the cache's
+  lifetime, but the authenticated probe is what makes reuse safe —
+  every failure mode surfaces as the same redirect, one check
+  converts them all into the self-heal) · **L-162c3 session material
+  on disk follows the database-binary discipline** (git-ignored,
+  0600, TTL-bounded, never in the tree — the `db/*.db` precedent
+  extended to auth state).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **120/2271** · build ·
+  e2e **153/153** · **the SIX drift gates CLEAN ×6** (the sweep legs
+  at the 162-c form — ONE our-login for the whole four-sweep chain)
+  · the VLM battery 2/2 (the phone + desktop zero-data dashboard
+  pairs MATCH — **zero differences decoded**, the cleanest battery
+  yet: the zero-data subject state removes the live-data genus, the
+  Base44 pill closed by the driver) · the captures 389-392 (the
+  zero-data dashboard pair at phone + desktop — the round's subject
+  surface: the sweep family's own apples-to-apples state; mainH
+  byte-equal both apps [phone 2851/2851 · desktop 1274/1274],
+  in-frame verified, the state file reused by the driver itself).

@@ -40,13 +40,33 @@ async function main() {
   await db.lead.deleteMany();
   await db.contact.deleteMany();
   await db.account.deleteMany();
-  await db.user.deleteMany();
   await db.setting.deleteMany();
 
   // ---- users (sales team) ---------------------------------------------------
+  // Session-162 (the 162-c decode): the users land through UPSERT-BY-EMAIL,
+  // never deleteMany — a re-seed preserves the users' IDS. The old
+  // wipe+recreate rotated every cuid on each `bun run db:seed`, which
+  // orphaned the sweep's cross-process auth state (the cookie uid pointed
+  // at a deleted row — the self-heal re-logged-in on every invocation and
+  // the login consolidation saved nothing). The domain tables keep their
+  // wipe+recreate (nothing references their ids across seeds); the users
+  // are the session-cookie's provenance — stable by contract now. The
+  // update path resets every seeded field, so "reseed in place" stays
+  // literal: the same rows, the demo state restored onto them.
   const [demo, sara, omar, lena] = await Promise.all([
-    db.user.create({
-      data: {
+    db.user.upsert({
+      where: { email: "sepnetflix2023@outlook.com" },
+      update: {
+        name: "sepnetflix2023",
+        passwordHash: hashPassword("$Abcd1234"),
+        avatarColor: "#e5e7eb", // light grey + dark "S" — mirrors the reference avatar
+        role: "user", // matches the reference account's role display
+        photoUrl: null,
+        verificationCodeHash: null,
+        verificationAttempts: 0,
+        verificationExpiresAt: null,
+      },
+      create: {
         email: "sepnetflix2023@outlook.com",
         name: "sepnetflix2023",
         passwordHash: hashPassword("$Abcd1234"),
@@ -54,24 +74,54 @@ async function main() {
         role: "user", // matches the reference account's role display
       },
     }),
-    db.user.create({
-      data: {
+    db.user.upsert({
+      where: { email: "sara.chen@neo-crm.app" },
+      update: {
+        name: "Sara Chen",
+        passwordHash: hashPassword("Demo1234!"),
+        avatarColor: "#0891b2",
+        photoUrl: null,
+        verificationCodeHash: null,
+        verificationAttempts: 0,
+        verificationExpiresAt: null,
+      },
+      create: {
         email: "sara.chen@neo-crm.app",
         name: "Sara Chen",
         passwordHash: hashPassword("Demo1234!"),
         avatarColor: "#0891b2",
       },
     }),
-    db.user.create({
-      data: {
+    db.user.upsert({
+      where: { email: "omar.haddad@neo-crm.app" },
+      update: {
+        name: "Omar Haddad",
+        passwordHash: hashPassword("Demo1234!"),
+        avatarColor: "#7c3aed",
+        photoUrl: null,
+        verificationCodeHash: null,
+        verificationAttempts: 0,
+        verificationExpiresAt: null,
+      },
+      create: {
         email: "omar.haddad@neo-crm.app",
         name: "Omar Haddad",
         passwordHash: hashPassword("Demo1234!"),
         avatarColor: "#7c3aed",
       },
     }),
-    db.user.create({
-      data: {
+    db.user.upsert({
+      where: { email: "lena.fischer@neo-crm.app" },
+      update: {
+        name: "Lena Fischer",
+        passwordHash: hashPassword("Demo1234!"),
+        avatarColor: "#059669",
+        photoUrl: null,
+        verificationCodeHash: null,
+        verificationAttempts: 0,
+        verificationExpiresAt: null,
+      },
+      create: {
         email: "lena.fischer@neo-crm.app",
         name: "Lena Fischer",
         passwordHash: hashPassword("Demo1234!"),

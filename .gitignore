@@ -59,3 +59,8 @@ playwright-report/
 
 # session-92: the sweep tool's capture artifacts (regenerated per run)
 scripts/sweep-shots/
+
+# session-162: the sweep's cross-process auth state — live session
+# material on disk (the combined pair state); follows the db-binary
+# discipline: git-ignored, 0600, TTL-bounded. NEVER committed.
+scripts/.sweep-auth-state.json

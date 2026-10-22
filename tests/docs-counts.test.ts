@@ -582,7 +582,14 @@ const SUITES = 120;
 // the fail-fast rethrow] + the header re-anchor [the L-160c1 count
 // doctrine, the old per-axis language retired] + the reuse/
 // observation-only doctrine; SUITES stays 120; E2E stays 153.)
-const UNIT = 2262;
+// Session-162: 2262 -> 2271 (+9 — the sweep LOGIN CONSOLIDATION pins in
+// the sweep-tool suite: the cross-process state module [the file path +
+// the TTL + the three functions] + the one-login-per-chain contract +
+// the self-heal guard + the 429-diagnostic + the security/gitignore pin
+// + the atomic-0600 write + the freshness pure seam + the header
+// doctrine + the SEED's ID-STABILITY contract [the PASS-1 root cause];
+// SUITES stays 120; E2E stays 153.)
+const UNIT = 2271;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -1011,13 +1018,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-161 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-162 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s160 layer now beneath the s161 head)",
     ).toContain(
-      "+ beneath it 2257 unit checks + 153 e2e checks green; the session-160 layer (THE CENSUS LOGIN CONSOLIDATION",
+      "+ beneath it 2262 unit checks + 153 e2e checks green; the session-161 layer (THE RHYTHM LOGIN CONSOLIDATION",
     );
   });
 
