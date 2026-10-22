@@ -164,3 +164,55 @@ describe("session token versioning (session-163)", () => {
     expect(verifySessionToken(`${body}.${sig}`)).toBeNull();
   });
 });
+
+// ---- session-169: the production secret gate (F-169p — the code face) ----
+// The web-app-foundation §6.2 posture (the L-164c3 doctrine: the repo's
+// own distilled companion skill is the bar): production FAILS HARD on a
+// missing OR short AUTH_SECRET — the warn-once fallback shipped forgeable
+// sessions silently (and .env.example misdocumented a "hard error an
+// unset value raises" that never existed — both faces cured this round).
+// The gate rides secret(), which every session op calls: the first op
+// surfaces the actionable message instead of minting forgeable cookies.
+// Dev/test keep the documented DEV fallback — the existing hand-signed
+// battery above IS that face; the pin below makes the development face
+// explicit. The env-pinning follows the s164 idiom (restore in afterAll).
+
+describe("the production secret gate (session-169)", () => {
+  let savedAuthSecret: string | undefined;
+  let savedNodeEnv: string | undefined;
+
+  beforeAll(() => {
+    savedAuthSecret = process.env.AUTH_SECRET;
+    savedNodeEnv = process.env.NODE_ENV;
+  });
+  afterAll(() => {
+    if (savedAuthSecret === undefined) delete process.env.AUTH_SECRET;
+    else process.env.AUTH_SECRET = savedAuthSecret;
+    // NODE_ENV is read-only in @types/node's ProcessEnv — restore (and
+    // mutate below) through the writable view
+    const env = process.env as Record<string, string | undefined>;
+    if (savedNodeEnv === undefined) delete env.NODE_ENV;
+    else env.NODE_ENV = savedNodeEnv;
+  });
+
+  it("production + a MISSING AUTH_SECRET → the session seam THROWS (no forgeable sessions)", () => {
+    delete process.env.AUTH_SECRET;
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    expect(() => signSession("user_123", 0)).toThrow(
+      /AUTH_SECRET is missing or shorter than 16 chars/,
+    );
+  });
+
+  it("production + a SHORT AUTH_SECRET → the session seam THROWS (either face, not just unset)", () => {
+    process.env.AUTH_SECRET = "short-secret"; // 12 chars < 16
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    expect(() => signSession("user_123", 0)).toThrow(/AUTH_SECRET/);
+  });
+
+  it("development keeps the documented DEV fallback (the DX story unchanged)", () => {
+    delete process.env.AUTH_SECRET;
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
+    const token = signSession("user_123", 0);
+    expect(verifySessionToken(token)?.uid).toBe("user_123");
+  });
+});

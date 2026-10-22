@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2520) → `bun run build` → `bun run test:e2e` (161) — or the
+   `bun run test` (2559) → `bun run build` → `bun run test:e2e` (161) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -66,8 +66,11 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 - Early returns over nested conditionals; composition over inheritance.
 - Pure domain logic lives in `src/lib/*` seams with Vitest coverage; handlers
   and pages only orchestrate.
-- Hand-rolled validation (`asString` / `asNumber` / `asDate` / enum
-  membership) at every route boundary — no schema library by design.
+- Validation rides the Zod seam at every body boundary —
+  `parseBody(req, schema)` with the schemas in `src/lib/schemas.ts`
+  (zod ^4 — the auth family since session-163, the CRUD family since
+  session-166); the URL-param GET family keeps the `asString`/`asDate`
+  helpers.
 - Named exports for components; kebab-case files; `@/` path alias only.
 
 ### Language & Framework Guidelines
@@ -113,7 +116,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2520 checks)            |
+| `bun run test`      | Vitest unit suites (2559 checks)            |
 | `bun run test:e2e`  | Playwright E2E (161 checks, needs build first) |
 | `bun run gate`      | The full gate in one command (lint → typecheck → test → build → e2e) |
 | `bun run db:push`   | Push Prisma schema (no migrations folder)     |
@@ -124,7 +127,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2520 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2559 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -328,7 +331,13 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   with the Overdue-badge self-consistency + the priority-row/cluster
   containment [the M-109c1 guard] + the rail display:none below lg +
   the quick-log 2×2 wrap + the Completed-tab switch at 390×844 on the
-  SEEDED e2e.db, incl. the mainScrollW inner-overflow assertion), and session-12's custom-404 + session-15's entity-dialog geometry
+  SEEDED e2e.db, incl. the mainScrollW inner-overflow assertion),
+  `landing.spec.ts` (the s142 public landing walk — the marketing
+  surface: the hero + the nav + the footer census),
+  `marketing-mobile.spec.ts` (the s150 phone-width marketing walk —
+  the 403-scroller model + the mobile census), `reset-password.spec.ts`
+  (the s163 digma reset-funnel port — the 8-check battery: the token
+  landing, the full reset round-trip, the version eviction), and session-12's custom-404 + session-15's entity-dialog geometry
   tests (stock Lead dialog at phone width, the Contact avatar section, the
   wide Event family with its blue submit) + session-16's responsive-layer
   tests (the contacts full-height root at 390, the settings picklist grid
@@ -340,7 +349,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   with the dark #171717 checked fill + Check indicator, the blue
   primaries' bare shadow scale), session-18's document-metadata
   layer (the reference meta description, the OG/Twitter card family, the
-  favicon link, robots.txt's Sitemap line, the nine-route sitemap.xml),
+  favicon link, robots.txt's Sitemap line, the eleven-route sitemap.xml),
   and session-19's PWA + per-route metadata layer (the installable
   manifest.json, the #000000 theme-color + the apple/PWA metas, the
   resolving apple-touch-icon, per-route canonical/OG/Twitter on
@@ -369,7 +378,8 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   session-30's photo-upload layer (the New Contact photo round-trip
   rendering + persisting with the remove X verified, and the profile
   photo round-trip with the toast + both avatar renders + the topbar
-  pickup after the 500ms reload).
+  pickup after the 500ms reload) (the s51-era snapshot — the complete
+  live suite enumeration rides README's pinned list).
 
 ### Test Commands
 
@@ -387,7 +397,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2520).
+the seam (currently 2559).
 
 ## Code Quality Standards
 
@@ -475,8 +485,8 @@ React-hooks rules that matter here (violations are errors):
   `DATABASE_URL` (see `runtimeDatabaseUrl()`) — and `db:push` goes through
   the `scripts/prisma-env.ts` wrapper so the CLI lands on the same
   `<repo>/db/custom.db` file.
-- Models: User, Account, Contact, Lead, Activity, Event, SavedReport,
-  Setting (singleton row).
+- Models: User, Account, Contact, Lead, Activity, Event, Opportunity,
+  SavedReport, Setting (singleton row) — 9 models.
 
 ### Environment Variables
 
@@ -485,6 +495,9 @@ React-hooks rules that matter here (violations are errors):
 | `DATABASE_URL`         | SQLite file URL, schema-relative         | `file:../db/custom.db`        |
 | `AUTH_SECRET`          | HMAC secret for session cookies (≥16ch)  | `openssl rand -hex 32`        |
 | `NEXT_PUBLIC_SITE_URL` | Canonical origin — metadata, robots.txt, sitemap.xml, OG/Twitter cards (consumed via `src/lib/site.ts`, inlined at build time) | `http://localhost:3000` |
+| `NEO_PROXY_HOPS` | Declared proxy-topology trust depth for the rate-limit IP keying (unset = 1 — the last `x-forwarded-for` hop is the client; 0 = direct; N ≥ 2 = the Nth-from-last hop; unparsable fails CLOSED onto 1) | unset (`1`) |
+| `NEO_DISABLE_IN_APP_OTP` | Signup/resend responses stop carrying the verification code — a deployment with a real mail transport sets `1` (ADR-014) | unset (in-app delivery) |
+| `NEO_DISABLE_IN_APP_RESET` | Forgot-password responses stop carrying the reset link — same ADR-014 family | unset (in-app delivery) |
 
 Currency DISPLAY is always `$`-attached, with three DOM-pinned per-page
 variants: dashboard compact lowercase (`$337.0k` / `$1400.0k` — the

@@ -11,7 +11,7 @@ bun install
 bun run build          # next build + standalone assembly (.next/standalone)
 ```
 
-The build compiles the page shell and the 27 API route handlers, then copies
+The build compiles the page shell and the 29 API route files (41 verb handlers), then copies
 `.next/static` and `public/` into `.next/standalone/` (see the `build`
 script in `package.json`). `next.config.ts` pins `outputFileTracingRoot` to
 the repo root — keep it; the standalone trace depends on it.

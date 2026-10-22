@@ -153,7 +153,9 @@ const E2E = 161;
 // live-census battery).
 // Session-168: SUITES 128 -> 129 (the inventory-census file — the doc
 // inventory layer's live-census battery).
-const SUITES = 129;
+// Session-169: SUITES 129 -> 130 (the facts-census file — the stack-facts
+// layer's live-census battery).
+const SUITES = 130;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -659,7 +661,12 @@ const SUITES = 129;
 // [the 129th suite]: the PAD 11 Lines-column live-census [all 27
 // rows] + the SKILL inventory live-census + the AGENTS doctrine
 // pins + the README sitemap pins).
-const UNIT = 2520;
+// Session-169: 2520 -> 2559 (+39 — the facts-census battery
+// [the 130th suite] +36 [the version carriers, the CLAUDE doctrine,
+// the DEPLOYMENT re-anchor, the color mirror, the README tree /
+// Quick-Start / gate pins] + the auth battery's production
+// secret-gate pins +3).
+const UNIT = 2559;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1124,13 +1131,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-168 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-169 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s165 layer now beneath the s166 head)",
     ).toContain(
-      "+ beneath it 2480 unit checks + 161 e2e checks green; the session-167 layer (THE STALE-SITE CLOSURE",
+      "+ beneath it 2520 unit checks + 161 e2e checks green; the session-168 layer (THE AGENTS-DOCTRINE CLOSURE",
     );
   });
 
@@ -1167,7 +1174,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B wall-clock phrase must carry the live suite count (F-111a1)",
-    ).toContain(`unit\n~15 s (${SUITES} suites, one worker per file)`);
+    ).toContain(`unit\n~18 s (${SUITES} suites, one worker per file)`);
     expect(
       appendix,
       "the retired six-spec form never returns (the s109 re-anchor — the spec-family census grows activities-mobile)",
@@ -1448,10 +1455,22 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     ).toContain("| `src/lib/reports-data.ts` | 279 |");
     expect(pad).not.toContain("| `src/lib/reports-data.ts` | ~213 |");
     const deployment = read("docs/DEPLOYMENT.md");
+    // Session-169 (F-9): the pin re-anchored from the stale constant to the
+    // LIVE route-file census — the L-165c1 root cure applied to the pin
+    // family's own member (the "27" literal had itself drifted: s163's
+    // 27→29 route growth never touched this carrier or its pin, and the
+    // pin's own comment claimed liveness while entrenching the staleness).
+    const apiRouteFiles = readdirSync(path.join(root, "src/app/api"), {
+      recursive: true,
+    })
+      .map((f) => String(f))
+      .filter((f) => f.endsWith("route.ts")).length;
+    expect(apiRouteFiles).toBe(29); // the tree census (the three SEO handlers are not API routes)
     expect(
       deployment,
-      "the build line must carry the live handler count (F-108a4)",
-    ).toContain("the 27 API route handlers");
+      "the build line must carry the live route-file census (F-108a4 + F-169's re-anchor)",
+    ).toContain(`the ${apiRouteFiles} API route files (41 verb handlers)`);
+    expect(deployment).not.toContain("the 27 API route handlers");
     expect(deployment).not.toContain("the 16 API route handlers");
     // the deleted smoke-test.sh reference must stay gone (deleted at
     // e16efb9; the line is now the one-command gate)

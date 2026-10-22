@@ -26,15 +26,28 @@ const DEV_SECRET = "neo-crm-dev-only-insecure-secret";
 // Session-63 (N-63g): the short-secret case used to fall back as
 // silently as the unset case — production would ship forgeable
 // sessions with no signal. Warn ONCE: secret() rides every session op.
+// Session-169 (F-169p — the web-app-foundation §6.2 posture): production
+// now FAILS HARD instead — the warn-once fallback shipped forgeable
+// sessions silently (and .env.example misdocumented a "hard error an
+// unset value raises" that never existed for either face). The throw
+// rides secret(), which every session op calls: the first op surfaces
+// the actionable message instead of minting forgeable cookies. Dev/test
+// keep the documented DEV fallback (the DX story unchanged — the
+// warn-once survives for the non-production faces only).
 let warnedInsecureSecret = false;
 
 function secret(): string {
   const env = process.env.AUTH_SECRET;
   if (env && env.length >= 16) return env;
-  if (process.env.NODE_ENV === "production" && !warnedInsecureSecret) {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "[auth] AUTH_SECRET is missing or shorter than 16 chars in production — sessions would be forgeable. Generate one with: openssl rand -hex 32",
+    );
+  }
+  if (!warnedInsecureSecret) {
     warnedInsecureSecret = true;
     console.warn(
-      "[auth] AUTH_SECRET is missing or shorter than 16 chars — falling back to the insecure dev-only secret; sessions are forgeable. Generate one with: openssl rand -hex 32",
+      "[auth] AUTH_SECRET is missing or shorter than 16 chars — falling back to the insecure dev-only secret (dev/test only; production fails hard). Generate one with: openssl rand -hex 32",
     );
   }
   return DEV_SECRET;

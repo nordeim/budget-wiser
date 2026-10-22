@@ -590,8 +590,14 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     // agents-doctrine closure + the inventory live-census — the
     // inventory-census battery +40 [the 129th suite]).
     expect(claude).not.toContain("Unit (Vitest, 2480 checks)");
+    // session-169 lockstep carry-forward: 2520 -> 2559 (the
+    // claude-doctrine closure + the stack-facts live-census + the
+    // production secret gate — the facts-census battery +36 [the
+    // 130th suite] + the auth secret-gate pins +3).
+    expect(claude).not.toContain("Unit (Vitest, 2520 checks)");
     expect(claude).not.toContain("(currently 2454)");
     expect(claude).not.toContain("(currently 2480)");
+    expect(claude).not.toContain("(currently 2520)");
     expect(claude).not.toContain("Unit (Vitest, 2362 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2347 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2271 checks)");
@@ -605,7 +611,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("Unit (Vitest, 2241 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2252 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2257 checks)");
-    expect(claude).toContain("Unit (Vitest, 2520 checks)");
+    expect(claude).toContain("Unit (Vitest, 2559 checks)");
     // session-145 lockstep carry-forward: the coverage line 2108 ->
     // 2112 (the walk35 transition pins); s146: 2112 -> 2115.
     expect(claude).not.toContain("(currently 2108)");
@@ -625,7 +631,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("(currently 2271)");
     expect(claude).not.toContain("(currently 2382)");
     expect(claude).not.toContain("(currently 2347)");
-    expect(claude).toContain("(currently 2520)");
+    expect(claude).toContain("(currently 2559)");
     expect(claude).not.toContain("Vitest unit suites (2108 checks)");
     expect(claude).not.toContain("Vitest unit suites (2112 checks)");
     expect(claude).not.toContain("Vitest unit suites (2167 checks)");
@@ -644,8 +650,9 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("Vitest unit suites (2382 checks)");
     expect(claude).not.toContain("Vitest unit suites (2454 checks)");
     expect(claude).not.toContain("Vitest unit suites (2480 checks)");
+    expect(claude).not.toContain("Vitest unit suites (2520 checks)");
     expect(claude).not.toContain("Vitest unit suites (2347 checks)");
-    expect(claude).toContain("Vitest unit suites (2520 checks)");
+    expect(claude).toContain("Vitest unit suites (2559 checks)");
     expect(claude).not.toContain("`bun run test` (2108)");
     expect(claude).not.toContain("`bun run test` (2112)");
     expect(claude).not.toContain("`bun run test` (2115)");
@@ -667,8 +674,9 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("`bun run test` (2382)");
     expect(claude).not.toContain("`bun run test` (2454)");
     expect(claude).not.toContain("`bun run test` (2480)");
+    expect(claude).not.toContain("`bun run test` (2520)");
     expect(claude).not.toContain("`bun run test` (2347)");
-    expect(claude).toContain("`bun run test` (2520)");
+    expect(claude).toContain("`bun run test` (2559)");
     expect(claude).not.toContain("Unit (Vitest, 2060 checks)");
     expect(claude).not.toContain("Vitest unit suites (2060 checks)");
     expect(claude).not.toContain("(currently 2101)");

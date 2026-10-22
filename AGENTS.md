@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2520 checks)      | `bun run test`                         |
+|  Unit tests (2559 checks)      | `bun run test`                         |
 |  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2520) → `bun run build` → `bun run test:e2e` (161) — or the
+`bun run test` (2559) → `bun run build` → `bun run test:e2e` (161) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -467,7 +467,8 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   the chart palette (`constants.test.ts`), the dialog/filter vocabularies,
   the layout+chrome contracts (`tests/page-layout.test.ts`, 58 pins across
   sessions 6–8 + session-10's stock-primitive pins) — 596 Vitest checks across
-  38 suites (session-13 added `tests/page-titles.test.ts` for the auth
+  38 suites at the s22 era (the live totals ride the docs-counts pins;
+  session-13 added `tests/page-titles.test.ts` for the auth
   absolute titles and `tests/charts-contracts.test.ts` for the grid dashes +
   funnel type; session-14 added `tests/profile-route.test.ts` for the
   `/Profile` casing alias; session-15 added the 18-check DIALOG_FAMILY layer
@@ -764,7 +765,7 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   char 321 — mirrored verbatim as `SITE_DESCRIPTION` in
   `src/lib/site.ts`), it ships the full OG set (og:title/description/
   image/url/type/site_name) + `twitter:card summary_large_image` with
-  title/description/image AND `twitter:url`, a PNG favicon, a nine-URL
+  title/description/image AND `twitter:url`, a PNG favicon, an eleven-URL
   `/sitemap.xml` (weekly, 1.0/0.8) and a robots.txt with a Sitemap line.
   Ours: `src/lib/site.ts` (`siteUrl()` reading NEXT_PUBLIC_SITE_URL with
   the localhost fallback — the variable was documented in
@@ -810,8 +811,10 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   twitter:title/url/description likewise, `<link rel=canonical>` per
   route (root + /login stay unprefixed). All of it is built by the
   `pageMetadata({ page, route, title? })` factory in `src/lib/site.ts`
-  (the 8 inner wrappers + login + signup consume it; the dashboard
-  inherits the root layout). THREE serializer hazards gate-caught: (a)
+  (the 13 primary pages consume it — the 8 inner wrappers + login +
+  signup + the marketing about/contact pair + reset-password; the 10
+  capitalized aliases re-derive their own; the dashboard alone inherits
+  the root layout). THREE serializer hazards gate-caught: (a)
   **declaring `metadata.icons` REPLACES the file-convention
   `link[rel=icon]`** — the s18 favicon test failed the moment `icons:
   { apple }` appeared, so BOTH icons ship as file conventions
@@ -1025,8 +1028,10 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   `deals_at_risk_…`). NEVER `window.print()` + a toast on these
   buttons — that was the invented behavior. The seam is
   `src/lib/pdf-export.ts` (html2canvas-PRO, not classic — our Tailwind
-  v4 stylesheet carries 242 `color-mix()` calls the classic parser
-  cannot read).
+  v4 stylesheet's compiled output carries the `color-mix()` family the
+  classic parser cannot read; 293 calls at the s169 census, read from
+  `.next/static/chunks/*.css` — build-dependent, an era record not a
+  live claim).
 - **The CSV contract (session-25)** — filenames are
   `prefix_YYYY-MM-DD.csv` (underscore + ISO date, never
   `prefix-YYYYMMDD.csv`); the leads CSV ships the reference's 8
@@ -9051,3 +9056,122 @@ hand-written body interfaces; nothing to port (documented, closed).
 routes) · e2e **161/161** · db census MATCH · the six drift gates CLEAN
 ×6 at the audit leg (the round touches docs + tests only — no visual
 source changed, the standing parity verdict carries).
+
+## Session-169 — THE CLAUDE-DOCTRINE CLOSURE + THE STACK-FACTS LIVE-CENSUS + THE PRODUCTION SECRET GATE (2026-10-23)
+
+The post-168 audit round. Baseline: the s168 ship state reproduced exactly
+(lint 0/0 · tsc 0 · **129/2520** · build · e2e **161/161** · probe:ref
+STABLE at the s168 fingerprint · the desktop + phone sweeps CLEAN live ·
+the mobile drawer **7/7 PASS** at 390×844 · the Tailwind v4 state clean ·
+sitemap 11 routes + robots + manifest standing · db census MATCH). The
+scandihaven reference round: its five port candidates evaluated — the
+stack-version lockstep pin ADOPTED (the exact drift it exists to kill was
+live in this repo), the boot fail-fast env validation adopted in the
+server-seam form (the production secret gate below; the full
+`instrumentation.ts` boot gate documented as a next-rotation candidate),
+the error-boundary family + the axe-core a11y gates + fast-check property
+tests deferred (each its own rotation / the no-mid-rotation-bump posture),
+the response-side Zod validation + DB-backed rate limiting + `@source` +
+`z.input` colocation rejected after evaluation.
+
+**THE FINDINGS (twenty-two, all reproduced live)**: the headline pair —
+F-169a **CLAUDE.md was the LAST un-flipped doctrine doc** ("Hand-rolled
+validation … no schema library by design" stated as current practice; ZERO
+zod/parseBody/schemas.ts mentions in the whole file — the s165/s166/s167/
+s168 rounds flipped AGENTS, SKILL, README, PAD-ADR-003 and never CLAUDE)
++ F-169p **the production AUTH_SECRET gate was a warn-once fallback, not a
+fail** (secret() fell back to DEV_SECRET with ONE console.warn on a
+missing OR short secret in production — forgeable sessions with no hard
+failure, failing the web-app-foundation §6.2/§12 checklist item AND
+misdocumented in .env.example as "the hard error an unset value raises" —
+a hard error that never existed for either face). The version-carrier
+family — F-169f the s163-era dep bump (`04e367c`: next 16.3.6→16.4.2,
+playwright 1.63→1.64.1) updated NO version-carrier doc: README badge +
+table row + Playwright row · PAD's stack table · SKILL §2's rows. The
+straggler family — F-169b the sitemap "nine-route"/"nine-URL" twins
+CLAUDE:343 + AGENTS:767 (the F-168i fix pinned README only) · F-9
+DEPLOYMENT's "the 27 API route handlers" (live 29 route files / 41 verb
+handlers since s163) **and the docs-counts pin ITSELF asserting the stale
+constant** — the L-165c1 genus alive inside the pin family. The PAD
+internal-consistency family — F-169k §3.1's "hand-rolled validation at
+the boundary" (contradicting PAD's own ADR-003) + §6.1's PHANTOM
+`asOneOf` helper (the live set: asString/asNumber/asInt/asDate/asFKId) ·
+F-169l the tree's "auth(6: …)" (live 8 since s163) · F-169m ADR-003's
+"~129 auditable lines" (live 171→184) · F-169s the s76/s77 row inversion
++ the s127-s130 inventory-row gap. The CLAUDE facts family — F-169c the
+models list of 8 (Opportunity missing) · F-169d the env table of 3 knobs
+(live 6) · F-169e the enumerations stale-by-omission (~48/129 suites,
+7/10 specs). The SKILL mirror family — F-5/F-3/F-4 §4.1's "(complete)"
+@theme block carrying FIVE stale tokens (primary #3b82f6 vs live
+#2563eb — the session-7 re-pin! — primary-hover, foreground, line,
+line-soft) + `--color-line-strong` missing + the false label over a
+~30-token block while globals.css carries 127 `--color-*` tokens + §19's
+primary/primary-hover rows · F-6 §20's "(3 vars)" · F-19 Appendix B's
+"~15 s" vs the table's "~18 s". The README vintage family — F-169h the
+file tree's "(app)/ 📄 page.tsx # Dashboard (/)" (the file removed at
+s142; the tree omitted dashboard/, the marketing pair, the landing,
+reset-password) · F-169i the Quick Start's "Visiting / redirects to
+/login" + "land on a dashboard" (pre-s142 narration) · F-169j "gate + the
+FOUR drift sweeps" (live six) · F-169n the Tested row's s98-era
+"space-y census 110/18" (live 21/117). The AGENTS straggler family —
+F-11 "the 8 inner wrappers + login + signup consume it" (live 13 primary
+pages + 10 aliases) · F-12 the "596 Vitest checks across 38 suites"
+clause with no era marker · F-13 the "242 color-mix() calls" s25-era
+count (the live compiled CSS carries 293 — build-dependent, reframed
+count-free with the census as an era record).
+
+**THE REMEDIATION (TDD — RED 35 + the auth battery's 2 production-gate
+pins → GREEN, mutation-proven)**: `tests/facts-census.test.ts` — the
+130th suite (+36), the L-165c1 doctrine extended to the STACK-FACTS
+layer: the version carriers read LIVE from node_modules (next 16.4.2 ·
+playwright 1.64.1 — package.json, the lockfile, and the build banner
+three sources agreeing) with every doc row asserted to carry them (the
+scandihaven PAD §1.2 lockstep pattern embodied as a pin) · CLAUDE.md
+joins the docs pin family (the doctrine clause + the models list + the
+env table + the e2e enumeration + the era marker) · the DEPLOYMENT
+live-census re-anchor (BOTH the doc AND the pin-entrenched docs-counts
+literal — the root cure applied to the pin family's own member) · the
+SKILL §4.1/§19 color mirror read live from globals.css · PAD's doctrine
+lines + the auth(8) tree + the ~184 rationale + the s76/s77 order + the
+s127-s130 footnote · the README tree/Quick-Start/gate/space-y pins · the
+AGENTS stragglers (the eleven-URL, the 13-page consumer census read
+live, the era markers) · the production-secret doc posture. THE PRODUCTION
+SECRET GATE (the code leg): `secret()` now THROWS in production on a
+missing OR short AUTH_SECRET (the web-app-foundation §6.2 posture — the
+L-164c3 doctrine: the repo's own distilled companion skill is the bar);
+dev/test keep the documented DEV fallback (the DX story unchanged; the
+existing hand-signed battery IS that face); the throw rides every session
+op so the first op surfaces the actionable message instead of minting
+forgeable cookies; `.env.example`'s false contrast retired for the true
+posture line; the env-table default cells in README/PAD/CLAUDE flipped.
+The ~24 stale sites flipped across the five docs + DEPLOYMENT; the count
+ladder 2520 → **2559** (+39: facts-census +36 · auth +3) · SUITES 129 →
+**130** · E2E 161 held · badge 2681 → **2720** — every live-tense site
+re-anchored atomically (count-ladder-169.py, assert-first, idempotent
+[ONE live-caught tooling defect — the head-surgery skip-check split on
+the wrong `---` boundary and double-applied on the re-run; repaired +
+the guard rebuilt on the verified-single form — the L-168c3 class,
+caught and cured in-round again], unique-anchor) + the SKILL **v1.166.0**
+frontmatter + H1 lockstep + the s169 head layer (the s168 layer
+comment-demoted).
+
+**THE TDD LEDGER**: RED birth 35 failing + 1 born-green census anchor
+(every failure a finding; zero wrong-reason failures after the
+wrap-normalization calibration catches — FOUR pins initially failed on
+line-wrapped anchors, the s167 lesson recurring at birth: fixed by
+normalizing whitespace for the wrapped-clause assertions). The auth
+battery's 2 production-gate pins born RED (the code face) + the
+development-fallback pin born GREEN (the existing behavior). The
+mutation-proof: the planted README badge regression (16.4.2 → 16.3.6) →
+exactly 1 RED → reverted → GREEN. One in-flight calibration catch: the
+auth.ts secret-gate edit grew the file 171 → 184 lines — the live
+line-census pins caught the collateral BEFORE the ship (the PAD §11 row
++ the ADR-003 rationale + the SKILL §7.4 heading all re-derived; the
+census policing its own round's code change, exactly the L-165c1 design).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **130/2559** · build (29
+routes) · e2e **161/161** · db census MATCH · the drift-gate argument
+from s164/s168 carries (the round touches docs + tests +
+`src/lib/auth.ts` — server-only, zero visual surface; the desktop +
+phone sweeps re-verified CLEAN live at the audit leg; the standing
+parity verdict holds).
