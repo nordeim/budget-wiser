@@ -1,5 +1,5 @@
 import { createHmac } from "crypto";
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { hashPassword, verifyPassword, signSession, verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 
 describe("password hashing", () => {
@@ -65,6 +65,33 @@ describe("session tokens", () => {
 // and every previously minted cookie dies at the getSessionUser comparison.
 
 describe("session token versioning (session-163)", () => {
+  // ---- session-164: the ambient-env test-isolation cure --------------------
+  // The RED that named the round: @prisma/client's module init auto-loads
+  // the repo .env into process.env (bisected live: @/lib/password UNSET ->
+  // @/lib/db-path UNSET -> @/lib/db SET — the generated client's dotenv
+  // pass), so any workspace whose .env carries a >=16-char AUTH_SECRET
+  // flips secret() off the DEV fallback these hand-signed constructions
+  // hard-code. The battery is now env-PINNED: beforeAll plants the ambient
+  // condition ON PURPOSE (so the pin is exercised even where the import
+  // chain leaks nothing), beforeEach deletes AUTH_SECRET before every
+  // hand-signed construction (the fix), afterAll restores whatever the
+  // process carried. A test that hard-codes a fallback constant inherits
+  // every ambient env leak of its import graph — pin the env or the test
+  // is environment-dependent (the L-164c1 lesson).
+  const AMBIENT_AUTH_SECRET = "f".repeat(64);
+  let savedAuthSecret: string | undefined;
+  beforeAll(() => {
+    savedAuthSecret = process.env.AUTH_SECRET;
+    process.env.AUTH_SECRET = AMBIENT_AUTH_SECRET;
+  });
+  afterAll(() => {
+    if (savedAuthSecret === undefined) delete process.env.AUTH_SECRET;
+    else process.env.AUTH_SECRET = savedAuthSecret;
+  });
+  beforeEach(() => {
+    delete process.env.AUTH_SECRET;
+  });
+
   it("signs a versioned token and round-trips it", () => {
     const token = signSession("user_123", 3);
     const payload = verifySessionToken(token);
@@ -107,6 +134,33 @@ describe("session token versioning (session-163)", () => {
     const payload = { uid: "user_123", iat: Date.now(), exp: Date.now() + 60_000, v: -1 };
     const body = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
     const sig = createHmac("sha256", "neo-crm-dev-only-insecure-secret").update(body).digest("hex");
+    expect(verifySessionToken(`${body}.${sig}`)).toBeNull();
+  });
+
+  it("is env-pinned: an ambient AUTH_SECRET never reaches the hand-signed constructions (session-164)", () => {
+    // The regression pin for the isolation defect itself. beforeAll
+    // planted the 64-char ambient AUTH_SECRET (the @prisma/client
+    // .env auto-load condition that shipped the round — the baseline
+    // gate was RED on a fresh workspace because of it); the
+    // beforeEach pin must have removed it before this construction
+    // ran, and the DEV-secret-signed pre-retrofit token must verify.
+    expect(process.env.AUTH_SECRET).toBeUndefined();
+    const payload = { uid: "pin_check", iat: Date.now(), exp: Date.now() + 60_000 };
+    const body = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
+    const sig = createHmac("sha256", "neo-crm-dev-only-insecure-secret").update(body).digest("hex");
+    const parsed = verifySessionToken(`${body}.${sig}`);
+    expect(parsed?.uid).toBe("pin_check");
+    expect(parsed?.v).toBe(0);
+  });
+
+  it("rejects the ambient secret's own signature as a foreign key (the battery stays honest)", () => {
+    // The mirror face: a token signed with the AMBIENT secret (not the
+    // pinned DEV fallback) must NOT verify inside the pinned battery —
+    // proving the rejection tests reject at the right layer (the
+    // signature comparison under the pinned secret), never vacuously.
+    const payload = { uid: "user_123", iat: Date.now(), exp: Date.now() + 60_000, v: 0 };
+    const body = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
+    const sig = createHmac("sha256", AMBIENT_AUTH_SECRET).update(body).digest("hex");
     expect(verifySessionToken(`${body}.${sig}`)).toBeNull();
   });
 });

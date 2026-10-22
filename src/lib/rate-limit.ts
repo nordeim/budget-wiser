@@ -3,7 +3,8 @@
 // (all per 15 min / IP — Session-63 (N-63e) corrected this header, which
 // used to claim a flat "10 attempts"): login 10, signup 10, resend 5,
 // verify 20. Session-67 (N-67e) added the sessioned upload route at 20
-// (post-guard); session-68 (F-68a3) recorded it here.
+// (post-guard); session-68 (F-68a3) recorded it here. Session-163 added
+// forgot 10 + reset 10 (the reset funnel's own buckets).
 
 interface Bucket {
   count: number;
@@ -11,6 +12,17 @@ interface Bucket {
 }
 
 const buckets = new Map<string, Bucket>();
+
+// Session-164 (the digma S76-G port): the sweep WATERMARK — the earliest
+// live resetAt seen at the last sweep. Every auth route calls
+// sweepRateLimits() on every request (13+ call sites), so the pre-164
+// always-full O(n) walk cost O(n^2) across rotated-key bursts. Calls
+// before the watermark crossing are O(1) no-ops; an expired key still
+// resets LAZILY at its own access (the rateLimit path); only the memory
+// reclamation of UN-ACCESSED keys waits for the crossing. Per-key
+// observable behavior is identical to the always-sweep form — only the
+// cost profile changes (the never-weakened guarantee).
+let sweepWatermark = 0;
 
 export interface RateLimitResult {
   allowed: boolean;
@@ -79,9 +91,36 @@ export function proxyHopDepth(): number {
   return parsed;
 }
 
-// Opportunistic cleanup so the map never grows unbounded.
-export function sweepRateLimits(now = Date.now()): void {
+// Opportunistic cleanup so the map never grows unbounded. Session-164
+// (the digma S76-G port): AMORTIZED — the watermark gates the walk and
+// the return value is the number of entries swept (the honest observable
+// for the amortization; every route call site ignores it — the void ->
+// number widening is additive).
+export function sweepRateLimits(now = Date.now()): number {
+  if (now < sweepWatermark) return 0;
+  let swept = 0;
   for (const [key, bucket] of buckets) {
-    if (bucket.resetAt <= now) buckets.delete(key);
+    if (bucket.resetAt <= now) {
+      buckets.delete(key);
+      swept += 1;
+    }
   }
+  sweepWatermark = computeWatermark(buckets, now);
+  return swept;
+}
+
+/** Session-164 (the digma S76-G port): the pure watermark seam — the
+ *  next gate time for a buckets map: the MINIMUM live resetAt, or `now`
+ *  when nothing is live (an empty sweep is O(1) and the next call sweeps
+ *  again). Structural param typing keeps the module's Bucket interface
+ *  private. */
+export function computeWatermark(
+  map: ReadonlyMap<string, { resetAt: number }>,
+  now: number,
+): number {
+  let min: number | null = null;
+  for (const bucket of map.values()) {
+    if (bucket.resetAt > now && (min === null || bucket.resetAt < min)) min = bucket.resetAt;
+  }
+  return min ?? now;
 }

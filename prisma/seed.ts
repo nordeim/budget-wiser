@@ -65,6 +65,12 @@ async function main() {
         verificationCodeHash: null,
         verificationAttempts: 0,
         verificationExpiresAt: null,
+        // Session-164: the reset funnel clears with the seed (the verification
+        // fields' own posture — a stale pending token never survives a
+        // re-seed; tokenVersion deliberately NOT reset — no demo-session
+        // eviction, the sweep-state contract).
+        resetToken: null,
+        resetTokenExpiresAt: null,
       },
       create: {
         email: "sepnetflix2023@outlook.com",
@@ -84,6 +90,12 @@ async function main() {
         verificationCodeHash: null,
         verificationAttempts: 0,
         verificationExpiresAt: null,
+        // Session-164: the reset funnel clears with the seed (the verification
+        // fields' own posture — a stale pending token never survives a
+        // re-seed; tokenVersion deliberately NOT reset — no demo-session
+        // eviction, the sweep-state contract).
+        resetToken: null,
+        resetTokenExpiresAt: null,
       },
       create: {
         email: "sara.chen@neo-crm.app",
@@ -102,6 +114,12 @@ async function main() {
         verificationCodeHash: null,
         verificationAttempts: 0,
         verificationExpiresAt: null,
+        // Session-164: the reset funnel clears with the seed (the verification
+        // fields' own posture — a stale pending token never survives a
+        // re-seed; tokenVersion deliberately NOT reset — no demo-session
+        // eviction, the sweep-state contract).
+        resetToken: null,
+        resetTokenExpiresAt: null,
       },
       create: {
         email: "omar.haddad@neo-crm.app",
@@ -120,6 +138,12 @@ async function main() {
         verificationCodeHash: null,
         verificationAttempts: 0,
         verificationExpiresAt: null,
+        // Session-164: the reset funnel clears with the seed (the verification
+        // fields' own posture — a stale pending token never survives a
+        // re-seed; tokenVersion deliberately NOT reset — no demo-session
+        // eviction, the sweep-state contract).
+        resetToken: null,
+        resetTokenExpiresAt: null,
       },
       create: {
         email: "lena.fischer@neo-crm.app",

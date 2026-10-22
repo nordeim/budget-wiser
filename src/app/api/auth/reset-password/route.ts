@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import { ok, fail, ERR, parseBody } from "@/lib/api";
-import { hashPassword } from "@/lib/password";
+import { hashPassword, hashResetToken } from "@/lib/password";
 import { resetPasswordSchema } from "@/lib/schemas";
 import { clientKey, rateLimit, sweepRateLimits } from "@/lib/rate-limit";
 
@@ -48,7 +48,10 @@ export async function POST(req: Request) {
 
   // The token check comes FIRST (the measured ordering). An unknown token
   // and a dead token answer identically (no oracle between them).
-  const user = await db.user.findFirst({ where: { resetToken } }).catch(() => null);
+  // Session-164 (the skill §12 hashed-at-rest compliance): the row stores
+  // the token's SHA-256 hex, so BOTH lookups key on the hash — the raw
+  // token arrives from the URL and never touches the query.
+  const user = await db.user.findFirst({ where: { resetToken: hashResetToken(resetToken) } }).catch(() => null);
   const alive =
     user?.resetTokenExpiresAt instanceof Date && user.resetTokenExpiresAt.getTime() > Date.now();
   if (!user || !alive) {
@@ -69,7 +72,7 @@ export async function POST(req: Request) {
   // no-bare-throw discipline).
   try {
     const result = await db.user.updateMany({
-      where: { id: user.id, resetToken, resetTokenExpiresAt: { gt: new Date() } },
+      where: { id: user.id, resetToken: hashResetToken(resetToken), resetTokenExpiresAt: { gt: new Date() } },
       data: {
         passwordHash: hashPassword(newPassword),
         resetToken: null,

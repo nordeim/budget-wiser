@@ -226,3 +226,26 @@ Work Log:
 Stage Summary:
 - THE VERIFICATION: lint 0/0 · tsc 0 · 124/2347 · build (29 routes) · e2e 161/161 (the reset round-trip + the behavioral eviction green on the first run)
 - SHIPPED: the retrofit + the Zod layer + the aligned docs, committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)
+
+---
+Task ID: 164
+Agent: main (Z.ai)
+Task: The session-164 post-163 audit round — THE TEST-ISOLATION CURE + THE RESET-TOKEN HASH + THE AMORTIZED SWEEP — TDD remediation, docs lockstep, push to main via the SSH wrapper.
+
+Work Log:
+- The workspace refreshed to 53089dd (git pull + bunx prisma generate — the pull's schema postdates the local generated client); the baseline gate: lint 0/0 · tsc 0 · unit RED 2346/2347 · build 29 routes · e2e RED 160/161 (one load flake) · probe:ref #137 STABLE · census MATCH
+- The audit (the web-app-foundation skill §12/§14 as the checklist): F-164a the ambient-env test-isolation defect (@prisma/client's .env auto-load flips secret() off the DEV fallback the s163 hand-signed battery hard-codes — bisected live to the @/lib/db import; the acceptance test fails + three rejection siblings pass VACUOUSLY) · F-164b the settings Defaults starved-read (boundingBox with no auto-wait under load) · F-164c the reset token stored PLAINTEXT (the skill §12 hashed-at-rest gap; the verification code already hashed — internally inconsistent) · F-164d the deferred S76-G sweep · F-164e bun audit absent from the discipline (9 advisories, all dev-toolchain transitive)
+- The plan landed at docs/plans/2026-10-22-session164-test-isolation-reset-hash-sweep.md; validated against the codebase; executed TDD
+- WP-1: the env-pinned battery (beforeAll plants the ambient condition, beforeEach deletes, afterAll restores) + the two regression pins (the env-pinning invariant + the foreign-key honesty mirror) — mutation-proven: the pin disabled -> exactly 3 RED
+- WP-2: hashResetToken (SHA-256 hex, the fast-hash-for-256-bit-entropy doctrine) at the pure seam; the forgot route stores the hash; both reset-route lookups key on it; the delivery URL keeps the raw token; the seed clears the reset funnel (tokenVersion untouched); the schema comment re-anchored
+- WP-3: the settings Defaults e2e visibility pre-waits (E2E held 161)
+- WP-4: the digma S76-G port — the module watermark gates sweepRateLimits (O(1) pre-crossing no-ops returning the swept count; lazy per-key reset unchanged); the computeWatermark pure seam + 6 pins; three in-flight calibration fixes (the min-seed inversion, the real-time-now band arithmetic, the nested-paren regex)
+- WP-5: the bun audit triage in the AGENTS pre-ship discipline + the PAD known-issues ledger (no mid-rotation dep bumps — the pixel-baseline doctrine)
+- The count ladder: UNIT 2347 -> 2362 (+15) · SUITES 124 held · E2E 161 held · badge 2508 -> 2523 · schema 257 -> 262 · seed 516 -> 540 (count-ladder-164.py + skill-head-164.py, assert-first, idempotent; the docs-counts comment ladder + the layer-axis pins -> the s164 head; the dialog-geometry 2347-form negatives)
+- The docs: the AGENTS Session-164 section + the audit line · the PAD session-164 row + the ledger row + the line-census rows · the SKILL v1.161.0 + the s164 head + §7.4's hashed-at-rest/amortized-sweep facts · session_349.md · the plan · this record
+
+Stage Summary:
+- The captures 393-396 (the reset-password landing pair + the settings Defaults pair at phone + desktop — the round's subject surfaces; ours-only, the reference's reset flow is demo theater)
+- THE VERIFICATION: lint 0/0 · tsc 0 · 124/2362 · build (29 routes) · e2e 161/161 · probe:ref #137 STABLE · the six drift gates CLEAN x6 · census MATCH
+- The lessons: L-164c1 pin the env or the test is environment-dependent (a hard-coded fallback constant inherits every ambient env leak of its import graph) · L-164c2 the vacuous green is worse than the red · L-164c3 the distilled skill outranks its source repos (digma's plaintext parity was not the bar)
+- SHIPPED: the remediated codebase committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)

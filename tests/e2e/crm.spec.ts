@@ -670,6 +670,15 @@ test("settings Defaults tab renders the reference's single-column layout (S14-P1
 
   // The six groups stack vertically: the last group (First Day of Week)
   // renders BELOW the first (Default Currency) at desktop width.
+  // Session-164: the visibility pre-waits — a bare boundingBox() read
+  // measures whatever the layout holds at that instant (no auto-wait),
+  // and under full-suite load the tab panel's label subtree can still be
+  // mid-mount at read time (the starved-read class the full run caught:
+  // card visible + classes green, label box null). expect().toBeVisible()
+  // waits for the element itself, so the geometry that follows is the
+  // settled geometry.
+  await expect(card.getByLabel("Default Currency")).toBeVisible();
+  await expect(card.getByLabel("First Day of Week")).toBeVisible();
   const first = await card.getByLabel("Default Currency").boundingBox();
   const last = await card.getByLabel("First Day of Week").boundingBox();
   expect(first).not.toBeNull();

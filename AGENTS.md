@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2347 checks)      | `bun run test`                         |
+|  Unit tests (2362 checks)      | `bun run test`                         |
 |  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -26,7 +26,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Seed demo workspace             | `bun run db:seed`                      |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2347) → `bun run build` → `bun run test:e2e` (161) — or the
+`bun run test` (2362) → `bun run build` → `bun run test:e2e` (161) — or the
 one-command `bun run gate` (session-38: the same chain as a package
 script, so the build always precedes the e2e boot; session-39: the e2e
 step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
@@ -35,7 +35,12 @@ NOT close the stale-server hazard, because a leftover :3100 listener
 was reused regardless of build timing). There is no
 hosted CI; the local gate is the only gate. `next.config.ts` sets
 `ignoreBuildErrors` — the explicit `typecheck` step is what catches type
-errors; never skip it.
+errors; never skip it. Session-164 adds the skill §14 pre-ship step:
+run `bun audit` periodically (NOT inside the gate — it is a network
+dependency and the gate must stay offline-runnable, the probe doctrine);
+the current state is triaged in the PAD known-issues ledger (9
+advisories, all dev-toolchain transitive, zero runtime request-path
+exposure).
 
 First-run setup: `bun install && cp .env.example .env && bun run db:push &&
 bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
@@ -8609,3 +8614,80 @@ throughout, docs aligned, pushed to main via the SSH wrapper.
 - **THE VERIFICATION**: lint 0/0 · tsc 0 · **124/2347** · build (29 routes,
   /reset-password live) · e2e **161/161** (the reset round-trip + the
   behavioral eviction green on the first run).
+
+## Session-164 — THE TEST-ISOLATION CURE + THE RESET-TOKEN HASH + THE AMORTIZED SWEEP (2026-10-22)
+
+The post-163 audit round (the baseline gate RED named it): the fresh
+workspace's first `bun run test` failed 2346/2347 — the session-163
+hand-signed session battery was **ambient-env-dependent**. Root cause
+(bisected live): `@prisma/client`'s module init auto-loads the repo
+`.env` into `process.env`, so any workspace whose `.env` carries a
+≥16-char `AUTH_SECRET` flips `secret()` off the DEV fallback the
+hand-signed constructions hard-code — the pre-retrofit acceptance test
+fails, and the three rejection siblings (non-integer/fractional/
+negative `v`) pass **VACUOUSLY** (the signature gate rejects before the
+version-shape guard ever runs). Every environment following the
+documented first-run setup hits this. THE CURE: the battery is now
+env-PINNED (`beforeAll` plants the ambient condition on purpose,
+`beforeEach` deletes `AUTH_SECRET` before every hand-signed
+construction, `afterAll` restores) + two regression pins (the
+env-pinning invariant + the foreign-key honesty mirror — a token signed
+with the AMBIENT secret must NOT verify inside the pinned battery).
+Mutation-proven: the pin disabled → exactly 3 RED.
+
+- **THE RESET-TOKEN HASH (the skill §12 compliance)**: the web-app-
+  foundation skill's security checklist requires "verification + reset
+  tokens stored hashed" — neo-crm hashed the verification CODE (scrypt)
+  but stored the reset TOKEN plaintext (digma parity, but the repo's own
+  distilled companion skill is the bar). `hashResetToken` joins the pure
+  seam (SHA-256 hex — a FAST hash, correct for a 256-bit-entropy token;
+  the code-vs-token asymmetry: user-chosen low entropy needs scrypt,
+  crypto-random does not); the forgot route stores the hash, both
+  reset-route lookups key on it, the delivery URL keeps the RAW token —
+  a DB read compromise never mints live reset links. The seed's user
+  upserts now CLEAR the reset funnel (the verification fields' own
+  posture); `tokenVersion` deliberately not reset (no demo-session
+  eviction). Migration note: a pending plaintext token at swap time
+  ages out of its 60-min TTL — the dev/demo posture.
+- **THE AMORTIZED SWEEP (digma S76-G — the deferred s163 WP-7 landed)**:
+  `sweepRateLimits()` ran the full O(n) walk on every call — and every
+  auth route calls it on every request, so rotated-key bursts cost
+  O(n²). Now a module-level WATERMARK (the earliest live resetAt seen
+  at the last sweep) gates the walk: pre-crossing calls are O(1) no-ops
+  returning 0; an expired key still resets lazily at its own access;
+  only the memory reclamation of un-accessed keys waits for the
+  crossing (per-key behavior identical — the never-weakened guarantee).
+  The pure seam `computeWatermark` + the swept-count return are the
+  honest observables.
+- **THE E2E STARVED-READ HARDENING**: the settings Defaults spec's bare
+  `boundingBox()` reads (no auto-wait) failed under full-suite load
+  (1-in-1; 3/3 isolated) — the tab panel's label subtree mid-mount at
+  read time. Visibility pre-waits added; E2E count held at 161.
+- **THE AUDIT TRIAGE (skill §14)**: `bun audit` joined the pre-ship
+  discipline (periodic, NOT in the offline gate — the probe doctrine);
+  current state: 9 advisories, ALL dev-toolchain transitive (braces via
+  eslint-config-next · deepmerge-ts via the prisma CLI config · vite
+  via vitest · source-map-js via postcss) — zero runtime request-path
+  exposure; the posture: no mid-rotation dep bumps (a toolchain bump
+  forces the standing pixel baselines' re-derivation — its own
+  rotation), recorded in the PAD known-issues ledger.
+- **THE COUNT LADDER**: UNIT 2347 → 2362 (+15 — auth +2 · password-seam
+  +3 · auth-reset +4 · rate-limit +6) · SUITES 124 held · E2E 161 held
+  · badge 2508 → 2523 · the line-census sites (schema.prisma 257 → 262
+  · seed.ts 516 → 540) — every live-tense site re-anchored in lockstep
+  (count-ladder-164.py, assert-first, idempotent, unique-anchor) and
+  the pin carriers (docs-counts UNIT + the comment ladder ·
+  dialog-geometry CLAUDE ×4 + the 2347-form negatives).
+- **THE LESSONS**: L-164c1 a test that hard-codes a fallback constant
+  inherits every ambient env leak of its import graph — pin the env or
+  the test is environment-dependent (the @prisma/client .env auto-load
+  is invisible until a fresh workspace trips it) · L-164c2 the vacuous
+  green is worse than the red (the rejection siblings passed for the
+  wrong reason for a full session — an assertion that can pass at the
+  wrong layer proves nothing about the layer it names) · L-164c3 the
+  distilled skill outranks its source repos (digma's plaintext parity
+  was not the bar — the web-app-foundation §12 checklist the family
+  distilled AFTER digma is).
+- **THE VERIFICATION**: lint 0/0 · tsc 0 · **124/2362** · build (29
+  routes) · e2e **161/161** · probe:ref #137 STABLE at the s147-s155
+  fingerprint · the six drift gates CLEAN ×6 · db census MATCH.

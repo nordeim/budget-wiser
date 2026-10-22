@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { ok, fail, ERR, parseBody } from "@/lib/api";
 import { forgotPasswordSchema } from "@/lib/schemas";
+import { hashResetToken } from "@/lib/password";
 import { clientKey, rateLimit, sweepRateLimits } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
@@ -76,12 +77,17 @@ export async function POST(req: Request) {
     // persisted). The transient-abort family (P2024 = pool-connection
     // timeout, P2028 = transaction timeout) surfaces honestly as a 503 —
     // a server condition, never an account state.
+    // Session-164 (the skill §12 hashed-at-rest compliance): the row
+    // stores the token's SHA-256 hex — the RAW token lives only in the
+    // delivery URL below, so a read compromise of the database can
+    // never mint live reset links (the verification-code family's own
+    // hashed-storage posture, brought to its sibling).
     let stored = false;
     try {
       await db.user.update({
         where: { id: user.id },
         data: {
-          resetToken: token,
+          resetToken: hashResetToken(token),
           resetTokenExpiresAt: new Date(Date.now() + RESET_TOKEN_TTL_MS),
         },
       });

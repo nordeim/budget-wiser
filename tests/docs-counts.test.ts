@@ -589,7 +589,18 @@ const SUITES = 124;
 // + the atomic-0600 write + the freshness pure seam + the header
 // doctrine + the SEED's ID-STABILITY contract [the PASS-1 root cause];
 // SUITES stays 120; E2E stays 153.)
-const UNIT = 2347;
+// Session-164: 2347 -> 2362 (+15 — the test-isolation cure + the
+// reset-token hash + the amortized sweep, all in EXISTING files: the
+// auth suite +2 [the env-pinning regression pin + the foreign-key
+// honesty pin] + the password-seam suite +3 [the hashResetToken seam:
+// deterministic SHA-256 hex + distinct inputs + the fast-hash
+// construction] + the auth-reset suite +4 [the hashed-at-rest storage
+// pin + the hashed-lookup pin + the schema-comment pin + the seed
+// funnel-clearing pin] + the rate-limit suite +6 [the computeWatermark
+// pure seam x3 + the watermark-holds skip + the crossing re-opens the
+// walk + the O(1)-gate source pin]; SUITES stays 124; E2E stays 161 —
+// the settings Defaults starved-read hardening lands IN PLACE.)
+const UNIT = 2362;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard.
@@ -1018,13 +1029,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-163 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-164 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s162 layer now beneath the s163 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s163 layer now beneath the s164 head)",
     ).toContain(
-      "+ beneath it 2271 unit checks + 153 e2e checks green; the session-162 layer (THE SWEEP LOGIN CONSOLIDATION",
+      "+ beneath it 2347 unit checks + 161 e2e checks green; the session-163 layer (THE AUTH RETROFIT",
     );
   });
 

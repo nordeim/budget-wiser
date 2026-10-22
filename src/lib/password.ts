@@ -6,7 +6,7 @@
 // in one place silently broke demo login in the other. This module is
 // node:crypto ONLY — both consumers import it, and auth.ts re-exports for
 // the routes' existing import surface.
-import { randomBytes, randomInt, scryptSync, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, randomInt, scryptSync, timingSafeEqual } from "node:crypto";
 
 const KEY_LENGTH = 64;
 
@@ -43,6 +43,18 @@ export function timingEqualizerHash(): string {
     equalizerHash = hashPassword("neo-crm-timing-equalizer-constant");
   }
   return equalizerHash;
+}
+
+// Session-164 (the skill §12 hashed-at-rest compliance): the reset-token
+// lookup hash. The token is a 32-byte crypto-random value (256-bit
+// entropy) carried in the delivery URL; the DB stores only its SHA-256
+// hex — a read compromise of the database never mints live reset URLs.
+// A FAST hash is the correct tool here (no brute-force surface on
+// 256-bit input), unlike the password/verify-code family whose
+// user-chosen low entropy needs the slow scrypt: the code-vs-token
+// asymmetry.
+export function hashResetToken(token: string): string {
+  return createHash("sha256").update(token, "utf8").digest("hex");
 }
 
 // Session-163: moved verbatim from src/lib/verification-server.ts (the

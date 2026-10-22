@@ -42,6 +42,11 @@ model User {
   // crypto-random hex consumed ATOMICALLY and SINGLE-USE (the conditional
   // updateMany carries token + live expiry in its WHERE — a racing replay
   // lands count 0 and answers the invalid-token 400). 60-minute TTL.
+  // Session-164 (the skill §12 hashed-at-rest compliance): the column
+  // stores hashResetToken(token) — the SHA-256 hex of the raw token, the
+  // same hashed-storage posture as verificationCodeHash; the raw token
+  // lives only in the delivery URL, so a DB read compromise never mints
+  // live reset links.
   resetToken           String?
   resetTokenExpiresAt  DateTime?
   createdAt    DateTime @default(now())

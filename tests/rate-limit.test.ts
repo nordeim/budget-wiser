@@ -115,3 +115,97 @@ describe("clientKey (session-163: last-hop trust + declared depth)", () => {
     else process.env.NEO_PROXY_HOPS = ORIGINAL;
   });
 });
+
+// ---- session-164: the amortized sweep (the digma S76-G port) --------------
+// The pre-164 posture: sweepRateLimits() ran the FULL O(n) walk on every
+// call — and every auth route calls it on every request (13+ call sites),
+// so rotated-key traffic cost O(n^2) across the burst. The digma S76-G
+// cure (its WP-7 stretch, deferred at s163 without the note — landed
+// here): a module-level WATERMARK (the earliest live resetAt seen at the
+// last sweep) gates the walk. Calls before the watermark crossing are
+// O(1) no-ops; an expired key still resets LAZILY at its own access (the
+// rateLimit path); only the memory reclamation of UN-ACCESSED keys waits
+// for the crossing. Per-key observable behavior is identical to the
+// always-sweep form — only the cost profile changes.
+
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { computeWatermark } from "@/lib/rate-limit";
+
+describe("the amortized sweep (session-164, digma S76-G)", () => {
+  // A banded monotonic timeline: the module watermark persists across the
+  // file's tests, so each test's `now` values start past every prior
+  // band's live maxima (the production analogue: Date.now() is monotonic).
+  const T0 = Date.now();
+  const BAND = 10_000_000;
+
+  it("computeWatermark: an empty map returns now (the next call sweeps again — an empty sweep is O(1))", () => {
+    const now = T0 + BAND;
+    expect(computeWatermark(new Map(), now)).toBe(now);
+  });
+
+  it("computeWatermark: the MINIMUM live resetAt wins; expired entries are excluded", () => {
+    const now = T0 + 2 * BAND;
+    const map = new Map<string, { resetAt: number }>([
+      ["live-a", { resetAt: now + 60_000 }],
+      ["live-b", { resetAt: now + 30_000 }],
+      ["dead", { resetAt: now - 1 }],
+    ]);
+    expect(computeWatermark(map, now)).toBe(now + 30_000);
+  });
+
+  it("computeWatermark: an all-expired map returns now (nothing live holds the watermark)", () => {
+    const now = T0 + 3 * BAND;
+    const map = new Map<string, { resetAt: number }>([["dead", { resetAt: now - 1 }]]);
+    expect(computeWatermark(map, now)).toBe(now);
+  });
+
+  it("sweepRateLimits returns the swept count; an immediate re-call is an O(1) SKIP (the watermark holds)", () => {
+    // rateLimit mints its buckets at REAL Date.now() (no now param — the
+    // production signature stays untouched), so the band arithmetic rides
+    // sweepRateLimits' own now param and a window DOMINANT over the band.
+    const t = Date.now();
+    const key = `amort-${Math.random()}`;
+    rateLimit(key, 10, 2_000_000); // resetAt = t + 2_000_000 (the dominant window)
+    // open the gate past every earlier bucket (this file's earlier tests
+    // use <= 60_000 windows) while OUR bucket stays live:
+    const tFlush = t + 1_000_000;
+    sweepRateLimits(tFlush); // the full walk — our bucket survives it
+    // watermark now = t + 2_000_000 (the only live entry): the immediate
+    // re-call is gated OFF — an O(1) no-op that sweeps nothing.
+    expect(sweepRateLimits(tFlush + 1)).toBe(0);
+    // and the skip never weakened the limiter: the bucket is still live
+    expect(rateLimit(key, 10, 2_000_000).allowed).toBe(true);
+    expect(rateLimit(key, 10, 2_000_000).remaining).toBe(7); // 3 of 10 consumed
+  });
+
+  it("crossing the earliest live expiry re-opens the full walk (the dead bucket is reclaimed)", () => {
+    // Band 2 dominates the prior test's watermark (t_prev + 2_000_000).
+    const t = Date.now();
+    const key = `reopen-${Math.random()}`;
+    rateLimit(key, 10, 4_000_000); // resetAt = t + 4_000_000
+    // cross the PRIOR watermark (t_prev + 2M ~ t + 2M): the gate opens and
+    // the walk runs — our long-window bucket survives it, watermark := t + 4M
+    sweepRateLimits(t + 2_500_000);
+    expect(rateLimit(key, 10, 4_000_000).allowed).toBe(true); // count 2 — still live
+    // still under the watermark: the O(1) skip
+    expect(sweepRateLimits(t + 2_600_000)).toBe(0);
+    // cross OUR bucket's expiry: the gate opens, the full walk reclaims it
+    expect(sweepRateLimits(t + 4_000_001)).toBe(1);
+    expect(rateLimit(key, 10, 4_000_000).allowed).toBe(true); // fresh window
+  });
+
+  it("the gate is the FIRST statement of sweepRateLimits (the O(1)-until-crossing construction)", () => {
+    const src = readFileSync(path.resolve(import.meta.dirname, "..", "src/lib/rate-limit.ts"), "utf8");
+    const stripped = src
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    // [\s\S]*? spans the nested parens of the default param (Date.now())
+    const body = stripped.match(/export function sweepRateLimits\([\s\S]*?\):\s*number\s*\{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(body.trimStart().startsWith("if (now < sweepWatermark) return 0;")).toBe(true);
+    // and the walk still runs to completion once the gate opens (the
+    // never-weakened guarantee: a crossing sweep is the full O(n) form)
+    expect(body).toContain("buckets.delete(key)");
+    expect(body).toContain("sweepWatermark = computeWatermark(buckets, now)");
+  });
+});

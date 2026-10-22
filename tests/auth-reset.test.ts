@@ -56,6 +56,12 @@ describe("forgot-password route contract (session-163, digma S46/S64/S66/S124)",
     expect(src).toContain("60 * 60 * 1000");
   });
 
+  it("stores the token HASHED at rest (session-164 — the skill §12 compliance; the raw token lives only in the delivery URL)", () => {
+    const src = forgotRoute();
+    expect(src).toContain("resetToken: hashResetToken(token)");
+    expect(src).not.toContain("resetToken: token,");
+  });
+
   it("gates the in-app resetUrl delivery behind NEO_DISABLE_IN_APP_RESET", () => {
     const src = forgotRoute();
     expect(src).toContain('process.env.NEO_DISABLE_IN_APP_RESET !== "1"');
@@ -101,10 +107,15 @@ describe("reset-password route contract (session-163, digma S67-A/S76-A/S124-A)"
     expect(routeSrc.indexOf("findFirst")).toBeLessThan(routeSrc.indexOf("passwordHash: hashPassword"));
   });
 
-  it("consumes the token ATOMICALLY: updateMany with token + live expiry in the WHERE", () => {
+  it("consumes the token ATOMICALLY: updateMany with the HASHED token + live expiry in the WHERE", () => {
     const src = resetRoute();
     expect(src).toContain("updateMany");
-    expect(src).toMatch(/where:\s*\{\s*id: user\.id,\s*resetToken,[\s\S]*?resetTokenExpiresAt:\s*\{\s*gt:\s*new Date\(\)\s*\}/);
+    expect(src).toMatch(/where:\s*\{\s*id: user\.id,\s*resetToken: hashResetToken\(resetToken\),[\s\S]*?resetTokenExpiresAt:\s*\{\s*gt:\s*new Date\(\)\s*\}/);
+  });
+
+  it("looks the row up by the HASHED token (a DB read compromise never mints live reset URLs — session-164)", () => {
+    const src = resetRoute();
+    expect(src).toContain("findFirst({ where: { resetToken: hashResetToken(resetToken) } })");
   });
 
   it("answers the invalid-token 400 when the conditional write lands count 0 (the racing replay)", () => {
@@ -143,6 +154,24 @@ describe("the session eviction wiring (session-163, digma S67-A)", () => {
     expect(schema).toContain("tokenVersion");
     expect(schema).toContain("resetToken");
     expect(schema).toContain("resetTokenExpiresAt");
+  });
+
+  it("the schema comment documents the hashed-at-rest storage (session-164)", () => {
+    const schema = read("prisma/schema.prisma") ?? "";
+    expect(schema).toContain("hashResetToken");
+    expect(schema).toContain("hashed");
+  });
+
+  it("the seed's user upserts CLEAR the reset funnel (a stale pending token never survives a re-seed — session-164)", () => {
+    const seed = stripComments(read("prisma/seed.ts") ?? "");
+    // every update block carries the null-clearing pair, the same posture
+    // as the verification fields
+    const updateBlocks = seed.match(/update:\s*\{[\s\S]*?\},/g) ?? [];
+    expect(updateBlocks.length).toBeGreaterThanOrEqual(4);
+    for (const block of updateBlocks) {
+      expect(block).toContain("resetToken: null");
+      expect(block).toContain("resetTokenExpiresAt: null");
+    }
   });
 });
 

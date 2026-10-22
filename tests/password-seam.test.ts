@@ -16,6 +16,7 @@ import { describe, expect, it } from "vitest";
 import {
   generateVerifyCode,
   hashPassword,
+  hashResetToken,
   timingEqualizerHash,
   verifyPassword,
 } from "@/lib/password";
@@ -68,6 +69,33 @@ describe("generateVerifyCode at the pure seam (session-163)", () => {
       const code = generateVerifyCode();
       expect(code).toMatch(/^\d{6}$/);
     }
+  });
+});
+
+describe("hashResetToken (session-164 — the skill §12 hashed-at-rest compliance)", () => {
+  it("hashes a token deterministically into 64-char lowercase hex (SHA-256)", () => {
+    const token = "a".repeat(64); // the randomBytes(32).toString("hex") form
+    expect(hashResetToken(token)).toBe(hashResetToken(token));
+    expect(hashResetToken(token)).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("distinct tokens hash distinctly (the lookup key never collides across users)", () => {
+    const a = hashResetToken("deadbeef");
+    const b = hashResetToken("deadbeeg");
+    expect(a).not.toBe(b);
+  });
+
+  it("is a FAST hash — createHash sha256, never scrypt (a 32-byte crypto-random token has 256-bit entropy; no brute-force surface; the code-vs-token asymmetry: the 6-digit CODE is user-chosen low entropy so it needs the slow hash, the token does not)", () => {
+    const src = readFileSync(
+      path.resolve(import.meta.dirname, "..", "src/lib/password.ts"),
+      "utf8",
+    );
+    const stripped = src
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    expect(stripped).toContain('createHash("sha256")');
+    // the scrypt family stays untouched by the addition
+    expect(stripped).toContain("scryptSync");
   });
 });
 
