@@ -17,9 +17,9 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2668 checks)      | `bun run test`                         |
+|  Unit tests (2697 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
-|  Browser E2E (186 checks)        | `bun run test:e2e` (needs build first) |
+|  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -33,10 +33,10 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2668) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2697) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
-`bun run test:e2e` (186) — or the one-command `bun run gate` (session-38:
+`bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
 the same chain as a package script, so the build always precedes the e2e
 boot; session-39: the e2e step runs under `CI=1`, so
 `reuseExistingServer` evaluates false and the gate ALWAYS boots the
@@ -9419,3 +9419,80 @@ the mobile drawer **7/7 PASS** re-run + probe:ref **STABLE** + the
 desktop + phone sweeps **CLEAN** re-run (the aria-labels changed no
 pixel — the parity verdict holds, the reference itself unchanged since
 the s168 fingerprint).
+
+## Session-172 — THE DIALOG-SURFACE NAMED-CONTROL CLOSURE + THE FAST-CHECK PROPERTY FAMILY (2026-10-23)
+
+The post-171 audit round. Baseline: the s171 ship state reproduced
+exactly (lint 0/0 · tsc 0 · **135/2668** · build · smoke **14/14** · e2e
+**186/186** · probe:ref STABLE · the desktop + phone sweeps CLEAN live ·
+the mobile drawer **7/7 PASS** at 390×844 · the Tailwind v4 state clean
+· sitemap 11 routes + robots + manifest standing · census MATCH). The
+rotation candidates (the s171 close's named list): the fast-check
+property tests (the other s170-named family — its own devDep bump) ·
+the dialog-surface select family (the closed-by-default genus the
+probes never reached) · the drawer interior re-walk (covered by the
+7/7 battery re-run). This round adopts the FIRST TWO: the dialog genus
+needs NO devDep (attribute-only fixes — the s171 cure extended),
+fast-check is the round's ONE devDep bump (the no-mid-rotation-bump
+posture holds: s171 bumped axe-core, s172 bumps fast-check).
+
+**THE AUDIT (the live OPEN-DIALOG probes — ours across the five CREATE
+dialogs + the contact EDIT dialog, PLUS the same scan against the
+REFERENCE's own open dialogs for the parity citation)**: the
+closed-by-default genus — a Radix Dialog's content is ABSENT from the
+DOM while closed, so the s171 round's twelve-surface scan AND the a11y
+two-gate never saw it. OURS: 9 nameless create-dialog SelectTriggers
+(Lead 2 · Account 1 · Contact 1 · Event 3 · Activity 2 — sibling
+`<Label>` text is invisible to the combobox name computation, the
+F-171a rule) + the entity-edit-dialog family: 5 nameless
+config-driven SelectTriggers (Contact Status+Source · Lead Status+Source
+· Account Status) AND 17 unlabeled Inputs (the bare
+`<Label>{f.label}</Label>` renders no htmlFor, the Inputs no id). THE
+REFERENCE (verified live on its own open DOM): the IDENTICAL
+nameless-combobox family on every dialog PLUS its own label violations
+(its event dialog: 4 unlabeled inputs; its activity dialog: 1) — our
+fixes are invisible supersets under the s171 doctrine.
+
+**THE REMEDIATION (TDD — RED birth: dialog-controls 6 failing +
+property 2 failing [the csv round-trip — the F-172e parser defect
+caught by the property at birth] + 19 born-green, THREE live-caught
+property-calibration catches [the unqualified vocabulary intrusion ·
+the undefined minValue · the ragged-row normalization — each a seam
+contract the generator must respect] → GREEN, mutation-proven)**: THE
+DIALOG-SURFACE NAMED-CONTROL CLOSURE — aria-label = the sibling Label's
+exact text on the 9 create triggers ("Status" · "Source" · "How did you
+meet?" · "Event Type" · "Related To" · "Activity Type" · "Related To
+(Type)") + the edit-dialog htmlFor/id wiring (`edit-${f.key}` — ids
+collision-safe, only one dialog open at a time) +
+`aria-label={f.label}` on the config-driven trigger + THE TWO-GATE
+EXTENDED (`tests/e2e/a11y.spec.ts` +6 EXPLICIT registrations: the five
+create dialogs + the contact edit dialog, each open → scanTwoGate →
+Escape; the sanctioned register rides UNCHANGED — the open-dialog
+landscape verified live: nothing new behind the dialogs) + THE
+FAST-CHECK PROPERTY FAMILY (`tests/property.test.ts` — the 137th suite,
++13: the csv escape/parse round-trip · the guard idempotence · the
+lead-views round-trip · the saved-reports total/idempotent seam · the
+formatter robustness freeze · the initials invariants · the csvFilename
+convention; fast-check ^4.10.2 DECLARED — the 13th devDep) + THE PARSER
+FIX (F-172e: `parseCsv`'s GLOBAL line-ending normalization mutated
+quoted cells — a quoted CRLF became LF on import, RFC 4180 §2.6
+violated; the normalization moved INSIDE the state machine, OUTSIDE
+quotes only; unquoted CRLF/lone CR keep the pinned s26 row-break
+behavior) + `tests/dialog-controls.test.ts` (the 136th suite, +14).
+
+**THE COUNT LADDER**: 2668 → 2697 (+29: dialog-controls +14 + property
++13 + inventory-census +2 [the two new §11 rows]) · SUITES 135 → 137 ·
+E2E 186 → 192 (+6) · badge 2854 → 2889 (count-ladder-172.py +
+skill-head-172.py, assert-first, idempotent — the re-runs verified
+0-flip no-ops). The collateral re-anchors: dialog-geometry (the
+bare-cell pin rides the aria-label form + the no-nameless negative) ·
+dead-code-hygiene (the 13th devDep) · inventory-census (the 37-row
+surface) · docs-counts (the constants + the Appendix B a11y row 25 → 31
++ the layer-axis pin re-anchor) · login-family + the dialog-geometry
+CLAUDE lockstep carriers (2668/186 → 2697/192) · README (the commands
+list + the Tested row).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **137/2697** unit · build (the
+hygienic artifact) · smoke **14/14** · e2e **192/192** (the 6 dialog-open
+scans GREEN) · db census MATCH · the mutation proof (the planted badge
+regression 2889 → 2854 → exactly 1 RED → reverted → GREEN).

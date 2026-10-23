@@ -74,12 +74,12 @@ describe("session-168 (WP-1a): the PAD §11 Lines-column live-census — every c
   const rows = [...section.matchAll(/^\| `([^`]+)` \| (\d+) \|/gm)].map(
     (m) => [m[1] as string, m[2] as string] as const,
   );
-  // the surface itself is censused: 35 count-carrying rows today (27 at
+  // the surface itself is censused: 37 count-carrying rows today (27 at
   // s168 + the six s170 resilience-family rows + the two s171 a11y
-  // rows) — a row silently added/removed fails THIS pin before any row
-  // pin.
-  it("the §11 table's count-carrying row surface is censused (35 rows — a row added or dropped fails here first)", () => {
-    expect(rows.length).toBe(35); // s171: 33 + the two a11y-family rows
+  // rows + the two s172 dialog/property rows) — a row silently
+  // added/removed fails THIS pin before any row pin.
+  it("the §11 table's count-carrying row surface is censused (37 rows — a row added or dropped fails here first)", () => {
+    expect(rows.length).toBe(37); // s172: 35 + the dialog-controls + property rows
   });
 
   for (const [file, claimed] of rows) {

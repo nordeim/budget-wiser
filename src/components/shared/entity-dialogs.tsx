@@ -306,7 +306,7 @@ function AccountForm({
         <div className={DIALOG_GROUP.group}>
           <Label>Status</Label>
           <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
-            <SelectTrigger className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
+            <SelectTrigger aria-label="Status" className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
             <SelectContent>
               {ACCOUNT_STATUSES.map((s) => (
                 <SelectItem key={s} value={s}>{ACCOUNT_STATUS_META[s].label}</SelectItem>
@@ -589,7 +589,7 @@ function ContactForm({
         <div className={DIALOG_GROUP.group}>
           <Label>How did you meet?</Label>
           <Select value={form.source} onValueChange={(v) => setForm({ ...form, source: v })}>
-            <SelectTrigger className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
+            <SelectTrigger aria-label="How did you meet?" className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
             <SelectContent>
               {/* Session-28 (S28-P1): the RAW values with the emoji labels
                   (value "email", label "\u2709\ufe0f Email"). */}
@@ -767,7 +767,7 @@ function LeadForm({
           <div className={DIALOG_GROUP.group}>
             <Label>Status</Label>
             <Select value={form.stage} onValueChange={(v) => setForm({ ...form, stage: v })}>
-              <SelectTrigger className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-label="Status" className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
               <SelectContent>
                 {CREATE_LEAD_STAGES.map((s) => (
                   <SelectItem key={s} value={s}>{STAGE_META[s].label}</SelectItem>
@@ -778,7 +778,7 @@ function LeadForm({
           <div className={DIALOG_GROUP.group}>
             <Label>Source</Label>
             <Select value={form.source} onValueChange={(v) => setForm({ ...form, source: v })}>
-              <SelectTrigger className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-label="Source" className={DIALOG_GROUP.controlMt + " w-full"}><SelectValue /></SelectTrigger>
               <SelectContent>
                 {/* Session-29 (S29-P4): value/label pairs — the RAW
                     values are stored; the labels are display-only. */}
@@ -941,7 +941,7 @@ function EventForm({
         <div>
           <Label>Event Type *</Label>
           <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v })}>
-            <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+            <SelectTrigger aria-label="Event Type" className="w-full"><SelectValue /></SelectTrigger>
             <SelectContent>
               {EVENT_TYPES.map((t) => (
                 <SelectItem key={t} value={t}>{EVENT_TYPE_META[t].label}</SelectItem>
@@ -952,7 +952,7 @@ function EventForm({
         <div>
           <Label>Status</Label>
           <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
-            <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+            <SelectTrigger aria-label="Status" className="w-full"><SelectValue /></SelectTrigger>
             <SelectContent>
               {["scheduled", "completed", "cancelled"].map((s) => (
                 <SelectItem key={s} value={s}>{s[0].toUpperCase() + s.slice(1)}</SelectItem>
@@ -984,7 +984,7 @@ function EventForm({
         <div>
           <Label>Related To</Label>
           <Select value={form.relatedType} onValueChange={(v) => setForm({ ...form, relatedType: v })}>
-            <SelectTrigger className="w-full"><SelectValue placeholder="Select type" /></SelectTrigger>
+            <SelectTrigger aria-label="Related To" className="w-full"><SelectValue placeholder="Select type" /></SelectTrigger>
             <SelectContent>
               {EVENT_RELATED_OPTIONS.map((o) => (
                 <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
@@ -1159,7 +1159,7 @@ function ActivityForm({
         <div>
           <Label>Activity Type *</Label>
           <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v })}>
-            <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+            <SelectTrigger aria-label="Activity Type" className="w-full"><SelectValue /></SelectTrigger>
             <SelectContent>
               {/* Session-76 (L-76c6): FIVE options — Call/Email/Meeting/
                   Task/Note. WhatsApp is NEVER listed (the quick-log preset
@@ -1195,7 +1195,7 @@ function ActivityForm({
         <div>
           <Label>Related To (Type)</Label>
           <Select value={form.relatedType} onValueChange={(v) => setForm({ ...form, relatedType: v })}>
-            <SelectTrigger className="w-full"><SelectValue placeholder="Select type" /></SelectTrigger>
+            <SelectTrigger aria-label="Related To (Type)" className="w-full"><SelectValue placeholder="Select type" /></SelectTrigger>
             <SelectContent>
               {ACTIVITY_RELATED_OPTIONS.map((o) => (
                 <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>

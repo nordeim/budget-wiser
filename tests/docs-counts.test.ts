@@ -143,7 +143,7 @@ const listFiles = (rel: string): string[] => {
 // Session-171: E2E 153 lineage 161 -> 186 (+25 — the a11y two-gate spec:
 // the nine CRM pages × both widths + the three anon surfaces × both
 // widths + the drawer-open state — the §8.3 axe battery).
-const E2E = 186;
+const E2E = 192;
 // Session-152: SUITES 118 -> 119 (the interior-census-tool file — the
 // standing sixth gate's pin suite).
 // Session-159: SUITES 119 -> 120 (the settings-rhythm-tool file — the
@@ -162,7 +162,7 @@ const E2E = 186;
 // boot-env + error-boundaries files — the resilience + hygiene round).
 // Session-171: SUITES 134 -> 135 (the a11y-controls file — the named-
 // control source-pin battery).
-const SUITES = 135;
+const SUITES = 137;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -682,7 +682,7 @@ const SUITES = 135;
 // 135th suite] +22: the named-control census + the devDep pin + the
 // two-gate spec contract, + the inventory-census +2 [the two new §11
 // a11y rows' parameterized pins — the L-166c3 lesson live again]).
-const UNIT = 2668;
+const UNIT = 2697;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1147,13 +1147,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-171 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-172 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s170 layer now beneath the s171 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s171 layer now beneath the s172 head)",
     ).toContain(
-      "+ beneath it 2644 unit checks + 161 e2e checks green; the session-170 layer (THE ERROR-BOUNDARY FAMILY",
+      "+ beneath it 2668 unit checks + 186 e2e checks green; the session-171 layer (THE AXE-CORE A11Y TWO-GATE",
     );
   });
 

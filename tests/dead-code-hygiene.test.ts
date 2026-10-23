@@ -725,13 +725,15 @@ describe("session-62: the manifest honesty + the dead-arm retirement", () => {
     const script = read("scripts/install_packages.sh") ?? "";
     expect(script).not.toContain("@radix-ui/react-toast");
     expect(script).toContain("@types/node");
-    // 20 runtime + 12 dev (session-163: zod joins as the 20th runtime
+    // 20 runtime + 13 dev (session-163: zod joins as the 20th runtime
     // dep — the validation layer for the auth family; session-171:
     // axe-core joins as the 12th dev dep — the DECLARED engine of the
-    // a11y two-gate e2e battery).
+    // a11y two-gate e2e battery; session-172: fast-check joins as the
+    // 13th dev dep — the DECLARED engine of the property battery).
     expect(Object.keys(pkg.dependencies ?? {}).length).toBe(20);
-    expect(Object.keys(pkg.devDependencies ?? {}).length).toBe(12);
+    expect(Object.keys(pkg.devDependencies ?? {}).length).toBe(13);
     expect(pkg.devDependencies?.["axe-core"]).toBe("^4.13.0");
+    expect(pkg.devDependencies?.["fast-check"]).toBe("^4.10.2");
   });
 
   it("every surviving radix package has a REAL import site (the honest census — 62-a#4)", () => {

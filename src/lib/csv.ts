@@ -62,13 +62,24 @@ export function csvFilename(prefix: string): string {
   return `${prefix}_${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.csv`;
 }
 
-/** Minimal RFC-4180-ish parser used by the Import feature (contacts CSV). */
+/** Minimal RFC-4180-ish parser used by the Import feature (contacts CSV).
+ *  Session-172 (F-172e): line-ending normalization runs INSIDE the state
+ *  machine, OUTSIDE quotes only — a quoted CRLF/CR is FIELD DATA
+ *  (RFC 4180 §2.6); the pre-172 global replace mutated quoted cells
+ *  silently (a `\r\n` inside quotes became `\n` on import). Unquoted
+ *  CRLF and lone CR still act as row breaks (the pinned s26 behavior). */
 export function parseCsv(text: string): string[][] {
   const rows: string[][] = [];
   let row: string[] = [];
   let cell = "";
   let inQuotes = false;
-  const src = text.replace(/^\uFEFF/, "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const src = text.replace(/^\uFEFF/, "");
+  const breakRow = () => {
+    row.push(cell);
+    rows.push(row);
+    row = [];
+    cell = "";
+  };
   for (let i = 0; i < src.length; i += 1) {
     const ch = src[i];
     if (inQuotes) {
@@ -88,10 +99,11 @@ export function parseCsv(text: string): string[][] {
       row.push(cell);
       cell = "";
     } else if (ch === "\n") {
-      row.push(cell);
-      rows.push(row);
-      row = [];
-      cell = "";
+      breakRow();
+    } else if (ch === "\r") {
+      // CRLF or a lone CR ends the row (the s26 mixed-endings contract)
+      if (src[i + 1] === "\n") i += 1;
+      breakRow();
     } else {
       cell += ch;
     }

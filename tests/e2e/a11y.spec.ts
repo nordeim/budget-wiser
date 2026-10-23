@@ -321,3 +321,87 @@ test.describe("the a11y two-gate: the drawer-open state", () => {
     await scanTwoGate(page, "phone /dashboard (drawer OPEN)");
   });
 });
+
+// ---------------------------------------------------------------------------
+// The dialog-OPEN states (session-172, F-172c) — the closed-by-default
+// genus the page scans never reached: a Radix Dialog's content is ABSENT
+// from the DOM while closed, so the five CREATE dialogs + the contact
+// EDIT dialog get their own open-state walks. Each opens the dialog,
+// runs the two-gate, and closes it (the Escape form). The sanctioned
+// register rides UNCHANGED: the open-dialog landscape is the same page
+// furniture behind the dialog (the active-nav chip + the calendar
+// off-month cells — both already sanctioned) plus the clean white
+// dialog cards (verified live before the spec landed).
+// ---------------------------------------------------------------------------
+test.describe("the dialog-open two-gate: the create dialogs", () => {
+  test("desktop /leads with the New Lead dialog OPEN — structural zero + sanctioned citations", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/leads");
+    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForTimeout(1500);
+    await page.getByRole("button", { name: "New Lead" }).click();
+    await page.waitForTimeout(600);
+    await scanTwoGate(page, "/leads (New Lead dialog OPEN)");
+    await page.keyboard.press("Escape");
+  });
+
+  test("desktop /accounts with the New Account dialog OPEN — structural zero + sanctioned citations", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/accounts");
+    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForTimeout(1500);
+    await page.getByRole("button", { name: "New Account" }).click();
+    await page.waitForTimeout(600);
+    await scanTwoGate(page, "/accounts (New Account dialog OPEN)");
+    await page.keyboard.press("Escape");
+  });
+
+  test("desktop /contacts with the New Contact dialog OPEN — structural zero + sanctioned citations", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/contacts");
+    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForTimeout(1500);
+    await page.getByRole("button", { name: "New Contact" }).click();
+    await page.waitForTimeout(600);
+    await scanTwoGate(page, "/contacts (New Contact dialog OPEN)");
+    await page.keyboard.press("Escape");
+  });
+
+  test("desktop /calendar with the New Event dialog OPEN — structural zero + sanctioned citations", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/calendar");
+    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForTimeout(1500);
+    await page.getByRole("button", { name: "New Event" }).click();
+    await page.waitForTimeout(600);
+    await scanTwoGate(page, "/calendar (New Event dialog OPEN)");
+    await page.keyboard.press("Escape");
+  });
+
+  test("desktop /activities with the Log Call dialog OPEN — structural zero + sanctioned citations", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/activities");
+    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForTimeout(1500);
+    await page.getByRole("button", { name: "Log Call" }).first().click();
+    await page.waitForTimeout(600);
+    await scanTwoGate(page, "/activities (Log Call dialog OPEN)");
+    await page.keyboard.press("Escape");
+  });
+});
+
+test.describe("the dialog-open two-gate: the contact edit dialog", () => {
+  test("desktop /contacts with the Edit Contact dialog OPEN — structural zero + sanctioned citations", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/contacts");
+    await page.waitForLoadState("networkidle").catch(() => {});
+    await page.waitForTimeout(1500);
+    // the row ⋮ menu → the Edit item (the W7 entity-edit-dialog walk)
+    await page.locator("table tbody button[aria-haspopup='menu']").first().click();
+    await page.waitForTimeout(600);
+    await page.getByRole("menuitem", { name: /^edit/i }).first().click();
+    await page.waitForTimeout(600);
+    await scanTwoGate(page, "/contacts (Edit Contact dialog OPEN)");
+    await page.keyboard.press("Escape");
+  });
+});

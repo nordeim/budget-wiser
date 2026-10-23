@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2668) → `bun run build` → `bun run test:e2e` (186) — or the
+   `bun run test` (2697) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -116,10 +116,10 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2668 checks)            |
+| `bun run test`      | Vitest unit suites (2697 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
-| `bun run test:e2e`  | Playwright E2E (186 checks, needs build first) |
+| `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
 | `bun run gate`      | The full gate in one command (lint → typecheck → test → build → smoke → e2e) |
 | `bun run db:push`   | Push Prisma schema (no migrations folder)     |
 | `bun run db:seed`   | Reseed demo data in place                     |
@@ -129,7 +129,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2668 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2697 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -303,16 +303,29 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   TABLE_CARD plain-div rule, CALENDAR_CARD, SETTINGS_GRID + the
   design-tokens `th, td { padding: 1px }` platform reset). Node
   environment; `@` alias resolved.
-- **E2E (Playwright, 186 checks)** — `tests/e2e/`: `auth.spec.ts`
+- **Property (Vitest + fast-check, 13 checks)** — `tests/property.test.ts`
+  (session-172: the invariant layer over the pure seams — the csv
+  escape/parse round-trip [the F-172e parser guard: line-ending
+  normalization inside the state machine, outside quotes only,
+  RFC 4180 §2.6] · the guard idempotence · the lead-views +
+  saved-reports round-trips/totality · the formatter/initials
+  robustness freezes; the generators respect each seam's OWN domain
+  contracts — the vocabularies, the raw-string fields, the
+  fixed-width csv model); rides the declared `fast-check` devDep
+  ^4.10.2 (the 13th devDep).
+- **E2E (Playwright, 192 checks)** — `tests/e2e/`: `auth.spec.ts`
   (logged-out surface + session-11's login reset-password flow +
   session-21's in-place funnel: the Callout banner with zero toasts,
   the signup view swap + mismatch guard, the verify-email ladder +
   resend, the /signup superset page),
   `a11y.spec.ts` (session-171: the axe-core two-gate — the nine CRM
   pages × desktop + phone + the three anon surfaces × both widths +
-  the drawer-open state; structural violations must be ZERO (every
-  interactive control carries an accessible name — `role="combobox"`
-  names come from aria-label, never the visible span text) and
+  the drawer-open state + session-172's dialog-open family (the five
+  create dialogs + the contact edit dialog — the closed-by-default
+  genus a page scan never sees); structural violations must be ZERO
+  (every interactive control carries an accessible name —
+  `role="combobox"` names come from aria-label, never the visible span
+  text; dialog labels wire htmlFor/id, never bare siblings) and
   color-contrast/svg-img-alt nodes must cite the sanctioned register:
   the reference's own palette + the recharts funnel genus, each
   verified on the reference's DOM; the axe engine rides the declared
@@ -408,7 +421,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2668).
+the seam (currently 2697).
 
 ## Code Quality Standards
 

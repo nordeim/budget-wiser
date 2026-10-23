@@ -399,7 +399,7 @@ describe("session-79: the CLAUDE.md e2e count carriers (N-79b1)", () => {
     // marketing-mobile spec — the internal-scroller scroll model).
     // session-163 lockstep carry-forward: 153 -> 161 (the reset-password
     // spec — the digma reset-funnel port's 8 checks).
-    expect(src).toContain("**E2E (Playwright, 186 checks)**");
+    expect(src).toContain("**E2E (Playwright, 192 checks)**");
   });
 });
 

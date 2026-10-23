@@ -280,14 +280,21 @@ function EntityEditForm({
             // inline-label collapse (margin-bottom ignored on the INLINE
             // label) — the bare construction guarantees it instead.
             <div key={f.key}>
-              <Label>{f.label}</Label>
+              {/* Session-172 (F-172b): the label ASSOCIATION — the bare
+                  sibling <Label> never formed the htmlFor/id pair (the
+                  reference's own edit dialogs ship it bare; ours wire it
+                  — the invisible-superset doctrine, the s115 Defaults
+                  genus). The combobox arm carries aria-label because
+                  role="combobox" names come from author attributes
+                  only (the F-171a rule). */}
+              <Label htmlFor={`edit-${f.key}`}>{f.label}</Label>
               {f.options ? (
                 <Select
                   value={form[f.key] ?? ""}
                   onValueChange={(v) => set(f.key, v)}
                   disabled={readOnly}
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger aria-label={f.label} className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -300,6 +307,7 @@ function EntityEditForm({
                 </Select>
               ) : (
                 <Input
+                  id={`edit-${f.key}`}
                   type={f.type ?? "text"}
                   value={form[f.key] ?? ""}
                   onChange={(e) => set(f.key, e.target.value)}

@@ -126,11 +126,15 @@ describe("session-92 (M-92c1): the phantom-mb select-triggers (the Radix native-
     expect(sites.length).toBe(4);
   });
 
-  it("the Event family's selects stay BARE-CELL (className=\"w-full\", no controlMt — no space-y ancestor, immune by construction)", () => {
+  it("the Event family's selects stay BARE-CELL (className=\"w-full\", no controlMt — no space-y ancestor, immune by construction; session-172: the aria-label prefix joins the construction — the naming fix, attribute-only)", () => {
     const form = noComments(eventForm());
-    const bareTriggers = form.match(/<SelectTrigger className="w-full"/g) ?? [];
+    // the s172 named form: the trigger leads with its aria-label, then
+    // the SAME bare className (no controlMt compensator)
+    const bareTriggers = form.match(/<SelectTrigger aria-label="[^"]+" className="w-full"/g) ?? [];
     expect(bareTriggers.length).toBe(3);
     expect(form).not.toMatch(/<SelectTrigger className={DIALOG_GROUP/);
+    // no nameless Event-family trigger remains (the F-172a cure)
+    expect(form).not.toMatch(/<SelectTrigger className="w-full"/);
   });
 });
 
@@ -611,7 +615,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("Unit (Vitest, 2241 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2252 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2257 checks)");
-    expect(claude).toContain("Unit (Vitest, 2668 checks)");
+    expect(claude).toContain("Unit (Vitest, 2697 checks)");
     // session-145 lockstep carry-forward: the coverage line 2108 ->
     // 2112 (the walk35 transition pins); s146: 2112 -> 2115.
     expect(claude).not.toContain("(currently 2108)");
@@ -631,7 +635,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("(currently 2271)");
     expect(claude).not.toContain("(currently 2382)");
     expect(claude).not.toContain("(currently 2347)");
-    expect(claude).toContain("(currently 2668)");
+    expect(claude).toContain("(currently 2697)");
     expect(claude).not.toContain("Vitest unit suites (2108 checks)");
     expect(claude).not.toContain("Vitest unit suites (2112 checks)");
     expect(claude).not.toContain("Vitest unit suites (2167 checks)");
@@ -652,7 +656,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("Vitest unit suites (2480 checks)");
     expect(claude).not.toContain("Vitest unit suites (2520 checks)");
     expect(claude).not.toContain("Vitest unit suites (2347 checks)");
-    expect(claude).toContain("Vitest unit suites (2668 checks)");
+    expect(claude).toContain("Vitest unit suites (2697 checks)");
     expect(claude).not.toContain("`bun run test` (2108)");
     expect(claude).not.toContain("`bun run test` (2112)");
     expect(claude).not.toContain("`bun run test` (2115)");
@@ -678,7 +682,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("`bun run test` (2347)");
     expect(claude).not.toContain("`bun run test` (2559)");
     expect(claude).not.toContain("`bun run test` (2644)");
-    expect(claude).toContain("`bun run test` (2668)");
+    expect(claude).toContain("`bun run test` (2697)");
     expect(claude).not.toContain("Unit (Vitest, 2060 checks)");
     expect(claude).not.toContain("Vitest unit suites (2060 checks)");
     expect(claude).not.toContain("(currently 2101)");

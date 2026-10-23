@@ -369,6 +369,44 @@ E2E regression suite.
   documented next candidate; the register is matcher-scoped — a new
   unsanctioned family fails rather than slipping through.
 
+**ADR-017: The closed-surface naming closure + the property-family doctrine (session-172)**
+
+- **Context:** The s171 two-gate scans pages + the drawer-open state —
+  but a Radix Dialog's content is ABSENT from the DOM while closed, so
+  the dialog-surface controls were invisible to every probe AND to the
+  gate (the closed-by-default genus). The live open-dialog audit (axe on
+  each open state, ours + the reference's own open dialogs) found: 9
+  nameless create-dialog SelectTriggers + the entity-edit-dialog family
+  (5 nameless config-driven triggers + 17 unlabeled Inputs — the bare
+  `<Label>{f.label}</Label>` forms no htmlFor/id association). The
+  reference ships the identical nameless-combobox family on every
+  dialog plus its own label violations — the fixes are invisible
+  supersets (the s171 doctrine). The round also adopted the OTHER
+  s170-named candidate: the fast-check property family (the round's
+  one devDep bump; the no-mid-rotation-bump posture — s171 bumped
+  axe-core, s172 bumped fast-check).
+- **Decision:** (1) Every dialog-surface interactive control carries an
+  accessible name: the create-dialog triggers take their sibling
+  Label's exact text as `aria-label`; the edit-dialog wires the real
+  association (`htmlFor`/`id` on the `edit-${f.key}` pair — the s115
+  Defaults genus) + `aria-label={f.label}` on the config-driven
+  combobox arm. (2) The two-gate EXTENDS to the open-dialog states —
+  six explicit registrations (the five create dialogs + the contact
+  edit dialog), the sanctioned register unchanged. (3) The pure seams
+  carry PROPERTY tests (`tests/property.test.ts`, fast-check): every
+  seam's round-trip/invariant/totality contract is pinned over a
+  generated input space — a new seam violation family REDs the unit
+  gate. (4) `parseCsv` normalizes line endings INSIDE the state
+  machine, outside quotes only (RFC 4180 §2.6 — a quoted CRLF is field
+  data; the pre-172 global replace mutated quoted cells silently).
+- **Consequences:** New dialog controls must ship named + label-wired
+  (the dialog-controls census pins the constructions); new pure seams
+  ship with a property pin (the round-trip/totality doctrine); the
+  csv round-trip property is the parser's regression guard; the
+  property generators must respect the seam's OWN domain contracts
+  (the three live-caught calibrations: the vocabulary intrusion · the
+  undefined-typed field · the ragged-row normalization).
+
 ## 2. High-Level System Topology
 
 ```mermaid
@@ -492,8 +530,8 @@ neo-crm/
 │   ├── stores/crm-store.ts      # single Zustand store + call() client
 │   └── types/index.ts           # wire types shared by API and client
 ├── tests/
-│   ├── *.test.ts                # 135 Vitest suites — 2668 checks
-│   └── e2e/                     # global-setup, auth.setup, 11 spec files + setup project — 186 checks
+│   ├── *.test.ts                # 137 Vitest suites — 2697 checks
+│   └── e2e/                     # global-setup, auth.setup, 11 spec files + setup project — 192 checks
 ├── docs/                        # validation report, SSH runbook, screenshots
 ├── next.config.ts               # standalone output + traced prisma root
 └── postcss.config.mjs           # @tailwindcss/postcss — REQUIRED (ADR-005)
@@ -998,7 +1036,8 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 | Unit — THE CLAUDE-DOCTRINE CLOSURE + THE STACK-FACTS LIVE-CENSUS + THE PRODUCTION SECRET GATE (the session-169 post-168 audit round — the baseline GREEN at the s168 ship state: lint 0/0 · tsc 0 · 129/2520 · build · e2e 161/161 · probe:ref STABLE · the mobile drawer 7/7 at 390×844 · census MATCH; the scandihaven port evaluation: the version lockstep ADOPTED + the boot fail-fast adopted server-seam + three deferred + four rejected; the facts-census battery +36 [the 130th suite] + the auth production secret-gate pins +3 [secret() THROWS in production on missing/short AUTH_SECRET — the web-app-foundation §6.2 posture; .env.example's false hard-error contrast retired] + the ~24 stale doc sites flipped [CLAUDE joins the pin family — the last doctrine doc; the version carriers 16.3.6→16.4.2 + 1.63→1.64 read live from node_modules; DEPLOYMENT 27→29 + the pin-entrenched docs-counts literal re-anchored live; SKILL §4.1's five stale @theme tokens + §19's primaries; PAD's phantom asOneOf + auth(8) + the s76/s77 swap + the s127-s130 footnote; README's pre-s142 tree + Quick-Start + SIX gates; AGENTS' eleven-URL + the 13-page consumer census]; mutation-proven [the planted badge regression → exactly 1 RED]; the ladder 2520→2559 · SUITES 129→130 · E2E held · badge 2681→2720 · SKILL v1.166.0) | 3 | 39 new (facts-census) + 1 code (auth.ts) + the docs (CLAUDE/README/PAD/SKILL/AGENTS/DEPLOYMENT/.env.example) + 2 pin files re-anchored (docs-counts, dialog-geometry) | `tests/facts-census.test.ts` (NEW), `tests/auth.test.ts`, `tests/docs-counts.test.ts`, `tests/dialog-geometry-parity.test.ts`, `src/lib/auth.ts` | Vitest |
 | Unit — THE ERROR-BOUNDARY FAMILY + THE BOOT GATE + THE SMOKE LEG + THE ARTIFACT HYGIENE + THE DOCTRINE-STRAGGLER CLOSURE (the session-170 post-169 audit round — the baseline GREEN at the exact s169 ship state: lint 0/0 · tsc 0 · 130/2559 · build · e2e 161/161 · probe:ref STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer 7/7 at 390×844 · census MATCH; the three core experiments EXECUTED BEFORE the plan landed — the boot-gate crash verified against the real standalone boot, the artifact excludes verified against a real rebuild + the photo-e2e GREEN against the clean artifact, the .env double-cure verified): THE ARTIFACT HYGIENE [F-170a CRITICAL — the standalone artifact shipped .env (the real AUTH_SECRET) + .git/ (171 MB) + db/ (the dev SQLite with user rows) + uploads/ + skills/ (194 MB) + docs/ (49 MB): the upload family's runtime-computed fs paths made @vercel/nft trace the WHOLE repo root (2715 skills files in the upload route's nft.json alone) + Next's writeStandaloneDirectory copies .env explicitly — the outputFileTracingExcludes set + the build script's rm-f cure, the ~151 MB clean artifact, policed by the smoke leg's 14th assertion] + THE ERROR-BOUNDARY FAMILY [error.tsx + global-error.tsx — the scandihaven ports: the house-styled card + digest + reset + the stale-chunk self-heal (chunk-recovery.ts, the injectable storage/clock/reload seam), global-error's own html/body + globals.css import, ZERO component-tree imports] + THE BOOT GATE [instrumentation.ts → boot-env.ts — production AUTH_SECRET missing/short THROWS AT BOOT (verified live: the secretless boot refuses to serve); the site-url/NEO_* warnings; dev/test soft; the phase-production-build skip] + THE SMOKE LEG [scripts/smoke-test.sh + the gate/gate:full wiring — the §13.4/§14 gap closed: :3210 + db/smoke.db + a dedicated throwaway secret, the 14-check ladder incl. THE BOOT-GATE PROBE + THE ARTIFACT-HYGIENE assertions] + THE DOCTRINE-STRAGGLER CLOSURE [tests/doctrine-census.test.ts — the 131st suite: the AGENTS retired-symbol doctrine bullets (REPORTS_PIPELINE_SLUGS/reportsBucketCounts/FUNNEL_STAGES/the s13 chart family/the singular leads-view key) + the PAD §5.2 color table (the LAST un-flipped carrier) + the session-gating census corrected to 19 gated / 10 ungated (the bare-name grep overcounted via me/route.ts's NOT-gated comment — the CALL form is the truth) + the CHART_COLORS/Opportunity/ADR-007/radix/table-header carriers + the README pricing + the LICENSE file the MIT claim stood on]; the count ladder 2559 → 2644 (+85) · SUITES 130 → 134 · E2E 161 held · badge 2720 → 2799 | 4 | 79 new (doctrine-census +30 · chunk-recovery +12 · boot-env +20 · error-boundaries +17) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.167.0/.env.example/LICENSE) + the carriers re-anchored (docs-counts, dialog-geometry, facts-census, inventory-census, gate-script) | `src/app/{error,global-error}.tsx` + `src/instrumentation.ts` + `src/lib/{boot-env,chunk-recovery}.ts` + `scripts/smoke-test.sh` + `next.config.ts` + `package.json` + `LICENSE` + the four NEW test files | Vitest + smoke + Playwright |
 | Unit — THE AXE-CORE A11Y TWO-GATE + THE NAMED-CONTROL FAMILY (the session-171 post-170 audit round — the baseline GREEN at the exact s170 ship state: lint 0/0 · tsc 0 · 134/2644 · build · smoke 14/14 · e2e 161/161 · probe:ref STABLE · the sweeps CLEAN · the drawer 7/7 · census MATCH; the audit ran LIVE axe-core 4.13 probes across twelve surfaces × two widths + the drawer-open state PLUS the same scan against the REFERENCE's own DOM): THE NAMED-CONTROL FAMILY [F-171a/b/c — 19 unnamed SelectTrigger comboboxes + 11 bare inert Checkboxes + 4 hidden-sm:inline icon-only Buttons unnamed at phone width; the root cause verified in the axe source: role="combobox" names come from author attributes ONLY, the visible span text is INVISIBLE to the name computation; the cure: aria-label on every open-surface control (the leads precedent form; the contacts rows carry `Role — ${c.name}`), invisible supersets — the reference ships button-name on every page] + THE AXE-CORE A11Y TWO-GATE [tests/e2e/a11y.spec.ts — the §8.3 battery: 25 checks (the nine CRM pages × both widths + the three anon surfaces × both + the drawer-open); GATE 1 structural-zero, GATE 2 the sanctioned register (the parity palette + the recharts genus, each citation verified on the reference's own DOM incl. the byte-identical .self-start pill); axe-core DECLARED as devDep ^4.13.0] + the source-pin battery [tests/a11y-controls.test.ts — the 135th suite, +22]; the count ladder 2644 → 2668 (+24) · SUITES 134 → 135 · E2E 161 → 186 (+25) · badge 2805 → 2854; the attribute-only proof: the drawer 7/7 + probe:ref STABLE + the sweeps CLEAN re-run post-fix | 2 | 24 new (a11y-controls +22 + inventory-census +2) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.168.0) + the carriers re-anchored (docs-counts, dialog-geometry, login-family, reports-filter-parity, dead-code-hygiene) | the five page files (aria-labels) + `tests/a11y-controls.test.ts` + `tests/e2e/a11y.spec.ts` + `package.json` + `scripts/count-ladder-171.py` + `scripts/skill-head-{171,fix-171}.py` | Vitest + Playwright |
-| **Total** | **135** | **2668 unit + 186 e2e** | | |
+| Unit — THE DIALOG-SURFACE NAMED-CONTROL CLOSURE + THE FAST-CHECK PROPERTY FAMILY (the session-172 post-171 audit round — the baseline GREEN at the exact s171 ship state: lint 0/0 · tsc 0 · 135/2668 · build · smoke 14/14 · e2e 186/186 · probe:ref STABLE · the sweeps CLEAN · the drawer 7/7 · census MATCH; the audit ran LIVE axe-core probes on the OPEN dialog states — ours across the five CREATE dialogs + the contact EDIT dialog PLUS the same scan against the REFERENCE's own open dialogs): THE DIALOG-SURFACE NAMED-CONTROL CLOSURE [F-172a/b/c — the closed-by-default genus the s171 probes never reached (a Radix Dialog's content is ABSENT from the DOM while closed): 9 nameless create-dialog SelectTriggers + the entity-edit-dialog family (5 nameless config-driven triggers + 17 unlabeled Inputs — the bare <Label>{f.label}</Label> forms no htmlFor/id association); the reference ships the identical family on every dialog plus its own label violations — the fixes are invisible supersets; THE CURE: aria-label = the sibling Label's exact text on the 9 create triggers + the edit-dialog htmlFor/id wiring (edit-${f.key}) + aria-label={f.label} on the config arm; the two-gate EXTENDED +6 e2e registrations (the five create dialogs + the contact edit dialog — open → scanTwoGate → Escape; the sanctioned register rides UNCHANGED)] + THE FAST-CHECK PROPERTY FAMILY [F-172d — the other s170-named candidate, the round's ONE devDep bump (fast-check ^4.10.2, the 13th devDep); tests/property.test.ts — the 137th suite, +13: the csv escape/parse round-trip · the guard idempotence · the lead-views round-trip · the saved-reports total/idempotent seam · the formatter robustness freeze · the initials invariants · the csvFilename convention] + THE PARSER FIX [F-172e — parseCsv's GLOBAL line-ending normalization mutated quoted cells (a quoted CRLF became LF, RFC 4180 §2.6 violated; live-caught by the P-a property at RED birth): the normalization moved INSIDE the state machine, outside quotes only — unquoted CRLF/lone CR keep the pinned s26 row-break behavior] + the source-pin battery [tests/dialog-controls.test.ts — the 136th suite, +14]; the count ladder 2668 → 2697 (+29) · SUITES 135 → 137 · E2E 186 → 192 (+6) · badge 2854 → 2889; the collateral re-anchors (dialog-geometry · dead-code-hygiene · inventory-census · docs-counts · login-family · README); THREE live-caught property-calibration catches at RED birth (the vocabulary intrusion · the undefined minValue · the ragged-row normalization — each a seam contract the generator must respect) | 2 | 29 new (dialog-controls +14 + property +13 + inventory-census +2) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.169.0) + the carriers re-anchored (dialog-geometry, dead-code-hygiene, inventory-census, docs-counts, login-family) | the two dialog component files (aria-labels + htmlFor/id) + `src/lib/csv.ts` (the parser fix) + `tests/dialog-controls.test.ts` + `tests/property.test.ts` + `tests/e2e/a11y.spec.ts` (+6) + `package.json` + `scripts/count-ladder-172.py` + `scripts/skill-head-172.py` | Vitest + Playwright |
+| **Total** | **137** | **2697 unit + 192 e2e** | | |
 
 > **Counting convention (session-54, N-54h)**: the per-session rows
 > count the FILES TOUCHED by that session's pin additions and the checks
@@ -1008,7 +1047,7 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 > the session-end HEAD totals in the Files/Checks columns with the
 > round's delta recorded in the Category cell — the files-touched
 > form applies to the rows that predate it. The **Total** row counts files and checks at
-> HEAD: 135 Vitest suites with 2668 checks + 186 e2e checks in 11 spec
+> HEAD: 137 Vitest suites with 2697 checks + 192 e2e checks in 11 spec
 > files (landing, auth, crm, mobile-navigation, reports-mobile,
 > settings-mobile, calendar-mobile, activities-mobile, marketing-mobile,
 > reset-password, a11y) + the auth.setup project (the
@@ -1434,9 +1473,9 @@ must keep all 10 regression checks green unmodified.
 
 - [ ] `bun run lint` — 0 errors, 0 warnings
 - [ ] `bun run typecheck` — clean (the real type gate; build has `ignoreBuildErrors`)
-- [ ] `bun run test` — 2668/2668
+- [ ] `bun run test` — 2697/2697
 - [ ] `bun run build` — standalone build succeeds
-- [ ] `bun run test:e2e` — 186/186
+- [ ] `bun run test:e2e` — 192/192
 - [ ] Mobile drawer manually exercised at 390px (open → navigate → Escape)
 - [ ] Zero webfonts: `document.fonts` empty on /, body computes the stock
       `ui-sans-serif, system-ui` stack, smoothing `auto` (session-22)
@@ -1507,8 +1546,8 @@ bun run dev          # http://localhost:3000 — demo: sepnetflix2023@outlook.co
 | ------- | -------- | ------- |
 | `bun run dev` | root | Dev server :3000, log tee'd to `dev.log` |
 | `bun run lint` / `typecheck` | root | Quality gates (must be 0/0 / clean) |
-| `bun run test` | root | 2668 unit checks |
-| `bun run test:e2e` | root | 186 browser checks (build first) |
+| `bun run test` | root | 2697 unit checks |
+| `bun run test:e2e` | root | 192 browser checks (build first) |
 | `bun run db:census` | root | The sanctioned DB census — resolved path + counts + the seed-contract verdict (session-53; never a raw PrismaClient) |
 | `bun run gate` | root | The full gate in one command (lint → typecheck → test → build → e2e) |
 | `bunx vitest run tests/auth.test.ts` | root | One suite |
@@ -1566,7 +1605,7 @@ files. Push via the SSH wrapper (§8.4).
 | `src/lib/reports-data.ts` | 279 | Session-31 reports derivations + the s107 `reportsKpis` seam (the quarter-filtered KPI row — openLeads new+contacted strictly, the toFixed(1) conversion, the null-safe amount sums — the route's inline derivation extracted behavior-preserving) — `pipelineStageCounts` (the 8-slug leads+opps funnel SPLIT), `monthKey`/`countByMonth`/`revenueByMonth`/`wonLostByMonth` (the insertion-order "MMM yyyy" close-month series), `forecastAccuracySeries` (the actual/forecasted formula), `agingCounts` (created-date age), `dealsAtRiskRows` (the last-activity join) — pinned by `tests/reports-data.test.ts` + `tests/seeded-reports-kpis.test.ts` |
 | `src/lib/dashboard-data.ts` | 77 | Session-110 dashboard KPI seam — `dashboardKpis(leads, now)` (the s31-era inline route derivation extracted behavior-preserving, the s107 reportsKpis precedent applied to the LAST inline KPI row: the reference's HARDCODED V=0 salesTarget + targetProgress 0, the toFixed(1) WON-LEAD conversion share with the "0" zero-division guard, the per-lead-floored rounded average AGE of the won leads — createdAt only, closedAt never enters the signature) — pinned by `tests/seeded-dashboard-kpis.test.ts` (the seed→seam chain: 24 / 0 / 0 / "29.2" / 83) |
 | `src/lib/page-layout.ts` | 1687 | DOM-pinned layout + chrome contracts (KPI grids, page headers, rails, filter bars, shell/sidebar/topbar, login card, stat cards, view switchers, leads filters popover, mobile-nav breakpoint, stock-primitive pins, CHART_GEOMETRY / STAT_SHADOWS / TABLE_SHADOWS / CONTACTS_LAYOUT) consumed by every page — sessions 6–11 |
-| `src/lib/csv.ts` | 104 | RFC-4180 serializer/parser (export + import) |
+| `src/lib/csv.ts` | 116 | RFC-4180 serializer/parser (export + import; the s172 quoted-CRLF fix — line-ending normalization inside the state machine, RFC 4180 §2.6) |
 | `src/app/(app)/*/page.tsx` + `*-page.tsx` | — | Session-10 pattern: thin SERVER `page.tsx` wrappers (per-page metadata titles) rendering the renamed client parts — client pages cannot export metadata; per-route `layout.tsx` hit a Next 16 typed-routes bug |
 | `src/lib/rate-limit.ts` | 126 | Fixed-window limiter with sweeper + the NEO_PROXY_HOPS client-key resolution (session-163) |
 | `src/components/layout/mobile-nav.tsx` | 143 | THE mobile drawer fix (Radix sheet: focus trap, dual scroll lock, auto-close past md) |
@@ -1589,7 +1628,9 @@ files. Push via the SSH wrapper (§8.4).
 | `src/lib/chunk-recovery.ts` | 111 | the stale-chunk self-heal seam (injectable storage/clock/reload) |
 | `scripts/smoke-test.sh` | 160 | the s170 smoke leg — the §13.4/§14 ladder (14 checks) against the standalone artifact |
 | `tests/a11y-controls.test.ts` | 218 | the s171 named-control source-pin battery (the 135th suite — the aria-label census + the declared axe-core pin + the two-gate spec contract) |
-| `tests/e2e/a11y.spec.ts` | 323 | the s171 a11y two-gate e2e battery (the §8.3 axe engine: 9 CRM pages × 2 widths + 3 anon surfaces × 2 + the drawer-open state; structural zero + the sanctioned citations) |
+| `tests/e2e/a11y.spec.ts` | 407 | the s171 a11y two-gate e2e battery + the s172 dialog-open family (the §8.3 axe engine: 9 CRM pages × 2 widths + 3 anon surfaces × 2 + the drawer-open state + the five create dialogs + the contact edit dialog; structural zero + the sanctioned citations) |
+| `tests/dialog-controls.test.ts` | 175 | the s172 dialog-surface named-control battery (the 136th suite — the create-dialog trigger census + the edit-dialog htmlFor/id wiring pins + the dialog-scan spec contract + the declared fast-check pin) |
+| `tests/property.test.ts` | 316 | the s172 fast-check property battery (the 137th suite — the csv round-trip + guard idempotence + the lead-views/saved-reports round-trips + the formatter/initials robustness freeze pins) |
 
 ---
 
