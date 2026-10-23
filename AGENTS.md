@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2712 checks)      | `bun run test`                         |
+|  Unit tests (2717 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2712) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2717) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -43,8 +43,12 @@ boot; session-39: the e2e step runs under `CI=1`, so
 just-built server — chaining the build alone did NOT close the
 stale-server hazard, because a leftover :3100 listener was reused
 regardless of build timing). There is no hosted CI; the local gate is
-the only gate. `next.config.ts` sets `ignoreBuildErrors` — the explicit
-`typecheck` step is what catches type errors; never skip it. Session-164
+the only gate. Session-174 retired `typescript.ignoreBuildErrors` — the
+build IS the type gate now (a type error fails `bun run build`; the
+planted-error proof lives in tests/type-gate.test.ts's header), and
+`tsconfig.json` runs full strictness (the `noImplicitAny: false` escape
+hatch is gone). The explicit `typecheck` step stays in the gate chain as
+the FASTER signal; never skip it. Session-164
 adds the skill §14 pre-ship step: run `bun audit` periodically (NOT
 inside the gate — it is a network dependency and the gate must stay
 offline-runnable, the probe doctrine); the current state is triaged in
@@ -9592,3 +9596,88 @@ desktop + phone sweeps CLEAN re-run carry the parity verdict unchanged.
 hygienic artifact) · smoke **14/14** · e2e **192/192** · db census MATCH ·
 the mutation proof (the planted badge regression 2904 → 2889 → exactly 1
 RED → reverted → GREEN).
+
+### Session-174 — THE TYPE-GATE HARDENING + THE FULL-STRICT FLIP + THE SINGLE LOCKFILE (2026-10-23)
+
+The post-173 audit round, its rotation trigger THE REPO'S OWN NEWEST
+ARTIFACTS: commit `25f1847` added `skills/web-application/SKILL.md` v1.0.0
+(the four-sibling family distillation — digma/neo-crm/project-management/
+zero-balance, 1,226 combined commits of build-and-remediate history) plus
+`skills/web-application/codebase-evaluation-report.md` (the comparative
+audit that ranks neo-crm #1 at 8.55 weighted while naming its defect
+register). The report's §9.2 graft list prescribes exactly the three moves
+this round lands — the code-wins rule runs in reverse: the CODE disagreed
+with the repo's own distilled doctrine, so the code is what got fixed. The
+baseline gate GREEN at the exact s173 ship state (lint 0/0 · tsc 0 ·
+**137/2712** · build · smoke **14/14** · e2e **192/192** · probe:ref
+STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer **7/7
+PASS** at 390×844 · the Tailwind v4 state clean · sitemap 11 routes +
+robots + manifest standing · census MATCH). NO new devDep (the
+no-mid-rotation-bump posture holds trivially: this round bumps NOTHING).
+
+**THE FINDINGS** (each verified live against the source): F-174a
+`next.config.ts` set `typescript: { ignoreBuildErrors: true }` — the build
+was NOT a type gate; a planted type error compiled GREEN into the
+deployable artifact (reproduced live at this round's gate-proof: the SAME
+plant swallowed under the old posture, build FAILED under the new one).
+F-174b `tsconfig.json` carried `"noImplicitAny": false` — weakened strict
+mode; the flip probe surfaced exactly THREE implicit-any stragglers
+repo-wide (`scripts/sweep.ts:862,873` — the union-find inline twin of the
+FULLY-TYPED pure seam at line 607; the entire `src/` tree already clean).
+F-174c two lockfiles committed (`bun.lock` + `package-lock.json`) — the
+s61/s62 §16ba npm-world-parity rule, superseded by the new skill's
+Appendix A lesson 14 ("Two lockfiles in one repo is a reproducibility
+bug"); the npm-world path (`install_packages.sh`) installs by package NAME
+from the registry — it never consumed the lockfile.
+
+**THE CURE (TDD — RED birth 4 failing + 1 born-green → GREEN,
+gate-proven + mutation-proven + stash-proven)**: the `ignoreBuildErrors`
+block RETIRED (the build IS the type gate — the zero-balance graft) · the
+`noImplicitAny: false` escape hatch RETIRED (full TS strictness — the
+digma graft) with the sweep.ts inline twin typed verbatim like its pure
+seam (`find = (k: number): number` · `union = (x: number, y: number)` ·
+the two typed Maps) · `package-lock.json` RETIRED (one package manager,
+one lockfile; the `outputFileTracingExcludes` entry stays as the defensive
+tripwire). The source-pin battery: `tests/type-gate.test.ts` — **the 138th
+suite** (+5: the build-is-the-type-gate pin · the full-strict pin · the
+typed union-find pin · the single-lockfile pin · the gate-chain freeze pin
+— typecheck stays BEFORE build, the §15 fast-gates-first order holds, the
+manual step remains the FASTER signal while the build is the ENFORCER).
+
+**THE GATE-PROOF** (this round's own non-vacuousness — the F-174a
+evidence live): a planted type error in a src file → `bun run build`
+FAILS under the hardened posture → the old posture restored (ignoreBuildErrors:
+true) → the SAME plant builds GREEN (the swallowed error — the defect
+DEMONSTRATED, not asserted) → both restored → GREEN.
+
+**THE COUNT LADDER**: 2712 → **2717** (+5: the type-gate battery) ·
+SUITES 137 → **138** · E2E **192 HELD** (the round is config-only — no
+visual surface touched) · badge 2904 → **2909** (count-ladder-174.py +
+skill-head-174.py, assert-first, idempotent — the re-runs verified 0-flip
+no-ops). The collateral re-anchors: the PAD §11 next.config.ts row
+re-censused 93 → 99 lines (the s174 comment grew it — the
+inventory-census live-read catch again) · the dialog-geometry CLAUDE
+lockstep carriers (2712 → 2717, the retired forms joining the negatives
+ladder) · the docs-counts constants + the two lineage comments + the
+F-106a1 layer-axis pin (the s174 layer live, the s173 layer beneath).
+
+**THE DOCS LEG**: the PAD **ADR-019** (the build-is-the-type-gate
+doctrine) + the session-174 inventory row + the stack-table strict row +
+the pre-ship checklist line + the §11 re-anchor · the CLAUDE gate-order
+mention + the TypeScript bullet · the README Tested row + the badge + the
+suite list's type-gate join · the SKILL **v1.171.0** + H1 lockstep + the
+s174 head layer (the s173 layer comment-demoted at its ship counts
+2712/192) + the three config-table rows (§2 stack + §3.2 next.config +
+§3.2 tsconfig) · the AGENTS gate-order paragraph's s174 re-anchor.
+
+**THE CONFIG-ONLY PROOF**: the round touched no component, no page, no
+className — the standing legs re-verified at the audit leg carry the
+parity verdict unchanged (the drawer battery 7/7 · probe:ref STABLE · the
+sweeps CLEAN; the reference unchanged since the s168 fingerprint).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 (under FULL strictness) ·
+**138/2717** unit · build (the hygienic artifact — now the type gate TOO,
+gate-proven) · smoke **14/14** · e2e **192/192** · db census MATCH · the
+mutation proof (the planted badge regression 2909 → 2904 → exactly 1 RED
+→ reverted → GREEN) + THE STASH-PROOF (the three config moves reverted
+alone → exactly the type-gate pins RED → restored → GREEN).

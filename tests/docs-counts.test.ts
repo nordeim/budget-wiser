@@ -162,7 +162,10 @@ const E2E = 192;
 // boot-env + error-boundaries files — the resilience + hygiene round).
 // Session-171: SUITES 134 -> 135 (the a11y-controls file — the named-
 // control source-pin battery).
-const SUITES = 137;
+// Session-174: SUITES 137 -> 138 (the type-gate file — the
+// config source-pin battery: the toolchain layer joins the
+// doctrine-census family).
+const SUITES = 138;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -686,7 +689,12 @@ const SUITES = 137;
 // property battery +12 [P-h…P-q — the Zod round-trip family + the
 // rate-limit window arithmetic over the injectable clock] + the
 // rate-limit clock-seam examples +3).
-const UNIT = 2712;
+// Session-174: 2712 -> 2717 (+5 — the type-gate hardening battery
+// [the 138th suite]: the build-is-the-type-gate pin (no
+// ignoreBuildErrors) + the full-strict pin (no noImplicitAny
+// override) + the typed union-find pin + the single-lockfile pin
+// + the gate-chain freeze pin).
+const UNIT = 2717;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1151,13 +1159,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-173 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-174 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s172 layer now beneath the s173 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s173 layer now beneath the s174 head)",
     ).toContain(
-      "+ beneath it 2697 unit checks + 192 e2e checks green; the session-172 layer (THE DIALOG-SURFACE NAMED-CONTROL CLOSURE",
+      "+ beneath it 2712 unit checks + 192 e2e checks green; the session-173 layer (THE INJECTABLE CLOCK SEAM",
     );
   });
 

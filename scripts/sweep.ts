@@ -834,7 +834,14 @@ async function diffPair(
         return { diffPx, total, pct: (100 * diffPx) / total, buckets: [] };
       }
       const cw = Math.ceil(w / gap);
-      const cells = new Map();
+      // session-174 (F-174b): the inline twin typed like its PURE seam
+      // twin above (the line-607 form) — the noImplicitAny: false
+      // escape hatch is retired, so the bare Map + bare params had to
+      // grow their types (the union-find decode's own shape).
+      const cells = new Map<
+        number,
+        { px: number; x0: number; y0: number; x1: number; y1: number }
+      >();
       for (let y = 0; y < h; y++) {
         for (let x = 0; x < w; x++) {
           const o = (y * w + x) * 4;
@@ -858,19 +865,19 @@ async function diffPair(
           }
         }
       }
-      const parent = new Map();
-      const find = (k) => {
+      const parent = new Map<number, number>();
+      const find = (k: number): number => {
         let r = k;
-        while (parent.get(r) !== r) r = parent.get(r);
+        while (parent.get(r) !== r) r = parent.get(r)!;
         let c = k;
         while (parent.get(c) !== c) {
-          const next = parent.get(c);
+          const next = parent.get(c)!;
           parent.set(c, r);
           c = next;
         }
         return r;
       };
-      const union = (x, y) => {
+      const union = (x: number, y: number) => {
         const rx = find(x);
         const ry = find(y);
         if (rx !== ry) parent.set(rx, ry);

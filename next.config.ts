@@ -59,11 +59,17 @@ const nextConfig: NextConfig = {
   // Hide the Next.js dev-tools indicator (the floating "N" button) so dev
   // server screenshots stay clean — it never ships in production anyway.
   devIndicators: false,
-  // The scaffold family keeps the explicit `bun run typecheck` step as the
-  // type gate; build errors stay visible without breaking container builds.
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // Session-174 (F-174a — THE TYPE-GATE HARDENING): the scaffold-era
+  // `typescript: { ignoreBuildErrors: true }` block is RETIRED — the
+  // build IS the type gate now (the zero-balance graft, per the repo's
+  // own skills/web-application/SKILL.md §2 + the evaluation report
+  // §9.2). Under the old posture a planted type error compiled GREEN
+  // into the deployable artifact (reproduced live at this round's
+  // gate-proof); the type gate rode only on the manual `bun run
+  // typecheck` step — a skipped-command hazard. The explicit typecheck
+  // script stays in the gate chain (the FASTER signal); the build is
+  // the enforcer. (The `typescript` key stays UNSET: Next's default —
+  // ignoreBuildErrors: false — is the hardened form itself.)
 
   // Session-20 (S20-P1/P2/P3): the reference's edge (Cloudflare/Caddy)
   // injects a three-header security set on EVERY response — HTML routes,

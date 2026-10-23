@@ -52,7 +52,7 @@ E2E regression suite.
 | ----- | ---------- | ------- | ------------- |
 | Web framework | Next.js (App Router) | 16.4.2 | Single-process RSC + API routes; async `cookies()`/`params`; standalone output for self-contained deploys |
 | UI runtime | React | 19.3 | Async params, `inert` as a boolean prop, no `forwardRef`; lint-enforced hook discipline |
-| Language | TypeScript | 5.9 | Strict mode (except `noImplicitAny: false`, sandbox default); explicit `typecheck` gate compensates for `ignoreBuildErrors` |
+| Language | TypeScript | 5.9 | Full strict mode (session-174: the `noImplicitAny: false` escape hatch retired — the digma graft per the repo's own evaluation report §9.2); the build is the type gate (`ignoreBuildErrors` retired) with the explicit `typecheck` step as the faster signal |
 | Styling | Tailwind CSS | 4.3.3 | CSS-first `@theme` tokens; zero JS config; validated against `docs/Tailwind-V4-Validation-Report.md` |
 | Animation | tw-animate-css (vendored) | 1.4.0 | npm package exposes only the `style` export condition — unsupported by Turbopack, so the dist CSS is vendored |
 | UI primitives | Radix UI | per-package | Dialog, Popover, Select, Label, Slot already in scaffold; hand-rolled tabs/tables/checkboxes with native ARIA |
@@ -440,6 +440,43 @@ E2E regression suite.
   N-67b shape pin carries the additive signature; NO new devDep
   (fast-check rides the s172 declaration).
 
+### ADR-019 — The build-is-the-type-gate doctrine + full strictness + the single lockfile (session-174)
+
+- **Context:** The repo's own newest artifacts (commit `25f1847` —
+  `skills/web-application/SKILL.md` v1.0.0, the four-sibling family
+  distillation, + `skills/web-application/codebase-evaluation-report.md`,
+  the comparative audit ranking neo-crm #1 while naming its defect
+  register) prescribe three hardening grafts (report §9.2): drop
+  `ignoreBuildErrors` (the zero-balance graft), drop
+  `noImplicitAny: false` (the digma graft), and one lockfile (Appendix A
+  lesson 14). The code disagreed with the repo's own distilled doctrine
+  — so the code is what got fixed (the code-wins rule in reverse).
+- **Decision:** (1) `next.config.ts`'s `typescript: {
+  ignoreBuildErrors: true }` block RETIRED — the build IS the type gate
+  (a planted type error fails `bun run build`; the gate-proof ran the
+  SAME plant both ways: swallowed under the old posture, caught under
+  the new one). The explicit `typecheck` script stays in the gate chain
+  as the FASTER signal (the §15 fast-gates-first order holds). (2)
+  `tsconfig.json`'s `"noImplicitAny": false` RETIRED — full TS
+  strictness; the flip surfaced exactly three stragglers repo-wide
+  (`scripts/sweep.ts`'s inline union-find twin — now typed verbatim like
+  its fully-typed pure seam). (3) `package-lock.json` RETIRED — one
+  package manager (bun), one lockfile (`bun.lock`); the
+  `outputFileTracingExcludes` entry stays as the defensive tripwire.
+  The config source-pin battery `tests/type-gate.test.ts` (the 138th
+  suite, +5) holds all three moves + the typed arms + the gate-chain
+  order.
+- **Consequences:** A type error can no longer compile into the
+  deployable artifact (the skipped-command hazard closed — the build
+  enforces what only the manual step used to catch); full strictness
+  means every future implicit-any fails `tsc` AND the build (the three
+  surfacing stragglers proved the src/ tree was already clean — the
+  escape hatch protected nothing but the stragglers); the npm-world
+  path (`install_packages.sh`) was verified lockfile-independent before
+  the retirement (it installs by package NAME from the registry); the
+  s61/s62 §16ba two-lockfile regen rule is superseded (its AGENTS/PAD
+  narrative rows stay as history).
+
 ## 2. High-Level System Topology
 
 ```mermaid
@@ -563,7 +600,7 @@ neo-crm/
 │   ├── stores/crm-store.ts      # single Zustand store + call() client
 │   └── types/index.ts           # wire types shared by API and client
 ├── tests/
-│   ├── *.test.ts                # 137 Vitest suites — 2712 checks
+│   ├── *.test.ts                # 138 Vitest suites — 2717 checks
 │   └── e2e/                     # global-setup, auth.setup, 11 spec files + setup project — 192 checks
 ├── docs/                        # validation report, SSH runbook, screenshots
 ├── next.config.ts               # standalone output + traced prisma root
@@ -1071,7 +1108,8 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 | Unit — THE AXE-CORE A11Y TWO-GATE + THE NAMED-CONTROL FAMILY (the session-171 post-170 audit round — the baseline GREEN at the exact s170 ship state: lint 0/0 · tsc 0 · 134/2644 · build · smoke 14/14 · e2e 161/161 · probe:ref STABLE · the sweeps CLEAN · the drawer 7/7 · census MATCH; the audit ran LIVE axe-core 4.13 probes across twelve surfaces × two widths + the drawer-open state PLUS the same scan against the REFERENCE's own DOM): THE NAMED-CONTROL FAMILY [F-171a/b/c — 19 unnamed SelectTrigger comboboxes + 11 bare inert Checkboxes + 4 hidden-sm:inline icon-only Buttons unnamed at phone width; the root cause verified in the axe source: role="combobox" names come from author attributes ONLY, the visible span text is INVISIBLE to the name computation; the cure: aria-label on every open-surface control (the leads precedent form; the contacts rows carry `Role — ${c.name}`), invisible supersets — the reference ships button-name on every page] + THE AXE-CORE A11Y TWO-GATE [tests/e2e/a11y.spec.ts — the §8.3 battery: 25 checks (the nine CRM pages × both widths + the three anon surfaces × both + the drawer-open); GATE 1 structural-zero, GATE 2 the sanctioned register (the parity palette + the recharts genus, each citation verified on the reference's own DOM incl. the byte-identical .self-start pill); axe-core DECLARED as devDep ^4.13.0] + the source-pin battery [tests/a11y-controls.test.ts — the 135th suite, +22]; the count ladder 2644 → 2668 (+24) · SUITES 134 → 135 · E2E 161 → 186 (+25) · badge 2805 → 2854; the attribute-only proof: the drawer 7/7 + probe:ref STABLE + the sweeps CLEAN re-run post-fix | 2 | 24 new (a11y-controls +22 + inventory-census +2) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.168.0) + the carriers re-anchored (docs-counts, dialog-geometry, login-family, reports-filter-parity, dead-code-hygiene) | the five page files (aria-labels) + `tests/a11y-controls.test.ts` + `tests/e2e/a11y.spec.ts` + `package.json` + `scripts/count-ladder-171.py` + `scripts/skill-head-{171,fix-171}.py` | Vitest + Playwright |
 | Unit — THE DIALOG-SURFACE NAMED-CONTROL CLOSURE + THE FAST-CHECK PROPERTY FAMILY (the session-172 post-171 audit round — the baseline GREEN at the exact s171 ship state: lint 0/0 · tsc 0 · 135/2668 · build · smoke 14/14 · e2e 186/186 · probe:ref STABLE · the sweeps CLEAN · the drawer 7/7 · census MATCH; the audit ran LIVE axe-core probes on the OPEN dialog states — ours across the five CREATE dialogs + the contact EDIT dialog PLUS the same scan against the REFERENCE's own open dialogs): THE DIALOG-SURFACE NAMED-CONTROL CLOSURE [F-172a/b/c — the closed-by-default genus the s171 probes never reached (a Radix Dialog's content is ABSENT from the DOM while closed): 9 nameless create-dialog SelectTriggers + the entity-edit-dialog family (5 nameless config-driven triggers + 17 unlabeled Inputs — the bare <Label>{f.label}</Label> forms no htmlFor/id association); the reference ships the identical family on every dialog plus its own label violations — the fixes are invisible supersets; THE CURE: aria-label = the sibling Label's exact text on the 9 create triggers + the edit-dialog htmlFor/id wiring (edit-${f.key}) + aria-label={f.label} on the config arm; the two-gate EXTENDED +6 e2e registrations (the five create dialogs + the contact edit dialog — open → scanTwoGate → Escape; the sanctioned register rides UNCHANGED)] + THE FAST-CHECK PROPERTY FAMILY [F-172d — the other s170-named candidate, the round's ONE devDep bump (fast-check ^4.10.2, the 13th devDep); tests/property.test.ts — the 137th suite, +13: the csv escape/parse round-trip · the guard idempotence · the lead-views round-trip · the saved-reports total/idempotent seam · the formatter robustness freeze · the initials invariants · the csvFilename convention] + THE PARSER FIX [F-172e — parseCsv's GLOBAL line-ending normalization mutated quoted cells (a quoted CRLF became LF, RFC 4180 §2.6 violated; live-caught by the P-a property at RED birth): the normalization moved INSIDE the state machine, outside quotes only — unquoted CRLF/lone CR keep the pinned s26 row-break behavior] + the source-pin battery [tests/dialog-controls.test.ts — the 136th suite, +14]; the count ladder 2668 → 2697 (+29) · SUITES 135 → 137 · E2E 186 → 192 (+6) · badge 2854 → 2889; the collateral re-anchors (dialog-geometry · dead-code-hygiene · inventory-census · docs-counts · login-family · README); THREE live-caught property-calibration catches at RED birth (the vocabulary intrusion · the undefined minValue · the ragged-row normalization — each a seam contract the generator must respect) | 2 | 29 new (dialog-controls +14 + property +13 + inventory-census +2) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.169.0) + the carriers re-anchored (dialog-geometry, dead-code-hygiene, inventory-census, docs-counts, login-family) | the two dialog component files (aria-labels + htmlFor/id) + `src/lib/csv.ts` (the parser fix) + `tests/dialog-controls.test.ts` + `tests/property.test.ts` + `tests/e2e/a11y.spec.ts` (+6) + `package.json` + `scripts/count-ladder-172.py` + `scripts/skill-head-172.py` | Vitest + Playwright |
 | Unit — THE INJECTABLE CLOCK SEAM + THE RATE-LIMIT WINDOW PROPERTY FAMILY + THE ZOD ROUND-TRIP PROPERTY FAMILY (the session-173 post-172 audit round — the baseline GREEN at the exact s172 ship state: lint 0/0 · tsc 0 · 137/2697 · build · smoke 14/14 · e2e 192/192 · probe:ref STABLE · the sweeps CLEAN · the drawer 7/7 · census MATCH; the standing legs re-verified live — the fresh reference probe [the bundle md5 46bc2d9c, the sanctioned-register citations hold] + the drawer battery 7/7): THE INJECTABLE CLOCK SEAM [F-173a — rateLimit takes `now = Date.now()`: the session-164 sweepRateLimits form extended to the rateLimit path, the module's own injectable precedent; PURELY ADDITIVE — the default is the wall clock, all 7 call sites (login/signup/resend/verify/forgot/reset-password/upload) ride unchanged, zero behavior change on the wire; the wall-clock battery could never STATE the crossing (a 60s window cannot be waited out inside a test), the injected clock makes the fixed-window arithmetic property-testable] + THE DEEPER PROPERTY FAMILY [F-173b/c — the s172 close's named candidate, NO new devDep (fast-check rides the s172 declaration): tests/property.test.ts grows IN PLACE (+12, the P-lettering continues; the ADR-017 one-suite doctrine — SUITES 137 HELD) — the Zod round-trip half (P-h the create-defaults quadrant round-trip for every CREATE schema · P-i the enum membership invariant [members parse to their trimmed selves, outsiders reject] · P-j the emailField trim/lowercase contract [login + signup, the one-seam parity] · P-k the PUT three-state round-trip [absent stays ABSENT, null clears, a value trims] · P-l the required-name quadrant [null/empty/whitespace reject with the route's exact message] · P-m the contacts legacy priority mapping [hot/warm/cold → Key/Standard/At Risk]) + the rate-limit window half (P-n the fixed-window reset crossing [blocked at t₀ → still blocked one ms before → allowed with a FRESH count AT t₀+window] · P-o the retryAfterSec formula [the exact ceiling ceil((resetAt − now)/1000), floor 1] · P-p the remaining monotonicity [allowed calls decrement exactly once; blocked calls never transition back] · P-q the first-call + default-clock equivalence)] + the clock-seam example battery [tests/rate-limit.test.ts +3: the crossing example · the retryAfter ceiling · the default-form equivalence + the additive-signature source pin]; RED birth 5 failing (P-n + P-o + the three clock-seam examples — the 4th argument ignored at runtime, the injected clock had no effect, the crossing never observed) + 42 born-green (the Zod family + the P-p/P-q freeze pins); FOUR live-caught calibration catches (the P-k trimmed-output contract · the fc.date NaN edge [an INVALID Date hands toISOString() a throw — the integer-timestamp generator is deterministic and always in-range] · the stateful-seam key collision [fc's short-string generator COLLIDES within 150 runs — the module-level bucket map persists across runs; the per-run monotonic run id is the cure: uniqueness is a property of the RUN, not of the generated input] · the P-p/Pq born-green ledger); the count ladder 2697 → 2712 (+15: property +12 + rate-limit +3) · SUITES 137 HELD · E2E 192 HELD (the round is seam-only, no visual surface touched) · badge 2889 → 2904 (count-ladder-173.py + skill-head-173.py, assert-first, idempotent — the re-runs verified 0-flip no-ops); the collateral re-anchors (the N-67b signature pin · the dialog-geometry CLAUDE lockstep carriers [the retired 2697 forms joining the negatives ladder] · the inventory-census [property.test.ts 316 → 723 · rate-limit.ts 126 → 133 — the §11 rows live-censused] · the docs-counts constants + the F-106a1 layer-axis pin); the docs (the AGENTS Session-173 section · the PAD ADR-018 [the injectable-clock doctrine] + this inventory row + the two §11 re-anchors · the CLAUDE property-pyramid extension [13 → 25 checks] · the README Tested row's s173 property mentions · the SKILL v1.170.0 + H1 + the s173 head layer); the mutation proof (the planted badge regression 2904 → 2889 → exactly 1 RED → reverted → GREEN); THE SEAM-ONLY PROOF (the drawer 7/7 re-run · probe:ref STABLE · the sweeps CLEAN — the round touched no component, no page, no className) | 0 | 15 new (property +12 + rate-limit +3) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.170.0) + the carriers re-anchored (N-67b, dialog-geometry, inventory-census, docs-counts) | `src/lib/rate-limit.ts` (the clock seam) + `tests/property.test.ts` (+12) + `tests/rate-limit.test.ts` (+3) + `tests/auth-contract.test.ts` (the N-67b re-anchor) + `tests/dialog-geometry-parity.test.ts` (the lockstep carriers) + `scripts/count-ladder-173.py` + `scripts/skill-head-173.py` | Vitest + fast-check |
-| **Total** | **137** | **2712 unit + 192 e2e** | | |
+| Unit — THE TYPE-GATE HARDENING + THE FULL-STRICT FLIP + THE SINGLE LOCKFILE (the session-174 post-173 audit round — its rotation trigger THE REPO'S OWN NEWEST ARTIFACTS [commit 25f1847: skills/web-application/SKILL.md v1.0.0 — the four-sibling family distillation — + skills/web-application/codebase-evaluation-report.md, the comparative audit ranking neo-crm #1 at 8.55 while naming its defect register; the report's §9.2 graft list prescribes exactly the three moves this round lands]; the baseline GREEN at the exact s173 ship state: lint 0/0 · tsc 0 · 137/2712 · build · smoke 14/14 · e2e 192/192 · probe:ref STABLE · the sweeps CLEAN · the drawer 7/7 · census MATCH): THE TYPE-GATE HARDENING [F-174a — next.config.ts's typescript.ignoreBuildErrors: true RETIRED: the build IS the type gate (the zero-balance graft); under the old posture a planted type error compiled GREEN into the deployable artifact — THE GATE-PROOF ran the SAME plant both ways live (swallowed under ignoreBuildErrors: true, build FAILED under the hardened form)] + THE FULL-STRICT FLIP [F-174b — tsconfig.json's noImplicitAny: false escape hatch RETIRED (the digma graft): full TS strictness; the flip probe surfaced exactly THREE implicit-any stragglers repo-wide — scripts/sweep.ts's inline union-find twin (find = (k) · union = (x, y) against a bare new Map()) — now typed verbatim like its FULLY-TYPED pure seam twin; the entire src/ tree was ALREADY clean] + THE SINGLE LOCKFILE [F-174c — package-lock.json RETIRED from the repo root: one package manager (bun), one lockfile (bun.lock) — the s61/s62 §16ba npm-world-parity rule superseded by the repo's own new skill's Appendix A lesson 14; the npm-world path (install_packages.sh) installs by package NAME from the registry — it never consumed the lockfile; the outputFileTracingExcludes entry STAYS as the defensive tripwire]; the source-pin battery [tests/type-gate.test.ts — the 138th suite, +5: the build-is-the-type-gate pin · the full-strict pin · the typed union-find pin (the s93 F-A family) · the single-lockfile pin · the gate-chain freeze pin (typecheck stays BEFORE build — the §15 fast-gates-first order holds, the manual step the FASTER signal, the build the ENFORCER)]; RED birth 4 failing + 1 born-green; the count ladder 2712 → 2717 (+5) · SUITES 137 → 138 · E2E 192 HELD (the round is config-only, no visual surface touched) · badge 2904 → 2909 (count-ladder-174.py + skill-head-174.py, assert-first, idempotent — the re-runs verified 0-flip no-ops); the collateral re-anchors (the PAD §11 next.config.ts row re-censused 93 → 99 lines — the inventory-census live-read catch again · the dialog-geometry CLAUDE lockstep carriers [2712 → 2717, the retired forms joining the negatives ladder] · the docs-counts constants + the two lineage comments + the F-106a1 layer-axis pin [the s174 layer live, the s173 layer beneath]); the docs (the AGENTS Session-174 section + the gate-order paragraph · the PAD ADR-019 [the build-is-the-type-gate doctrine] + this inventory row + the stack-table strict row + the pre-ship checklist line + the §11 re-anchor · the CLAUDE gate-order mention + the TypeScript bullet · the README Tested row + the badge + the suite list's type-gate join · the SKILL v1.171.0 + H1 + the s174 head layer + the three config-table rows); the mutation-proof (the planted badge regression 2909 → 2904 → exactly 1 RED → reverted → GREEN) + THE STASH-PROOF (the three config moves reverted alone → exactly the type-gate pins RED → restored → GREEN) + THE GATE-PROOF (the planted type error: build FAILED under the new posture, the SAME plant swallowed under the restored ignoreBuildErrors — the defect demonstrated live); THE CONFIG-ONLY PROOF (the round touched no component, no page, no className — the standing legs re-verified at the audit leg: the drawer 7/7 · probe:ref STABLE · the sweeps CLEAN) | 0 | 5 new (type-gate) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.171.0) + the carriers re-anchored (dialog-geometry, docs-counts, inventory-census) | `next.config.ts` + `tsconfig.json` + `scripts/sweep.ts` (the typed twin) + `tests/type-gate.test.ts` (NEW) + `tests/dialog-geometry-parity.test.ts` (the lockstep carriers) + `scripts/count-ladder-174.py` + `scripts/skill-head-174.py` + the package-lock.json retirement | Vitest |
+| **Total** | **138** | **2717 unit + 192 e2e** | | |
 
 > **Counting convention (session-54, N-54h)**: the per-session rows
 > count the FILES TOUCHED by that session's pin additions and the checks
@@ -1081,7 +1119,7 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 > the session-end HEAD totals in the Files/Checks columns with the
 > round's delta recorded in the Category cell — the files-touched
 > form applies to the rows that predate it. The **Total** row counts files and checks at
-> HEAD: 137 Vitest suites with 2712 checks + 192 e2e checks in 11 spec
+> HEAD: 138 Vitest suites with 2717 checks + 192 e2e checks in 11 spec
 > files (landing, auth, crm, mobile-navigation, reports-mobile,
 > settings-mobile, calendar-mobile, activities-mobile, marketing-mobile,
 > reset-password, a11y) + the auth.setup project (the
@@ -1506,8 +1544,10 @@ must keep all 10 regression checks green unmodified.
 ### 7.4 Pre-PR / Pre-Deploy Checklist
 
 - [ ] `bun run lint` — 0 errors, 0 warnings
-- [ ] `bun run typecheck` — clean (the real type gate; build has `ignoreBuildErrors`)
-- [ ] `bun run test` — 2712/2712
+- [ ] `bun run typecheck` — clean (the faster type signal; session-174
+      retired `ignoreBuildErrors` — the build itself now fails on type
+      errors too)
+- [ ] `bun run test` — 2717/2717
 - [ ] `bun run build` — standalone build succeeds
 - [ ] `bun run test:e2e` — 192/192
 - [ ] Mobile drawer manually exercised at 390px (open → navigate → Escape)
@@ -1580,7 +1620,7 @@ bun run dev          # http://localhost:3000 — demo: sepnetflix2023@outlook.co
 | ------- | -------- | ------- |
 | `bun run dev` | root | Dev server :3000, log tee'd to `dev.log` |
 | `bun run lint` / `typecheck` | root | Quality gates (must be 0/0 / clean) |
-| `bun run test` | root | 2712 unit checks |
+| `bun run test` | root | 2717 unit checks |
 | `bun run test:e2e` | root | 192 browser checks (build first) |
 | `bun run db:census` | root | The sanctioned DB census — resolved path + counts + the seed-contract verdict (session-53; never a raw PrismaClient) |
 | `bun run gate` | root | The full gate in one command (lint → typecheck → test → build → e2e) |
@@ -1653,7 +1693,7 @@ files. Push via the SSH wrapper (§8.4).
 | `tests/e2e/reports-mobile.spec.ts` | 110 | the s105 seeded-state reports-tabs guard at 390 |
 | `tests/e2e/settings-mobile.spec.ts` | 185 | the s106 seeded-state settings-tabs guard at 390 + the s115 Defaults-tab block (the D-115a2 census + select round-trip) |
 | `postcss.config.mjs` | 8 | `@tailwindcss/postcss` — required for any styling at all |
-| `next.config.ts` | 93 | standalone output + tracing root + the s170 artifact-hygiene excludes |
+| `next.config.ts` | 99 | standalone output + tracing root + the s170 artifact-hygiene excludes + the s174 type-gate retirement (no `ignoreBuildErrors`) |
 | `docs/ssh_git_wrapper_v3.py` | 336 | Verified SSH push wrapper (key never in repo) |
 | `src/app/error.tsx` | 66 | the s170 route-segment error boundary (the card + digest + reset + the self-heal wiring) |
 | `src/app/global-error.tsx` | 68 | the s170 root boundary (own html/body + its own globals.css import) |
