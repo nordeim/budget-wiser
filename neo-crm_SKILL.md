@@ -8,7 +8,7 @@ description: >
   mobile-navigation drawer fix, auth, testing strategy, anti-patterns and
   the full debugging playbook. Use it to extend, debug, onboard, or
   replicate this architecture.
-version: 1.166.0
+version: 1.167.0
 last_updated: 2026-10-23
 <!-- retired session-141 layer (the DUPLICATE project_state key this file carried
      since the s165 head bump — comment-demoted at session-166, the F-166f cure;
@@ -55,10 +55,17 @@ project_state: 2480 unit checks + 161 e2e checks green; the session-167 layer (T
 project_state: 2520 unit checks + 161 e2e checks green; the session-168 layer (THE AGENTS-DOCTRINE CLOSURE + THE INVENTORY LIVE-CENSUS — the post-167 audit round [the baseline gate GREEN at the s167 ship state: lint 0/0 · tsc 0 · 128/2480 · build · e2e 161/161 · probe:ref #140 STABLE · the six drift gates CLEAN ×6 · the mobile drawer 7/7 at 390×844 · the Tailwind v4 state clean · sitemap 11 routes + robots + manifest standing · db census MATCH]): THE AGENTS-DOCTRINE CLOSURE [the two live-tense validation-doctrine sites the s165/s166/s167 rounds flipped everywhere EXCEPT AGENTS.md itself — the architecture-facts 'the CRUD family keeps the asString guards, the documented incremental adoption path' → the completed-adoption form + the conventions' 'No schema library — zod was deliberately pruned' → the Zod-seam reality; AGENTS.md joins the docs pin family for the first time (the L-167c1 root-cure on the file the rotations kept forgetting to flip)] + THE INVENTORY LIVE-CENSUS [tests/inventory-census.test.ts — the 129th suite, the L-165c1 doctrine extended from the schema seam to the DOC INVENTORY LAYER: the PAD §11 Lines-column live-census (ALL 27 count-carrying rows asserted against their files' live line counts — seven were stale: api 172/308 · constants 547/549 · rate-limit 51/126 · mobile-nav 215/143 · app-shell 70/94 · globals.css 413/430 · (app)/layout 11/22; the s109 line-census family pinned thirteen rows + the SKILL headers but never these seven PAD rows) + the SKILL inventory live-census (the models 8/9 · the layer map pages 11→15 + routes 27→29 · the components 25/19→28/22 + the page enumeration's four post-s12 pages · the Bug #1 7-check→10-check · the §19 primary-foreground #ffffff→#fafafa — all read live from the tree) + the AGENTS doctrine pins + the README nine-route→eleven-route sitemap pins — mutation-proven at birth]; the count ladder 2480 → 2520 (+40: inventory-census +40 [the 129th suite]) · SUITES 128 → 129 · E2E 161 held · badge 2641 → 2681 — every live-tense site re-anchored in lockstep (count-ladder-168.py, assert-first, idempotent, unique-anchor) + beneath it 2480 unit checks + 161 e2e checks green; the session-167 layer (THE STALE-SITE CLOSURE + THE SCHEMA LIVE-CENSUS — the ten stale sites + the schema-census pin family)
 -->
 
+<!-- retired session-169 layer (comment-demoted at session-170 — the house
+     single-key form; the s141/s143/s165/s166/s167/s168 layers sit demoted above it):
+
 project_state: 2559 unit checks + 161 e2e checks green; the session-169 layer (THE CLAUDE-DOCTRINE CLOSURE + THE STACK-FACTS LIVE-CENSUS + THE PRODUCTION SECRET GATE — the post-168 audit round [the baseline gate GREEN at the exact s168 ship state: lint 0/0 · tsc 0 · 129/2520 · build · e2e 161/161 · probe:ref STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer 7/7 at 390×844 · the census MATCH]: CLAUDE.md — the LAST un-flipped doctrine doc — joins the pin family [the hand-rolled-validation clause retired, the Zod-seam clause present] + THE STACK-FACTS LIVE-CENSUS [tests/facts-census.test.ts — the 130th suite, +36: the version carriers read LIVE from node_modules [next 16.4.2 · playwright 1.64 — the s163-era bump no doc ever carried] · the sitemap stragglers [CLAUDE's nine-route + AGENTS' nine-URL] · the DEPLOYMENT 27→29 re-anchor + the pin-entrenched docs-counts literal re-anchored to the live route-file census [the L-165c1 genus inside the pin family itself] · the SKILL §4.1 @theme mirror's five stale tokens + line-strong + the scoped heading · the §19 primary family · PAD's phantom asOneOf + auth(6→8) + ~129→~184 · the README pre-s142 file tree + Quick Start + FOUR→SIX gates + the space-y census] + THE PRODUCTION SECRET GATE [secret() THROWS in production on a missing/short AUTH_SECRET — the web-app-foundation §6.2 posture; the warn-once fallback shipped forgeable sessions silently + .env.example misdocumented a hard error that never existed; dev/test keep the fallback] + the count ladder 2520 → 2559 (+39) · SUITES 129 → 130 · E2E 161 held · badge 2681 → 2720 + the SKILL v1.166.0 + the s169 head layer [the s168 layer comment-demoted]) + beneath it 2520 unit checks + 161 e2e checks green; the session-168 layer (THE AGENTS-DOCTRINE CLOSURE + THE INVENTORY LIVE-CENSUS — the doc-truth stragglers the pin families never read)
+-->
+
+
+project_state: 2644 unit checks + 161 e2e checks green; the session-170 layer (THE ERROR-BOUNDARY FAMILY + THE BOOT GATE + THE SMOKE LEG + THE ARTIFACT HYGIENE + THE DOCTRINE-STRAGGLER CLOSURE — the post-169 audit round [the baseline gate GREEN at the exact s169 ship state: lint 0/0 · tsc 0 · 130/2559 · build · e2e 161/161 · probe:ref STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer 7/7 at 390×844 · the Tailwind v4 state clean · sitemap 11 routes + robots + manifest standing · db census MATCH]: THE ARTIFACT HYGIENE [F-170a CRITICAL — the standalone artifact shipped .env (the real AUTH_SECRET), .git/ (171 MB), db/ (the dev SQLite with user rows + hashes), uploads/, skills/ (194 MB) and docs/ (49 MB) — the upload family's runtime-computed fs paths made @vercel/nft fall back to tracing the WHOLE repo root; the outputFileTracingExcludes set + the build script's rm-f cure, verified live (the ~151 MB clean artifact + the photo-e2e pair GREEN against it) + the smoke leg's 14th assertion policing every rebuild] + THE ERROR-BOUNDARY FAMILY [src/app/error.tsx + src/app/global-error.tsx — the scandihaven ports: the house-styled card + the digest ref + the reset() Try-again, the stale-chunk self-heal (src/lib/chunk-recovery.ts — one guarded reload per 10s cooldown, the flag written BEFORE the reload), global-error renders its own html/body + imports its own globals.css, ZERO component-tree imports beyond the recovery seam] + THE BOOT GATE [src/instrumentation.ts → src/lib/boot-env.ts — production AUTH_SECRET missing/short fails hard AT BOOT (verified live: the secretless standalone boot refuses to serve, the log names AUTH_SECRET + openssl); the NEXT_PUBLIC_SITE_URL localhost misconfig + the unknown NEO_* typo family + the off-vocabulary kill-switch values + the unparsable proxy-hops warn; dev/test boot soft; the phase-production-build skip keeps `next build` secretless] + THE SMOKE LEG [scripts/smoke-test.sh + the gate/gate:full wiring — the web-app-foundation §13.4/§14 leg the repo never had: the standalone boot on :3210 with its own db/smoke.db + a dedicated throwaway secret, the 14-check ladder (the health db round-trip · the unauth 401s · the login round-trip + the neo_session cookie · the sessioned envelope · the Zod 400 · the valid create · the logout data:null face · the 11th-login 429 · the page titles · the sitemap/robots/manifest family · THE BOOT-GATE PROBE · THE ARTIFACT-HYGIENE assertions)] + THE DOCTRINE-STRAGGLER CLOSURE [tests/doctrine-census.test.ts — the 131st suite, +30: the AGENTS live-tense stragglers (the retired REPORTS_PIPELINE_SLUGS/reportsBucketCounts doctrine · the FUNNEL_STAGES labels · the s13-era chart-component claims · the singular leads-view key) + the PAD §5.2 color table (the LAST un-flipped color carrier — four stale hexes + the missing line-strong + the muted-ink placeholders row) + the session-gating census corrected to 19 gated / 10 ungated (the bare-name grep OVERCOUNTED via me/route.ts's 'NOT gated' comment — the CALL form `await requireSession(` is the truth, the L-168c2 lesson caught at birth) + the CHART_COLORS violet/emerald note + the Opportunity interface row + the ADR-007 row reconciliation + the radix ^1/^2 split + the table-header Title Case form + the README pricing $8/$14/$20 + the LICENSE file the README's MIT claim stood on]; the count ladder 2559 → 2644 (+85: doctrine-census +30 [the 131st] · chunk-recovery +12 [the 132nd] · boot-env +20 [the 133rd] · error-boundaries +17 [the 134th] · inventory-census +6 [the six new §11 rows' parameterized pins]) · SUITES 130 → 134 · E2E 161 held (the boundaries are unreachable by honest e2e without a debug affordance — the smoke leg covers the boot/artifact contracts) · badge 2720 → 2805 — every live-tense site re-anchored atomically (count-ladder-170.py, assert-first, idempotent, unique-anchor) + the SKILL v1.167.0 frontmatter + H1 lockstep + this s170 head layer [the s169 layer comment-demoted]) + beneath it 2559 unit checks + 161 e2e checks green; the session-169 layer (THE CLAUDE-DOCTRINE CLOSURE + THE STACK-FACTS LIVE-CENSUS + THE PRODUCTION SECRET GATE — the doc-truth stragglers the s169 round closed)
 ---
 
-# NEO CRM — Engineering Skill (SKILL.md v1.166.0)
+# NEO CRM — Engineering Skill (SKILL.md v1.167.0)
 
 > **How to use this document:** §1–§3 give you the mental model and a
 > working environment. §4–§8 describe what the code actually does (every
@@ -148,7 +155,7 @@ Exact versions from `package.json` (bun lockfile; `bun.lock` + regenerated
 | Language | TypeScript | `5.9.x` | Strict except `noImplicitAny: false`; `isolatedModules` |
 | Styling | Tailwind CSS | `4.3.3` (devDep) | CSS-first `@theme` in `src/app/globals.css`; NO `tailwind.config.js` |
 | PostCSS | `@tailwindcss/postcss` | `^4` | The ONLY plugin; if missing, pages render unstyled (§9 bug #2) |
-| Components | `@radix-ui/*` (6 pkgs) | `^1` | dialog, select, popover, dropdown, label, slot — alert-dialog + radio-group retired s61, toast retired s62 (the from-scratch ui/toast.tsx never imported it) |
+| Components | `@radix-ui/*` (6 pkgs) | `^1`/`^2` split (dialog/popover/slot `^1`; dropdown/label/select `^2` — live-read from package.json) | dialog, select, popover, dropdown, label, slot — alert-dialog + radio-group retired s61, toast retired s62 (the from-scratch ui/toast.tsx never imported it) |
 | Charts | recharts | `2.15.x` | Every chart has an empty-state fallback |
 | ORM | prisma + `@prisma/client` | `6.19.3` | `db push` workflow, no migrations folder |
 | Database | SQLite | (libsqlite) | `<repo>/db/custom.db`; dev + e2e (`db/e2e.db`) files, both git-ignored |
@@ -380,8 +387,11 @@ HTTP client for server state (its `call()` helper unwraps the envelope).
 - 29 API route files: auth (login/signup/logout/me/verify/resend/forgot-password/reset-password), users,
   accounts±id, contacts±id, leads±id, activities±id, events±id,
   opportunities, dashboard, reports, settings, search, export, upload,
-  uploads/[name], reset, health. All `force-dynamic`, all
-  session-gated via `requireSession()`.
+  uploads/[name], reset, health. All `force-dynamic` — 19 gated via
+  `requireSession()` (the 10 ungated: the public auth family's 7
+  verbs [rate-limited instead] + `me` [the by-design logged-out
+  data:null face, session-41] + `health` + the regex-pinned
+  `uploads/[name]` serving; search IS gated).
 - Shared dialogs: `src/components/shared/entity-dialogs.tsx` (1226 lines) —
   Account/Contact/Lead/Event/Activity forms using the remount-via-key
   pattern (§15.2).
@@ -695,7 +705,7 @@ verbatim.
 - **Semantics:** real `<table>` markup in `ui/table.tsx` and page tables;
   `<label htmlFor>` on every form field; the calendar grid uses
   `role="grid"` with day cells as `role="gridcell"`.
-- **Color contrast:** foreground `#111827` on `#ffffff` (17.4:1), muted
+- **Color contrast:** foreground `#0a0a0a` on `#ffffff` (19.3:1), muted
   `#6b7280` on white (4.8:1 AA); sidebar white-on-`#2563eb` (4.5:1 AA).
   Session-21's full WCAG 1.4.3 census (computed-style tree-walk on both
   apps): the CORE surfaces pass, and both apps share the SAME failures —
@@ -814,7 +824,7 @@ and `curl` against the envelope (`{"ok":true,"data":…}`) for API truth.
 ```bash
 bun run lint         # 0 errors, 0 warnings
 bun run typecheck    # clean (the REAL type gate — build ignores errors)
-bun run test         # 2559/2559
+bun run test         # 2644/2644
 bun run build        # standalone build succeeds
 bun run test:e2e     # 161/161 (build first; boots :3100 with db/e2e.db)
 ```
@@ -1239,7 +1249,7 @@ the live reference on 2026-10-01:
    would 404).
 
 3. **twitter:url through `metadata.other`.** Next's twitter metadata
-   object has NO url field (verified against next 16.3.6's
+   object has NO url field (verified against next 16.4.2's
    twitter-types: card/site/siteId/creator/creatorId/description/title/
    images only). The reference ships twitter:url — it rides
    `metadata.other: { "twitter:url": siteUrl() }`.
@@ -6410,9 +6420,9 @@ mirror — fix both if either changes):
 | `chart-1…6` | `#3b82f6 #06b6d4 #eab308 #f97316 #9ca3af #ef4444` | — | inline styles | recharts series + sparklines |
 
 Chart palette note [s60/N-60a carrier]: `CHART_COLORS` in `constants.ts`
-carries only the LIVE read set for TS consumers — red/gray/violet/emerald
-+ the `-400` family (the six never-read keys blue/cyan/teal/amber/orange/
-green retired s60 after a zero-reads census). The CSS `--color-chart-1…6`
+carries only the LIVE read set for TS consumers — violet/emerald only
+(the six never-read keys blue/cyan/teal/amber/orange/green retired s60;
+gray + the `-400` family retired s90; red retired s142). The CSS `--color-chart-1…6`
 token family above is a different surface and stays whole; the two lists
 are no longer full mirrors — the TS side is the consumed subset.
 
@@ -6490,6 +6500,13 @@ export interface Settings {
   followUpDays: number; calendarView: string; firstDayOfWeek: string;
 }
 
+export interface Opportunity {
+  id: string; name: string; accountName: string | null;
+  stage: string; amount: number; probability: number | null;
+  closeDate: string | null; source: string | null; owner: string | null;
+  createdAt: string; updatedAt: string;
+}
+
 // Session-59 (S59-P2, N-59a): the `SavedReport` interface RETIRED from
 // the barrel — zero references repo-wide INCLUDING its own file. The
 // LIVE SavedReport is a different localStorage shape in
@@ -6557,8 +6574,9 @@ Full ADRs with context/decision/rationale/consequences/alternatives live in
 | ADR-004 | One Zustand store, `{ok,data}` envelope | single client state model, no React Query |
 | ADR-005 | Tailwind v4 CSS-first (`@theme` literals) | v4 ignores JS config; literal hex = measurable parity |
 | ADR-006 | The mobile drawer navigation | the reference ships NO mobile nav — fixed deliberately |
-| ADR-007 | Vitest pure seams + Playwright golden path | unit-test the seams, e2e the user-visible contract |
+| ADR-007 | React-19-lint-clean dialog patterns (remount-via-key) | the lint rule is the bar; keyed remount replaces setState-in-effect |
 | ADR-014 | In-app OTP/reset deliveries behind `NEO_DISABLE_*` kill-switches | demo UX honest, production channel closes with one env change |
+| ADR-015 | The resilience family — error boundaries + boot gate + smoke leg + artifact hygiene | the §6.2/§13.4/§14 legs closed in one rotation; the artifact ships server-only content |
 
 ## Appendix B: Test Inventory & Runtime Costs
 
@@ -6592,7 +6610,7 @@ Full ADRs with context/decision/rationale/consequences/alternatives live in
 | login-reset (session-11) | `tests/login-reset.test.ts` | 14 | ~6 ms |
 | seeded-dashboard-kpis (session-110) | `tests/seeded-dashboard-kpis.test.ts` | 4 | ~12 ms |
 | leading-inert-genus (session-150) | `tests/leading-inert-genus.test.ts` | 4 | ~10 s (the src scan) |
-| **unit total** | 130 files | **2559** | **~18 s** (one worker per file) |
+| **unit total** | 134 files | **2644** | **~21 s** (one worker per file) |
 | e2e landing (the marketing family, s142 + the s144 guest block) | `tests/e2e/landing.spec.ts` | 14 | — |
 | e2e auth (logged out + reset flow) | `tests/e2e/auth.spec.ts` | 11 | — |
 | e2e setup (login) | `tests/e2e/auth.setup.ts` | 1 | — |
@@ -6607,7 +6625,7 @@ Full ADRs with context/decision/rationale/consequences/alternatives live in
 | **e2e total** | 10 spec files + the setup project | **161** | **~3.6 m** (incl. server boot + reseed) |
 
 Full gate wall-clock (the s109 standing, re-anchored s169): lint ~10 s, typecheck ~8 s, unit
-~18 s (130 suites, one worker per file), build ~40 s, e2e ~3.6 m (161
+~21 s (134 suites, one worker per file), build ~40 s, e2e ~3.6 m (161
 checks, fresh server boot + in-place e2e.db reseed under CI=1) → roughly
 4.6 m end-to-end. Costs worth knowing: e2e reseeds
 `db/e2e.db` in place (global-setup) and boots the standalone build on
@@ -10957,9 +10975,10 @@ STABLE; the four drift gates CLEAN; census MATCH; src/ 2 files changed
 
 **The walk-harness lessons (record-only):** L-121c2 the next-server
 process rename (the standalone server renames itself `next-server
-(v16.3.6)` — `pgrep -f server.js` never matches it; stale servers
+(v<next-version>)` — `pgrep -f server.js` never matches it; stale servers
 survive naive kills and EADDRINUSE the next boot — kill by the REAL
-name) · L-121c3 the backgrounded `&&`-chain subshell (`cmd && node
+name; the title's version literal is era-dependent — s170 re-derived
+from the live 16.4.2 title, the advice version-free) · L-121c3 the backgrounded `&&`-chain subshell (`cmd && node
 server.js &` backgrounds the CHAIN — `$!` is the subshell, killing it
 orphans the node child; boot the server as a direct background command
 or kill by name) · L-121c4 the cross-app locator discipline on the
@@ -11750,9 +11769,10 @@ leads row menu with the red Delete @1440 · 243 the 390 account-menu face
   icon+label trigger.
 - **L-128b1 the next-server comm rename** (from the 128-b audit): the
   Next.js 16 standalone server renames its process title to
-  `next-server (v16.3.6)` after boot — kill-by-`$!`-PID +
+  `next-server (v<next-version>)` after boot — kill-by-`$!`-PID +
   `pkill -f 'standalone/server.js'` do not reach it; sweep by the
-  `next-server` comm.
+  `next-server` comm (the title's version literal is era-dependent —
+  s170 re-derived from the live 16.4.2 title, the advice version-free).
 
 **The next-session suggestion**: the second rotation cycle's stalest
 re-checks now — the s114 profile + settings Data-tab family (14 sessions

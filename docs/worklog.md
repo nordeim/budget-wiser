@@ -316,3 +316,27 @@ Stage Summary:
 - THE VERIFICATION: lint 0/0 · tsc 0 · 130/2559 · build (29 routes) · e2e 161/161 · db census MATCH (the drift-gate argument carries: docs + tests + server-only code)
 - The lessons: L-169c1 the wrap-normalization form (any pin anchoring on wrapped prose normalizes or anchors wrap-proof) · L-169c2 a pin family must audit its OWN members (the DEPLOYMENT pin claimed liveness while entrenching staleness — the live-read re-anchor is the root cure) · L-169c3 the head surgery needs a verified-single guard, not a boundary split
 - SHIPPED: the remediated codebase committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)
+
+---
+Task ID: 170
+Agent: main (Z.ai)
+Task: The session-170 post-169 audit round — THE ERROR-BOUNDARY FAMILY + THE BOOT GATE + THE SMOKE LEG + THE ARTIFACT HYGIENE + THE DOCTRINE-STRAGGLER CLOSURE — TDD remediation, docs lockstep, push to main via the SSH wrapper.
+
+Work Log:
+- The workspace re-cloned at 567e906 (the s169 ship bba9a7d + its session-log commit); the fresh-sandbox intake: bun install · .env with a fresh 64-char AUTH_SECRET + file:../db/custom.db · the ambient DATABASE_URL shadow scrubbed on every DB-touching command · db:push + db:seed · census MATCH · playwright chromium
+- The baseline gate GREEN at the exact s169 ship state: lint 0/0 · tsc 0 · 130/2559 · build (29 routes) · e2e 161/161 · probe:ref STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer 7/7 PASS at 390×844 · the Tailwind v4 state clean · sitemap/robots/manifest standing
+- The audit (the web-app-foundation §12/§14 lenses + three parallel digest agents + live verification of every claim): TWENTY-ONE findings — the headline F-170a CRITICAL: the standalone artifact shipped .env (the real AUTH_SECRET) + .git/ (171 MB) + db/ (the dev SQLite) + uploads/ + skills/ (194 MB) + docs/ (49 MB) — the upload family's runtime-computed fs paths made @vercel/nft trace the WHOLE repo root + Next's own writeStandaloneDirectory copies .env explicitly; the code legs F-170b/c/d (no error boundaries · no boot gate · no smoke leg — the three §6.2/§13.4/§14 checklist legs); the doc legs (the AGENTS retired-symbol doctrine · the PAD §5.2 color table — the LAST un-flipped carrier · the session-gating counts · the Commands-table gaps · the stale pricing · the LICENSE-file gap)
+- THE THREE EXPERIMENTS verified live BEFORE the plan landed: the boot-gate crash against the real standalone boot · the artifact excludes against a real rebuild + the photo-e2e GREEN against the clean ~151 MB artifact · the .env double-cure — all reverted, then re-landed TDD-first
+- The plan landed at docs/plans/2026-10-23-session170-error-boundaries-boot-gate-smoke-artifact-hygiene-doctrine-stragglers.md; validated against the codebase; executed TDD
+- WP-1: tests/doctrine-census.test.ts (the 131st suite, +30) — every doc finding pinned live-read; THREE live-caught calibration catches (the pin-form mismatches · the commands-table form · THE CENSUS-OVERCOUNT TRAP: the bare-name requireSession grep counted me/route.ts's NOT-gated comment — the CALL form is the truth: 19 gated / 10 ungated)
+- WP-2/3/4: src/lib/chunk-recovery.ts (+12) · src/lib/boot-env.ts + src/instrumentation.ts (+20) · src/app/error.tsx + src/app/global-error.tsx (+17) — the scandihaven ports in the house pure-seam form; the boot gate verified live (the secretless boot refuses to serve)
+- WP-5: scripts/smoke-test.sh + the smoke/gate/gate:full wiring + next.config.ts's outputFileTracingExcludes + the build script's rm-f — SMOKE 14/14 PASS live (two live-caught script defects: the contact status vocabulary · the /me data:null face)
+- WP-6: the ~21 doc flips (AGENTS/CLAUDE/PAD/SKILL/README/.env.example/LICENSE) + the PAD ADR-015 + the §11 rows + the session-170 inventory row
+- WP-7: the count ladder 2559 → 2644 (+85 — the four batteries +79 + the inventory-census's six new §11-row pins, the L-166c3 lesson live again) · SUITES 130 → 134 · E2E 161 held · badge 2720 → 2805 (count-ladder-170.py + skill-head-170.py/skill-head-fix-170.py, assert-first, idempotent — the re-runs verified as 0-flip no-ops) + the collateral re-anchors (gate-script · docs-counts · the space-y census 21/117 → 23/123 · inventory-census next.config 47 → 93 · Appendix B)
+- The mutation-proof: the planted badge regression → exactly 1 RED → reverted → GREEN
+
+Stage Summary:
+- The captures 417-420 (the boundary pair at phone + desktop against the PRODUCTION build via temporary uncommitted throw patches — reverted after; the VLM battery 4/4, the digest ref verified) + the live-caught capture lessons (the renamed next-server process · the root-layout prerender abort → the NEXT_PHASE guard)
+- THE VERIFICATION: lint 0/0 · tsc 0 · 134/2644 · build (29 routes, the ~151 MB hygienic artifact) · SMOKE 14/14 · e2e 161/161 · db census MATCH (the drift-gate argument carries: the round's visual surfaces are failure-path-only)
+- The lessons: L-170c1 the census-overcount trap has a comment-match genus (the CALL form is the truth) · L-170c2 the artifact is a deliverable — anything the tracer over-includes SHIPS (the smoke leg polices it forever) · L-170c3 a root-layout throw aborts the static prerender (the NEXT_PHASE guard) · L-170c4 the renamed next-server process survives pkill -f server.js
+- SHIPPED: the remediated codebase committed to main and pushed via docs/ssh_git_wrapper_v3.py (remote verified)

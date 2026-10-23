@@ -3,7 +3,7 @@
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
 **Companion Document:** `README.md` (onboarding), `AGENTS.md` (agent contract), `CLAUDE.md` (workflow reference)
-**Last Updated:** 2026-10-22
+**Last Updated:** 2026-10-23
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale.
 Nothing is here "because it's popular."
@@ -275,6 +275,67 @@ E2E regression suite.
   posture loses its working flows — the pre-s163 client-side theater
   defect class).
 
+**ADR-015: The resilience family — the error boundaries, the boot gate, the smoke leg, the artifact hygiene (session-170)**
+
+- **Context:** The s169 round closed the runtime secret gate (the
+  first-session-op throw) but three §6.2/§13.4/§14 checklist legs were
+  still open: no error boundaries anywhere (an uncaught render error
+  shipped Next's stock crash page — no brand, no recovery, no digest),
+  no boot-time env validation (a misconfigured production boot failed
+  late or never signaled), and no smoke leg between build and e2e (the
+  web-app-foundation gate order's missing step). AND the audit's
+  critical discovery: the standalone artifact traced the WHOLE repo root
+  (the upload family's runtime-computed fs paths defeat @vercel/nft's
+  static analysis) — shipping `.env` (the real AUTH_SECRET), `.git/`
+  (171 MB), `db/` (the dev SQLite with user rows), `uploads/`, `skills/`
+  (194 MB) and `docs/` (49 MB) in every deployable (~550 MB where ~151
+  MB suffices); Next's own `writeStandaloneDirectory` additionally
+  copies `.env` explicitly (immune to tracing excludes).
+- **Decision:** Four surfaces, one rotation. (1) `src/app/error.tsx` +
+  `src/app/global-error.tsx` — the scandihaven-ported boundary pair
+  (the house-styled card, the digest ref, the `reset()` Try-again; the
+  stale-chunk self-heal via `src/lib/chunk-recovery.ts` — one guarded
+  reload per 10s cooldown, the flag written BEFORE the reload;
+  global-error renders its own html/body + imports its own globals.css;
+  ZERO component-tree imports beyond the recovery seam). (2)
+  `src/instrumentation.ts` → `src/lib/boot-env.ts` — the boot gate:
+  production AUTH_SECRET missing/short THROWS AT BOOT (the
+  phase-production-build skip keeps `next build` secretless — verified
+  live); the NEXT_PUBLIC_SITE_URL localhost misconfig + the unknown
+  NEO_* typo family + off-vocabulary kill-switch values + unparsable
+  proxy-hops WARN; dev/test boot soft. (3) `scripts/smoke-test.sh` +
+  the `gate`/`gate:full` wiring — the §13.4/§14 smoke leg: the
+  standalone boot on :3210 with its own `db/smoke.db` + a dedicated
+  throwaway secret, the 14-check ladder (health · 401s · the login
+  round-trip · the Zod 400 · the valid create · the logout data:null
+  face · the 11th-login 429 · the pages · the SEO family · THE
+  BOOT-GATE PROBE · THE ARTIFACT-HYGIENE assertions). (4)
+  `outputFileTracingExcludes` in `next.config.ts` + the build script's
+  `rm -f .next/standalone/.env` — the artifact-hygiene double-cure.
+- **Rationale:** The boundaries are the reference's OWN gap (it ships
+  none) — the superset posture the mobile drawer already established;
+  the boot gate front-runs the s169 runtime throw with the same message
+  family; the smoke leg polices the artifact contract every rebuild
+  (the hygiene assertions ride check 14); the excludes keep the
+  artifact at the server's true runtime needs (verified: the
+  photo-e2e pair GREEN against the clean artifact — `prisma/schema.prisma`
+  stays traced, `db/`/`uploads/` are mkdir'd on demand).
+- **Consequences:** + A secretless production boot refuses to serve
+  (the actionable message at boot, not the first sign-in); + the
+  artifact is ~151 MB of server-only content; + the smoke leg catches
+  envelope/auth/limiter regressions between build and e2e. − The gate
+  chain grows one step (~25 s); − the boundaries are unreachable by
+  honest e2e without a debug affordance (documented — the unit
+  source-pins + the live captures carry that proof instead).
+- **Alternatives Rejected:** Error boundaries importing the component
+  tree (a resilience surface must not depend on the tree that might be
+  broken); a `middleware.ts` boot check (middleware runs per-request,
+  not at boot — the wrong seam); post-build artifact scrubbing outside
+  the build script (invisible to `bun run build` consumers); leaving
+  `.env` in the artifact (Next's designed behavior, but the documented
+  production posture sets env at launch — the copy was never the
+  mechanism, only an accident that shipped the dev secret).
+
 ---
 
 ## 2. High-Level System Topology
@@ -332,8 +393,11 @@ Layer 1: RSC pages + (app) layout — resolve the session server-side,
          their data through the store.
 Layer 2: API route handlers — 29 files / 41 handlers (incl. `PATCH
          /api/users` for the profile Full-Name edit), all `force-dynamic`,
-         all guarded by `requireSession()` (except auth/login, auth/signup,
-         health, search's public shell). Rule: validation rides the Zod
+         19 gated via `requireSession()` (the 10 ungated: the public
+         auth family's 7 verbs [rate-limited instead] + `me` [the
+         by-design logged-out data:null face, session-41] + `health`
+         + the regex-pinned `uploads/[name]` serving — search IS
+         gated). Rule: validation rides the Zod
          seam at the body boundary (`parseBody` + `src/lib/schemas.ts`);
          return the envelope, never throw across it.
 Layer 3: Pure seams (src/lib) — auth, api envelope, db + db-path, format,
@@ -397,7 +461,7 @@ neo-crm/
 │   ├── stores/crm-store.ts      # single Zustand store + call() client
 │   └── types/index.ts           # wire types shared by API and client
 ├── tests/
-│   ├── *.test.ts                # 130 Vitest suites — 2559 checks
+│   ├── *.test.ts                # 134 Vitest suites — 2644 checks
 │   └── e2e/                     # global-setup, auth.setup, 10 spec files + setup project — 161 checks
 ├── docs/                        # validation report, SSH runbook, screenshots
 ├── next.config.ts               # standalone output + traced prisma root
@@ -567,8 +631,10 @@ activities/events.
 ### 4.2 Data Models
 
 Wire types live in `src/types/index.ts` (User, Account, Contact, Lead,
-CrmEvent, Activity, Settings, SavedReport, plus the computed aggregates
-`DashboardData` and `ReportsData` with their KPI shapes). Dates serialize as
+CrmEvent, Activity, Settings, Opportunity, plus the computed aggregates
+`DashboardData` and `ReportsData` with their KPI shapes — the
+`SavedReport` interface was retired at session-59; the localStorage
+schema lives in `src/lib/saved-reports.ts`). Dates serialize as
 ISO strings; `null` is used (never `undefined`) on the wire for optional
 fields so JSON round-trips are lossless.
 
@@ -598,7 +664,7 @@ fields so JSON round-trips are lossless.
 | Everything | **The system stack** (session-22: `ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"` — pinned in `@theme --font-sans`) | The reference ships ZERO webfonts (no `@font-face`, `document.fonts` empty); the scaffold's Inter webfont was retired after measuring ~6-14% narrower text than the reference on the same string. No `antialiased`, no `text-rendering` override, no `::selection` tint (all browser defaults, like the reference) |
 | KPI values | System 600, 28px, tight tracking | `text-[28px] font-semibold tracking-tight` |
 | Card titles | System 600, 16px | `CardTitle` (the s13 re-pin — the base is 16px) |
-| Table headers | System 500, 12px, uppercase, wide tracking | muted color |
+| Table headers | System 500, muted ink, Title Case | `font-medium text-muted-ink` on `TableHead` (the session-3 parity fix — NOT uppercase/tracked; th inherits the 16px base) |
 | Body/base | System 400, 16px | set on `body` in `globals.css` (the s13 pin) |
 
 ### 5.2 Color Tokens
@@ -611,14 +677,17 @@ dropped by the v4 build (validated in
 | Token | Hex | Usage |
 | ----- | --- | ----- |
 | `--color-sidebar` | `#2563eb` | Sidebar/drawer background (measured from reference) |
-| `--color-primary` | `#3b82f6` | Primary buttons, active states, focus rings |
+| `--color-primary` | `#2563eb` | Primary buttons, active states, focus rings (the session-7 re-pin) |
+| `--color-primary-hover` | `#1d4ed8` | Primary hover arms |
 | `--color-background` | `#f9fafb` | App canvas |
 | `--color-surface` | `#ffffff` | Cards, topbar, dialogs |
-| `--color-foreground` | `#111827` | Primary text |
+| `--color-foreground` | `#0a0a0a` | Primary text (the session-13 re-pin) |
 | `--color-muted` | `#6b7280` | Secondary text |
-| `--color-subtle` | `#9ca3af` | Placeholders, tertiary text |
-| `--color-line` | `#e5e7eb` | Borders, dividers |
-| `--color-line-soft` | `#f3f4f6` | Hover fills, input fills |
+| `--color-muted-ink` | `#737373` | Placeholders, tertiary text (the session-10 pin — NOT `--color-subtle`) |
+| `--color-subtle` | `#9ca3af` | Tertiary text accents |
+| `--color-line` | `#e5e5e5` | Borders, dividers (the session-12 split) |
+| `--color-line-strong` | `#e5e7eb` | The stronger border family (since session-12) |
+| `--color-line-soft` | `#f5f5f5` | Hover fills, input fills (the session-14 re-pin) |
 | `--color-success` | `#10b981` | Won stage, positive deltas |
 | `--color-warning` | `#f59e0b` | Proposal stage, key-account badges |
 | `--color-danger` | `#ef4444` | Destructive actions, lost stage, overdue |
@@ -626,8 +695,13 @@ dropped by the v4 build (validated in
 | Stat-bar palette (-400 family) | `#60a5fa #4ade80 #22d3ee #c084fc #f87171 #fbbf24` | Stat-card mini bars (accounts/activities/dashboard KPI strips), pinned by `tests/constants.test.ts` |
 | Dialog/filter vocabularies (session-5) | Status: New/Contacted/Qualified/Unqualified · Sources: Call/Email/Website/Partner + 5 emoji contact sources · Event types: Meeting/Call/Demo/Task/Reminder/Appointment | DOM-extracted from the live dialogs, pinned by `tests/constants.test.ts` |
 
-Contrast: all text pairs (`#111827`, `#6b7280` on `#ffffff`/`#f9fafb`)
-exceed WCAG AA; the sidebar's `#ffffff`-on-`#2563eb` exceeds AA at nav sizes.
+Placeholders ride `--color-muted-ink` (`#737373` — the session-10
+measure), not `--color-subtle`. Contrast: all text pairs (`#0a0a0a`,
+`#6b7280` on `#ffffff`/`#f9fafb`) exceed WCAG AA; the sidebar's
+`#ffffff`-on-`#2563eb` exceeds AA at nav sizes. (Session-170: this table
+was the LAST un-flipped color carrier — the s169 wave re-pinned SKILL
+§4.1/§19 and left PAD §5.2 on the pre-session-7/12/13/14 hexes; every
+row is now read live by `tests/doctrine-census.test.ts`.)
 
 ### 5.3 Component Primitives
 
@@ -654,7 +728,7 @@ all animations to 0.01ms via a global media rule.
 
 | # | Rule | Enforcement |
 | - | ---- | ----------- |
-| 1 | Every sessioned API handler requires a valid session | `requireSession()` first statement; grep-verified across the 29 route files (19 sessioned; the 10 sessionless: the public auth family's 8 verbs [rate-limited instead] + `health` + the regex-pinned `uploads/[name]` serving) |
+| 1 | Every gated API handler requires a valid session | `requireSession()` first statement; call-form grep-verified across the 29 route files (19 gated; the 10 ungated: the public auth family's 7 verbs [rate-limited instead] + `me` [the data:null face, session-41] + `health` + the regex-pinned `uploads/[name]` serving) |
 | 2 | Authenticated page group unreachable without a session | `(app)/layout.tsx` server redirect |
 | 3 | Passwords stored as `scrypt:salt:hash` (64-byte derived key) | `hashPassword()` only; no plaintext paths exist |
 | 4 | Session tokens HMAC-SHA256 signed, `timingSafeEqual` compared, 7-day TTL | `signSession` / `verifySessionToken` (unit-tested) |
@@ -891,7 +965,8 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 | Unit — THE STALE-SITE CLOSURE + THE SCHEMA LIVE-CENSUS (the session-167 post-166 audit round — the baseline GREEN at the s166 ship state: lint 0/0 · tsc 0 · 127/2454 · build · e2e 161/161 · probe:ref #139 STABLE · the six drift gates CLEAN ×6; the ten stale sites + the unpinned seam census the audit found): THE SCHEMA LIVE-CENSUS [tests/schemas-census.test.ts — the 128th suite: the field-inventory pins (Object.keys(schema.shape) for every exported object schema, in the route-guard order — the drift guard against a silent field drop [API widening] or add [API narrowing]) + the exported-schema census (the 20 members read live from source) + the line-census carrier pin (the 7.4 heading's schemas.ts line count read LIVE from disk — RED at birth on the stale 103, GREEN at the live 716)] + THE STALE-SITE CLOSURE [the ten sites the s166 count-ladder's own sweep missed: SKILL §11's pre-ship gate block 2382/2382 → the live form (the site class s165 called "the worst possible stale site", recurred one round after its cure) · SKILL §7.4's "keeps the asString guards" doctrine clause → the completed-adoption form + the heading's line census 103 → 716 · the head layer's OWN stale first-pass ladder numbers (2450/+68/2611 → 2454/+72/2615) · SKILL §15.1's canonical route example rewritten from the bare req.json + asString idiom to the parseBody(req, accountCreateSchema) form + the 27 → 29 count · README's env table 3 → the six-knob contract (the three NEO_* knobs) + the suite enumeration + the six missing batteries + the Zod seam's file-tree discoverability · PAD's header date + §7.3's "7 regression checks" → 10 + the §7.1 inventory-table surgery (the s86-s91 rows re-seated chronologically, the Total row terminating the table again, the footnote's dual row-forms)] + THE PIN EXTENSION [the recurrence root-cure: five previously-UNPINNED live-tense sites join the docs-counts pin family — the §11 gate block · the §7.4 doctrine line · the §15.1 example idiom + route count · the README env table · the PAD §7.3 count — the F-99a1/F-102a2 genus retired on these axes]; the count ladder 2454 → 2480 (+26: schemas-census +21 · docs-counts +5) · SUITES 127 → 128 · E2E 161 held · badge 2615 → 2641 | 128 | 2480 | `tests/schemas-census.test.ts` (NEW) + the re-anchored `tests/{docs-counts,dialog-geometry-parity}.test.ts` + the doc lockstep (README · AGENTS · CLAUDE · PAD · SKILL v1.164.0) | Vitest |
 | Unit — THE AGENTS-DOCTRINE CLOSURE + THE INVENTORY LIVE-CENSUS (the session-168 post-167 audit round — the baseline GREEN at the s167 ship state: lint 0/0 · tsc 0 · 128/2480 · build · e2e 161/161 · probe:ref #140 STABLE · the six drift gates CLEAN ×6 · the mobile drawer 7/7 at 390×844): the ten findings the audit reproduced live — F-168a/b AGENTS.md's own two live-tense validation-doctrine sites (the s165/s166/s167 rounds flipped the doctrine everywhere EXCEPT AGENTS itself: the architecture-facts 'keeps the asString guards' incremental-path clause + the conventions' 'No schema library — zod was deliberately pruned' — both flipped to the completed-adoption Zod-seam reality, AGENTS.md joining the docs pin family for the first time) · F-168c PAD §11's Lines column (SEVEN stale rows: api 172→308 · constants 547→549 · rate-limit 51→126 · mobile-nav 215→143 · app-shell 70→94 · globals.css 413→430 · (app)/layout 11→22 — the s109 line-census family had pinned thirteen rows + the SKILL headers but never these seven) · F-168d-h SKILL's inventory layer (the layer map pages 11→15 + routes 27→29 · the components 25/19→28/22 + the page enumeration's four post-s12 pages · '8 models'→9 · Bug #1's 7-check→10-check · §19's primary-foreground #ffffff→#fafafa) · F-168i README's nine-route→eleven-route sitemap claims · F-168j the repo worklog's s166/s167 tail gap (noted in the s168 entry); THE INVENTORY LIVE-CENSUS [tests/inventory-census.test.ts — the 129th suite, the L-165c1 doctrine extended from the schema seam to the doc inventory layer: the PAD §11 Lines-column live-census (ALL 27 count-carrying rows asserted against their files' live line counts + the row-surface census pin) + the SKILL inventory live-census (the models/pages/routes/components/sitemap-route/mobile-nav-check counts + the §19 color hex — every value read LIVE from the tree) + the AGENTS doctrine pins (the completed-adoption clause present + BOTH retired clauses absent) + the README eleven-route pins (the ROUTES length read live, number-to-word mapped) — mutation-proven at birth (the planted csv.ts line → exactly +1 RED → reverted → GREEN)]; the scandihaven z.input/z.infer colocation candidate evaluated + closed (already embodied: parseBody returns z.output<S>, zero hand-written body interfaces); the count ladder 2480 → 2520 (+40: inventory-census +40 [the 129th suite]) · SUITES 128 → 129 · E2E 161 held · badge 2641 → 2681 | 129 | 2520 | tests/inventory-census.test.ts (NEW) + the doc lockstep (README · AGENTS · CLAUDE · PAD · SKILL v1.165.0) | Vitest |
 | Unit — THE CLAUDE-DOCTRINE CLOSURE + THE STACK-FACTS LIVE-CENSUS + THE PRODUCTION SECRET GATE (the session-169 post-168 audit round — the baseline GREEN at the s168 ship state: lint 0/0 · tsc 0 · 129/2520 · build · e2e 161/161 · probe:ref STABLE · the mobile drawer 7/7 at 390×844 · census MATCH; the scandihaven port evaluation: the version lockstep ADOPTED + the boot fail-fast adopted server-seam + three deferred + four rejected; the facts-census battery +36 [the 130th suite] + the auth production secret-gate pins +3 [secret() THROWS in production on missing/short AUTH_SECRET — the web-app-foundation §6.2 posture; .env.example's false hard-error contrast retired] + the ~24 stale doc sites flipped [CLAUDE joins the pin family — the last doctrine doc; the version carriers 16.3.6→16.4.2 + 1.63→1.64 read live from node_modules; DEPLOYMENT 27→29 + the pin-entrenched docs-counts literal re-anchored live; SKILL §4.1's five stale @theme tokens + §19's primaries; PAD's phantom asOneOf + auth(8) + the s76/s77 swap + the s127-s130 footnote; README's pre-s142 tree + Quick-Start + SIX gates; AGENTS' eleven-URL + the 13-page consumer census]; mutation-proven [the planted badge regression → exactly 1 RED]; the ladder 2520→2559 · SUITES 129→130 · E2E held · badge 2681→2720 · SKILL v1.166.0) | 3 | 39 new (facts-census) + 1 code (auth.ts) + the docs (CLAUDE/README/PAD/SKILL/AGENTS/DEPLOYMENT/.env.example) + 2 pin files re-anchored (docs-counts, dialog-geometry) | `tests/facts-census.test.ts` (NEW), `tests/auth.test.ts`, `tests/docs-counts.test.ts`, `tests/dialog-geometry-parity.test.ts`, `src/lib/auth.ts` | Vitest |
-| **Total** | **130** | **2559 unit + 161 e2e** | | |
+| Unit — THE ERROR-BOUNDARY FAMILY + THE BOOT GATE + THE SMOKE LEG + THE ARTIFACT HYGIENE + THE DOCTRINE-STRAGGLER CLOSURE (the session-170 post-169 audit round — the baseline GREEN at the exact s169 ship state: lint 0/0 · tsc 0 · 130/2559 · build · e2e 161/161 · probe:ref STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer 7/7 at 390×844 · census MATCH; the three core experiments EXECUTED BEFORE the plan landed — the boot-gate crash verified against the real standalone boot, the artifact excludes verified against a real rebuild + the photo-e2e GREEN against the clean artifact, the .env double-cure verified): THE ARTIFACT HYGIENE [F-170a CRITICAL — the standalone artifact shipped .env (the real AUTH_SECRET) + .git/ (171 MB) + db/ (the dev SQLite with user rows) + uploads/ + skills/ (194 MB) + docs/ (49 MB): the upload family's runtime-computed fs paths made @vercel/nft trace the WHOLE repo root (2715 skills files in the upload route's nft.json alone) + Next's writeStandaloneDirectory copies .env explicitly — the outputFileTracingExcludes set + the build script's rm-f cure, the ~151 MB clean artifact, policed by the smoke leg's 14th assertion] + THE ERROR-BOUNDARY FAMILY [error.tsx + global-error.tsx — the scandihaven ports: the house-styled card + digest + reset + the stale-chunk self-heal (chunk-recovery.ts, the injectable storage/clock/reload seam), global-error's own html/body + globals.css import, ZERO component-tree imports] + THE BOOT GATE [instrumentation.ts → boot-env.ts — production AUTH_SECRET missing/short THROWS AT BOOT (verified live: the secretless boot refuses to serve); the site-url/NEO_* warnings; dev/test soft; the phase-production-build skip] + THE SMOKE LEG [scripts/smoke-test.sh + the gate/gate:full wiring — the §13.4/§14 gap closed: :3210 + db/smoke.db + a dedicated throwaway secret, the 14-check ladder incl. THE BOOT-GATE PROBE + THE ARTIFACT-HYGIENE assertions] + THE DOCTRINE-STRAGGLER CLOSURE [tests/doctrine-census.test.ts — the 131st suite: the AGENTS retired-symbol doctrine bullets (REPORTS_PIPELINE_SLUGS/reportsBucketCounts/FUNNEL_STAGES/the s13 chart family/the singular leads-view key) + the PAD §5.2 color table (the LAST un-flipped carrier) + the session-gating census corrected to 19 gated / 10 ungated (the bare-name grep overcounted via me/route.ts's NOT-gated comment — the CALL form is the truth) + the CHART_COLORS/Opportunity/ADR-007/radix/table-header carriers + the README pricing + the LICENSE file the MIT claim stood on]; the count ladder 2559 → 2644 (+85) · SUITES 130 → 134 · E2E 161 held · badge 2720 → 2799 | 4 | 79 new (doctrine-census +30 · chunk-recovery +12 · boot-env +20 · error-boundaries +17) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.167.0/.env.example/LICENSE) + the carriers re-anchored (docs-counts, dialog-geometry, facts-census, inventory-census, gate-script) | `src/app/{error,global-error}.tsx` + `src/instrumentation.ts` + `src/lib/{boot-env,chunk-recovery}.ts` + `scripts/smoke-test.sh` + `next.config.ts` + `package.json` + `LICENSE` + the four NEW test files | Vitest + smoke + Playwright |
+| **Total** | **134** | **2644 unit + 161 e2e** | | |
 
 > **Counting convention (session-54, N-54h)**: the per-session rows
 > count the FILES TOUCHED by that session's pin additions and the checks
@@ -901,7 +976,7 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 > the session-end HEAD totals in the Files/Checks columns with the
 > round's delta recorded in the Category cell — the files-touched
 > form applies to the rows that predate it. The **Total** row counts files and checks at
-> HEAD: 130 Vitest suites with 2559 checks + 161 e2e checks in 10 spec
+> HEAD: 134 Vitest suites with 2644 checks + 161 e2e checks in 10 spec
 > files (landing, auth, crm, mobile-navigation, reports-mobile,
 > settings-mobile, calendar-mobile, activities-mobile, marketing-mobile,
 > reset-password) + the auth.setup project (the
@@ -1327,7 +1402,7 @@ must keep all 10 regression checks green unmodified.
 
 - [ ] `bun run lint` — 0 errors, 0 warnings
 - [ ] `bun run typecheck` — clean (the real type gate; build has `ignoreBuildErrors`)
-- [ ] `bun run test` — 2559/2559
+- [ ] `bun run test` — 2644/2644
 - [ ] `bun run build` — standalone build succeeds
 - [ ] `bun run test:e2e` — 161/161
 - [ ] Mobile drawer manually exercised at 390px (open → navigate → Escape)
@@ -1400,7 +1475,7 @@ bun run dev          # http://localhost:3000 — demo: sepnetflix2023@outlook.co
 | ------- | -------- | ------- |
 | `bun run dev` | root | Dev server :3000, log tee'd to `dev.log` |
 | `bun run lint` / `typecheck` | root | Quality gates (must be 0/0 / clean) |
-| `bun run test` | root | 2559 unit checks |
+| `bun run test` | root | 2644 unit checks |
 | `bun run test:e2e` | root | 161 browser checks (build first) |
 | `bun run db:census` | root | The sanctioned DB census — resolved path + counts + the seed-contract verdict (session-53; never a raw PrismaClient) |
 | `bun run gate` | root | The full gate in one command (lint → typecheck → test → build → e2e) |
@@ -1473,8 +1548,14 @@ files. Push via the SSH wrapper (§8.4).
 | `tests/e2e/reports-mobile.spec.ts` | 110 | the s105 seeded-state reports-tabs guard at 390 |
 | `tests/e2e/settings-mobile.spec.ts` | 185 | the s106 seeded-state settings-tabs guard at 390 + the s115 Defaults-tab block (the D-115a2 census + select round-trip) |
 | `postcss.config.mjs` | 8 | `@tailwindcss/postcss` — required for any styling at all |
-| `next.config.ts` | 47 | standalone output + tracing root |
+| `next.config.ts` | 93 | standalone output + tracing root + the s170 artifact-hygiene excludes |
 | `docs/ssh_git_wrapper_v3.py` | 336 | Verified SSH push wrapper (key never in repo) |
+| `src/app/error.tsx` | 66 | the s170 route-segment error boundary (the card + digest + reset + the self-heal wiring) |
+| `src/app/global-error.tsx` | 68 | the s170 root boundary (own html/body + its own globals.css import) |
+| `src/instrumentation.ts` | 24 | the s170 boot gate's register() hook (edge + build-phase skips) |
+| `src/lib/boot-env.ts` | 111 | the boot-validation pure seam (the six-knob contract, warn-throw discipline) |
+| `src/lib/chunk-recovery.ts` | 111 | the stale-chunk self-heal seam (injectable storage/clock/reload) |
+| `scripts/smoke-test.sh` | 160 | the s170 smoke leg — the §13.4/§14 ladder (14 checks) against the standalone artifact |
 
 ---
 

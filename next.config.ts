@@ -10,6 +10,52 @@ import path from "node:path";
 const nextConfig: NextConfig = {
   output: "standalone",
   outputFileTracingRoot: path.resolve(import.meta.dirname),
+  // Session-170 (F-170a — THE ARTIFACT HYGIENE): the upload family's
+  // runtime-computed fs paths (uploads.ts's validated-anchor
+  // existsSync/resolve chains) make @vercel/nft fall back to tracing the
+  // WHOLE repo root — every repo-root entry landed in
+  // app/api/upload/route.js.nft.json (2715 skills files alone), shipping
+  // .env (the real AUTH_SECRET), .git/ (171 MB), db/ (the dev SQLite
+  // file with user rows), uploads/, skills/ (194 MB) and docs/ (49 MB)
+  // inside every deployable artifact (~550 MB where ~151 MB suffices).
+  // The excludes keep the artifact to the server's true runtime needs
+  // (verified live: the photo-upload e2e pair ran GREEN against the
+  // clean artifact — prisma/schema.prisma stays traced, the db-path
+  // anchors still validate, db/ and uploads/ are mkdir'd on demand).
+  // Next's own writeStandaloneDirectory ALSO copies .env explicitly
+  // (build/index.js — immune to excludes): the build script's trailing
+  // `rm -f .next/standalone/.env` removes that copy (the double-cure).
+  outputFileTracingExcludes: {
+    "*": [
+      ".env",
+      ".env.example",
+      ".git/**",
+      "db/**",
+      "uploads/**",
+      "skills/**",
+      "docs/**",
+      "test-results/**",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "README.md",
+      "Project_Architecture_Document.md",
+      "neo-crm_SKILL.md",
+      "worklog.md",
+      "neo-crm-homepage.png",
+      "dev.log",
+      "bun.lock",
+      "package-lock.json",
+      "components.json",
+      "eslint.config.mjs",
+      "playwright.config.ts",
+      "postcss.config.mjs",
+      "tsconfig.json",
+      "tsconfig.tsbuildinfo",
+      "vitest.config.ts",
+      "scripts/**",
+      "tests/**",
+    ],
+  },
   // Hide the Next.js dev-tools indicator (the floating "N" button) so dev
   // server screenshots stay clean — it never ships in production anyway.
   devIndicators: false,

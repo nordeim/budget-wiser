@@ -17,30 +17,39 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2559 checks)      | `bun run test`                         |
+|  Unit tests (2644 checks)      | `bun run test`                         |
+|  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
+| Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
-| Prisma client after schema edit | `bunx prisma generate`                 |
+| Prisma client after schema edit | `bunx prisma generate` (`db:generate`) |
 | Recreate DB from schema         | `bun run db:push`                      |
 | Seed demo workspace             | `bun run db:seed`                      |
+| Desktop drift sweep             | `bun run sweep`                         |
+| Full-page drift sweep           | `bun run sweep:fullpage`               |
+| Interior census drift gate      | `bun run census:interior`              |
+| Reference drift probe           | `bun run probe:ref`                    |
+| The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2559) → `bun run build` → `bun run test:e2e` (161) — or the
-one-command `bun run gate` (session-38: the same chain as a package
-script, so the build always precedes the e2e boot; session-39: the e2e
-step runs under `CI=1`, so `reuseExistingServer` evaluates false and the
-gate ALWAYS boots the just-built server — chaining the build alone did
-NOT close the stale-server hazard, because a leftover :3100 listener
-was reused regardless of build timing). There is no
-hosted CI; the local gate is the only gate. `next.config.ts` sets
-`ignoreBuildErrors` — the explicit `typecheck` step is what catches type
-errors; never skip it. Session-164 adds the skill §14 pre-ship step:
-run `bun audit` periodically (NOT inside the gate — it is a network
-dependency and the gate must stay offline-runnable, the probe doctrine);
-the current state is triaged in the PAD known-issues ledger (9
-advisories, all dev-toolchain transitive, zero runtime request-path
-exposure).
+`bun run test` (2644) → `bun run build` → `bun run smoke` (the standalone
+boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
+leg — the boot-gate + artifact-hygiene assertions ride it) →
+`bun run test:e2e` (161) — or the one-command `bun run gate` (session-38:
+the same chain as a package script, so the build always precedes the e2e
+boot; session-39: the e2e step runs under `CI=1`, so
+`reuseExistingServer` evaluates false and the gate ALWAYS boots the
+just-built server — chaining the build alone did NOT close the
+stale-server hazard, because a leftover :3100 listener was reused
+regardless of build timing). There is no hosted CI; the local gate is
+the only gate. `next.config.ts` sets `ignoreBuildErrors` — the explicit
+`typecheck` step is what catches type errors; never skip it. Session-164
+adds the skill §14 pre-ship step: run `bun audit` periodically (NOT
+inside the gate — it is a network dependency and the gate must stay
+offline-runnable, the probe doctrine); the current state is triaged in
+the PAD known-issues ledger (9 advisories, all dev-toolchain transitive,
+zero runtime request-path exposure).
 
 First-run setup: `bun install && cp .env.example .env && bun run db:push &&
 bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
@@ -208,7 +217,7 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   Lost], Source [Call/Email/Website/Partner/Referral — 5 options, Referral is
   popover-only], Min Deal Value, Follow-up Date) whose Save View persists via
   the `src/lib/lead-filters.ts` encode/decode seam (localStorage key
-  `neo-crm.leads.view`); Clear resets. The dashboard has NO owner filter —
+  `neo-crm.leads.views`); Clear resets. The dashboard has NO owner filter —
   the old "All Owners" select was a misread of the empty switcher.
 - **Component anatomy (session-9, re-derived s82/s83)**: button icons in
   TEXT buttons carry their OWN `mr-2` per surface on top of the flex
@@ -285,15 +294,19 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   revenue/wonVsLost, the leads page wonVsLost, all tab 2-4 charts except
   aging). The split is DOM-verified and lives in
   `src/lib/reports-data.ts` (monthsFromEvents) + the routes. The Conversion
-  Funnel is a recharts `FunnelChart` (4 trapezoid groups — FUNNEL_STAGES
-  New/Qualified/Won/Lost, the funnel takes its own `data` prop with
+  Funnel is a recharts `FunnelChart` (4 trapezoid groups — the
+  `LEADS_FUNNEL` vocabulary New Leads/Contacted/Qualified/Won, live in
+  constants.ts, the funnel takes its own `data` prop with
   per-datum fills).
-- **Reports pipeline vocabulary (session-10)**: tab-1 "Pipeline by Stage"
-  ships the reference's 8 RAW SLUGS via `REPORTS_PIPELINE_SLUGS` +
-  `reportsBucketCounts` (new/contacted/qualified/prospecting/qualification/
-  proposal/negotiation/closed_won — the merged-list quirk: new≡prospecting
-  and qualified≡qualification double-report, won maps to closed_won; labels
-  are raw slugs, no title-casing). Tabs 2-4 mirror the reference's
+- **Reports pipeline vocabulary (session-10 → the s31/s54 form)**: tab-1 "Pipeline by Stage"
+  ships the reference's 8 RAW SLUGS through `pipelineStageCounts(leads, opps)`
+  in `src/lib/reports-data.ts` (new/contacted/qualified/prospecting/qualification/
+  proposal/negotiation/closed_won — the session-31 SPLIT: leads and
+  opportunities count into their own stages, NO merged-list double-report
+  — a new lead is NOT also counted under "prospecting"; labels
+  are raw slugs, no title-casing — the s10 `REPORTS_PIPELINE_SLUGS` +
+  `reportsBucketCounts` merged-list approximation was retired at
+  session-54). Tabs 2-4 mirror the reference's
   structure exactly (tab 2: Forecasting Accuracy wide chart + the centered
   `Average Accuracy: N%` caption, row-derived Pipeline by Stage, Forecast
   by Probability, the fixed 4-bucket Aging Pipeline, Open Deals by Stage +
@@ -502,21 +515,23 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   use the package script.
 
 - **The chart grids are DASHED by an explicit prop, not by recharts
-  defaults (session-13 CORRECTION)** — the reference passes
+  defaults (session-13 CORRECTION → the s27 family form)** — the reference passes
   `strokeDasharray="3 3"` on `#ccc` grid lines on EVERY gridded chart
   (dashboard Sales Pipeline/Revenue, reports tab-1 all four incl. the
   funnel, leads Pipeline/Won-vs-Lost). The session-10 note "the
   CartesianGrid at the default DASHED 3 3" was a misread — recharts'
-  default grid is SOLID. `charts.tsx` now sets `strokeDasharray="3 3"`
-  explicitly on `PipelineBarChart`, `RevenueLineChart`, `WonLostLineChart`
-  and the new `FunnelBarChart`; pinned by
+  default grid is SOLID. `charts.tsx` sets `strokeDasharray="3 3"`
+  explicitly at five sites across the live parameterized family (the
+  `SingleBarChart`/`GroupedBarsChart`/`TrendLineChart`/
+  `HorizontalBarChart` grid arms + `RevenueLineChart`); pinned by
   `tests/charts-contracts.test.ts`.
 - **The reports "Conversion Funnel" is a horizontal BAR chart
-  (session-13)** — NOT a recharts FunnelChart: `FunnelBarChart` renders
-  `BarChart layout="vertical"` 534×300, dashed grid, numeric X, category
+  (session-13 → the s27 `HorizontalBarChart` form)** — NOT a recharts
+  FunnelChart: the reports funnel renders `BarChart layout="vertical"`
+  534×300, dashed grid, numeric X, category
   Y with the EIGHT raw slugs (`new/contacted/qualified/prospecting/
-  qualification/proposal/negotiation/closed_won` = the
-  `REPORTS_PIPELINE_SLUGS` quirk register), fed by the `pipeline` seam.
+  qualification/proposal/negotiation/closed_won` — the
+  `pipelineStageCounts` seam's ordered array), fed by the `pipeline` seam.
   The LEADS page funnel stays a FunnelChart (unverifiable at zero data —
   the reference's leads funnel renders NOTHING at zero).
 - **Button radius is rounded-md everywhere (session-13)** — the
@@ -9175,3 +9190,148 @@ from s164/s168 carries (the round touches docs + tests +
 `src/lib/auth.ts` — server-only, zero visual surface; the desktop +
 phone sweeps re-verified CLEAN live at the audit leg; the standing
 parity verdict holds).
+
+## Session-170 — THE ERROR-BOUNDARY FAMILY + THE BOOT GATE + THE SMOKE LEG + THE ARTIFACT HYGIENE + THE DOCTRINE-STRAGGLER CLOSURE (2026-10-23)
+
+The post-169 audit round. Baseline: the s169 ship state reproduced exactly
+(lint 0/0 · tsc 0 · **130/2559** · build · e2e **161/161** · probe:ref
+STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer **7/7
+PASS** at 390×844 · the Tailwind v4 state clean · sitemap 11 routes +
+robots + manifest standing · census MATCH). The scandihaven reference
+round: the s169-deferred ports ADOPTED (the `instrumentation.ts` boot
+gate + the `error.tsx`/`global-error.tsx` boundary family + the
+stale-chunk self-heal — "its own rotation: a new visual surface" — this
+is that rotation) + the web-app-foundation §13.4/§14 smoke leg ADOPTED
+(the gate-order step the repo never had); the axe-core a11y gates +
+fast-check property tests still deferred (new devDeps — the
+no-mid-rotation-bump posture holds).
+
+**THE HEADLINE FINDING (F-170a, Critical, verified live)**: the
+standalone production artifact shipped the repo's private content —
+`.env` (the real AUTH_SECRET + DATABASE_URL), `.git/` (171 MB — the full
+history), `db/` (the dev SQLite with user rows + scrypt hashes),
+`uploads/`, `skills/` (194 MB — the whole 248-skill bank), `docs/`
+(49 MB), `worklog.md`, `test-results/`, the five engineering docs,
+`scripts/`, `tests/` — ~550 MB where ~151 MB suffices. ROOT CAUSE: the
+upload family's runtime-computed fs paths (uploads.ts's
+validated-anchor `existsSync`/`resolve` chains) make `@vercel/nft`'s
+static analysis fall back to tracing the whole `outputFileTracingRoot`
+— 2715 skills files alone in `app/api/upload/route.js.nft.json`. AND
+`.env` rides TWICE: the trace AND Next's own `writeStandaloneDirectory`
+`loadedEnvFiles` copy (build/index.js:323 — immune to tracing
+excludes). THE CURE (each piece verified live BEFORE the plan landed):
+`outputFileTracingExcludes` (the 27-entry set) + the build script's
+trailing `rm -f .next/standalone/.env` — the ~151 MB clean artifact
+(`server.js` + `.next/` + `node_modules/` + `package.json` + `prisma/`
++ `public/` + `src/` + `next.config.ts` only), the photo-e2e pair GREEN
+against it (prisma/schema.prisma stays traced, the db-path anchors
+still validate, `db/`/`uploads/` are mkdir'd on demand), and the smoke
+leg's 14th assertion policing every rebuild.
+
+**THE FINDINGS (twenty-one, all reproduced live)**: the code legs —
+F-170a the artifact hygiene (above) · F-170b zero error boundaries
+(anywhere in `src/` — an uncaught render error shipped Next's stock
+crash page: no brand, no recovery affordance, no digest, no stale-chunk
+self-heal) · F-170c no boot gate (the s169 secret gate is a runtime
+seam — a misconfigured production boot failed late or never signaled;
+the §6.2 posture prescribes fail-fast AT BOOT) · F-170d no smoke leg
+(the §13.4/§14 gate order's missing step — nothing boots the artifact
+and asserts the 401/400/429/health/page contracts between build and
+e2e). The doc legs — F-170e AGENTS' live-tense reports-pipeline
+doctrine citing the RETIRED `REPORTS_PIPELINE_SLUGS` + the nonexistent
+`reportsBucketCounts` + the retired merged-list quirk as current
+practice (an agent following it implements the wrong counting behavior)
+· F-170f PAD §5.2's "DEFINITIVE" color table carrying FOUR stale hexes +
+the missing line-strong + the mis-attributed placeholders row + the
+`#111827` contrast sentence (the s169 wave re-pinned SKILL §4.1/§19 and
+never PAD §5.2 — the LAST un-flipped color carrier) · F-170g the
+session-gating counts wrong in three places (PAD §3.1's phantom
+"search's public shell" · PAD §6.1's "19 sessioned; the 10 sessionless
+[8 verbs]" · SKILL §5.2's "all session-gated" — live: 19 gated / 10
+ungated, the 7 public auth verbs + me + health + uploads/[name]) ·
+F-170h/i/j the AGENTS straggler family (the retired FUNNEL_STAGES
+labels · the s13-era chart-component claims · the singular-form
+leads-view localStorage key, fixed to the live .views form) · F-170k
+the Commands table omitting seven
+package.json scripts · F-170l README's stale $9/$19/$39 pricing (live
+$8/$14/$20 since the s149 repricing) · F-170m/n/o/p/q the PAD/SKILL
+type/palette/ADR/table-header carriers (the retired SavedReport listed
++ the live Opportunity missing · the stale CHART_COLORS note · §20's
+missing Opportunity row · Appendix A's ADR-007 contradiction · the
+12px-uppercase table-header claim) · F-170r/s/t/u the small carriers
+(the radix ^1-for-all-6 row · the "with empty states" tree annotation ·
+the #111827 contrast + the 16.3.6 literals · the MIT license claim with
+NO LICENSE file).
+
+**THE REMEDIATION (TDD — RED birth: doctrine-census 26 failing + 4
+born-green census anchors, the other three suites failing at the
+missing surfaces → GREEN, mutation-proven)**: FOUR NEW SUITES (+79) —
+`tests/doctrine-census.test.ts` (the 131st, +30: every doc finding
+pinned live-read — the constants, the types barrel, the globals.css
+tokens, the package.json scripts, the requireSession CALL-form grep,
+the landing price fields, the node_modules versions) ·
+`tests/chunk-recovery.test.ts` (the 132nd, +12: the message family, the
+cooldown arithmetic, the guarded reload — unavailable storage disables,
+the flag written BEFORE the reload) · `tests/boot-env.test.ts` (the
+133rd, +20: the env matrix over the pure seam + the instrumentation
+source pins) · `tests/error-boundaries.test.ts` (the 134th, +17: the
+two boundaries' source contracts + the smoke-script contract). THE CODE
+LEGS: `src/lib/chunk-recovery.ts` (the scandihaven port in the
+house pure-seam form) + `src/app/error.tsx` + `src/app/global-error.tsx`
+(the boundary pair: the house-styled card on the not-found idiom, the
+digest ref, the reset() Try-again, the self-heal wiring,
+global-error's own html/body + its own globals.css import, ZERO
+component-tree imports beyond the recovery seam) + `src/lib/boot-env.ts`
++ `src/instrumentation.ts` (the boot gate: production AUTH_SECRET
+missing/short THROWS AT BOOT — verified live, the secretless boot
+refuses to serve with the actionable message; the site-url/NEO_*
+misconfig warnings; dev/test boot soft; the phase-production-build
+skip keeps `next build` secretless) + `scripts/smoke-test.sh` + the
+`smoke` script + the gate/gate:full wiring (the §13.4/§14 smoke leg:
+the standalone boot on :3210 with `db/smoke.db` + a dedicated throwaway
+secret, the 14-check ladder — health · the unauth 401s · the login
+round-trip + the neo_session cookie · the sessioned envelope · the Zod
+400 · the valid create · the logout data:null face · the 11th-login
+429 · the page titles · the sitemap/robots/manifest family · THE
+BOOT-GATE PROBE · THE ARTIFACT-HYGIENE assertions) + the
+`outputFileTracingExcludes` set + the build script's `rm -f` (the
+artifact-hygiene double-cure). THE DOC FLIPS: the ~21 stale sites (the
+AGENTS doctrine bullets + the Commands table's 8 new rows + the
+gate-order smoke step · the PAD §5.2 table + §5.1 + §3.1/§6.1 + §4.2 +
+ADR-015 + the §11 rows + the session-170 inventory row · the SKILL
+v1.167.0 + the radix/§5.2/§8/§19/§20/AppA/AppB fixes + the s170 head
+layer · the CLAUDE build-table smoke row + the Error Handling section ·
+README's pricing + the tree's four new surfaces + the LICENSE file the
+MIT claim stood on · `.env.example`'s boot-gate posture line). THE
+COLLATERAL RE-ANCHORS: the gate-script chain pins (the smoke step),
+the docs-counts UNIT/SUITES constants (2644/134 — the inventory-census's six new §11-row pins grew the suite AFTER the first ladder pass, the L-166c3 lesson live again), the dialog-geometry +
+facts-census space-y census (21/117 → 23/123 — the boundary pair's own
+space-y usage), the inventory-census next.config.ts row (47 → 93 — the
+excludes block), the Appendix B totals + the wall-clock phrase (~21 s).
+
+**THE TDD LEDGER**: RED birth — doctrine-census 26 failing + 4
+born-green (the live-census verifications), chunk-recovery/boot-env/
+error-boundaries failing at the missing surfaces; THREE live-caught
+calibration catches at birth (the wrap/pin-form mismatches — the
+L-169c1 lesson applied to this round's OWN pins; the commands-table
+`bun run <key>` documentation form; the census-overcount trap — the
+bare-name requireSession grep counted me/route.ts's "NOT gated"
+COMMENT, the CALL form `await requireSession(` is the truth: 19 gated /
+10 ungated — the L-168c2 lesson recurring at birth); ONE live-caught
+smoke-script defect at the live run (check 09's contact status
+vocabulary — "new" is a LEAD status, contacts ride active/inactive;
+check 10's `/api/auth/me` expectation — the route is the by-design
+data:null face, session-41, not a 401); ONE head-surgery tooling defect
+(the first-pass skill-head script landed the live line in the wrong
+position — the corrective script re-seated it, both idempotent); the
+mutation-proof (the planted badge regression 2805 → 2720 → exactly 1
+RED → reverted → GREEN).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **134/2644** unit · build (29
+routes, the ~151 MB hygienic artifact) · **SMOKE 14/14** (the new leg —
+incl. the boot-gate refusal probe + the artifact-hygiene assertions) ·
+e2e **161/161** · db census MATCH · the drift-gate argument carries
+(the round's visual surfaces are failure-path-only — the boundaries
+render nowhere on the happy path; the sweeps + probe:ref + the drawer
+battery re-verified at the audit leg; the standing parity verdict
+holds).

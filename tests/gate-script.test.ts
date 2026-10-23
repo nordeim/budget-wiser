@@ -29,13 +29,14 @@ describe("session-38: the gate umbrella script (S38-P6)", () => {
     expect(pkg.scripts!.gate.length).toBeGreaterThan(0);
   });
 
-  it("the chain is lint → typecheck → test → build → CI=1 test:e2e (the AGENTS.md order)", () => {
+  it("the chain is lint → typecheck → test → build → smoke → CI=1 test:e2e (the AGENTS.md order — session-170 inserts the §13.4/§14 smoke leg between build and e2e)", () => {
     const steps = pkg.scripts!.gate.split("&&").map((s) => s.trim());
     expect(steps).toEqual([
       "bun run lint",
       "bun run typecheck",
       "bun run test",
       "bun run build",
+      "./scripts/smoke-test.sh",
       "CI=1 bun run test:e2e",
     ]);
   });
@@ -117,13 +118,14 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
     expect(pkg.scripts!["gate:full"].length).toBeGreaterThan(0);
   });
 
-  it("gate:full = the standing gate chain + the SIX drift gates (desktop, phone 390, tablet 768, landscape 1024 — the s99 fourth sweep — + the s149 FULLPAGE landing gate + the s152 INTERIOR census gate)", () => {
+  it("gate:full = the standing gate chain (with the s170 smoke leg) + the SIX drift gates (desktop, phone 390, tablet 768, landscape 1024 — the s99 fourth sweep — + the s149 FULLPAGE landing gate + the s152 INTERIOR census gate)", () => {
     const steps = pkg.scripts!["gate:full"].split("&&").map((s) => s.trim());
     expect(steps).toEqual([
       "bun run lint",
       "bun run typecheck",
       "bun run test",
       "bun run build",
+      "./scripts/smoke-test.sh",
       "CI=1 bun run test:e2e",
       "bun run sweep -- --fail-on-drift",
       "bun run sweep -- --width 390 --height 844 --fail-on-drift",
@@ -144,9 +146,9 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
     ]);
   });
 
-  it("the plain `gate` is UNCHANGED (the drift-free fast path keeps its ergonomics)", () => {
+  it("the plain `gate` carries the smoke leg (session-170: the §14 order — build → smoke → e2e)", () => {
     expect(pkg.scripts!.gate).toBe(
-      "bun run lint && bun run typecheck && bun run test && bun run build && CI=1 bun run test:e2e",
+      "bun run lint && bun run typecheck && bun run test && bun run build && ./scripts/smoke-test.sh && CI=1 bun run test:e2e",
     );
   });
 

@@ -195,7 +195,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
   // occurrence count is the census below). This it IS the method: the
   // s91 suite's own noComments() strip + a global occurrence count
   // over src/**/*.{ts,tsx}. Re-derive here when the codebase changes.
-  it("the census: 117 comment-stripped space-y occurrences across the 21 src files that carry one", () => {
+  it("the census: 123 comment-stripped space-y occurrences across the 23 src files that carry one", () => {
     const files = execFileSync(
       "grep",
       ["-rl", "space-y-", `${root}/src`, "--include=*.ts", "--include=*.tsx"],
@@ -212,7 +212,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
     // password screen — the digma reset-funnel port: the form heading's
     // `space-y-2 sm:space-y-3` + the invalid-link/success cards'
     // centered stacks ride the login family's own vocabulary)
-    expect(files.length).toBe(21);
+    expect(files.length).toBe(23);
     // session-147 re-anchor: 114 -> 115 (the s147 sheet re-derivation: the
     // mobile drawer's SheetHeader carries the reference's own
     // `flex flex-col space-y-2` rhythm — the sheet family's header, live-
@@ -245,7 +245,7 @@ describe("session-92 (F-92a1): the space-y usage census (the documented method)"
     // +7 occurrences are all reference-censused constructions, not
     // regressions of the v4 genus — the landing + about pages ride the
     // reference's OWN v3-era class strings])
-    expect(total).toBe(117);
+    expect(total).toBe(123);
   });
 
   it("the s91 header's unstable '99' claim is re-derived (spacey-hazard-parity no longer asserts an un-derivable count)", () => {
@@ -611,7 +611,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("Unit (Vitest, 2241 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2252 checks)");
     expect(claude).not.toContain("Unit (Vitest, 2257 checks)");
-    expect(claude).toContain("Unit (Vitest, 2559 checks)");
+    expect(claude).toContain("Unit (Vitest, 2644 checks)");
     // session-145 lockstep carry-forward: the coverage line 2108 ->
     // 2112 (the walk35 transition pins); s146: 2112 -> 2115.
     expect(claude).not.toContain("(currently 2108)");
@@ -631,7 +631,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("(currently 2271)");
     expect(claude).not.toContain("(currently 2382)");
     expect(claude).not.toContain("(currently 2347)");
-    expect(claude).toContain("(currently 2559)");
+    expect(claude).toContain("(currently 2644)");
     expect(claude).not.toContain("Vitest unit suites (2108 checks)");
     expect(claude).not.toContain("Vitest unit suites (2112 checks)");
     expect(claude).not.toContain("Vitest unit suites (2167 checks)");
@@ -652,7 +652,7 @@ describe("session-92 (F-92a2 + B-92a5 + B-92a4): the audit nanos", () => {
     expect(claude).not.toContain("Vitest unit suites (2480 checks)");
     expect(claude).not.toContain("Vitest unit suites (2520 checks)");
     expect(claude).not.toContain("Vitest unit suites (2347 checks)");
-    expect(claude).toContain("Vitest unit suites (2559 checks)");
+    expect(claude).toContain("Vitest unit suites (2644 checks)");
     expect(claude).not.toContain("`bun run test` (2108)");
     expect(claude).not.toContain("`bun run test` (2112)");
     expect(claude).not.toContain("`bun run test` (2115)");

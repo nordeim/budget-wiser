@@ -376,7 +376,7 @@ describe("session-169 (WP-1e): the SKILL color + facts mirror (F-5/F-3/F-4/F-6/F
     // pin: the suite count rides the ladder, the runtime claim is the
     // consistency invariant)
     expect(skill).not.toContain("~15 s (");
-    expect(skill).toContain("~18 s (");
+    expect(skill).toContain("~21 s (");
   });
 });
 
@@ -422,8 +422,8 @@ describe("session-169 (WP-1f): the README tree + Quick Start + gate pins (F-169h
     for (const f of files) {
       total += (noComments(readFileSync(f, "utf8")).match(/space-y-/g) ?? []).length;
     }
-    expect(files.length).toBe(21); // the dialog-geometry census (pinned)
-    expect(total).toBe(117);
+    expect(files.length).toBe(23); // the dialog-geometry census (s170: the boundary family +2)
+    expect(total).toBe(123);
     expect(readme).toContain(`the space-y census at ${files.length} files / ${total} occurrences`);
     expect(readme).not.toContain("the space-y census re-anchored 110/18");
   });

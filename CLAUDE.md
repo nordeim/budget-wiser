@@ -116,9 +116,11 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2559 checks)            |
+| `bun run test`      | Vitest unit suites (2644 checks)            |
+| `bun run test:watch`| Vitest in watch mode                          |
+| `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (161 checks, needs build first) |
-| `bun run gate`      | The full gate in one command (lint → typecheck → test → build → e2e) |
+| `bun run gate`      | The full gate in one command (lint → typecheck → test → build → smoke → e2e) |
 | `bun run db:push`   | Push Prisma schema (no migrations folder)     |
 | `bun run db:seed`   | Reseed demo data in place                     |
 | `bun run db:census` | Print the resolved db path + counts vs the seed contract (session-53; the sanctioned census — see the anti-patterns) |
@@ -127,7 +129,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2559 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2644 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -397,7 +399,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2559).
+the seam (currently 2644).
 
 ## Code Quality Standards
 
@@ -433,6 +435,20 @@ React-hooks rules that matter here (violations are errors):
 - Route handlers return typed errors through the envelope (`ERR.UNAUTHORIZED()`,
   `ERR.BAD_REQUEST(msg)`, `ERR.NOT_FOUND(what)`) — never throw across the
   boundary, never leak stack traces.
+- The error-boundary family (session-170): `src/app/error.tsx` (the
+  route-segment boundary — the house-styled card + the digest ref + the
+  `reset()` Try-again) and `src/app/global-error.tsx` (the root boundary —
+  own `<html>/<body>` + its own `globals.css` import, because a crashed
+  root layout never loaded it). Both wire the stale-chunk self-heal
+  (`src/lib/chunk-recovery.ts` — one guarded reload per 10s cooldown) and
+  import NOTHING from the component tree beyond that seam — a resilience
+  surface must not depend on the tree that might be broken.
+- The boot gate (session-170): `src/instrumentation.ts` → `src/lib/boot-env.ts`
+  — production AUTH_SECRET missing/short **fails hard at boot** (the
+  server refuses to serve; the s169 first-session-op throw is the runtime
+  backstop); the NEXT_PUBLIC_SITE_URL localhost misconfig + the NEO_*
+  toggle family warn. Dev/test boot soft (the DEV fallback posture
+  unchanged).
 - Client actions surface failures via toasts (`toast.error(title, detail)`)
   and inline form alerts; the login card keeps its error state visible.
 - Charts and lists render explicit empty states — never blank panels.

@@ -155,7 +155,9 @@ const E2E = 161;
 // inventory layer's live-census battery).
 // Session-169: SUITES 129 -> 130 (the facts-census file — the stack-facts
 // layer's live-census battery).
-const SUITES = 130;
+// Session-170: SUITES 130 -> 134 (the doctrine-census + chunk-recovery +
+// boot-env + error-boundaries files — the resilience + hygiene round).
+const SUITES = 134;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -666,7 +668,12 @@ const SUITES = 130;
 // the DEPLOYMENT re-anchor, the color mirror, the README tree /
 // Quick-Start / gate pins] + the auth battery's production
 // secret-gate pins +3).
-const UNIT = 2559;
+// Session-170: 2559 -> 2644 (+85 — the doctrine-census battery
+// [the 131st suite] +30 + the chunk-recovery battery [the 132nd]
+// +12 + the boot-env battery [the 133rd] +20 + the error-boundaries
+// battery [the 134th] +17 + the inventory-census +6 [the six new
+// §11 rows' parameterized pins] — the resilience + hygiene round).
+const UNIT = 2644;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1131,13 +1138,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-169 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-170 layer`,
     );
     expect(
       skill,
       "the head's SECOND layer must be the previous session's — the F-108a1 face (the s165 layer now beneath the s166 head)",
     ).toContain(
-      "+ beneath it 2520 unit checks + 161 e2e checks green; the session-168 layer (THE AGENTS-DOCTRINE CLOSURE",
+      "+ beneath it 2559 unit checks + 161 e2e checks green; the session-169 layer (THE CLAUDE-DOCTRINE CLOSURE",
     );
   });
 
@@ -1174,7 +1181,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B wall-clock phrase must carry the live suite count (F-111a1)",
-    ).toContain(`unit\n~18 s (${SUITES} suites, one worker per file)`);
+    ).toContain(`unit\n~21 s (${SUITES} suites, one worker per file)`);
     expect(
       appendix,
       "the retired six-spec form never returns (the s109 re-anchor — the spec-family census grows activities-mobile)",

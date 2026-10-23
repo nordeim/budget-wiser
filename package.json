@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
-    "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
+    "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/ && rm -f .next/standalone/.env",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint . --max-warnings 0",
     "db:push": "bun scripts/prisma-env.ts db push --accept-data-loss",
@@ -16,10 +16,11 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "typecheck": "tsc --noEmit",
-    "gate": "bun run lint && bun run typecheck && bun run test && bun run build && CI=1 bun run test:e2e",
+    "gate": "bun run lint && bun run typecheck && bun run test && bun run build && ./scripts/smoke-test.sh && CI=1 bun run test:e2e",
+    "smoke": "./scripts/smoke-test.sh",
     "sweep": "bun scripts/sweep.ts",
     "probe:ref": "bun scripts/drift-probe.ts",
-    "gate:full": "bun run lint && bun run typecheck && bun run test && bun run build && CI=1 bun run test:e2e && bun run sweep -- --fail-on-drift && bun run sweep -- --width 390 --height 844 --fail-on-drift && bun run sweep -- --width 768 --height 1024 --fail-on-drift && bun run sweep -- --width 1024 --height 768 --fail-on-drift && bun run sweep:fullpage -- --fail-on-drift && bun run census:interior -- --fail-on-drift --parallel 4",
+    "gate:full": "bun run lint && bun run typecheck && bun run test && bun run build && ./scripts/smoke-test.sh && CI=1 bun run test:e2e && bun run sweep -- --fail-on-drift && bun run sweep -- --width 390 --height 844 --fail-on-drift && bun run sweep -- --width 768 --height 1024 --fail-on-drift && bun run sweep -- --width 1024 --height 768 --fail-on-drift && bun run sweep:fullpage -- --fail-on-drift && bun run census:interior -- --fail-on-drift --parallel 4",
     "sweep:fullpage": "bun scripts/fullpage-sweep.ts",
     "census:interior": "bun scripts/interior-census.ts"
   },
