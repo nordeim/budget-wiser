@@ -140,7 +140,10 @@ const listFiles = (rel: string): string[] => {
 // content-varied preview family e2e [the micro-table + the 7-bar card]).
 // Session-150: E2E 152 -> 153 (+1 — the marketing-mobile spec: the
 // walk40 scroll model + the census).
-const E2E = 161;
+// Session-171: E2E 153 lineage 161 -> 186 (+25 — the a11y two-gate spec:
+// the nine CRM pages × both widths + the three anon surfaces × both
+// widths + the drawer-open state — the §8.3 axe battery).
+const E2E = 186;
 // Session-152: SUITES 118 -> 119 (the interior-census-tool file — the
 // standing sixth gate's pin suite).
 // Session-159: SUITES 119 -> 120 (the settings-rhythm-tool file — the
@@ -157,7 +160,9 @@ const E2E = 161;
 // layer's live-census battery).
 // Session-170: SUITES 130 -> 134 (the doctrine-census + chunk-recovery +
 // boot-env + error-boundaries files — the resilience + hygiene round).
-const SUITES = 134;
+// Session-171: SUITES 134 -> 135 (the a11y-controls file — the named-
+// control source-pin battery).
+const SUITES = 135;
 // Session-115: 1948 → 1950 (+2 — the s115 Defaults-tab + insights-dialog
 // family walk's two freeze its: the Defaults label htmlFor/id association
 // superset pin [settings-defaults-parity.test.ts — ours the a11y superset
@@ -673,7 +678,11 @@ const SUITES = 134;
 // +12 + the boot-env battery [the 133rd] +20 + the error-boundaries
 // battery [the 134th] +17 + the inventory-census +6 [the six new
 // §11 rows' parameterized pins] — the resilience + hygiene round).
-const UNIT = 2644;
+// Session-171: 2644 -> 2668 (+24 — the a11y-controls battery [the
+// 135th suite] +22: the named-control census + the devDep pin + the
+// two-gate spec contract, + the inventory-census +2 [the two new §11
+// a11y rows' parameterized pins — the L-166c3 lesson live again]).
+const UNIT = 2668;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -756,7 +765,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // stale 9-spec form — landing, marketing-mobile and the s163
     // reset-password spec were absent from the line's own list).
     expect(pad).toContain(
-      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 10 spec`,
+      `HEAD: ${SUITES} Vitest suites with ${UNIT} checks + ${E2E} e2e checks in 11 spec`,
     );
   });
 
@@ -1138,13 +1147,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-170 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-171 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s165 layer now beneath the s166 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s170 layer now beneath the s171 head)",
     ).toContain(
-      "+ beneath it 2559 unit checks + 161 e2e checks green; the session-169 layer (THE CLAUDE-DOCTRINE CLOSURE",
+      "+ beneath it 2644 unit checks + 161 e2e checks green; the session-170 layer (THE ERROR-BOUNDARY FAMILY",
     );
   });
 
@@ -1172,7 +1181,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       appendix,
       "the Appendix B e2e-total row must carry the live spec-file + check counts",
-    ).toContain(`| **e2e total** | 10 spec files + the setup project | **${E2E}** |`);
+    ).toContain(`| **e2e total** | 11 spec files + the setup project | **${E2E}** |`);
     // Session-111 (F-111a1): the Appendix B wall-clock PROSE line is a
     // live-tense count site — the s110 realignment updated the table
     // rows but missed the phrase (it read "108 suites" for one session
@@ -1239,6 +1248,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       ["e2e activities-mobile", "tests/e2e/activities-mobile.spec.ts"],
       ["e2e marketing-mobile", "tests/e2e/marketing-mobile.spec.ts"],
       ["e2e reset-password", "tests/e2e/reset-password.spec.ts"],
+      ["e2e a11y two-gate", "tests/e2e/a11y.spec.ts"],
     ];
     for (const [rowLabel, specPath] of E2E_ROWS) {
       const spec = read(specPath) ?? "";
@@ -1359,7 +1369,7 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
   it("PAD's file-tree e2e line carries the live spec-file census (F-166d)", () => {
     const pad = read("Project_Architecture_Document.md");
     const specFiles = listFiles("tests/e2e").filter((f) => f.endsWith(".spec.ts"));
-    expect(specFiles.length, "the live e2e spec-file census").toBe(10);
+    expect(specFiles.length, "the live e2e spec-file census").toBe(11);
     expect(pad, "the PAD file-tree line must carry the live census").toContain(
       `${specFiles.length} spec files + setup project`,
     );

@@ -278,7 +278,7 @@ export default function DashboardPage() {
           h-8 with a hidden-sm label. */}
       <div className={FILTER_BAR.card}>
         <div className={FILTER_BAR.row}>
-          <Button variant="outline" size="sm" className="sm:w-auto">
+          <Button variant="outline" size="sm" className="sm:w-auto" aria-label="Filter">
             {/* Session-83 (M-83c2, bundle-decoded): the reference's Filter
               button ships its svg at w-4 h-4 mr-2 (OC at the Eke filter
               bar) — ours carried the scaffold-era h-3.5 w-3.5 with no
@@ -295,7 +295,7 @@ export default function DashboardPage() {
             stages (Prospecting/Qualification/Proposal/Negotiation/Won) — the
             same labels the pipeline chart above it renders. */}
         <Select value={stage} onValueChange={setStage}>
-          <SelectTrigger className="w-full sm:w-32"><SelectValue placeholder="Stage" /></SelectTrigger>
+          <SelectTrigger aria-label="Filter by stage" className="w-full sm:w-32"><SelectValue placeholder="Stage" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Stages</SelectItem>
             {PIPELINE_STAGES.map((s) => (
@@ -307,7 +307,7 @@ export default function DashboardPage() {
           </SelectContent>
         </Select>
         <Select value={source} onValueChange={setSource}>
-          <SelectTrigger className="w-full sm:w-32"><SelectValue placeholder="Source" /></SelectTrigger>
+          <SelectTrigger aria-label="Filter by source" className="w-full sm:w-32"><SelectValue placeholder="Source" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Sources</SelectItem>
             {/* Session-29 (S29-P4): the RAW values with capitalized labels. */}
@@ -496,7 +496,7 @@ export default function DashboardPage() {
               {(dashboard?.leadSources ?? []).slice(0, 4).map((s) => (
                 <div key={s.source} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
                   <div className="flex items-center gap-3">
-                    <Checkbox />
+                    <Checkbox aria-label={`Follow up with ${s.source}`} />
                     <span className="text-sm">Follow up with {s.source}</span>
                   </div>
                   <span className="text-xs text-gray-500">{s.count}</span>
@@ -528,7 +528,7 @@ export default function DashboardPage() {
                 {(dashboard?.upcomingActivities ?? []).map((a) => (
                   <div key={a.id} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
                     <div className="flex items-center gap-3">
-                      <Checkbox />
+                      <Checkbox aria-label={`Mark ${a.subject} done`} />
                       <div>
                         <p className="text-sm">{a.subject}</p>
                         <p className="text-xs text-gray-500">{a.relatedName}</p>

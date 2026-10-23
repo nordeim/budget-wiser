@@ -382,10 +382,10 @@ export default function ContactsPage() {
             >
               <Download className="h-4 w-4 mr-2" /> Export CSV
             </Button>
-            <Button variant="outline" onClick={() => setScanOpen(true)}>
+            <Button variant="outline" onClick={() => setScanOpen(true)} aria-label="Scan Card">
               <Scan className="h-4 w-4 mr-2" /> <span className="hidden sm:inline">Scan Card</span>
             </Button>
-            <Button variant="outline" onClick={() => setImportOpen(true)}>
+            <Button variant="outline" onClick={() => setImportOpen(true)} aria-label="Import">
               <Download className="h-4 w-4 mr-2" /> <span className="hidden sm:inline">Import</span>
             </Button>
             <Button
@@ -593,7 +593,7 @@ export default function ContactsPage() {
                     </TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <Select value={c.role ?? ""} onValueChange={(v) => void updateRole(c.id, v)}>
-                        <SelectTrigger className="h-9 w-[140px] border-gray-300 hover:border-blue-400 transition-colors">
+                        <SelectTrigger aria-label={`Role — ${c.name}`} className="h-9 w-[140px] border-gray-300 hover:border-blue-400 transition-colors">
                           <SelectValue placeholder="Set role" />
                         </SelectTrigger>
                         <SelectContent>

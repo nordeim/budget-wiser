@@ -216,6 +216,7 @@ export default function AccountsPage() {
               size="sm"
               disabled={accounts.length === 0}
               onClick={exportAccounts}
+              aria-label="Export CSV"
             >
               <Download className="h-4 w-4 mr-2" /> <span className="hidden sm:inline">Export CSV</span>
             </Button>
@@ -509,7 +510,7 @@ export default function AccountsPage() {
                     OURS map the real workspace users + the settings
                     industries (functional supersets). */}
                 <Select value={ownerId} onValueChange={setOwnerId}>
-                  <SelectTrigger className="w-full"><SelectValue placeholder="John Kuy" /></SelectTrigger>
+                  <SelectTrigger aria-label="Filter by owner" className="w-full"><SelectValue placeholder="John Kuy" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Owners</SelectItem>
                     {users.map((u) => (
@@ -521,7 +522,7 @@ export default function AccountsPage() {
               <div>
                 <Label className={FILTER_RAIL.groupLabelSelect}>Industry</Label>
                 <Select value={industry} onValueChange={setIndustry}>
-                  <SelectTrigger className="w-full"><SelectValue placeholder="Technology" /></SelectTrigger>
+                  <SelectTrigger aria-label="Filter by industry" className="w-full"><SelectValue placeholder="Technology" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Industries</SelectItem>
                     {industries.map((i) => (
@@ -533,7 +534,7 @@ export default function AccountsPage() {
               <div>
                 <Label className={FILTER_RAIL.groupLabelSelect}>Revenue Range</Label>
                 <Select value={revenue} onValueChange={setRevenue}>
-                  <SelectTrigger className="w-full"><SelectValue placeholder="$1M to $5M" /></SelectTrigger>
+                  <SelectTrigger aria-label="Filter by revenue range" className="w-full"><SelectValue placeholder="$1M to $5M" /></SelectTrigger>
                   <SelectContent>
                     {REVENUE_RANGES.map((r) => (
                       <SelectItem key={r.id} value={r.id}>{r.label}</SelectItem>

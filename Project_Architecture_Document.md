@@ -338,6 +338,37 @@ E2E regression suite.
 
 ---
 
+**ADR-016: The a11y two-gate — the named-control family + the sanctioned register (session-171)**
+
+- **Context:** The web-app-foundation §8.3 prescribes the "best-in-class
+  add-on": an axe-core two-gate (structural violations must be zero;
+  color-contrast nodes must cite the sanctioned palette). The s170 round
+  named it as the next rotation's candidate. The live audit found three
+  families: 34 unnamed controls on our open surfaces (19 SelectTrigger
+  comboboxes + 11 inert Checkboxes + 4 phone-width icon-only Buttons —
+  `role="combobox"` names come from author attributes only, so the
+  visible span text is invisible to the accessible-name computation),
+  the shared parity palette (color-contrast), and the recharts
+  funnel-genus (`svg-img-alt` on library-hardcoded `role="img"` Layers).
+  The reference ships all three identically — verified live on its own
+  DOM.
+- **Decision:** (1) Every open-surface interactive control carries an
+  accessible name (aria-label — invisible supersets; the reference's
+  nameless controls are its defect, ours name them; the drawer
+  precedent). (2) `tests/e2e/a11y.spec.ts` rides the e2e harness as the
+  two-gate: GATE 1 asserts structural violations zero (the named-control
+  proof); GATE 2 asserts every color-contrast/svg-img-alt node cites the
+  SANCTIONED register — the parity palette + the recharts genus, each
+  matcher carrying its citation (fixing them would break visual parity
+  or require patching library internals). (3) `axe-core` is a DECLARED
+  devDep (^4.13.0) — the gate must not stand on a transitive standby.
+- **Consequences:** New interactive controls must ship named (the
+  a11y-controls census pins every open-surface SelectTrigger); a new
+  contrast regression outside the sanctioned register REDs the e2e gate;
+  the dialog-surface select family (closed by default, unprobed) is the
+  documented next candidate; the register is matcher-scoped — a new
+  unsanctioned family fails rather than slipping through.
+
 ## 2. High-Level System Topology
 
 ```mermaid
@@ -461,8 +492,8 @@ neo-crm/
 │   ├── stores/crm-store.ts      # single Zustand store + call() client
 │   └── types/index.ts           # wire types shared by API and client
 ├── tests/
-│   ├── *.test.ts                # 134 Vitest suites — 2644 checks
-│   └── e2e/                     # global-setup, auth.setup, 10 spec files + setup project — 161 checks
+│   ├── *.test.ts                # 135 Vitest suites — 2668 checks
+│   └── e2e/                     # global-setup, auth.setup, 11 spec files + setup project — 186 checks
 ├── docs/                        # validation report, SSH runbook, screenshots
 ├── next.config.ts               # standalone output + traced prisma root
 └── postcss.config.mjs           # @tailwindcss/postcss — REQUIRED (ADR-005)
@@ -966,7 +997,8 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 | Unit — THE AGENTS-DOCTRINE CLOSURE + THE INVENTORY LIVE-CENSUS (the session-168 post-167 audit round — the baseline GREEN at the s167 ship state: lint 0/0 · tsc 0 · 128/2480 · build · e2e 161/161 · probe:ref #140 STABLE · the six drift gates CLEAN ×6 · the mobile drawer 7/7 at 390×844): the ten findings the audit reproduced live — F-168a/b AGENTS.md's own two live-tense validation-doctrine sites (the s165/s166/s167 rounds flipped the doctrine everywhere EXCEPT AGENTS itself: the architecture-facts 'keeps the asString guards' incremental-path clause + the conventions' 'No schema library — zod was deliberately pruned' — both flipped to the completed-adoption Zod-seam reality, AGENTS.md joining the docs pin family for the first time) · F-168c PAD §11's Lines column (SEVEN stale rows: api 172→308 · constants 547→549 · rate-limit 51→126 · mobile-nav 215→143 · app-shell 70→94 · globals.css 413→430 · (app)/layout 11→22 — the s109 line-census family had pinned thirteen rows + the SKILL headers but never these seven) · F-168d-h SKILL's inventory layer (the layer map pages 11→15 + routes 27→29 · the components 25/19→28/22 + the page enumeration's four post-s12 pages · '8 models'→9 · Bug #1's 7-check→10-check · §19's primary-foreground #ffffff→#fafafa) · F-168i README's nine-route→eleven-route sitemap claims · F-168j the repo worklog's s166/s167 tail gap (noted in the s168 entry); THE INVENTORY LIVE-CENSUS [tests/inventory-census.test.ts — the 129th suite, the L-165c1 doctrine extended from the schema seam to the doc inventory layer: the PAD §11 Lines-column live-census (ALL 27 count-carrying rows asserted against their files' live line counts + the row-surface census pin) + the SKILL inventory live-census (the models/pages/routes/components/sitemap-route/mobile-nav-check counts + the §19 color hex — every value read LIVE from the tree) + the AGENTS doctrine pins (the completed-adoption clause present + BOTH retired clauses absent) + the README eleven-route pins (the ROUTES length read live, number-to-word mapped) — mutation-proven at birth (the planted csv.ts line → exactly +1 RED → reverted → GREEN)]; the scandihaven z.input/z.infer colocation candidate evaluated + closed (already embodied: parseBody returns z.output<S>, zero hand-written body interfaces); the count ladder 2480 → 2520 (+40: inventory-census +40 [the 129th suite]) · SUITES 128 → 129 · E2E 161 held · badge 2641 → 2681 | 129 | 2520 | tests/inventory-census.test.ts (NEW) + the doc lockstep (README · AGENTS · CLAUDE · PAD · SKILL v1.165.0) | Vitest |
 | Unit — THE CLAUDE-DOCTRINE CLOSURE + THE STACK-FACTS LIVE-CENSUS + THE PRODUCTION SECRET GATE (the session-169 post-168 audit round — the baseline GREEN at the s168 ship state: lint 0/0 · tsc 0 · 129/2520 · build · e2e 161/161 · probe:ref STABLE · the mobile drawer 7/7 at 390×844 · census MATCH; the scandihaven port evaluation: the version lockstep ADOPTED + the boot fail-fast adopted server-seam + three deferred + four rejected; the facts-census battery +36 [the 130th suite] + the auth production secret-gate pins +3 [secret() THROWS in production on missing/short AUTH_SECRET — the web-app-foundation §6.2 posture; .env.example's false hard-error contrast retired] + the ~24 stale doc sites flipped [CLAUDE joins the pin family — the last doctrine doc; the version carriers 16.3.6→16.4.2 + 1.63→1.64 read live from node_modules; DEPLOYMENT 27→29 + the pin-entrenched docs-counts literal re-anchored live; SKILL §4.1's five stale @theme tokens + §19's primaries; PAD's phantom asOneOf + auth(8) + the s76/s77 swap + the s127-s130 footnote; README's pre-s142 tree + Quick-Start + SIX gates; AGENTS' eleven-URL + the 13-page consumer census]; mutation-proven [the planted badge regression → exactly 1 RED]; the ladder 2520→2559 · SUITES 129→130 · E2E held · badge 2681→2720 · SKILL v1.166.0) | 3 | 39 new (facts-census) + 1 code (auth.ts) + the docs (CLAUDE/README/PAD/SKILL/AGENTS/DEPLOYMENT/.env.example) + 2 pin files re-anchored (docs-counts, dialog-geometry) | `tests/facts-census.test.ts` (NEW), `tests/auth.test.ts`, `tests/docs-counts.test.ts`, `tests/dialog-geometry-parity.test.ts`, `src/lib/auth.ts` | Vitest |
 | Unit — THE ERROR-BOUNDARY FAMILY + THE BOOT GATE + THE SMOKE LEG + THE ARTIFACT HYGIENE + THE DOCTRINE-STRAGGLER CLOSURE (the session-170 post-169 audit round — the baseline GREEN at the exact s169 ship state: lint 0/0 · tsc 0 · 130/2559 · build · e2e 161/161 · probe:ref STABLE · the desktop + phone sweeps CLEAN live · the mobile drawer 7/7 at 390×844 · census MATCH; the three core experiments EXECUTED BEFORE the plan landed — the boot-gate crash verified against the real standalone boot, the artifact excludes verified against a real rebuild + the photo-e2e GREEN against the clean artifact, the .env double-cure verified): THE ARTIFACT HYGIENE [F-170a CRITICAL — the standalone artifact shipped .env (the real AUTH_SECRET) + .git/ (171 MB) + db/ (the dev SQLite with user rows) + uploads/ + skills/ (194 MB) + docs/ (49 MB): the upload family's runtime-computed fs paths made @vercel/nft trace the WHOLE repo root (2715 skills files in the upload route's nft.json alone) + Next's writeStandaloneDirectory copies .env explicitly — the outputFileTracingExcludes set + the build script's rm-f cure, the ~151 MB clean artifact, policed by the smoke leg's 14th assertion] + THE ERROR-BOUNDARY FAMILY [error.tsx + global-error.tsx — the scandihaven ports: the house-styled card + digest + reset + the stale-chunk self-heal (chunk-recovery.ts, the injectable storage/clock/reload seam), global-error's own html/body + globals.css import, ZERO component-tree imports] + THE BOOT GATE [instrumentation.ts → boot-env.ts — production AUTH_SECRET missing/short THROWS AT BOOT (verified live: the secretless boot refuses to serve); the site-url/NEO_* warnings; dev/test soft; the phase-production-build skip] + THE SMOKE LEG [scripts/smoke-test.sh + the gate/gate:full wiring — the §13.4/§14 gap closed: :3210 + db/smoke.db + a dedicated throwaway secret, the 14-check ladder incl. THE BOOT-GATE PROBE + THE ARTIFACT-HYGIENE assertions] + THE DOCTRINE-STRAGGLER CLOSURE [tests/doctrine-census.test.ts — the 131st suite: the AGENTS retired-symbol doctrine bullets (REPORTS_PIPELINE_SLUGS/reportsBucketCounts/FUNNEL_STAGES/the s13 chart family/the singular leads-view key) + the PAD §5.2 color table (the LAST un-flipped carrier) + the session-gating census corrected to 19 gated / 10 ungated (the bare-name grep overcounted via me/route.ts's NOT-gated comment — the CALL form is the truth) + the CHART_COLORS/Opportunity/ADR-007/radix/table-header carriers + the README pricing + the LICENSE file the MIT claim stood on]; the count ladder 2559 → 2644 (+85) · SUITES 130 → 134 · E2E 161 held · badge 2720 → 2799 | 4 | 79 new (doctrine-census +30 · chunk-recovery +12 · boot-env +20 · error-boundaries +17) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.167.0/.env.example/LICENSE) + the carriers re-anchored (docs-counts, dialog-geometry, facts-census, inventory-census, gate-script) | `src/app/{error,global-error}.tsx` + `src/instrumentation.ts` + `src/lib/{boot-env,chunk-recovery}.ts` + `scripts/smoke-test.sh` + `next.config.ts` + `package.json` + `LICENSE` + the four NEW test files | Vitest + smoke + Playwright |
-| **Total** | **134** | **2644 unit + 161 e2e** | | |
+| Unit — THE AXE-CORE A11Y TWO-GATE + THE NAMED-CONTROL FAMILY (the session-171 post-170 audit round — the baseline GREEN at the exact s170 ship state: lint 0/0 · tsc 0 · 134/2644 · build · smoke 14/14 · e2e 161/161 · probe:ref STABLE · the sweeps CLEAN · the drawer 7/7 · census MATCH; the audit ran LIVE axe-core 4.13 probes across twelve surfaces × two widths + the drawer-open state PLUS the same scan against the REFERENCE's own DOM): THE NAMED-CONTROL FAMILY [F-171a/b/c — 19 unnamed SelectTrigger comboboxes + 11 bare inert Checkboxes + 4 hidden-sm:inline icon-only Buttons unnamed at phone width; the root cause verified in the axe source: role="combobox" names come from author attributes ONLY, the visible span text is INVISIBLE to the name computation; the cure: aria-label on every open-surface control (the leads precedent form; the contacts rows carry `Role — ${c.name}`), invisible supersets — the reference ships button-name on every page] + THE AXE-CORE A11Y TWO-GATE [tests/e2e/a11y.spec.ts — the §8.3 battery: 25 checks (the nine CRM pages × both widths + the three anon surfaces × both + the drawer-open); GATE 1 structural-zero, GATE 2 the sanctioned register (the parity palette + the recharts genus, each citation verified on the reference's own DOM incl. the byte-identical .self-start pill); axe-core DECLARED as devDep ^4.13.0] + the source-pin battery [tests/a11y-controls.test.ts — the 135th suite, +22]; the count ladder 2644 → 2668 (+24) · SUITES 134 → 135 · E2E 161 → 186 (+25) · badge 2805 → 2854; the attribute-only proof: the drawer 7/7 + probe:ref STABLE + the sweeps CLEAN re-run post-fix | 2 | 24 new (a11y-controls +22 + inventory-census +2) + the docs (README/AGENTS/CLAUDE/PAD/SKILL v1.168.0) + the carriers re-anchored (docs-counts, dialog-geometry, login-family, reports-filter-parity, dead-code-hygiene) | the five page files (aria-labels) + `tests/a11y-controls.test.ts` + `tests/e2e/a11y.spec.ts` + `package.json` + `scripts/count-ladder-171.py` + `scripts/skill-head-{171,fix-171}.py` | Vitest + Playwright |
+| **Total** | **135** | **2668 unit + 186 e2e** | | |
 
 > **Counting convention (session-54, N-54h)**: the per-session rows
 > count the FILES TOUCHED by that session's pin additions and the checks
@@ -976,10 +1008,10 @@ in Known Issues). The signup endpoint assigns `admin` to the first user only
 > the session-end HEAD totals in the Files/Checks columns with the
 > round's delta recorded in the Category cell — the files-touched
 > form applies to the rows that predate it. The **Total** row counts files and checks at
-> HEAD: 134 Vitest suites with 2644 checks + 161 e2e checks in 10 spec
+> HEAD: 135 Vitest suites with 2668 checks + 186 e2e checks in 11 spec
 > files (landing, auth, crm, mobile-navigation, reports-mobile,
 > settings-mobile, calendar-mobile, activities-mobile, marketing-mobile,
-> reset-password) + the auth.setup project (the
+> reset-password, a11y) + the auth.setup project (the
 > s88 pass bumped the Total + inventory rows but missed this footnote —
 > N-89a1; re-derived at s89 and now carried forward each session).
 > Verify counts by run (`bun run test`, `bun run test:e2e`),
@@ -1402,9 +1434,9 @@ must keep all 10 regression checks green unmodified.
 
 - [ ] `bun run lint` — 0 errors, 0 warnings
 - [ ] `bun run typecheck` — clean (the real type gate; build has `ignoreBuildErrors`)
-- [ ] `bun run test` — 2644/2644
+- [ ] `bun run test` — 2668/2668
 - [ ] `bun run build` — standalone build succeeds
-- [ ] `bun run test:e2e` — 161/161
+- [ ] `bun run test:e2e` — 186/186
 - [ ] Mobile drawer manually exercised at 390px (open → navigate → Escape)
 - [ ] Zero webfonts: `document.fonts` empty on /, body computes the stock
       `ui-sans-serif, system-ui` stack, smoothing `auto` (session-22)
@@ -1475,8 +1507,8 @@ bun run dev          # http://localhost:3000 — demo: sepnetflix2023@outlook.co
 | ------- | -------- | ------- |
 | `bun run dev` | root | Dev server :3000, log tee'd to `dev.log` |
 | `bun run lint` / `typecheck` | root | Quality gates (must be 0/0 / clean) |
-| `bun run test` | root | 2644 unit checks |
-| `bun run test:e2e` | root | 161 browser checks (build first) |
+| `bun run test` | root | 2668 unit checks |
+| `bun run test:e2e` | root | 186 browser checks (build first) |
 | `bun run db:census` | root | The sanctioned DB census — resolved path + counts + the seed-contract verdict (session-53; never a raw PrismaClient) |
 | `bun run gate` | root | The full gate in one command (lint → typecheck → test → build → e2e) |
 | `bunx vitest run tests/auth.test.ts` | root | One suite |
@@ -1556,6 +1588,8 @@ files. Push via the SSH wrapper (§8.4).
 | `src/lib/boot-env.ts` | 111 | the boot-validation pure seam (the six-knob contract, warn-throw discipline) |
 | `src/lib/chunk-recovery.ts` | 111 | the stale-chunk self-heal seam (injectable storage/clock/reload) |
 | `scripts/smoke-test.sh` | 160 | the s170 smoke leg — the §13.4/§14 ladder (14 checks) against the standalone artifact |
+| `tests/a11y-controls.test.ts` | 218 | the s171 named-control source-pin battery (the 135th suite — the aria-label census + the declared axe-core pin + the two-gate spec contract) |
+| `tests/e2e/a11y.spec.ts` | 323 | the s171 a11y two-gate e2e battery (the §8.3 axe engine: 9 CRM pages × 2 widths + 3 anon surfaces × 2 + the drawer-open state; structural zero + the sanctioned citations) |
 
 ---
 

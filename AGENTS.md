@@ -17,9 +17,9 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2644 checks)      | `bun run test`                         |
+|  Unit tests (2668 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
-|  Browser E2E (161 checks)        | `bun run test:e2e` (needs build first) |
+|  Browser E2E (186 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
 | DB census (path + counts)       | `bun run db:census`                    |
 | The full gate in one command    | `bun run gate`                         |
@@ -33,10 +33,10 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2644) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2668) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
-`bun run test:e2e` (161) — or the one-command `bun run gate` (session-38:
+`bun run test:e2e` (186) — or the one-command `bun run gate` (session-38:
 the same chain as a package script, so the build always precedes the e2e
 boot; session-39: the e2e step runs under `CI=1`, so
 `reuseExistingServer` evaluates false and the gate ALWAYS boots the
@@ -9335,3 +9335,87 @@ e2e **161/161** · db census MATCH · the drift-gate argument carries
 render nowhere on the happy path; the sweeps + probe:ref + the drawer
 battery re-verified at the audit leg; the standing parity verdict
 holds).
+
+## Session-171 — THE AXE-CORE A11Y TWO-GATE + THE NAMED-CONTROL FAMILY (2026-10-23)
+
+The post-170 audit round. Baseline: the s170 ship state reproduced
+exactly (lint 0/0 · tsc 0 · **134/2644** · build · smoke **14/14** · e2e
+**161/161** · probe:ref STABLE · the desktop + phone sweeps CLEAN live ·
+the mobile drawer **7/7 PASS** at 390×844 · the Tailwind v4 state clean
+· sitemap 11 routes + robots + manifest standing · census MATCH). The
+rotation candidate: the s170-named **axe-core a11y gates** (the
+web-app-foundation §8.3 "best-in-class add-on"); the fast-check property
+tests stay deferred (their own rotation — the no-mid-rotation-bump
+posture holds for both families).
+
+**THE AUDIT (the live axe probes — ours across twelve surfaces × two
+widths + the drawer-open state, PLUS the same scan against the
+REFERENCE's own DOM for the parity context)**: three violation families.
+(1) `button-name` (critical) — OURS: 19 unnamed SelectTrigger comboboxes
+(dashboard ×2 · accounts ×3 · contacts ×15 row selects · activities ×2 ·
+reports ×4) + 11 bare inert Checkboxes (the dashboard's two Follow-up
+families) + 4 `hidden sm:inline` icon-only Buttons unnamed at phone
+width (Filter · Scan Card · Import · Export CSV). ROOT CAUSE (verified
+in the axe 4.13 source): `role="combobox"` names come from author
+attributes ONLY — `subtreeText` short-circuits on `namedFromContents`,
+so the trigger's visible span text ("Decision Maker", "All Stages") is
+INVISIBLE to the accessible-name computation; a screen reader announces
+every Select nameless. The REFERENCE ships button-name on EVERY page
+(6/5/2/2/4/4/6/69 nodes — its own unnamed `w-9` icon-button family).
+(2) `color-contrast` — the shared parity palette (the `.bg-white/10`
+active-nav chip · the `.text-white/*` drawer family · the landing
+preview grays · the `.bg-emerald-600` quick-log · the calendar's
+gray-400 off-month cells · the muted-ink inactive tabs — each verified
+on the reference's own DOM). (3) `svg-img-alt` — the funnel trapezoid
+Layers (recharts 2.15 HARDCODES `role="img"` in
+`renderTrapezoidsStatically`, no aria seam — `adaptEventsOfChild` passes
+event keys only; the reference ships the identical 4 violations).
+
+**THE REMEDIATION (TDD — RED birth: a11y-controls 21 failing + the
+leads-precedent pin born-green, the spec-contract pins born-green with
+the spec → GREEN, mutation-proven)**: THE NAMED-CONTROL FAMILY —
+aria-label on every open-surface control (the 19 SelectTriggers via the
+leads-page precedent form "Filter by stage/source/owner/industry/
+revenue range/status/period"; the contacts rows carry the row context
+`Role — ${c.name}`; the two Checkbox families carry their sibling-span
+text; the 4 icon-only Buttons carry their desktop labels) — invisible
+supersets, zero className/DOM changes (the drawer precedent: the
+reference's nameless controls are its defect, ours name them). THE
+AXE-CORE A11Y TWO-GATE — `tests/e2e/a11y.spec.ts` (the §8.3 battery:
+25 checks = the nine CRM pages × desktop + phone + the three anon
+surfaces × both widths + the drawer-open state; GATE 1: structural
+violations ZERO; GATE 2: color-contrast + svg-img-alt nodes must cite
+the SANCTIONED register — the parity palette + the recharts genus, each
+matcher carrying its citation, incl. the byte-identical `.self-start`
+"Most popular" pill verified on the reference's landing) + `tests/
+a11y-controls.test.ts` (the 135th suite, +22: the named-control census
+over the five open-surface pages + the declared-devDep pin + the
+two-gate spec contract) + `axe-core` DECLARED as a devDep ^4.13.0
+(F-171e — the undeclared-transitive standby cured). THE DOC LEG: the
+count ladder 2644 → 2668 (+24) · SUITES 134 → 135 · E2E 161 → 186 (+25)
+· badge 2805 → 2854 (count-ladder-171.py + skill-head-171.py +
+skill-head-fix-171.py, assert-first, idempotent) + the PAD §11's two new
+a11y rows + the CLAUDE-missed 2559 gate-order straggler cured + the
+SKILL v1.168.0 frontmatter + H1 lockstep + the s171 head layer.
+
+**THE TDD LEDGER**: RED birth — a11y-controls 21 failing + 1 born-green
+(the leads precedent) + the spec-contract pins green with the spec;
+live-caught at birth: the loop-registered spec broke the Appendix B
+per-spec `test(` census (rewritten to 25 EXPLICIT registrations — the
+census idiom requires one literal test() per check) + the regex-literal
+escaping trap in the sanctioned register (the `\\/` form terminates the
+literal — rewritten to plain substring matchers) + the `.self-start`
+landing pill missing from the matchers (caught by the e2e run itself,
+then verified byte-identical on the reference's landing before
+sanctioning it) + the inventory-census +2 (the L-166c3 lesson live
+again — the two new §11 rows grew the suite after the first ladder
+derivation); the mutation-proof (the planted badge regression 2854 →
+2805 → exactly 1 RED → reverted → GREEN).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **135/2668** unit · build (the
+~151 MB hygienic artifact) · smoke **14/14** · e2e **186/186** (the 25
+new a11y checks GREEN) · db census MATCH · THE ATTRIBUTE-ONLY PROOF:
+the mobile drawer **7/7 PASS** re-run + probe:ref **STABLE** + the
+desktop + phone sweeps **CLEAN** re-run (the aria-labels changed no
+pixel — the parity verdict holds, the reference itself unchanged since
+the s168 fingerprint).

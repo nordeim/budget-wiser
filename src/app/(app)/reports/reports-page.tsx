@@ -138,7 +138,7 @@ export default function ReportsPage() {
                     apps (the controlled value is always set; the reset
                     terminal sets all four fields); mirrored for source
                     parity, the FILTER_BAR.searchPlaceholder precedent. */}
-                <SelectTrigger className="w-44"><SelectValue placeholder="Date: This Quarter" /></SelectTrigger>
+                <SelectTrigger aria-label="Filter by period" className="w-44"><SelectValue placeholder="Date: This Quarter" /></SelectTrigger>
                 <SelectContent>
                   {REPORT_PERIODS.map((p) => (
                     <SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>
@@ -152,7 +152,7 @@ export default function ReportsPage() {
                   DISTINCT OPPORTUNITY owner strings (its `p` memo) — not
                   the user directory. */}
               <Select value={owner} onValueChange={setOwner}>
-                <SelectTrigger className="w-44"><SelectValue placeholder="Owner: All" /></SelectTrigger>
+                <SelectTrigger aria-label="Filter by owner" className="w-44"><SelectValue placeholder="Owner: All" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Owners</SelectItem>
                   {oppOwners.map((name) => (
@@ -165,7 +165,7 @@ export default function ReportsPage() {
                 six stages, the Closed Won / Closed Lost labels (the
                 reference's lCe filter card). */}
             <Select value={stage} onValueChange={setStage}>
-              <SelectTrigger className="w-44"><SelectValue placeholder="Stage: All" /></SelectTrigger>
+              <SelectTrigger aria-label="Filter by stage" className="w-44"><SelectValue placeholder="Stage: All" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Stages</SelectItem>
                 {/* Session-65 (N-65e): the `?.label ?? s` arms RETIRED —
@@ -179,7 +179,7 @@ export default function ReportsPage() {
               </SelectContent>
             </Select>
             <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger className="w-44"><SelectValue placeholder="Status: All" /></SelectTrigger>
+              <SelectTrigger aria-label="Filter by status" className="w-44"><SelectValue placeholder="Status: All" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
                 {/* Session-49 (S49-P1): the status vocabulary is the shared

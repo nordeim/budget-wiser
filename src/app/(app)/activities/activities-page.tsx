@@ -495,7 +495,7 @@ export default function ActivitiesPage() {
               <div>
                 <Label className={FILTER_RAIL.groupLabelSelect}>Owner</Label>
                 <Select value={ownerId} onValueChange={setOwnerId}>
-                  <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+                  <SelectTrigger aria-label="Filter by owner" className="w-full"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Owners</SelectItem>
                     {users.map((u) => (
@@ -507,7 +507,7 @@ export default function ActivitiesPage() {
               <div>
                 <Label className={FILTER_RAIL.groupLabelSelect}>Status</Label>
                 <Select value={range} onValueChange={setRange}>
-                  <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+                  <SelectTrigger aria-label="Filter by status" className="w-full"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {/* Session-76 (M-76c5, bundle-decoded from Lce): the
                         reference's three-value vocabulary — 7days/30days/

@@ -253,7 +253,9 @@ describe("session-83: the filter-card family's standing computed-equal surfaces 
 
   it("the four triggers are w-44 + the period/status vocabularies byte-match the lCe decode", async () => {
     const src = reportsSrc();
-    expect((src.match(/<SelectTrigger className="w-44">/g) ?? []).length).toBe(4);
+    // Session-171: the trigger constructions gained aria-label (the a11y
+    // naming family) — the w-44 pin rides the className arm.
+    expect((src.match(/<SelectTrigger aria-label="[^"]+" className="w-44">/g) ?? []).length).toBe(4);
     const { REPORT_PERIODS, REPORT_STATUSES, OPP_STAGE_META } = await import("@/lib/constants");
     expect(REPORT_PERIODS.map((p) => p.id)).toEqual([
       "today", "thisWeek", "thisMonth", "quarter", "ytd", "all",
