@@ -185,3 +185,87 @@ describe("session-166: the CRUD family rides the parseBody seam (F-166a)", () =>
     expect(route("src/app/api/export/route.ts")).toMatch(/asString\(url\.searchParams\.get\("period"\)/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-175 — THE READ HALF: the GET wire-shape contracts (the s371
+// close's named candidate; the response side of the routes this suite
+// already pins on the request side). The property family
+// (tests/property.test.ts P-r/P-s) pins the wire ROUND-TRIP invariants;
+// these source pins freeze the SHAPES the routes declare — the include
+// select sets the client templates render against, the orderBy contracts
+// the rendering order depends on, the envelope discipline (the s42
+// doctrine: no raw reads), the opportunities raw-row contract (the s31
+// second-deal-model), and the me route's full SessionUser carrier (the
+// canonical user shape; the login response's slim 5-field form has ZERO
+// consumers — the login card reads only body.ok).
+// ---------------------------------------------------------------------------
+
+describe("session-175: the READ half — the GET wire-shape contracts", () => {
+  const ACCOUNT_JOIN = String.raw`account:\s*\{\s*select:\s*\{\s*id:\s*true,\s*name:\s*true\s*\}\s*\}`;
+  const OWNER_JOIN = String.raw`owner:\s*\{\s*select:\s*\{\s*id:\s*true,\s*name:\s*true,\s*avatarColor:\s*true\s*\}\s*\}`;
+  const CONTACT_JOIN = String.raw`contact:\s*\{\s*select:\s*\{\s*id:\s*true,\s*name:\s*true\s*\}\s*\}`;
+
+  it("the five include-carrying routes ship their exact include select sets (the joined wire shapes)", () => {
+    // contacts + leads: account + owner
+    for (const rel of ["src/app/api/contacts/route.ts", "src/app/api/leads/route.ts"]) {
+      const src = route(rel);
+      expect(src, `${rel} — the include block`).toMatch(
+        new RegExp(`include:\\s*\\{\\s*${ACCOUNT_JOIN},\\s*${OWNER_JOIN},?\\s*\\}`),
+      );
+    }
+    // accounts: owner only (the _count include retired at session-75)
+    expect(route("src/app/api/accounts/route.ts")).toMatch(
+      new RegExp(`include:\\s*\\{\\s*${OWNER_JOIN},?\\s*\\}`),
+    );
+    // activities + events: account + contact + owner
+    for (const rel of ["src/app/api/activities/route.ts", "src/app/api/events/route.ts"]) {
+      const src = route(rel);
+      expect(src, `${rel} — the include block`).toMatch(
+        new RegExp(`include:\\s*\\{\\s*${ACCOUNT_JOIN},\\s*${CONTACT_JOIN},\\s*${OWNER_JOIN},?\\s*\\}`),
+      );
+    }
+  });
+
+  it("the six list routes' orderBy contracts (the sort orders the client's rendering depends on)", () => {
+    expect(route("src/app/api/contacts/route.ts")).toMatch(/orderBy:\s*\{\s*name:\s*"asc"\s*\}/);
+    expect(route("src/app/api/leads/route.ts")).toMatch(/orderBy:\s*\{\s*createdAt:\s*"desc"\s*\}/);
+    expect(route("src/app/api/accounts/route.ts")).toMatch(/orderBy:\s*\[\s*\{\s*name:\s*"asc"\s*\}\s*\]/);
+    expect(route("src/app/api/activities/route.ts")).toMatch(
+      /orderBy:\s*\[\s*\{\s*dueAt:\s*"asc"\s*\},\s*\{\s*createdAt:\s*"desc"\s*\}\s*\]/,
+    );
+    // events: startAt desc (the L-76c4 bundle-decoded reference order)
+    expect(route("src/app/api/events/route.ts")).toMatch(/orderBy:\s*\{\s*startAt:\s*"desc"\s*\}/);
+    expect(route("src/app/api/opportunities/route.ts")).toMatch(/orderBy:\s*\{\s*createdAt:\s*"desc"\s*\}/);
+  });
+
+  it("every GET list answers through the envelope (the s42 doctrine — findMany feeds return ok)", () => {
+    const pairs: Array<[string, RegExp]> = [
+      ["src/app/api/contacts/route.ts", /const contacts = await db\.contact\.findMany[\s\S]*?return ok\(contacts\);/],
+      ["src/app/api/leads/route.ts", /const leads = await db\.lead\.findMany[\s\S]*?return ok\(leads\);/],
+      ["src/app/api/accounts/route.ts", /const accounts = await db\.account\.findMany[\s\S]*?return ok\(accounts\);/],
+      ["src/app/api/activities/route.ts", /const activities = await db\.activity\.findMany[\s\S]*?return ok\(activities\);/],
+      ["src/app/api/events/route.ts", /const events = await db\.event\.findMany[\s\S]*?return ok\(events\);/],
+      ["src/app/api/opportunities/route.ts", /const opportunities = await db\.opportunity\.findMany[\s\S]*?return ok\(opportunities\);/],
+    ];
+    for (const [rel, re] of pairs) {
+      expect(route(rel), `${rel} — the envelope read`).toMatch(re);
+    }
+  });
+
+  it("opportunities ships RAW rows — no include (the s31 second-deal-model: owner is a NAME string)", () => {
+    const src = route("src/app/api/opportunities/route.ts");
+    expect(src).toMatch(/db\.opportunity\.findMany\(\{\s*orderBy:\s*\{\s*createdAt:\s*"desc"\s*\},?\s*\}\)/);
+    expect(src).not.toMatch(/include:/);
+  });
+
+  it("auth/me ships the full SessionUser shape (the canonical user carrier — photoUrl included)", () => {
+    // the me route answers through the envelope with the session user
+    expect(route("src/app/api/auth/me/route.ts")).toMatch(/return ok\(user\);/);
+    // the projection carries every SessionUser field — photoUrl is the
+    // load-bearing member (the topbar avatar's photo round-trip)
+    const auth = stripComments(read("src/lib/auth.ts") ?? "");
+    expect(auth).toMatch(
+      /return\s*\{\s*id:\s*user\.id,\s*email:\s*user\.email,\s*name:\s*user\.name,\s*avatarColor:\s*user\.avatarColor,\s*photoUrl:\s*user\.photoUrl,\s*role:\s*user\.role,?\s*\};/,
+    );
+  });
+});

@@ -85,13 +85,18 @@ import {
   ACCOUNT_HEALTH_STATUSES,
   ACCOUNT_STATUSES,
   ACTIVITY_TYPES,
+  COMPANY_SIZES,
   CONTACT_PRIORITIES,
   CONTACT_PRIORITIES_REF,
+  CONTACT_ROLES,
   CONTACT_STATUSES,
+  ENGAGEMENT_LEVELS,
   EVENT_TYPES,
   LEAD_STAGES,
+  OPPORTUNITY_STAGES,
 } from "@/lib/constants";
 import { rateLimit } from "@/lib/rate-limit";
+import { fail, ok } from "@/lib/api";
 
 // ---------------------------------------------------------------------------
 // P-a — the csv round-trip (F-172e's RED birth; the parser fix's proof)
@@ -716,6 +721,276 @@ describe("session-173 P-q: the first-call + default-clock equivalence — the ad
         expect(injected.allowed).toBe(first.allowed);
         expect(injected.remaining).toBe(first.remaining);
         expect(injected.retryAfterSec).toBe(first.retryAfterSec);
+      }),
+      { numRuns: 150 },
+    );
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-175 — THE RESPONSE-SIDE WIRE-CONTRACT FAMILY (the READ half of
+// the s166 quadrant; the s371 close's named candidate). The request side
+// got its Zod seam (s163/166) + property family (s173 P-h…P-m); the READ
+// side — what ok(rows) actually ships to the client store — gets its
+// battery here:
+//
+//   P-r  the entity wire round-trip — for every one of the six entities,
+//        a ROUTE-EXACT row (the include shapes the GET list routes
+//        declare, Dates as Date objects, nulls where the schema allows)
+//        survives the wire serialization verbatim: scalars unchanged,
+//        every Date as its exact toISOString() form, nulls PRESENT (the
+//        ?? fallback chains), the key set exact (no field dropped), the
+//        joined shapes intact
+//   P-s  the envelope pair contract — ok()'s wire form is exactly
+//        {ok: true, data} with the payload passed through UNTOUCHED
+//        beyond JSON's own canonicalization; fail()'s wire form carries
+//        {ok: false, error: {code, message}} verbatim (the toast's
+//        message survives the wire) — the s35/s42 envelope doctrine as
+//        a property, driven through the REAL helpers
+// ---------------------------------------------------------------------------
+
+describe("session-175 P-r: the entity wire round-trip — the READ half of the s166 quadrant", () => {
+  // the s173 integer-timestamp date form (deterministic, always in-range)
+  const dateArb = fc
+    .integer({ min: Date.UTC(2020, 0, 1), max: Date.UTC(2030, 0, 1) })
+    .map((ms) => new Date(ms));
+  const optDateArb = fc.option(dateArb, { nil: null });
+
+  const idArb = fc.string({ minLength: 1, maxLength: 12 }).filter((s) => /^[a-z0-9]+$/i.test(s));
+  const nameArb = fc.string({ minLength: 1, maxLength: 24 }).filter((s) => s.trim() !== "");
+  const optStrArb = fc.option(fc.string({ minLength: 0, maxLength: 24 }), { nil: null });
+  const optNumArb = fc.option(fc.double({ min: 0, max: 1e9, noNaN: true }), { nil: null });
+  const optIntArb = fc.option(fc.integer({ min: 0, max: 100000 }), { nil: null });
+
+  // the joined wire shapes — exactly the routes' include select sets
+  const accountJoinArb = fc.record({ id: idArb, name: nameArb });
+  const ownerJoinArb = fc.record({ id: idArb, name: nameArb, avatarColor: idArb });
+  const contactJoinArb = fc.record({ id: idArb, name: nameArb });
+  const optAccountJoin = fc.option(accountJoinArb, { nil: null });
+  const optOwnerJoin = fc.option(ownerJoinArb, { nil: null });
+  const optContactJoin = fc.option(contactJoinArb, { nil: null });
+  const optIdArb = fc.option(idArb, { nil: null });
+
+  const contactRowArb = fc.record({
+    id: idArb,
+    name: nameArb,
+    email: optStrArb,
+    phone: optStrArb,
+    company: optStrArb,
+    position: optStrArb,
+    source: optStrArb,
+    priority: fc.constantFrom(...CONTACT_PRIORITIES_REF),
+    role: fc.option(fc.constantFrom(...CONTACT_ROLES), { nil: null }),
+    engagementLevel: fc.option(fc.constantFrom(...ENGAGEMENT_LEVELS), { nil: null }),
+    companySize: fc.option(fc.constantFrom(...COMPANY_SIZES), { nil: null }),
+    photoUrl: optStrArb,
+    status: fc.constantFrom(...CONTACT_STATUSES),
+    accountId: optIdArb,
+    account: optAccountJoin,
+    ownerId: optIdArb,
+    owner: optOwnerJoin,
+    lastActivityAt: optDateArb,
+    createdAt: dateArb,
+    updatedAt: dateArb,
+  });
+
+  const leadRowArb = fc.record({
+    id: idArb,
+    name: nameArb,
+    email: optStrArb,
+    phone: optStrArb,
+    company: optStrArb,
+    value: fc.double({ min: 0, max: 1e9, noNaN: true }),
+    stage: fc.constantFrom(...LEAD_STAGES),
+    source: optStrArb,
+    status: fc.constantFrom("open", "closed_won", "closed_lost"),
+    expectedCloseDate: optDateArb,
+    closedAt: optDateArb,
+    nextFollowUp: optDateArb,
+    accountId: optIdArb,
+    account: optAccountJoin,
+    contactId: optIdArb,
+    ownerId: optIdArb,
+    owner: optOwnerJoin,
+    createdAt: dateArb,
+    updatedAt: dateArb,
+  });
+
+  const accountRowArb = fc.record({
+    id: idArb,
+    name: nameArb,
+    industry: optStrArb,
+    email: optStrArb,
+    phone: optStrArb,
+    website: optStrArb,
+    annualRevenue: optNumArb,
+    employees: optIntArb,
+    status: fc.constantFrom(...ACCOUNT_STATUSES),
+    health: fc.constantFrom(...ACCOUNT_HEALTH_STATUSES),
+    ownerId: optIdArb,
+    owner: optOwnerJoin,
+    lastActivityAt: optDateArb,
+    createdAt: dateArb,
+    updatedAt: dateArb,
+  });
+
+  const activityRowArb = fc.record({
+    id: idArb,
+    type: fc.constantFrom(...ACTIVITY_TYPES),
+    subject: nameArb,
+    notes: optStrArb,
+    status: fc.constantFrom("scheduled", "completed"),
+    priority: fc.constantFrom("low", "normal", "high"),
+    dueAt: optDateArb,
+    completedAt: optDateArb,
+    relatedType: optStrArb,
+    relatedName: optStrArb,
+    accountId: optIdArb,
+    account: optAccountJoin,
+    contactId: optIdArb,
+    contact: optContactJoin,
+    ownerId: optIdArb,
+    owner: optOwnerJoin,
+    createdAt: dateArb,
+    updatedAt: dateArb,
+  });
+
+  const eventRowArb = fc.record({
+    id: idArb,
+    title: nameArb,
+    description: optStrArb,
+    type: fc.constantFrom(...EVENT_TYPES),
+    status: fc.constantFrom("scheduled", "completed", "cancelled"),
+    startAt: dateArb,
+    endAt: optDateArb,
+    allDay: fc.boolean(),
+    location: optStrArb,
+    relatedType: optStrArb,
+    relatedName: optStrArb,
+    accountId: optIdArb,
+    account: optAccountJoin,
+    contactId: optIdArb,
+    contact: optContactJoin,
+    ownerId: optIdArb,
+    owner: optOwnerJoin,
+    createdAt: dateArb,
+    updatedAt: dateArb,
+  });
+
+  // the s31 second-deal-model: owner is a NAME STRING, not a relation —
+  // the opportunities GET ships RAW rows (no include)
+  const opportunityRowArb = fc.record({
+    id: idArb,
+    name: nameArb,
+    accountName: optStrArb,
+    stage: fc.constantFrom(...OPPORTUNITY_STAGES),
+    amount: fc.double({ min: 0, max: 1e9, noNaN: true }),
+    probability: optNumArb,
+    closeDate: optDateArb,
+    source: optStrArb,
+    owner: optStrArb,
+    createdAt: dateArb,
+    updatedAt: dateArb,
+  });
+
+  // the expected wire form: Dates become their toISOString() — the exact
+  // transformation JSON.stringify (and therefore Response.json) applies
+  const wireOf = (value: unknown): unknown => {
+    if (value instanceof Date) return value.toISOString();
+    if (Array.isArray(value)) return value.map(wireOf);
+    if (value !== null && typeof value === "object") {
+      const out: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+        out[k] = wireOf(v);
+      }
+      return out;
+    }
+    return value;
+  };
+
+  // the six entities × their route-exact row shapes (the §0.3 census)
+  const entities = [
+    { label: "contact", arb: contactRowArb },
+    { label: "lead", arb: leadRowArb },
+    { label: "account", arb: accountRowArb },
+    { label: "activity", arb: activityRowArb },
+    { label: "event", arb: eventRowArb },
+    { label: "opportunity", arb: opportunityRowArb },
+  ] as const;
+
+  it("every entity: the route-exact row round-trips the wire — scalars verbatim, nulls PRESENT, includes intact, the key set exact", () => {
+    for (const entity of entities) {
+      fc.assert(
+        fc.property(entity.arb, (row) => {
+          const parsed = JSON.parse(JSON.stringify(row)) as Record<string, unknown>;
+          expect(parsed).toEqual(wireOf(row));
+          // the no-drop contract: the client sees EXACTLY the row's keys
+          expect(Object.keys(parsed).sort()).toEqual(Object.keys(row).sort());
+        }),
+        { numRuns: 100 },
+      );
+    }
+  });
+
+  it("every Date field lands as its exact toISOString() form (the client's format family consumes ISO strings); null dates stay null", () => {
+    for (const entity of entities) {
+      fc.assert(
+        fc.property(entity.arb, (row) => {
+          const parsed = JSON.parse(JSON.stringify(row)) as Record<string, unknown>;
+          for (const [k, v] of Object.entries(row)) {
+            if (v instanceof Date) {
+              expect(parsed[k]).toBe(v.toISOString());
+              expect(typeof parsed[k]).toBe("string");
+            }
+          }
+          expect(parsed.createdAt).toBe(
+            (row as { createdAt: Date }).createdAt.toISOString(),
+          );
+          const lastActivityAt = (row as { lastActivityAt?: Date | null }).lastActivityAt;
+          if ("lastActivityAt" in row) {
+            expect(parsed.lastActivityAt).toBe(
+              lastActivityAt instanceof Date ? lastActivityAt.toISOString() : lastActivityAt,
+            );
+          }
+        }),
+        { numRuns: 100 },
+      );
+    }
+  });
+});
+
+describe("session-175 P-s: the envelope pair contract — ok()/fail() wire forms (the s35/s42 doctrine as a property)", () => {
+  it("ok(payload)'s wire form is exactly {ok: true, data} — the payload passed through untouched beyond JSON's own canonicalization", async () => {
+    await fc.assert(
+      fc.asyncProperty(fc.jsonValue(), async (payload) => {
+        const res = ok(payload);
+        expect(res.status).toBe(200);
+        const body = (await res.json()) as { ok: boolean; data: unknown };
+        expect(Object.keys(body).sort()).toEqual(["data", "ok"]);
+        expect(body.ok).toBe(true);
+        // the passthrough contract: what ok() serialized equals the
+        // payload's own JSON canonical form — NO transformation of its own
+        expect(JSON.stringify(body.data)).toBe(JSON.stringify(payload));
+      }),
+      { numRuns: 150 },
+    );
+  });
+
+  it("fail(code, message, status)'s wire form carries {ok: false, error: {code, message}} verbatim (the toast's message survives the wire)", async () => {
+    const codeArb = fc.string({ minLength: 1, maxLength: 16 }).filter((s) => /^[A-Z_]+$/.test(s));
+    const msgArb = fc
+      .string({ minLength: 1, maxLength: 48 })
+      .filter((s) => s.trim() !== "" && !/[\u0000-\u001f]/.test(s));
+    await fc.assert(
+      fc.asyncProperty(codeArb, msgArb, fc.integer({ min: 400, max: 599 }), async (code, message, status) => {
+        const res = fail(code, message, status);
+        expect(res.status).toBe(status);
+        const body = (await res.json()) as { ok: boolean; error: { code: string; message: string } };
+        expect(Object.keys(body).sort()).toEqual(["error", "ok"]);
+        expect(body.ok).toBe(false);
+        expect(Object.keys(body.error).sort()).toEqual(["code", "message"]);
+        expect(body.error.code).toBe(code);
+        expect(body.error.message).toBe(message);
       }),
       { numRuns: 150 },
     );

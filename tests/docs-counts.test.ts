@@ -694,7 +694,14 @@ const SUITES = 138;
 // ignoreBuildErrors) + the full-strict pin (no noImplicitAny
 // override) + the typed union-find pin + the single-lockfile pin
 // + the gate-chain freeze pin).
-const UNIT = 2717;
+// Session-175: 2717 -> 2726 (+9 — the response-side wire-contract
+// family: the property battery grows in place [P-r the entity wire
+// round-trip + P-s the envelope pair contract — the ADR-017
+// one-suite doctrine] + the crud-zod-seam READ-half source pins
+// [the include select sets · the orderBy contracts · the envelope
+// read pairs · the opportunities raw-row contract · the me-route
+// SessionUser carrier]). SUITES 138 HELD · E2E 192 HELD.
+const UNIT = 2726;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1159,13 +1166,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-174 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-175 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s173 layer now beneath the s174 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s174 layer now beneath the s175 head)",
     ).toContain(
-      "+ beneath it 2712 unit checks + 192 e2e checks green; the session-173 layer (THE INJECTABLE CLOCK SEAM",
+      "+ beneath it 2717 unit checks + 192 e2e checks green; the session-174 layer (THE TYPE-GATE HARDENING",
     );
   });
 

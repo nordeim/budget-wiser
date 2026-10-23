@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2717 checks)      | `bun run test`                         |
+|  Unit tests (2726 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2717) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2726) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -9681,3 +9681,103 @@ gate-proven) · smoke **14/14** · e2e **192/192** · db census MATCH · the
 mutation proof (the planted badge regression 2909 → 2904 → exactly 1 RED
 → reverted → GREEN) + THE STASH-PROOF (the three config moves reverted
 alone → exactly the type-gate pins RED → restored → GREEN).
+
+### Session-175 — THE RESPONSE-SIDE WIRE-CONTRACT FAMILY (the READ half) (2026-10-24)
+
+The post-174 audit round, its rotation trigger THE OWNER'S NEWEST COMMITS:
+`f5f96d6` re-validated the comparative evaluation report against the four
+repo HEADs (neo-crm stays **#1 at 8.70** — the quality score 8.0 → 8.5:
+"the three flagged costs were all retired by session-174 within hours of
+the original evaluation, exactly the §9.2 graft list") and shipped the
+`skills/web-application` SKILL v1.1.0 + the NEW `web-application-engineering`
+sibling v1.1.0 carrying the re-validation lessons; `066f9e5` archived the
+session-372 transcript (the s174 close-out). The baseline gate GREEN at
+the exact s174 ship state on a FRESH CLONE (lint 0/0 · tsc 0 ·
+**138/2717** · build · smoke **14/14** · e2e **192/192** — after the
+environmental chromium-1248 install, a fresh-sandbox intake step, not a
+code defect · probe:ref STABLE [bundle md5 `46bc2d9c`] · the desktop +
+phone sweeps CLEAN live · the mobile drawer GREEN at 390×844 · the
+Tailwind v4 state clean · sitemap 11 routes + robots + manifest standing
+· census MATCH). NO new devDep (the round bumps NOTHING).
+
+**THE AUDIT** (each leg verified live): the READ-side census walked every
+GET wire surface — the six list routes' include select sets + orderBy
+contracts, the me/login user carriers, the types↔wire agreement across
+all six entities (`src/types/index.ts` — "API wire shapes" — matches the
+routes' include sets field-for-field). **Zero live defects found.** The
+deferral register resolved the s371 close's candidates with rationale:
+the hosted-CI port (§9.3 #2) DEFERRED — the owner's own newest doctrine
+(`web-application-engineering` v1.1.0 §1: "**The Local Gate is the Only
+Gate:** No hosted CI is trusted") + runner-side execution unobservable
+from this sandbox (the honest-evidence discipline); the doc-size
+restructure (N-1) owner-level; the OTP-at-rest item (§9.3 #6) ALREADY
+SATISFIED (`verificationCodeHash` scrypt [s21] + `resetToken` SHA-256
+[s164] — the report's parenthetical understated the repo's actual
+posture); recharts 3.x (N-3) its own rotation (the standing pixel
+baselines would need re-derivation, like the toolchain-bump rule).
+
+**THE ROUND** — the s371 close's named candidate, the s173 close's named
+candidate still unclaimed: **the Zod/property family's response-side READ
+half.** The request side got its Zod seam (s163/166) + property family
+(s173 P-h…P-m); the READ side — what `ok(rows)` actually ships to the
+client store — had NO battery: the wire shapes rode entirely on the e2e's
+RENDERED output, so a wire-shape regression that keeps the UI rendering
+(e.g. a dropped joined field the current seed never exercises as null)
+would land silently. The family: **P-r** the entity wire round-trip (for
+every one of the six entities, a ROUTE-EXACT row — the include shapes the
+GET list routes declare, Dates as Date objects, nulls where the schema
+allows — survives the wire serialization verbatim: scalars unchanged,
+every Date as its exact `toISOString()` form, nulls PRESENT (the `??`
+fallback chains), the key set exact (no field dropped), the joined shapes
+intact) + **P-s** the envelope pair contract (`ok()`'s wire form is
+exactly `{ok: true, data}` with the payload passed through UNTOUCHED
+beyond JSON's own canonicalization; `fail()`'s wire form carries
+`{ok: false, error: {code, message}}` verbatim — the toast's message
+survives the wire; the s35/s42 envelope doctrine as a property, driven
+through the REAL helpers). Plus **the READ-half source pins**
+(`tests/crud-zod-seam.test.ts` +5 — the ROUTE-side suite's other half):
+the five include-carrying routes' exact include select sets · the six list
+routes' orderBy contracts · every GET answers through the envelope (the
+s42 doctrine — findMany feeds `return ok`) · opportunities ships RAW rows,
+no include (the s31 second-deal-model: owner is a NAME string) · `auth/me`
+ships the full SessionUser shape (photoUrl included — the canonical user
+carrier; the login response's slim 5-field form has ZERO consumers — the
+login card reads only `body.ok`, documented divergence, not a defect).
+
+**THE TDD LEDGER**: 1 RED face at birth (the `fc.jsonObject` →
+`fc.jsonValue` fast-check 4.x API calibration catch — the s172/s173
+live-caught lineage) + 8 born-green (the contract-freeze pins over
+working code — the s173 P-p/P-q precedent). **THE MUTATION-PROOFS**: the
+planted include regression (the contacts owner select lost `avatarColor`)
+→ exactly 1 RED (the include pin); the planted envelope regression
+(`ok()`'s wire form grew a third key) → exactly 1 RED (the P-s key-set
+pin); both reverted → GREEN. **THE STASH-PROOF**: the round's test files
+stashed alone → the suite returns to exactly **138/2717**; restored →
+**138/2726**.
+
+**THE COUNT LADDER**: 2717 → **2726** (+9: property +4 + crud-zod-seam
++5) · SUITES 138 **HELD** (the ADR-017 one-suite doctrine) · E2E 192
+**HELD** (the round is test-only — NO product code touched) · badge 2909
+→ **2918** (count-ladder-175.py, assert-first, idempotent, unique-anchor
+— 21 flips, the re-run a verified 0-flip no-op). The collateral
+re-anchors: the PAD §11 `property.test.ts` row re-censused 723 → 998
+lines (the inventory-census live-read catch again — the census itself
+caught the stale row at the full-suite run) · the dialog-geometry CLAUDE
+lockstep carriers (2717 → 2726, the retired forms joining the negatives
+ladder) · the docs-counts constants + the lineage comment.
+
+**THE DOCS LEG**: the PAD **ADR-020** (the wire-contract doctrine) + the
+session-175 inventory row + the §11 re-anchor · the CLAUDE
+property-pyramid extension (the READ-half join) · the README Tested row +
+the badge · the SKILL **v1.172.0** + H1 lockstep + the s175 head layer
+(the s174 layer comment-demoted at its ship counts 2717/192) · the plan
+doc `docs/plans/2026-10-24-session175-response-side-wire-contract-family.md`.
+
+**THE TEST-ONLY PROOF**: the round touched no component, no page, no
+className, no route — the standing legs re-verified at the audit leg
+carry the parity verdict unchanged (the drawer battery · probe:ref
+STABLE · the sweeps CLEAN; the reference unchanged since the s168
+fingerprint).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2726** unit · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** · db census MATCH.
