@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2697 checks)      | `bun run test`                         |
+|  Unit tests (2712 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2697) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2712) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -9496,3 +9496,99 @@ list + the Tested row).
 hygienic artifact) · smoke **14/14** · e2e **192/192** (the 6 dialog-open
 scans GREEN) · db census MATCH · the mutation proof (the planted badge
 regression 2889 → 2854 → exactly 1 RED → reverted → GREEN).
+
+### Session-173 — THE INJECTABLE CLOCK SEAM + THE RATE-LIMIT WINDOW PROPERTY FAMILY + THE ZOD ROUND-TRIP PROPERTY FAMILY (2026-10-23)
+
+The post-172 audit round. The baseline gate GREEN at the exact s172 ship
+state (lint 0/0 · tsc 0 · **137/2697** · build · smoke **14/14** · e2e
+**192/192** · probe:ref STABLE — the fresh reference probe, the bundle md5
+`46bc2d9c`, the sanctioned-register citations hold · the desktop + phone
+sweeps CLEAN live · the mobile drawer **7/7 PASS** at 390×844 · the
+Tailwind v4 state clean · sitemap 11 routes + robots + manifest standing ·
+census MATCH). The rotation: the s172 close's named **deeper property
+family** — the schemas.ts Zod round-trips + the rate-limit window
+arithmetic (the latter needs an injectable clock seam). NO new devDep
+(fast-check ^4.10.2 rides the s172 declaration — the
+no-mid-rotation-bump posture holds trivially).
+
+**THE SEAM FINDINGS** (each verified live against the source): F-173a
+`rateLimit()` read `Date.now()` internally — the fixed-window arithmetic
+(the reset crossing · the retryAfter ceiling · the remaining monotonicity)
+was NOT property-testable, a generator cannot drive the clock; the s164
+sweep ALREADY took `now = Date.now()` (`sweepRateLimits` + the pure
+`computeWatermark` seam) — the rateLimit path never joined its own module's
+injectable form. F-173b the rate-limit window invariants unpinned as
+properties. F-173c the Zod schema round-trip properties never landed (the
+other half of the s172-named deeper family — the ADR-017 doctrine applied
+to the s166 seam's OWN invariants).
+
+**THE CURE (TDD — RED birth 5 failing [P-n + P-o + the three rate-limit
+clock-seam examples — the 4th argument ignored at runtime, the injected
+clock had no effect, the crossing never observed] + 42 born-green [the
+Zod family P-h…P-m + P-p/P-q freeze pins] → GREEN, mutation-proven)**:
+`rateLimit(key: string, limit: number, windowMs: number, now =
+Date.now())` — the s164 `sweepRateLimits` form extended to the rateLimit
+path. PURELY ADDITIVE: the default keeps `Date.now()`, all 7 call sites
+(login/signup/resend/verify/forgot/reset-password/upload) ride UNCHANGED,
+zero behavior change on the wire.
+
+**THE DEEPER PROPERTY FAMILY** — `tests/property.test.ts` grows in place
+(+12, the P-lettering continues; the ADR-017 one-suite doctrine — SUITES
+137 HELD): the **Zod round-trip half** (P-h the create-defaults quadrant
+round-trip for every CREATE schema · P-i the enum membership invariant
+[members parse to their trimmed selves, outsiders reject] · P-j the
+emailField trim/lowercase contract [login + signup, the one-seam parity] ·
+P-k the PUT three-state round-trip [absent stays ABSENT, null clears, a
+value trims] · P-l the required-name quadrant [null/empty/whitespace reject
+with the route's exact message] · P-m the contacts legacy priority mapping
+[hot/warm/cold → Key/Standard/At Risk]) + the **rate-limit window half**
+(P-n the fixed-window reset crossing [blocked at t₀ → still blocked one ms
+before → allowed with a FRESH count AT t₀+window] · P-o the retryAfterSec
+formula [the exact ceiling ceil((resetAt − now)/1000), floor 1] · P-p the
+remaining monotonicity [allowed calls decrement exactly once; blocked
+calls never transition back] · P-q the first-call + default-clock
+equivalence) + the clock-seam example battery
+(`tests/rate-limit.test.ts` +3: the crossing example · the retryAfter
+ceiling · the default-form equivalence + the additive signature source
+pin).
+
+**FOUR live-caught calibration catches at RED birth** (the L-172c3
+doctrine live again — each a seam contract the generator/test must
+respect): the P-k trimmed-output contract (the generator's raw value may
+carry its own whitespace — assert against the TRIMMED form) · the fc.date
+NaN edge (an INVALID Date hands `toISOString()` a throw before the schema
+ever sees the input — the integer-timestamp generator is deterministic
+and always in-range) · the **stateful-seam key collision** (fc's
+short-string generator COLLIDES within 150 runs — the module-level bucket
+map persists across runs, a second run on a colliding key inherits the
+first run's count; the per-run monotonic run id is the cure: uniqueness is
+a property of the RUN, not of the generated input) · the P-p/P-q
+born-green ledger (the collision was their only RED face).
+
+**THE COUNT LADDER**: 2697 → **2712** (+15: property +12 + rate-limit +3)
+· SUITES **137 HELD** · E2E **192 HELD** (the round is seam-only — no
+visual surface touched) · badge 2889 → **2904** (count-ladder-173.py +
+skill-head-173.py, assert-first, idempotent — the re-runs verified 0-flip
+no-ops). The collateral re-anchors: the N-67b signature pin (the additive
+`now = Date.now()` form) · the dialog-geometry CLAUDE lockstep carriers
+(2697 → 2712, the retired forms joining the negatives ladder) · the
+inventory-census (property.test.ts 316 → 723 · rate-limit.ts 126 → 133 —
+the §11 rows live-censused) · the docs-counts constants + the lineage
+comment + the F-106a1 layer-axis pin (the s173 layer live, the s172 layer
+beneath).
+
+**THE DOCS LEG**: the PAD **ADR-018** (the injectable-clock doctrine) +
+the session-173 inventory row + the two §11 re-anchors · the CLAUDE
+property-pyramid extension (13 → 25 checks, the two s173 halves) · the
+README Tested row's s173 property mentions · the SKILL **v1.170.0** +
+H1 lockstep + the s173 head layer (the s172 layer comment-demoted at its
+ship counts 2697/192).
+
+**THE SEAM-ONLY PROOF**: the round touched no component, no page, no
+className — the drawer battery 7/7 re-run · probe:ref STABLE re-run · the
+desktop + phone sweeps CLEAN re-run carry the parity verdict unchanged.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **137/2712** unit · build (the
+hygienic artifact) · smoke **14/14** · e2e **192/192** · db census MATCH ·
+the mutation proof (the planted badge regression 2904 → 2889 → exactly 1
+RED → reverted → GREEN).

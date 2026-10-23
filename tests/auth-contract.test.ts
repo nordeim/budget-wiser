@@ -151,7 +151,10 @@ describe("session-67: the auth-seam contract (the N-67 family)", () => {
 describe("session-67: the standing auth-seam records (the N-67 keep set)", () => {
   it("N-67b: the per-process limiter + clientKey shapes stay pinned (the deferred trusted-proxy ledger)", () => {
     const src = stripComments(read("src/lib/rate-limit.ts") ?? "");
-    expect(src).toContain("export function rateLimit(key: string, limit: number, windowMs: number)");
+    // session-173 (F-173a): the additive clock seam — the s164
+    // sweepRateLimits form extended to the rateLimit path (now =
+    // Date.now() default; the wall-clock call sites ride unchanged)
+    expect(src).toContain("export function rateLimit(key: string, limit: number, windowMs: number, now = Date.now())");
     expect(src).toContain("export function clientKey(req: Request): string");
   });
 

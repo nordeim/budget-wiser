@@ -5,6 +5,14 @@
 // verify 20. Session-67 (N-67e) added the sessioned upload route at 20
 // (post-guard); session-68 (F-68a3) recorded it here. Session-163 added
 // forgot 10 + reset 10 (the reset funnel's own buckets).
+//
+// Session-173 (F-173a): rateLimit takes `now = Date.now()` — the
+// session-164 sweepRateLimits form extended to the rateLimit path, the
+// module's own injectable precedent. PURELY ADDITIVE: the default is the
+// wall clock, every call site (the 7 rate-limited routes) rides
+// unchanged, and the fixed-window arithmetic became property-testable
+// (tests/property.test.ts P-n…P-q — the crossing, the retryAfter
+// ceiling, and the remaining monotonicity over a generated space).
 
 interface Bucket {
   count: number;
@@ -30,8 +38,7 @@ export interface RateLimitResult {
   retryAfterSec: number;
 }
 
-export function rateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
-  const now = Date.now();
+export function rateLimit(key: string, limit: number, windowMs: number, now = Date.now()): RateLimitResult {
   const existing = buckets.get(key);
   if (!existing || existing.resetAt <= now) {
     buckets.set(key, { count: 1, resetAt: now + windowMs });

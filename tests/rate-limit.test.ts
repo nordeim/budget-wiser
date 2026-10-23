@@ -161,9 +161,10 @@ describe("the amortized sweep (session-164, digma S76-G)", () => {
   });
 
   it("sweepRateLimits returns the swept count; an immediate re-call is an O(1) SKIP (the watermark holds)", () => {
-    // rateLimit mints its buckets at REAL Date.now() (no now param — the
-    // production signature stays untouched), so the band arithmetic rides
-    // sweepRateLimits' own now param and a window DOMINANT over the band.
+    // rateLimit mints its buckets at REAL Date.now() by default (the
+    // s173 clock seam is additive — this wall-clock test form rides the
+    // default), so the band arithmetic rides sweepRateLimits' own now
+    // param and a window DOMINANT over the band.
     const t = Date.now();
     const key = `amort-${Math.random()}`;
     rateLimit(key, 10, 2_000_000); // resetAt = t + 2_000_000 (the dominant window)
@@ -207,5 +208,56 @@ describe("the amortized sweep (session-164, digma S76-G)", () => {
     // never-weakened guarantee: a crossing sweep is the full O(n) form)
     expect(body).toContain("buckets.delete(key)");
     expect(body).toContain("sweepWatermark = computeWatermark(buckets, now)");
+  });
+});
+
+describe("the injectable clock seam (session-173, F-173a)", () => {
+  // The s164 sweepRateLimits form extended to the rateLimit path:
+  // `rateLimit(key, limit, windowMs, now = Date.now())` — PURELY
+  // ADDITIVE. The wall-clock battery above could never STATE the
+  // crossing (a 60s window cannot be waited out inside a test); the
+  // injected clock makes the fixed-window arithmetic example-pinnable
+  // (the property family P-n…P-q carries the generated space).
+  const T0 = 1_760_000_000_000;
+
+  it("the injectable clock drives the window: a key blocked at t₀ resets AT the crossing with a fresh count", () => {
+    const key = `clock-a-${Math.random()}`;
+    const windowMs = 5 * 60_000;
+    for (let i = 0; i < 3; i += 1) {
+      expect(rateLimit(key, 3, windowMs, T0).allowed).toBe(true);
+    }
+    expect(rateLimit(key, 3, windowMs, T0).allowed).toBe(false); // blocked
+    expect(rateLimit(key, 3, windowMs, T0 + windowMs - 1).allowed).toBe(false); // one ms before: still blocked
+    const after = rateLimit(key, 3, windowMs, T0 + windowMs); // AT the crossing
+    expect(after.allowed).toBe(true);
+    expect(after.remaining).toBe(2); // the FRESH count (3 − 1)
+    expect(after.retryAfterSec).toBe(0);
+  });
+
+  it("retryAfterSec reports the exact ceiling: ceil((resetAt − now)/1000), floored at 1", () => {
+    const key = `clock-b-${Math.random()}`;
+    const windowMs = 90_000;
+    rateLimit(key, 1, windowMs, T0); // resetAt = T0 + 90_000
+    const blocked = rateLimit(key, 1, windowMs, T0 + 30_000);
+    expect(blocked.allowed).toBe(false);
+    expect(blocked.retryAfterSec).toBe(60); // ceil(60_000/1000)
+    const nearMiss = rateLimit(key, 1, windowMs, T0 + 89_999);
+    expect(nearMiss.retryAfterSec).toBe(1); // ceil(1/1000) — the floor
+  });
+
+  it("the default form: the 3-arg call and the 4-arg call at Date.now() agree (the additive seam — zero behavior change)", () => {
+    const k1 = `clock-c1-${Math.random()}`;
+    const k2 = `clock-c2-${Math.random()}`;
+    const a = rateLimit(k1, 5, 60_000);
+    const b = rateLimit(k2, 5, 60_000, Date.now());
+    expect(a.allowed).toBe(b.allowed);
+    expect(a.remaining).toBe(b.remaining);
+    expect(a.retryAfterSec).toBe(b.retryAfterSec);
+    // and the source carries the additive signature (the s164 form)
+    const src = readFileSync(path.resolve(import.meta.dirname, "..", "src/lib/rate-limit.ts"), "utf8");
+    const stripped = src
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    expect(stripped).toContain("export function rateLimit(key: string, limit: number, windowMs: number, now = Date.now())");
   });
 });

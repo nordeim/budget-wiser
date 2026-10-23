@@ -682,7 +682,11 @@ const SUITES = 137;
 // 135th suite] +22: the named-control census + the devDep pin + the
 // two-gate spec contract, + the inventory-census +2 [the two new §11
 // a11y rows' parameterized pins — the L-166c3 lesson live again]).
-const UNIT = 2697;
+// Session-173: 2697 -> 2712 (+15 — the deeper property family: the
+// property battery +12 [P-h…P-q — the Zod round-trip family + the
+// rate-limit window arithmetic over the injectable clock] + the
+// rate-limit clock-seam examples +3).
+const UNIT = 2712;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1147,13 +1151,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-172 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-173 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s171 layer now beneath the s172 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s172 layer now beneath the s173 head)",
     ).toContain(
-      "+ beneath it 2668 unit checks + 186 e2e checks green; the session-171 layer (THE AXE-CORE A11Y TWO-GATE",
+      "+ beneath it 2697 unit checks + 192 e2e checks green; the session-172 layer (THE DIALOG-SURFACE NAMED-CONTROL CLOSURE",
     );
   });
 
