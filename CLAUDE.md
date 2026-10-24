@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2726) → `bun run build` → `bun run test:e2e` (192) — or the
+   `bun run test` (2733) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -92,7 +92,13 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
   content, no tick/grid style overrides) and the REAL chart at all-zero
   data (session-10 reversal: the session-1 ChartEmpty dashed placeholders
   are retired; the reference renders real charts in its persistent
-  zero-data state).
+  zero-data state). Session-176 migrated the major 2.15 → 3.10.1
+  (ADR-021): every chart-type site pins `accessibilityLayer={false}`
+  (the 3.x default flip — the reference's 2.x wrapper DOM is the parity
+  surface), the type seam lives at the family boundary (the
+  `tooltipFormatter` adapter + the Pie-label bridge), and the e2e grid
+  sentinel is the standing upgrade guard (it passed live on 3.10.1 —
+  the upgrade-proof).
 - **lucide-react** icons only.
 
 ## Development Workflow
@@ -118,7 +124,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2726 checks)            |
+| `bun run test`      | Vitest unit suites (2733 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
@@ -131,7 +137,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2726 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2733 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -439,7 +445,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2726).
+the seam (currently 2733).
 
 ## Code Quality Standards
 

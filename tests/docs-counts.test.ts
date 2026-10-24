@@ -701,7 +701,16 @@ const SUITES = 138;
 // [the include select sets · the orderBy contracts · the envelope
 // read pairs · the opportunities raw-row contract · the me-route
 // SessionUser carrier]). SUITES 138 HELD · E2E 192 HELD.
-const UNIT = 2726;
+// Session-176: 2726 -> 2733 (+7 — THE RECHARTS 3.x MIGRATION, the
+// N-3 retirement: the charts-internals s176 battery [+4: the version
+// floor · the lockfile resolution · the accessibilityLayer 9-site
+// parity census · the e2e grid-sentinel existence freeze] + the
+// census-tool s176 genus pins [+3: the recharts3-restructure
+// attribution with its negatives · the collector chart-interior
+// exclusion · the decoder exact-token source pin]). SUITES 138
+// HELD · E2E 192 HELD (the standing sentinel carries the
+// upgrade-proof).
+const UNIT = 2733;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1166,13 +1175,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-175 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-176 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s174 layer now beneath the s175 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s175 layer now beneath the s176 head)",
     ).toContain(
-      "+ beneath it 2717 unit checks + 192 e2e checks green; the session-174 layer (THE TYPE-GATE HARDENING",
+      "+ beneath it 2726 unit checks + 192 e2e checks green; the session-175 layer (THE RESPONSE-SIDE WIRE-CONTRACT",
     );
   });
 

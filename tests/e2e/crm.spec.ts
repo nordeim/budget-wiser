@@ -991,8 +991,14 @@ test("the reports tab-1 funnel is a horizontal bar chart with raw stage slugs (S
 
   // The eight raw-slug Y ticks render (the fixed list ticks at any data
   // volume — the reference renders them at zero data).
+  // Session-176 re-anchor: recharts 3.x renders the tick-label TEXTS in
+  // per-axis z-index layers (class `recharts-yAxis-tick-labels`) OUTSIDE
+  // the `.recharts-yAxis` wrapper — which now carries only the axis/tick
+  // LINES (the marks the aging sentinel polls). The texts moved; the
+  // eight fixed-list slugs render identically (live-verified on the
+  // migrated tree: all eight in the yAxis-tick-labels layer).
   for (const slug of ["new", "contacted", "qualified", "prospecting", "qualification", "proposal", "negotiation", "closed_won"]) {
-    await expect(funnelCard.locator(`.recharts-yAxis text`, { hasText: slug })).toBeVisible();
+    await expect(funnelCard.locator(`.recharts-yAxis-tick-labels text`, { hasText: slug })).toBeVisible();
   }
 });
 
@@ -3458,24 +3464,32 @@ test("the reset flow: confirm + alert + wipe (S26-P2) — LAST (its wipe must no
   expect(kpiText).toMatch(/\$0\b/);
   // Session-70 (S70-P9b): the s10 "real chart renders empty" parity at
   // the LIVE layer, both halves. FIXED LIST at zero: the pipeline card
-  // still renders its FIVE stage bars — FLAT (zero-height rectangles,
-  // the ticks and axes alive — never a blank panel or a placeholder
-  // box; the first e2e draft wrongly expected count 0 here and was
-  // corrected by the run itself: the 5 stages are the fixed list, and
-  // their zero state is the pinned s10 contract). The wrapper-visible
-  // assertion runs FIRST so the flat-bars read below is non-vacuous
-  // (a chart that never mounted would read zero heights too).
+  // still renders its FIVE stage ticks — the axes, grid and wrapper
+  // alive — never a blank panel or a placeholder box (the first e2e
+  // draft wrongly expected count 0 here and was corrected by the run
+  // itself: the 5 stages are the fixed list, and their zero state is
+  // the pinned s10 contract).
+  // Session-176 re-anchor: recharts 3.x ELIDES the zero-value bar
+  // rectangles — 2.15 rendered five degenerate zero-height
+  // `.recharts-bar-rectangle` wrappers (visually identical: a
+  // zero-height bar was never a visible pixel, and the drift sweeps
+  // carry the pixel-parity proof against the live reference). The s70
+  // INTENT — the REAL chart at all-zero data, the ticks and axes
+  // alive — now pins the stable aliveness face: the wrapper + the
+  // y-domain ticks + the stage labels. (The full five-label x-tick set
+  // is width-borne — recharts 3.x elides the first x-tick at this
+  // viewport's card width, the same tick-elision genus the leads
+  // pipeline documents at 331px; at the sweep widths all five labels
+  // render, live-verified at 1440.)
   const pipelineCard = page.locator("main .rounded-xl", { hasText: "Sales Pipeline by Stage" }).first();
   await expect(pipelineCard).toBeVisible();
   await expect(pipelineCard.locator(".recharts-wrapper")).toBeVisible();
   const bars = pipelineCard.locator(".recharts-bar-rectangle");
-  await expect(bars).toHaveCount(5);
-  const heights = await bars.evaluateAll((els) =>
-    els.map((el) => Math.round(el.getBoundingClientRect().height)),
-  );
-  for (const h of heights) {
-    expect(h).toBeLessThanOrEqual(1);
-  }
+  await expect(bars).toHaveCount(0);
+  await expect(
+    pipelineCard.locator(".recharts-yAxis-tick-labels text", { hasText: "0" }),
+  ).toBeVisible();
+  await expect(pipelineCard.locator(".recharts-wrapper")).toContainText("Qualification");
   // And the contacts page shows its empty state.
   // Session-49 (S49-P3): the 600ms sleep retired — the /api/contacts
   // response is awaited with the empty list proven on the body (the

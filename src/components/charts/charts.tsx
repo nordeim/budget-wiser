@@ -2,6 +2,20 @@
 
 // Recharts wrappers styled to the NEO CRM palette.
 //
+// Session-176: recharts 3.10.1 (the N-3 retirement — 2.15 → 3.x). The
+// 3.x state-management rewrite retired the defaultProps machinery the
+// L-138c1 hazard lived in (the conditional tickProp spread below stays as
+// the harmless belt-and-suspenders form; the e2e grid sentinel — "a future
+// recharts upgrade that re-breaks the tick delivery REDs here" — carried
+// the live re-verification). The ONE DOM-visible default flip the 3.0
+// guide names for our usage: accessibilityLayer ships true in 3.x — every
+// chart-type site here and in page-parts.tsx's Sparkline arms pins it
+// false to preserve the reference's 2.x wrapper DOM (the parity doctrine;
+// the a11y two-gate's sanctioned register was calibrated on the 2.x
+// genus). The Cell deprecation (removal in 4.0) leaves the pie family's
+// per-slice Cells untouched — the `shape` refactor is the 4.0 gate's own
+// rotation.
+//
 // Session-27 REWRITE (the chart-internals layer, bundle-extracted): the
 // reference's minified bundle is ground truth for every chart config its
 // zero-data DOM cannot express, and it revealed a SYSTEMIC scaffold-era
@@ -65,6 +79,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import type { PieLabel } from "recharts";
 
 /** The reference's tooltip formatters (bundle-extracted verbatim). */
 export function dollarFormatter(v: number): string {
@@ -80,6 +95,21 @@ export function numberFormatter(v: number): string {
 
 export function percentFormatter(v: number): string {
   return `${v}%`;
+}
+
+/**
+ * Session-176 (the type seam): recharts 3 types the Tooltip formatter's
+ * value param as `ValueType | undefined` — the honest form for arbitrary
+ * chart data (string | number | arrays). The family's formatters stay
+ * `(v: number) => string` — every dataKey the families render is a
+ * numeric aggregate, so the values recharts hands the callback are
+ * scalars and `Number()` is the identity on them: the rendered output is
+ * byte-identical, the seam is types-only.
+ */
+function tooltipFormatter(
+  f: ((v: number) => string) | undefined,
+): ((value: unknown) => string) | undefined {
+  return f === undefined ? undefined : (value) => f(Number(value));
 }
 
 type AxisTick = { fontSize: number } | undefined;
@@ -121,14 +151,17 @@ export function SingleBarChart({
   // the reference's recharts renders the visible-ticks+edges grid. Spread
   // the prop ONLY when it carries a value.
   const tickProp = tick ? { tick } : {};
+  // Session-176: recharts 3.10 — the accessibilityLayer default flips to
+  // TRUE in 3.x; the explicit false preserves the reference's 2.x wrapper
+  // DOM (no role="region"/tabIndex/aria-label) — the parity doctrine.
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+        <BarChart data={data} accessibilityLayer={false}>
           {grid && <CartesianGrid strokeDasharray="3 3" />}
           <XAxis dataKey={xKey} type="category" {...tickProp} />
           <YAxis type="number" {...tickProp} />
-          <Tooltip formatter={formatter} />
+          <Tooltip formatter={tooltipFormatter(formatter)} />
           <Bar dataKey={dataKey} fill={fill} radius={radius} name={name} />
         </BarChart>
       </ResponsiveContainer>
@@ -165,10 +198,11 @@ export function GroupedBarsChart({
   // Session-138 (L-138c1): the explicit-undefined tick prop breaks the grid
   // generators (see SingleBarChart) — spread only when it carries a value.
   const tickProp = tick ? { tick } : {};
+  // Session-176: the parity prop (see SingleBarChart).
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+        <BarChart data={data} accessibilityLayer={false}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey={xKey} type="category" {...tickProp} />
           <YAxis type="number" {...tickProp} />
@@ -208,7 +242,7 @@ export function TrendLineChart({
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
+        <LineChart data={data} accessibilityLayer={false}>
           <CartesianGrid strokeDasharray="3 3" />
           {/* Session-138 (L-138c1): explicit axis types — the implicitly-typed
               categorical X never delivered its ticks to the grid generator
@@ -216,7 +250,7 @@ export function TrendLineChart({
               visible-ticks+edges grid the reference renders. */}
           <XAxis dataKey={xKey} type="category" />
           <YAxis type="number" />
-          <Tooltip formatter={formatter} />
+          <Tooltip formatter={tooltipFormatter(formatter)} />
           {series.map((s) => (
             <Line key={s.key} type="monotone" dataKey={s.key} name={s.name} stroke={s.stroke} strokeWidth={2} />
           ))}
@@ -244,7 +278,17 @@ export function LabelPieChart({
 }: {
   data: Array<Record<string, string | number>>;
   outerRadius: number;
-  /** Receives the slice's entry (name/band/type/source… + value) — the reference's label callbacks. */
+  /** Receives the slice's entry (name/band/type/source… + value) — the reference's label callbacks.
+   *
+   * Session-176 (the type seam): recharts 3 types the label callback's
+   * param as `PieLabelRenderProps` — a CLOSED view of the sector props.
+   * The runtime object is the OPEN record (recharts' own
+   * `PieSectorDataItem` note: "we spread the data object into the sector
+   * data item, so we can't really know what is going to be inside") —
+   * this param models exactly that open form, the datum fields the four
+   * pies' callbacks read (name/band/type/source + value). The boundary
+   * double-cast states the equivalence the closed type cannot express;
+   * zero runtime change (the same function receives the same object). */
   labelFor: (entry: Record<string, unknown> & { value?: number }) => string;
   fills: string[];
   formatter?: (v: number) => string;
@@ -253,21 +297,21 @@ export function LabelPieChart({
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+        <PieChart accessibilityLayer={false}>
           <Pie
             data={data}
             dataKey="value"
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={labelFor}
+            label={labelFor as unknown as PieLabel}
             outerRadius={outerRadius}
           >
             {data.map((d, i) => (
               <Cell key={i} fill={fills[i % fills.length]} />
             ))}
           </Pie>
-          <Tooltip formatter={formatter} />
+          <Tooltip formatter={tooltipFormatter(formatter)} />
         </PieChart>
       </ResponsiveContainer>
     </div>
@@ -300,11 +344,11 @@ export function HorizontalBarChart({
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} layout="vertical">
+        <BarChart data={data} layout="vertical" accessibilityLayer={false}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis type="number" />
           <YAxis type="category" dataKey={yKey} width={yWidth} />
-          <Tooltip formatter={formatter} />
+          <Tooltip formatter={tooltipFormatter(formatter)} />
           <Bar dataKey={dataKey} fill={fill} />
         </BarChart>
       </ResponsiveContainer>
@@ -339,11 +383,11 @@ export function RevenueLineChart({
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={data}>
+        <ComposedChart data={data} accessibilityLayer={false}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" type="category" {...tickProp} />
           <YAxis type="number" {...tickProp} />
-          <Tooltip formatter={dollarFormatter} />
+          <Tooltip formatter={tooltipFormatter(dollarFormatter)} />
           {/* Session-142 (D-142b0): the Legend is RETIRED — the reference's
               new bundle renders its revenue chart with NO legend element
               (live-censused on index-Dc6wvGtA.js: zero legend wrappers, the
@@ -394,7 +438,7 @@ export function ConversionFunnel({
   return (
     <div style={{ height }} className="chart-no-outline">
       <ResponsiveContainer width="100%" height="100%">
-        <FunnelChart>
+        <FunnelChart accessibilityLayer={false}>
           <Tooltip />
           <FunnelBar dataKey="value" data={funnelData}>
             <LabelList position="right" fill="#000" stroke="none" dataKey="label" />

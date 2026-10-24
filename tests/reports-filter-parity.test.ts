@@ -349,8 +349,10 @@ describe("session-83: the filter-card family's standing computed-equal surfaces 
     // BARE inside the slot — no wrapping div, no explicit margin (the
     // recharts default IS the 5px margin the reference inherits by
     // passing none; the s83 pin's explicit margin prop was the same
-    // computed value spelled out).
-    expect(src).toMatch(/<LineChart data=\{data\}>/);
+    // computed value spelled out). Session-176 re-anchor: the opening
+    // tag carries accessibilityLayer={false} now (the recharts 3.x
+    // default flip — the parity prop pinned in charts-internals).
+    expect(src).toMatch(/<LineChart data=\{data\}(?:\s[^>]*)?>/);
     expect(src).toMatch(/strokeWidth=\{2\}/);
     expect(src).toMatch(/dot=\{false\}/);
     const { KPI_SPARK } = await layout();

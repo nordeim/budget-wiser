@@ -704,12 +704,15 @@ export function Sparkline({
   // BARE inside the card's slot (no intermediate wrapper, no aria-hidden,
   // no margin prop: the recharts default IS the 5px margin the reference
   // inherits by passing none).
+  // Session-176: the sparks carry accessibilityLayer={false} like every
+  // chart-type site (the recharts 3.x default flip — the reference's 2.x
+  // spark DOM carries no chart-wrapper role/tabIndex/aria-label).
   if (variant === "line" || variant === "area") {
     const data = values.map((v, i) => ({ i, v }));
     return (
       <ResponsiveContainer width="100%" height="100%">
         {variant === "area" ? (
-          <AreaChart data={data}>
+          <AreaChart data={data} accessibilityLayer={false}>
             {/* Session-139 (F-139c2, the maiden per-path census): the
                 reference's area spark passes NO stroke-width — the SVG
                 default 1 applies (our former explicit strokeWidth={1}
@@ -725,7 +728,7 @@ export function Sparkline({
             />
           </AreaChart>
         ) : (
-          <LineChart data={data}>
+          <LineChart data={data} accessibilityLayer={false}>
             <Line
               type="monotone"
               dataKey="v"

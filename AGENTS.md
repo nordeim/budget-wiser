@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2726 checks)      | `bun run test`                         |
+|  Unit tests (2733 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2726) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2733) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -9781,3 +9781,115 @@ fingerprint).
 
 **THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2726** unit · build (the
 type-gate artifact) · smoke **14/14** · e2e **192/192** · db census MATCH.
+
+### Session-176 — THE RECHARTS 3.x MIGRATION (the N-3 retirement) (2026-10-24)
+
+The post-175 audit round, its rotation trigger THE OWNER'S NEWEST COMMIT
+`35f04d5` — the session-374 transcript, whose close names this round
+verbatim ("the recharts 2.15 → 3.x migration (N-3, needs its own baseline
+re-derivation round) is the largest remaining named candidate"); the
+session-373 close agrees. The baseline gate GREEN at the exact s175 ship
+state (lint 0/0 · tsc 0 · **138/2726** · build · smoke **14/14** · e2e
+**192/192** · probe:ref **STABLE** at `46bc2d9c` · the desktop + phone
+sweeps CLEAN · the mobile drawer battery GREEN at 390×844 · the Tailwind
+v4 state clean · sitemap 11 routes + robots + manifest standing · census
+MATCH) — **zero live defects**, the register-RETIREMENT round.
+
+**The migration census first** (the official recharts 3.0 guide walked
+against our nine chart-type JSX sites — `charts.tsx`'s seven families +
+the Sparkline's area/line arms): the min-version rows all satisfied
+(React 19.3 · TS 5.x · ES2017 target), the removed-props register clean
+(we never touched `activeIndex`/`blendStroke`/`animateNewValues`), and
+exactly ONE DOM-visible default flip for our usage —
+**`accessibilityLayer` ships false in 2.x, TRUE in 3.0+** (the recharts
+wiki's own words). The parity cure: the explicit `false` at all nine
+sites, preserving the reference's 2.x wrapper DOM (the a11y two-gate's
+sanctioned register was calibrated on the 2.x genus).
+
+**The migration**: `bun add recharts@^3.10.1` (the sibling zb's proven
+3.10 line, the registry's latest stable — the package manager owns the
+manifest + the lockfile); the nine parity props; the type seam closed at
+the boundary — recharts 3's `Formatter<ValueType, NameType>` types the
+tooltip value param as the honest union, so the family's formatters stay
+`(v: number) => string` (every dataKey is a numeric aggregate — `Number()`
+is the identity on them) behind a `tooltipFormatter` adapter, and the Pie
+`label` callback's param is bridged with a documented double-cast against
+the closed `PieLabelRenderProps` view (recharts' own `PieSectorDataItem`
+note: "we spread the data object into the sector data item, so we can't
+really know what is going to be inside" — our open-record param models
+the runtime truth). The L-138c1 tickProp guard RETAINED as the harmless
+belt-and-suspenders form (the defaultProps machinery the hazard lived in
+is gone in the state rewrite).
+
+**The live 3.x faces decoded** (each root-caused against the rendered
+DOM, never guessed): the tick-label TEXTS moved out of the axis wrappers
+into per-axis z-index layers (`recharts-yAxis-tick-labels`) — the e2e
+funnel selector re-anchored; recharts 3.x **elides the zero-value bar
+rectangles** (2.15 rendered five degenerate zero-height wrappers at the
+wiped dashboard — visually identical, zero-height was never a visible
+pixel; the e2e reset re-anchor pins the aliveness face: the wrapper +
+the y-domain ticks + the stage labels, never a blank panel — the s10
+contract holds); the x-tick elision at narrow cards is width-borne (the
+same genus the leads pipeline documents at 331px). **THE UPGRADE-PROOF**:
+the e2e grid sentinel — the L-138c2 "future recharts upgrade that
+re-breaks the tick delivery REDs here" guard — passed live on 3.10.1
+(the 9-line classic grid).
+
+**The census decoder extension + the collector exclusion**: the interior
+census's first post-migration run surfaced the tick-machinery faces as
+unexplained — the signature-matched **`recharts3-restructure` genus**
+(both sides g-elements carrying recharts classes with one side carrying
+a 3.x structural token, or the collapsed same-class tick; the r3Boxes
+containment cascade for the zIndex-wrapped descendants — the s95
+poke-cascade precedent; the negatives pinned: a DIV pair never rides it,
+a same-class non-degenerate tick with a real drift stays RED) + the
+**chart-interior collector exclusion** (the walk42 glyph doctrine
+extended to the chart svg): the tablet-dashboard decode found the
+version-borne interiors sustaining FALSE resync offsets — the ref
+pointer stalled inside the Pipeline chart's 2.x interiors while ours
+advanced, the card-level tail re-pairing across cards at a phantom
++581px — while a direct probe proved both apps **byte-equal at every
+card position**. The recharts svg BOX stays censused (the chart's layout
+face, with the wrapper divs); the interior never enters the alignment —
+the chart visual + DOM parity rides the pixel sweeps + the e2e chart
+pins.
+
+**The proofs**: MUTATION-A (the planted version regression `^3.10.1` →
+`^2.15.4` → exactly 1 RED, the version floor) · MUTATION-B (the parity
+prop removed from the TrendLine family → exactly 1 RED, the 9-site
+census) · THE STASH-PROOF (the round's five source files stashed alone →
+exactly 6 RED — the round's pins; restored → 2733 GREEN).
+
+**The drift-gate ledger** — the six gates re-run in full at the migrated
+tree: the desktop + phone + tablet + landscape sweeps **CLEAN** (margin
+0.5pct over the standing baselines — dashboard 0.07%, reports 0.21%),
+the fullpage **CLEAN** (docH byte-equal 4990/7259 at both axes), the
+interior census **CLEAN at all four axes** (52 page-axis runs, zero
+unexplained). **The migration is render-identical — the s373 close's
+predicted baseline re-derivation was NOT needed; the standing baselines
+hold.**
+
+**The count ladder**: 2726 → **2733** (+7: the charts-internals s176
+battery [+4 — the version floor · the lockfile resolution · the
+accessibilityLayer 9-site parity census · the e2e grid-sentinel existence
+freeze] + the census-tool s176 genus pins [+3 — the attribution with
+negatives · the collector exclusion · the decoder exact-token source
+pin]) · SUITES 138 **HELD** · E2E 192 **HELD** · badge 2918 → **2925**
+(count-ladder-176.py: 23 flips, assert-first, idempotent — the re-run a
+verified 0-flip no-op). The collateral re-anchors: the PAD stack-table
+recharts row (2.15.4 → 3.10.1) · the facts-census installed-stack row ·
+the session-140 funnel pin + the reports-filter spark pin (the
+opening-tag forms gaining the parity prop).
+
+**The deferral register** (resolved with rationale in the plan §0.3):
+`accessibilityLayer` ON rejected (the DOM-parity doctrine — the enable
+path stays an owner-level decision, documented in ADR-021) · the
+`Cell` → `shape` refactor deferred to the 4.0 gate (works unmodified in
+3.10.1) · the version choice `^3.10.1` (the registry's latest stable =
+the sibling's proven line; the canary stream excluded).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 (full strictness under the 3.x
+types) · **138/2733** unit · build (the type-gate artifact) · smoke
+**14/14** · e2e **192/192** · db census MATCH (15/24/10/23/12 + 4 users)
+· probe:ref STABLE · the six drift gates CLEAN · the drawer battery
+GREEN.

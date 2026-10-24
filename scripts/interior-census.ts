@@ -330,6 +330,17 @@ export interface CensusEvent {
  *  y-axis top/height shift). Anything larger must attribute elsewhere. */
 export const RECHARTS_TOL = 3;
 
+/** Session-176: the recharts-3 STRUCTURAL token vocabulary — the
+ *  tick-machinery classes the 2.x DOM does not carry (the per-axis
+ *  tick-labels layers, the tick-lines containers, the axis-specific
+ *  ticks containers, the zIndex wrappers). A paired g-element shift
+ *  carrying one of these against a recharts-classed counterpart is the
+ *  version-borne restructure face (the recharts3-restructure genus);
+ *  the wrapper DIVs never carry these tokens and stay under the
+ *  ≤3px bound. */
+export const RECHARTS3_STRUCT =
+  /recharts-(?:xAxis|yAxis)-tick(?:s|-labels|-lines)|recharts-cartesian-axis-tick-(?:labels?|lines)|recharts-zIndex-layer/;
+
 /** The 390×844 frame's content-column floor (the walk41 decode: main's
  *  p-4 padding leaves 358px). The s95 poke-out discriminator: the
  *  REFERENCE's bare flex-1 tables poke past it (w=472); a width delta
@@ -898,6 +909,13 @@ export function attributeGenera(
   // displaced byte-equal twins (the Export CSV pair) + the rail
   // squeeze (the displacement === the poke delta) all ride these.
   const pokeBoxes: Array<{ box: { top: number; left: number; w: number; h: number }; delta: number }> = [];
+  // Session-176: the recharts3-restructure cascade boxes — every
+  // absorbed restructure face registers BOTH sides' boxes; the
+  // descendants inside them (the grid elements riding the zIndex
+  // wrappers, whose classes exist in both versions and only the
+  // POSITION moved) absorb by containment (the s95 poke-cascade
+  // precedent, scoped to the registered recharts3 boxes).
+  const r3Boxes: Array<{ top: number; left: number; w: number; h: number }> = [];
   // the shifts that survive pass 1 (the s95 cascade candidates — kept
   // in order for the post-poke pass)
   const pendingShifts: CensusEvent[] = [];
@@ -979,6 +997,43 @@ export function attributeGenera(
       const dh = Math.abs(e.dH ?? 0);
       if (dt <= RECHARTS_TOL && dl <= RECHARTS_TOL && Math.abs(dw) <= RECHARTS_TOL && dh <= RECHARTS_TOL) {
         genusOf.set(e, "recharts-internal");
+        continue;
+      }
+      // Session-176 (the recharts3-restructure genus): the 2.15 → 3.10
+      // migration restructures the chart interiors' tick machinery —
+      // the tick-label TEXTS moved out of the axis wrappers into
+      // per-axis z-index layers (ours: recharts-cartesian-axis-tick-
+      // label(s) / recharts-{x,y}Axis-tick-labels; the reference's 2.x:
+      // the texts wrapped inside recharts-cartesian-axis-tick / -ticks),
+      // the tick LINES ride their own containers (recharts-cartesian-
+      // axis-tick-lines / recharts-{x,y}Axis-ticks), the chart parts
+      // ride recharts-zIndex-layer_* wrappers the 2.x DOM does not
+      // carry, and a 2.x tick wrapper whose label migrated collapses to
+      // its tick-line box (the w6 h0 face). The genus is SIGNATURE-
+      // matched — both sides g-elements carrying recharts classes with
+      // one side carrying a 3.x structural token, or the collapsed
+      // same-class tick — never a /recharts/ catch-all: the wrapper
+      // DIVs (the LAYOUT face) and a same-class non-degenerate pair
+      // with a real drift stay RED. The pixel gates (the six drift
+      // sweeps, CLEAN at the migrated tree) carry the chart visual
+      // parity.
+      if (
+        e.el !== undefined &&
+        e.ref !== undefined &&
+        e.el.tag === "g" &&
+        e.ref.tag === "g" &&
+        /recharts/.test(e.el.cls) &&
+        /recharts/.test(e.ref.cls) &&
+        (RECHARTS3_STRUCT.test(e.el.cls) ||
+          RECHARTS3_STRUCT.test(e.ref.cls) ||
+          containedIn(e.el, r3Boxes) ||
+          containedIn(e.ref, r3Boxes) ||
+          (e.el.cls === e.ref.cls &&
+            hasToken(e.el.cls, "recharts-cartesian-axis-tick") &&
+            (e.el.h === 0 || e.el.w === 0)))
+      ) {
+        genusOf.set(e, "recharts3-restructure");
+        r3Boxes.push(boxOf(e.el), boxOf(e.ref));
         continue;
       }
       // the s95 poke-out: position-aligned, width-only, and the
@@ -1564,6 +1619,34 @@ export async function censusPage(
     const walk = (node: Element) => {
       for (const child of Array.from(node.children)) {
         if (SVG_SHAPES.has(child.tagName)) continue; // the glyph interior
+        // Session-176 (the chart-interior exclusion — the walk42 glyph
+        // doctrine extended to the chart svg): a recharts svg's interior
+        // (the g layers, the tick texts, the zIndex wrappers) is
+        // VERSION-BORNE rendering detail — the 2.15 → 3.10 migration
+        // moved the tick labels into per-axis z-index layers and the
+        // chart parts into recharts-zIndex-layer_* groups, and the
+        // shifted interiors sustain FALSE resync offsets that lose the
+        // walk's sync (the tablet-dashboard decode: the ref pointer
+        // stalled inside the Pipeline chart's 2.x interiors while ours
+        // advanced — the card-level tail then re-paired across cards at
+        // a phantom +581). The svg BOX stays censused (the chart's
+        // layout face, with the wrapper divs); the interior never
+        // enters the alignment — same rule as the lucide glyphs. The
+        // chart visual + DOM parity rides the pixel sweeps + the e2e
+        // chart pins (the L-138c2 grid sentinel).
+        if (child.tagName === "svg" && /recharts/.test(child.getAttribute("class") ?? "")) {
+          const r = child.getBoundingClientRect();
+          els.push({
+            top: Math.round(r.top - mrect.top + (main as HTMLElement).scrollTop),
+            left: Math.round(r.left - mrect.left),
+            w: Math.round(r.width),
+            h: Math.round(r.height),
+            tag: child.tagName,
+            cls: child.getAttribute("class") ?? "",
+            text: "",
+          });
+          continue; // the version-borne chart interior never aligns
+        }
         const r = child.getBoundingClientRect();
         const leafText = Array.from(child.childNodes)
           .filter((n) => n.nodeType === Node.TEXT_NODE)
@@ -1624,6 +1707,22 @@ async function censusPublicPage(
     const walk = (node: Element) => {
       for (const child of Array.from(node.children)) {
         if (SVG_SHAPES.has(child.tagName)) continue; // the glyph interior
+        // Session-176: the chart-interior exclusion (the s176 main-leg
+        // twin — the landing's mock chart rides the same version-borne
+        // recharts interior).
+        if (child.tagName === "svg" && /recharts/.test(child.getAttribute("class") ?? "")) {
+          const r = child.getBoundingClientRect();
+          els.push({
+            top: Math.round(r.top - arect.top),
+            left: Math.round(r.left - arect.left),
+            w: Math.round(r.width),
+            h: Math.round(r.height),
+            tag: child.tagName,
+            cls: child.getAttribute("class") ?? "",
+            text: "",
+          });
+          continue; // the version-borne chart interior never aligns
+        }
         const r = child.getBoundingClientRect();
         const leafText = Array.from(child.childNodes)
           .filter((n) => n.nodeType === Node.TEXT_NODE)

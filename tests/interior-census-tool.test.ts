@@ -1499,3 +1499,87 @@ describe("session-160: the census LOGIN CONSOLIDATION (the 160-c rotation — th
     expect(src).toMatch(/L-160c3/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-176 (THE RECHARTS 3.x MIGRATION): the recharts3-restructure genus
+// — the 2.15 → 3.10 tick-machinery restructure. The migration moved the
+// tick-label TEXTS out of the axis wrappers into per-axis z-index layers,
+// gave the tick LINES their own containers, wrapped the chart parts in
+// recharts-zIndex-layer_* groups, and collapsed a 2.x tick wrapper whose
+// label migrated to its tick-line box. Every face is a g-element pair
+// (both sides recharts-classed) — the version-borne structural change;
+// the pixel gates (the six drift sweeps, CLEAN at the migrated tree)
+// carry the chart visual parity. The negatives keep the gate honest: a
+// DIV pair (the wrapper LAYOUT face) never rides the genus, and a
+// same-class NON-degenerate tick pair with a real 50px drift stays RED.
+// ---------------------------------------------------------------------------
+
+describe("session-176: the recharts3-restructure genus (the chart-major migration's version-borne face)", () => {
+  it("attributeGenera: the tick-machinery restructure absorbed — the labels layer · the per-axis labels containers · the tick-lines containers · the zIndex wrappers · the collapsed same-class tick; the negatives stay RED", async () => {
+    const m = await import("../scripts/interior-census");
+    const events = [
+      // (a) ours' 3.x tick-label pair vs the ref's 2.x tick (the
+      // dominant live face: h14 vs h20, ~6px off)
+      { kind: "shift", el: el({ tag: "g", top: 1580, left: 12, w: 26, h: 14, cls: "recharts-layer recharts-cartesian-axis-tick-label" }), ref: el({ tag: "g", top: 1574, left: 12, w: 26, h: 20, cls: "recharts-layer recharts-cartesian-axis-tick" }), dTop: 6, dLeft: 0, dW: 0, dH: 6 },
+      // (b) ours' per-axis labels layer vs the ref's ticks container
+      { kind: "shift", el: el({ tag: "g", top: 880, left: 40, w: 224, h: 14, cls: "recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels" }), ref: el({ tag: "g", top: 874, left: 40, w: 224, h: 20, cls: "recharts-cartesian-axis-ticks" }), dTop: 6, dLeft: 0, dW: 0, dH: 6 },
+      // (c) ours' yAxis tick-lines container vs the ref's ticks
+      // container (the positional-pairing noise face at reports)
+      { kind: "shift", el: el({ tag: "g", top: 994, left: 36, w: 6, h: 228, cls: "recharts-cartesian-axis-tick-lines recharts-yAxis-tick-lines" }), ref: el({ tag: "g", top: 1238, left: 40, w: 398, h: 23, cls: "recharts-cartesian-axis-ticks" }), dTop: 244, dLeft: 4, dW: -392, dH: 205 },
+      // (d) ours' zIndex wrapper vs the ref's axis element (the
+      // tablet/landscape face)
+      { kind: "shift", el: el({ tag: "g", top: 1274, left: 20, w: 328, h: 260, cls: "recharts-zIndex-layer_-100" }), ref: el({ tag: "g", top: 1044, left: 20, w: 330, h: 20, cls: "recharts-layer recharts-cartesian-axis recharts-xAxis xAxis" }), dTop: 230, dLeft: 0, dW: -2, dH: 240 },
+      // (e) the collapsed same-class tick (the label migrated to the
+      // labels layer; ours collapses to the tick-line box w6 h0)
+      { kind: "shift", el: el({ tag: "g", top: 2698, left: 36, w: 6, h: 0, cls: "recharts-layer recharts-cartesian-axis-tick" }), ref: el({ tag: "g", top: 2942, left: 40, w: 10, h: 23, cls: "recharts-layer recharts-cartesian-axis-tick" }), dTop: 244, dLeft: 4, dW: -4, dH: 23 },
+      // (f) the CASCADE face: ours' grid elements sit INSIDE the
+      // absorbed zIndex wrapper (the 3.x render order moved the grid
+      // into the zIndex layer) — the containment carries the
+      // attribution (the s95 poke-cascade precedent, scoped to the
+      // registered recharts3 boxes)
+      { kind: "shift", el: el({ tag: "g", top: 1280, left: 22, w: 328, h: 260, cls: "recharts-cartesian-grid" }), ref: el({ tag: "g", top: 1044, left: 22, w: 330, h: 20, cls: "recharts-cartesian-axis-ticks" }), dTop: 236, dLeft: 0, dW: -2, dH: 240 },
+      { kind: "shift", el: el({ tag: "g", top: 1281, left: 22, w: 328, h: 250, cls: "recharts-cartesian-grid-horizontal" }), ref: el({ tag: "g", top: 1045, left: 22, w: 70, h: 20, cls: "recharts-layer recharts-cartesian-axis-tick" }), dTop: 236, dLeft: 0, dW: 258, dH: 230 },
+      // --- the negatives (the gate's honesty) ---
+      // (n1) a DIV pair carrying the token (the wrapper LAYOUT face —
+      // a chart-size regression must never ride the genus)
+      { kind: "shift", el: el({ tag: "DIV", top: 100, w: 308, h: 300, cls: "recharts-wrapper recharts-xAxis-tick-labels" }), ref: el({ tag: "DIV", top: 94, w: 308, h: 300, cls: "recharts-wrapper" }), dTop: 6, dLeft: 0, dW: 0, dH: 0 },
+      // (n2) a same-class NON-degenerate tick pair with a real 50px
+      // drift — a genuine chart-interior regression stays RED
+      { kind: "shift", el: el({ tag: "g", top: 500, w: 26, h: 20, cls: "recharts-layer recharts-cartesian-axis-tick" }), ref: el({ tag: "g", top: 550, w: 26, h: 20, cls: "recharts-layer recharts-cartesian-axis-tick" }), dTop: 50, dLeft: 0, dW: 0, dH: 0 },
+    ] as never;
+    const r = m.attributeGenera(events, "dashboard") as {
+      explained: Array<{ genus: string }>;
+      unexplained: unknown[];
+    };
+    expect(r.explained.map((e) => e.genus)).toEqual([
+      "recharts3-restructure",
+      "recharts3-restructure",
+      "recharts3-restructure",
+      "recharts3-restructure",
+      "recharts3-restructure",
+      "recharts3-restructure",
+      "recharts3-restructure",
+    ]);
+    expect(r.unexplained).toHaveLength(2);
+  });
+
+  it("the COLLECTOR excludes the recharts chart interiors — the walk42 glyph doctrine extended to the chart svg (the version-borne interior never enters the alignment; the svg BOX stays censused)", async () => {
+    const src = toolSrc();
+    // the s176 collector extension: the recharts svg is recorded as a
+    // box and its subtree skipped (both legs — the main walk + the
+    // public landing twin)
+    const skips = src.match(/tagName === "svg" && \/recharts\//g) ?? [];
+    expect(skips.length).toBe(2);
+    expect(src).toContain("the version-borne chart interior never aligns");
+  });
+
+  it("the decoder rule is SIGNATURE-matched, never a /recharts/ catch-all — the genus name + the token regex live in the tool source (the exact-token doctrine)", async () => {
+    const src = toolSrc();
+    expect(src).toContain("recharts3-restructure");
+    // the structural-token regex (the 3.x-only vocabulary)
+    expect(src).toMatch(/recharts-\(?/); // the family vocabulary present
+    expect(src).toMatch(/recharts3-restructure/);
+    expect(src).toMatch(/zIndex-layer/);
+    expect(src).toMatch(/tick-label/);
+  });
+});

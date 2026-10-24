@@ -358,7 +358,11 @@ describe("session-140: the ConversionFunnel family stock construction (the maide
     const i = fn.indexOf("export function ConversionFunnel");
     expect(i).toBeGreaterThan(-1);
     const region = fn.slice(i, i + 1400);
-    expect(region).toMatch(/<FunnelChart>/);
+    // Session-176 re-anchor: the opening tag carries accessibilityLayer=
+    // {false} now (the recharts 3.x default flip — the parity prop, see
+    // the s176 block below); the s140 intent (the stock construction)
+    // is unchanged.
+    expect(region).toMatch(/<FunnelChart(?:\s[^>]*)?>/);
     // the stock Tooltip — NO formatter, NO name wiring (the "0 : 4"
     // payload face the walk decoded)
     expect(region).toMatch(/<Tooltip\s*\/>/);
@@ -446,5 +450,96 @@ describe("session-141: the by-type call-site construction (the consumer #4 sweep
       const spreads = fn.match(/\{\.\.\.tickProp\}/g) ?? [];
       expect(spreads.length).toBe(2); // the XAxis + the YAxis
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-176 (THE RECHARTS 3.x MIGRATION — the N-3 retirement): the
+// version-floor + lockfile + DOM-parity battery. The rotation trigger:
+// the owner's newest commit 35f04d5 (the session-374 transcript, whose
+// close names this round verbatim — "the recharts 2.15 → 3.x migration
+// (N-3 …) is the largest remaining named candidate"); the report's N-3
+// row ("recharts 2.15 … migration debt · Low · Verified"). The official
+// 3.0 guide's breaking census against our nine chart-type JSX sites
+// surfaced exactly one DOM-visible default flip: accessibilityLayer
+// ships false in 2.x, TRUE in 3.0+ (the recharts wiki's own words) —
+// the wrapper gains role="region"/tabIndex/aria-label the reference's
+// 2.x DOM does not carry. The parity cure: the explicit false at every
+// site. The L-138c1 defaultProps machinery the tick-spread hazard lived
+// in is GONE in 3.x (the state-management rewrite) — the guard stays as
+// the harmless belt-and-suspenders form, and the e2e grid sentinel (the
+// L-138c2 "future recharts upgrade" guard, gridCount 9) carries the
+// live re-verification.
+// ---------------------------------------------------------------------------
+
+describe("session-176: THE RECHARTS 3.x MIGRATION (N-3 retired — the version + lockfile + DOM-parity pins)", () => {
+  it("package.json declares recharts ^3 — the 2.15 major retired (the N-3 migration debt paid)", () => {
+    const pkg = JSON.parse(read("package.json") ?? "{}") as {
+      dependencies?: Record<string, string>;
+    };
+    const v = pkg.dependencies?.recharts;
+    expect(v).toMatch(/^\^3\./);
+    // the retired major must not ride a range that could resolve it back
+    expect(v).not.toContain("2.15");
+  });
+
+  it("bun.lock resolves recharts 3.10.x — the lockfile carries the migration (the sibling zb's proven line, the registry's latest stable)", () => {
+    const lock = read("bun.lock") ?? "";
+    // the bun.lock form: "recharts": ["recharts@3.10.1", "", {…}, "sha512-…"]
+    expect(lock).toMatch(/"recharts":\s*\["recharts@3\.10\./);
+    // the 2.x resolution is gone from the lockfile entirely
+    expect(lock).not.toMatch(/recharts@2\./);
+  });
+
+  it("every chart-type site carries accessibilityLayer={false} — the 3.x default flip pinned OFF for reference DOM parity (the 9-site census)", () => {
+    // recharts 3.0 flips the accessibilityLayer default to true — every
+    // chart wrapper would gain role="region"/tabIndex/aria-label the
+    // reference's 2.x DOM does not carry (the DOM-parity doctrine: the
+    // a11y two-gate's sanctioned register was calibrated on the 2.x
+    // genus; the interior census walks the 2.x wrapper anatomy). The
+    // census: the NINE chart-type JSX sites across the two consumer
+    // files — charts.tsx's seven families (Bar ×3 · Line · Pie ·
+    // Composed · Funnel) + the Sparkline's area/line arms — every one
+    // carrying the explicit false.
+    const sites: Array<[string, string]> = [
+      ["src/components/charts/charts.tsx", "BarChart"],
+      ["src/components/charts/charts.tsx", "LineChart"],
+      ["src/components/charts/charts.tsx", "PieChart"],
+      ["src/components/charts/charts.tsx", "ComposedChart"],
+      ["src/components/charts/charts.tsx", "FunnelChart"],
+      ["src/components/shared/page-parts.tsx", "AreaChart"],
+      ["src/components/shared/page-parts.tsx", "LineChart"],
+    ];
+    let total = 0;
+    for (const [rel, tag] of sites) {
+      const src = stripComments(read(rel) ?? "");
+      const re = new RegExp(`<${tag}[\\s>]`, "g");
+      let m: RegExpExecArray | null;
+      while ((m = re.exec(src))) {
+        total += 1;
+        // the opening tag runs to the next '>' (no '>' rides inside the
+        // attribute expressions on these sites)
+        const tagEnd = src.indexOf(">", m.index);
+        const opening = src.slice(m.index, tagEnd);
+        expect(opening, `${rel}: <${tag} …> missing the parity prop`).toContain(
+          "accessibilityLayer={false}",
+        );
+      }
+    }
+    // the census itself: exactly nine sites (a tenth means a NEW chart
+    // surface shipped without the parity decision — fail here first)
+    expect(total).toBe(9);
+  });
+
+  it("the e2e grid sentinel stands — the L-138c2 'future recharts upgrade' guard rides the 192 (gridCount 9)", () => {
+    // The upgrade-proof's existence pin: crm.spec.ts's live face — "a
+    // future recharts upgrade that re-breaks the tick delivery REDs
+    // here even though the source pins would stay green" — is the
+    // standing evidence THIS migration leans on. Deleting the sentinel
+    // would strip the only live guard over the grid rendering across
+    // chart-major upgrades; pin its decisive form here.
+    const spec = read("tests/e2e/crm.spec.ts") ?? "";
+    expect(spec).toContain("gridCount: 9");
+    expect(spec).toMatch(/recharts upgrade that re-breaks/);
   });
 });

@@ -119,7 +119,9 @@ describe("session-169 (WP-1a): the version-carrier live-census — the installed
     expect(majorMinor(installed("zustand"))).toBe("5.0");
     expect(majorMinor(installed("vitest"))).toBe("5.0");
     expect(majorMinor(installed("lucide-react"))).toBe("0.525");
-    expect(majorMinor(installed("recharts"))).toBe("2.15");
+    // Session-176 (the N-3 retirement): recharts 2.15 → 3.10 — the
+    // migration round's own version carrier, live-read.
+    expect(majorMinor(installed("recharts"))).toBe("3.10");
   });
 
   it("README's badge + stack table carry the LIVE next version", () => {
