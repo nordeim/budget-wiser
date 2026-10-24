@@ -3415,3 +3415,125 @@ describe("session-182: the reports-filter selects open-state interior walk (walk
     expect(src).toContain('<Check className="h-4 w-4" />');
   });
 });
+
+// session-183: THE LEADS-FILTER POPOVER + CONTACTS-FILTER-PANEL
+// OPEN-STATE INTERIOR WALK (walk56)
+//
+// The post-182 audit rotation (its trigger THE OWNER'S NEWEST COMMIT —
+// the session_386/387 transcripts, the s182 round's own execution
+// record; the s386 close's first-named candidate: "the popover
+// family's OPEN faces under ADR-022 — the leads filter popover + the
+// contacts filter panel" — walk53 froze the DropdownMenu + Select
+// chrome, the Popover family's own carriers never). probe:ref STABLE
+// (46bc2d9c) killed the fresh-bundle candidate; the registry's latest
+// 3.10.1 killed the recharts 4.0 gate.
+//
+// THE WALK [scripts/discover-183.ts the discovery probe — the leads
+// Filters trigger + the OPEN popover div[role=dialog] at byte-equal
+// geometry on both apps (304,443 108x36 + 304,483 320x398 at
+// 1440x900; the 390 collision FLIP-UP to data-side=top at 32,36 on
+// BOTH apps — the s113-decoded flip re-confirmed); the mount-focus
+// BUTTON/combobox (the first select trigger) on both; the field
+// labels byte-equal [Status | Source | Min Deal Value | Follow-up
+// Date]; OURS carrying the aria-label supersets the reference's
+// controls lack; the 1st-Tab landing byte-equal (the Source select
+// both); the contacts Filters trigger + the OPEN panel + the Clear
+// All geometry byte-equal at BOTH axes; the 20 checkbox ids identical.
+// Then scripts/walk56-leads-popover-open.ts, the walk53/55 ledger
+// form over the family's TWO OPEN arms at BOTH axes (1440x900 +
+// 390x844)]: the D-183a1 LIVE FIND [the contacts Filters trigger's
+// OPEN variant-flip: OURS renders OUR blue default (bg-primary
+// rgb(37,99,235)) where the reference's own default variant renders
+// its DARK stock primary (#171717, rgb(23,23,23) — its global --primary
+// token; its blue CTAs carry explicit classes) — the CLOSED outline
+// face byte-equal, the OPEN face never walked before; the profile
+// save-button precedent (S13-P2/M-80c1) carries the literal family].
+// The genera [the outline VERSION FORM + both sub-forms (the
+// alpha-color carrier on the triggers/labels/inputs · the
+// transparent-solid carrier on the content + the select triggers) ·
+// the box-shadow SLOT-COUNT genus (5-vs-3 everywhere, every VISIBLE
+// layer byte-equal) · the token-selection genus (the popover's
+// border-line/bg-surface/text-foreground + the call-site rounded-md
+// shadow-md w-80 p-4 vs the reference's z-50 rounded-md border
+// bg-popover p-4 text-popover-foreground shadow-md — the M-81c2
+// pair's Popover member) · the s133 placeholderState retirement · the
+// React useId format genus (radix-_r_* vs radix-:r*:) · lucide's
+// aria-hidden version genus (the X/Save svgs) · the class-order genus
+// (h-4 w-4 vs w-4 h-4) · the aria-label superset genus (our trigger +
+// field labels)].
+describe("session-183: the leads-popover + contacts-panel open-state interior walk (walk56 — the popover family's OPEN faces on both axes; the D-183a1 open-flip find)", () => {
+  it("the walk56 decode freeze — the two-arm OPEN ledger + the mount-focus census + the REAL Tab drive + BOTH axes (the tool's own contract)", () => {
+    const src = read("scripts/walk56-leads-popover-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // Phase A the portal arm — the walk54 D-112a4 root rule over the
+    // Popover content ([role=dialog][data-state=open]; the portal
+    // mounts at body level)
+    expect(src).toContain(`'[role="dialog"][data-state="open"]'`);
+    // the mount-focus census + the REAL keyboard Tab drive (the
+    // mount-focus rides the first select trigger on both apps — the
+    // Popover family's own focus model, no trap)
+    expect(src).toContain("mountFocus");
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain("tab1Landing");
+    // the data-side + content box census (the 390 collision FLIP-UP to
+    // data-side=top on BOTH apps — the s113-decoded flip)
+    expect(src).toContain("dataSide");
+    expect(src).toContain("contentBox");
+    // Phase B the in-flow arm — the panel census keyed on the h3
+    // "Filters" header (the s75 kke construction: the sticky header +
+    // Clear All + the checkbox card groups)
+    expect(src).toContain(`(h.textContent ?? "").trim() === "Filters"`);
+    expect(src).toContain("clearAllBox");
+    expect(src).toContain("checkboxIds");
+    // the trigger face pair (the variant-flip arm the D-183a1 find
+    // rode — the RESTING outline face + the OPEN default face)
+    expect(src).toContain("triggerResting");
+    expect(src).toContain("triggerOpen");
+    // BOTH axes
+    expect(src).toContain("[1440, 900]");
+    expect(src).toContain("[390, 844]");
+    // the field faces — the labels census (each label lives in its
+    // own field div; the nth-of-type trap the maiden pass caught)
+    expect(src).toContain("labelFaces");
+  });
+
+  it("the popover content chrome — the shared Dropdown wrapper's content class string stays whole (the full-string freeze, the genuine walk53-battery gap: the DropdownMenu + Select carriers were full-frozen at walk53, the Popover family's own carrier never)", () => {
+    // walk56's two-app proof: the OPEN popover's content row (ROW 0,
+    // div[role=dialog]) renders byte-equal geometry + computed faces
+    // behind the standing genera — the token-selection genus's
+    // Popover member: OURS border-line/bg-surface/text-foreground +
+    // the call-site rounded-md shadow-md w-80 p-4 vs the reference's
+    // z-50 rounded-md border bg-popover p-4 text-popover-foreground
+    // shadow-md (the M-81c2 pair, computed-equal on every face). The
+    // content string is the family's ONLY chrome carrier (every
+    // popover surface in the app rides it — the leads Filters, the
+    // accounts tier menu, the row menus).
+    const src = read("src/components/ui/dropdown.tsx");
+    expect(src).toContain(
+      "z-[60] min-w-[10rem] overflow-hidden rounded-lg border border-line bg-surface p-1 text-foreground shadow-lg outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+    );
+  });
+
+  it("the contacts Filters trigger's OPEN face — the reference's DARK stock primary, carried by the neutral literals under the variant ternary (the D-183a1 cure, the profile S13-P2/M-80c1 precedent)", () => {
+    // walk56's computed find: the reference's OPEN trigger renders
+    // rgb(23,23,23) — ITS global --primary (#171717, the platform's
+    // DARK stock primary; its blue CTAs carry explicit classes) —
+    // where OURS rendered our blue default (rgb(37,99,235); our
+    // --color-primary is deliberately the blue the reference's CTAs
+    // use, per the s10-family re-pin). The CLOSED outline face was
+    // byte-equal; the OPEN variant-flip was never walked. The cure
+    // rides the profile save-button precedent: the variant ternary
+    // STAYS (the s75 mechanism pin) + the neutral literal pair
+    // (bg-neutral-900 text-neutral-50 hover:bg-neutral-900/90 —
+    // #171717, the s80-computed hover alpha) overrides the default
+    // variant's blue via tailwind-merge, mirroring the reference's
+    // own bg-primary text-primary-foreground hover:bg-primary/90.
+    const src = read("src/app/(app)/contacts/contacts-page.tsx");
+    expect(src).toContain('variant={showFilters ? "default" : "outline"}');
+    expect(src).toContain(
+      'className={showFilters ? "bg-neutral-900 text-neutral-50 hover:bg-neutral-900/90" : undefined}',
+    );
+  });
+});

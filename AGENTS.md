@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2757 checks)      | `bun run test`                         |
+|  Unit tests (2760 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2757) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2760) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -10497,3 +10497,129 @@ type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
 MATCH · probe:ref STABLE · the walk55 select interiors byte-equal on
 both axes · the captures: the period pair 0.00% (byte-identical, the
 same md5), the owner pair the DATA-STATE face.
+
+### Session-183 — THE LEADS-FILTER POPOVER + CONTACTS-FILTER-PANEL OPEN-STATE INTERIOR WALK (walk56) (2026-10-24)
+
+The post-182 audit rotation, its rotation trigger THE OWNER'S NEWEST
+COMMIT (`bf3acec` — the session_386 transcript, the s182 round's own
+execution record). The s386 close's first-named candidate: "the
+popover family's OPEN faces under ADR-022 — the leads filter popover
++ the contacts filter panel" — walk53 froze the DropdownMenu + Select
+chrome carriers (MENU_CONTENT/MENU_ITEM + the select.tsx
+content/item strings); the Popover family's own carriers never.
+probe:ref STABLE (`46bc2d9c`) kills the fresh-bundle candidate; the
+registry's `latest` 3.10.1 (verified live against registry.npmjs.org)
+kills the recharts 4.0 gate. The baseline gate GREEN at the exact
+s182 ship state on a FRESH CLONE: lint 0/0 · tsc 0 · **138/2757**
+unit · build (the type-gate artifact) · smoke **14/14** · e2e
+**192/192** (clean first run, 5.6m) · the mobile drawer battery GREEN
+at 390×844 (all stages) · the desktop + phone drift sweeps CLEAN · db
+census MATCH (15/24/10/23/12 + 4 users at `<repo>/db/custom.db`) ·
+sitemap 11 routes + robots + manifest 200.
+
+**The walk** (`scripts/discover-183.ts` the discovery probe — the
+leads Filters trigger at byte-equal geometry on both apps
+(`304,443 108x36` at 1440×900 · `32,1089 326x36` at 390×844); the
+OPEN popover `div[role="dialog"]` at byte-equal boxes
+(`304,483 320x398` at 1440 · the 390 collision FLIP-UP to
+`data-side=top` at `32,36` on BOTH apps — the s113-decoded flip
+re-confirmed); the mount-focus `BUTTON/combobox` (the first select
+trigger) on both; the field labels byte-equal `[Status | Source | Min
+Deal Value | Follow-up Date]`; OURS carrying the aria-label supersets
+(`Open lead filters` · `Filter by status/source` · `Minimum deal
+value` · `Follow-up date`), the reference's controls carrying NONE;
+the 1st-Tab landing byte-equal (the Source select both); the contacts
+Filters trigger + the OPEN panel + the Clear All geometry byte-equal
+at BOTH axes (`764,351 108x36` + `1350,85 74x32` at 1440 ·
+`234,789 108x36` + `300,80 74x32` at 390); the 20 checkbox ids
+identical; OURS carrying the `aria-expanded` superset on the panel
+trigger. Then `scripts/walk56-leads-popover-open.ts` — the walk53/55
+ledger form over the family's TWO OPEN arms at BOTH axes (1440×900 +
+390×844): the trigger RESTING + OPEN faces, the content DFS ledger,
+the field faces, the REAL keyboard Tab drive, the panel census):
+
+**THE D-183a1 LIVE FIND + CURE** — the contacts Filters trigger's
+OPEN variant-flip: OURS rendered OUR blue default (`bg-primary`
+rgb(37,99,235) — our `--color-primary` is deliberately the blue the
+reference's CTAs use, per the s10-family re-pin) where the
+reference's own default variant renders its **DARK stock primary**
+(#171717, rgb(23,23,23) — its global `--primary` token; its blue CTAs
+carry explicit classes). The CLOSED outline face was byte-equal; the
+OPEN face was never walked before. THE CURE (pinned): the variant
+ternary STAYS (the s75 mechanism pin) + the neutral literal pair
+(`bg-neutral-900 text-neutral-50 hover:bg-neutral-900/90` — the
+s80-computed hover alpha) overrides the blue default via
+tailwind-merge — the profile save-button precedent (S13-P2/M-80c1,
+the reference's PAGE-LOCAL primary doctrine). **The re-walk PROVES
+the OPEN face byte-equal on both axes** (the `panelTriggerOpen.bg`
+delta GONE from the census).
+
+Every remaining delta a documented genus: the outline VERSION FORM
+re-met on every face + BOTH its sub-forms (the alpha-color carrier on
+the triggers/labels/inputs: OURS `3px none rgb(10,10,10)` vs the
+reference's `3px none rgba(10,10,10,0.5)` — style none paints ZERO
+pixels on both · the transparent-solid carrier on the content + the
+select triggers: OURS `3px none rgb(10,10,10)` vs the reference's
+`2px solid rgba(0,0,0,0)` — the s178 fingerprint) · the box-shadow
+SLOT-COUNT genus (5-vs-3 on the triggers/inputs/footer, 6-vs-4 on the
+content — every VISIBLE layer byte-equal) · the token-selection
+genus (the popover's `border-line bg-surface text-foreground` + the
+call-site `rounded-md shadow-md w-80 p-4` vs the reference's `z-50
+rounded-md border bg-popover p-4 text-popover-foreground shadow-md` —
+the M-81c2 pair's Popover member, computed-equal on every face) · the
+s133 placeholderState retirement (the reference's stock select
+trigger still carries `data-[placeholder]:text-muted-foreground`) ·
+the React useId format genus (radix-_r_* vs radix-:r*:) · lucide's
+aria-hidden version genus (the X/Save svgs) · the class-order genus
+(`h-4 w-4` vs `w-4 h-4`) · the aria-label superset genus (our trigger
++ field labels + the panel trigger's aria-expanded).
+
+**The TDD ledger**: 3 pins — the walk56 decode freeze (born-green:
+the tool's own contract — the two-arm OPEN ledger, the
+`[role="dialog"][data-state="open"]` root rule over the portal, the
+mount-focus census, the REAL Tab drive, BOTH axes) · the POPOVER
+content chrome FULL-string freeze (born-green — the genuine
+walk53-battery gap: the shared `Dropdown` wrapper's content class
+string, every popover surface's only chrome carrier, never
+full-frozen before) · the D-183a1 OPEN-face cure pin (**RED-first**
+over the live find — exactly 1 RED at birth, the cure applied, GREEN).
+**MUTATION-PROOF**: the planted `rounded-lg` → `rounded-xl`
+content-chrome regression → **exactly 1 RED** (the new full-string
+pin's unique teeth — no fragment pin holds the Popover content chrome
+construction) → restored → GREEN. **STASH-PROOF**: the round's test
+block stashed → exactly **138/2757** (the s182 ship state) → restored
+→ **138/2760**.
+
+**The count ladder**: 2757 → **2760** (+3, all in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138
+HELD · E2E 192 HELD (the round's one product-code touch: the D-183a1
+call-site pair in contacts-page.tsx; the final gate re-verifies) ·
+badge 2949 → **2952** (count-ladder-183.py: 31 flips, assert-first,
+idempotent — the re-run a verified 0-flip no-op) + the collateral
+re-anchors (the SKILL §5.6 census checks 233 → 236, the module line
+count 1695 HELD — page-layout.ts untouched · the F-106a1 layer-axis
+pin — the s183 layer live, the s182 layer demoted beneath it at
+2757/192 · the s182-introduced live-tense RED-first arithmetic site
+re-anchored 249 → 252).
+
+**The operator's round-shaped asks, all verified standing** (the
+session record's own ledger): the `.env` DATABASE_URL
+`file:../db/custom.db` with the `db/` folder at the repo root (census
+MATCH at `<repo>/db/custom.db` — the ambient `DATABASE_URL` shadow
+scrubbed with `env -u` on every DB-touching command, the F-123a1
+doctrine) · the vitest + playwright config files verified standing
+(138/2760 unit + 192/192 e2e this session — no config churn) · the
+sitemap + SEO surface re-verified (the 11-route sitemap.xml +
+robots.txt with its Sitemap line + the installable manifest.json —
+smoke check 12 carries the 200s) · the mobile-nav comparison
+re-verified (the drawer battery GREEN + probe:ref TRUE-390 STANDING)
+· the Tailwind v4 state clean (no new v4 hazard; the walk's every
+delta decoded against the standing genus register) · the
+`.env.example` verified against the six-knob contract and included in
+this round's commit.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2760** unit · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
+MATCH · probe:ref STABLE · the walk56 popover + panel OPEN interiors
+byte-equal on both axes (post-cure) · the captures: the round's
+ours+ref OPEN faces.

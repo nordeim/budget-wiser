@@ -454,9 +454,17 @@ export default function ContactsPage() {
           {/* Session-88 (N-88c9): the aria-expanded attribute is OUR
               accessibility superset — the reference's button carries only
               the variant ternary + the onClick toggle (no aria); kept for
-              the same a11y reason as the activities More-Filters toggle. */}
+              the same a11y reason as the activities More-Filters toggle.
+              Session-183 (D-183a1, walk56's computed find): the OPEN face
+              renders the reference's DARK stock primary — its global
+              --primary is #171717 (its blue CTAs carry explicit classes),
+              so the variant ternary STAYS (the s75 mechanism pin) + the
+              neutral literal pair overrides our blue default via
+              tailwind-merge (the profile S13-P2/M-80c1 precedent; the
+              s80-computed hover alpha 90%). */}
           <Button
             variant={showFilters ? "default" : "outline"}
+            className={showFilters ? "bg-neutral-900 text-neutral-50 hover:bg-neutral-900/90" : undefined}
             aria-expanded={showFilters}
             onClick={() => setShowFilters((v) => !v)}
           >
