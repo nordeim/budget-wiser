@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2744 checks)      | `bun run test`                         |
+|  Unit tests (2750 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2744) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2750) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -10145,4 +10145,129 @@ beneath it at 2740/192).
 **THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2744** unit · build (the
 type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
 MATCH · probe:ref STABLE · the walk52 focus ring byte-equal on both
+axes.
+
+### Session-180 — THE DROPDOWN/SELECT OPEN-STATE INTERIOR WALK (walk53) (2026-10-24)
+
+The post-179 audit rotation, its rotation trigger THE OWNER'S NEWEST
+COMMITS (`6ff2ba7`/`3b21544` — the session_381 transcript [the s179
+round's own execution record] + the prompt-to-review-3 doc). The s380
+close's first-named candidate: "the remaining unwalked focus/OPEN
+faces — the dropdown/select OPEN states beyond the s133/s136 lenses
+(the s379 close's own second arm) · the account-menu OPEN re-walk
+under ADR-022". probe:ref STABLE (`46bc2d9c`) kills the
+fresh-bundle candidate; the registry's `latest` 3.10.1 (verified live
+against registry.npmjs.org) kills the recharts 4.0 gate. The baseline
+gate GREEN at the exact s179 ship state on a FRESH CLONE: lint 0/0 ·
+tsc 0 · **138/2744** · build (the type-gate artifact) · smoke **14/14**
+· e2e **192/192** (one first-run flake in the S72-P2/M-72c1
+settings-debounce test — the documented F-119a1 epoch-gate lineage —
+passed in isolation AND on the full re-run: a machine-load
+observation, never a live defect) · probe:ref STABLE · the mobile
+drawer battery GREEN at 390×844 · the desktop + phone drift sweeps
+CLEAN (settings 2.65%/3.63% the documented volatile picklist-data
+genus — live-edited intraday on the reference, the walk40 ref-vs-ref
+doctrine; login 0.28%/0.78% the documented logo genus) · db census
+MATCH · sitemap 11 routes + robots + manifest 200.
+
+**The walk** (`scripts/walk53-dropdown-open-interior.ts` — the walk50
+ledger form, the OPEN-interior doctrine: the two-app element ledger of
+the OPEN states at BOTH axes [1440×900 + 390×844]: Phase A the
+account-menu [the topbar `button[aria-haspopup="menu"]` → the
+`[role="menu"]` content → the Profile/Logout menuitems], Phase B the
+settings Defaults "Default Calendar View" select [the first combobox
+→ the `[role="listbox"]` → the Month/Week options, the M-72c3-decoded
+vocabulary]; the REAL keyboard ArrowDown drive — data-highlighted
+fires only under real keyboard focus, which no sweep drives — + the
+mount-focus census + the computed faces of the trigger/content/items
+RESTING and KEYBOARD-HIGHLIGHTED): **ZERO LIVE DEFECTS** — the menu
+spine byte-equal on both axes (3 rows, the same DFS structure, ZERO
+box deltas, mount-focus DIV/menu on both apps, ArrowDown → Profile on
+both); the listbox spine byte-equal (the Month/Week vocabulary,
+data-state checked/unchecked identical, mount-focus DIV/option on
+both — Radix focuses the SELECTED option — ArrowDown → Week on both);
+the VISIBLE faces byte-equal on every OPEN face (the trigger's
+shadow-sm + the content's shadow-md layers + bg/color/border/radius).
+The genera: the outline VERSION FORM (the s178 genus re-met on the
+OPEN faces + the NEW alpha-color carrier sub-form: OURS `3px none
+rgb(10,10,10)` vs the reference's `3px none rgba(10,10,10,0.5)` on
+the triggers — style none paints ZERO pixels on both) · the box-shadow
+SLOT-COUNT genus (v4's 5 transparent zero-extent slots vs the
+v3-era's 3) · the token-selection genus (MENU_CONTENT's
+border-line/bg-surface/text-foreground vs the reference's bare
+border/bg-popover/text-popover-foreground + the items'
+focus:bg-line-soft/focus:text-neutral-900 vs
+focus:bg-accent/focus:text-accent-foreground — computed-equal in BOTH
+the resting and the REAL-keyboard-highlighted states, the
+M-81c2-decoded #f5f5f5 wash + the #171717 ink shift) · the React useId
+format genus (`radix-_R_*` vs `radix-:r*:`) · lucide's aria-hidden
+version genus (the option's check svg). **THE WALK'S OWN DISCOVERY**
+(the harness lesson): Playwright's `getByRole("combobox")` engine
+STOPS matching the trigger once `aria-expanded` flips true at open
+(count 0 while the raw `[role="combobox"]` attribute stays live) —
+the attribute selector is the only form matching BOTH states; pinned
+inside the decode freeze.
+
+**The TDD ledger**: 5 born-green pins — the contract-freeze family
+(the s173 P-p/P-q precedent): the walk53 decode freeze (the tool's own
+contract) · the MENU_CONTENT FULL-string freeze · the MENU_ITEM
+FULL-string freeze (the s179 FULL-string precedent upgrading the
+s13/s63/s113/s128 fragment pins) · the select.tsx content full-string
+freeze (the M-81c1-decoded z-50/max-h-96 family's inline carrier) ·
+the select.tsx item full-string freeze (the M-81c2-decoded rounded-sm
++ wash pair). **MUTATION-PROOF**: the planted MENU_ITEM
+disabled-arm order regression → **exactly 1 RED** (the full-string
+pin's unique teeth over the fragment pins — the shadow-md and
+class-order mutations that trip the older fragment pins were tried
+first, both REDing the old pins too; the disabled-arm swap isolates
+the new pin) → restored → GREEN. **STASH-PROOF**: the round's test
+file stashed → exactly **138/2744** (the s179 ship state) → restored
+→ **138/2749** pre-find (see the live find below).
+
+**The count ladder**: 2744 → **2750** (+6: 5 the walk53 pins in the
+existing page-layout suite — the ADR-017 one-suite doctrine — + 1 the
+RED-first inventory-uniqueness pin in docs-counts, see below) ·
+SUITES 138 HELD · E2E 192 HELD (the round is test-only — NO product
+code touched) · badge 2936 → **2942** (count-ladder-180.py: 23 flips,
+assert-first, idempotent, the two-pass full-ladder form). The
+collateral re-anchors: the SKILL §5.6 census checks 221 → 226 (the
+module line count 1695 HELD — page-layout.ts untouched) · the F-106a1
+layer-axis pin (the s180 layer live, the s179 layer demoted beneath it
+at 2744/192).
+
+**The 180-a live find + cure**: the external s179 ship had TRIPLED its
+PAD §7.1 inventory row (three near-identical walk52 rows — a
+single-layer-doctrine violation that shipped through the gate because
+no pin held the table's row multiplicity; the docs-counts suite pinned
+the TOTAL row, never the per-row uniqueness). TDD cure: the new
+inventory-row uniqueness pin went RED over the live triplication
+first, the two duplicate rows were then removed (the first/most-
+complete row kept), and the pin went GREEN — a future round that
+doubles its row now fails `bun run test`. The verification line below
+carries the post-cure count (138/2750).
+
+**The operator's round-shaped asks, all verified standing** (the
+session record's own ledger): the `.env` DATABASE_URL
+`file:../db/custom.db` with the `db/` folder at the repo root (census
+MATCH at `<repo>/db/custom.db` — the ambient DATABASE_URL shadow
+scrubbed with `env -u` on every DB-touching command, the F-123a1
+doctrine) · the vitest + playwright config files verified standing
+(138/2750 unit + 192/192 e2e this session — no config churn: the
+configs are already the family-correct form, and changes without a
+failing gate would be speculative) · the sitemap + SEO surface
+re-verified (the 11-route sitemap.xml + robots.txt with the Sitemap
+line + the installable manifest.json — smoke check 12 carries the
+200s; the per-route OG/Twitter/canonical factory rides the
+pageMetadata() seam) · the mobile-nav comparison re-verified (the
+drawer battery GREEN + probe:ref TRUE-390 STANDING — the reference's
+own menu button present, ours the Radix Sheet superset with the
+S8-P1 auto-close + the main-scroller lock + the route-change close)
+· the Tailwind v4 state clean (no new v4 hazard surfaced; the walk's
+every delta decoded against the standing genus register) · the
+`.env.example` verified against the six-knob contract and included in
+this round's commit.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2750** unit · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
+MATCH · probe:ref STABLE · the walk53 OPEN spines byte-equal on both
 axes.

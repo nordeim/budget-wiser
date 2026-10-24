@@ -3007,3 +3007,136 @@ describe("session-179: the reports pill-tab focus-state interior re-walk (walk52
     expect(zero.length).toBeGreaterThan(0);
   });
 });
+
+// ---------------------------------------------------------------------------
+// session-180: THE DROPDOWN/SELECT OPEN-STATE INTERIOR WALK (walk53)
+//
+// The post-179 audit rotation (its trigger THE OWNER'S NEWEST COMMITS —
+// the session_381 transcript + the prompt-to-review-3 doc; the s380
+// close's first-named candidate: "the remaining unwalked focus/OPEN
+// faces — the dropdown/select OPEN states beyond the s133/s136 lenses,
+// the s379 close's own second arm · the account-menu OPEN re-walk
+// under ADR-022"). probe:ref STABLE (46bc2d9c) killed the fresh-bundle
+// candidate; the registry's latest 3.10.1 killed the recharts 4.0 gate.
+//
+// THE WALK [scripts/walk53-dropdown-open-interior.ts — the two-app
+// element ledger of the OPEN states at BOTH axes (1440x900 + 390x844):
+// Phase A the account-menu (the topbar button[aria-haspopup="menu"] →
+// the [role="menu"] content → the Profile/Logout menuitems), Phase B
+// the settings Defaults "Default Calendar View" select (the first
+// combobox → the [role="listbox"] content → the Month/Week options —
+// the M-72c3-decoded vocabulary); the REAL keyboard ArrowDown drive
+// (data-highlighted fires only under real keyboard focus), the
+// mount-focus census, the computed faces of the trigger/content/items
+// RESTING and KEYBOARD-HIGHLIGHTED].
+//
+// THE VERDICT: ZERO LIVE DEFECTS — the menu spine byte-equal on both
+// axes (3 rows, the same DFS structure, ZERO box deltas, mount-focus
+// DIV/menu on both apps, ArrowDown → Profile on both); the listbox
+// spine byte-equal (the Month/Week vocabulary, data-state
+// checked/unchecked identical, mount-focus DIV/option on both — Radix
+// focuses the SELECTED option, ArrowDown → Week on both). The genera:
+// the outline VERSION FORM (the s178 genus re-met on the OPEN faces +
+// the NEW alpha-color carrier sub-form: OURS 3px none rgb(10,10,10) vs
+// the reference's 3px none rgba(10,10,10,0.5) on the triggers — style
+// none paints ZERO pixels on both; the items' 3px none vs 2px solid
+// transparent the s178 fingerprint) · the box-shadow SLOT-COUNT genus
+// (v4's 5 transparent zero-extent slots vs the v3-era's 3 — the
+// VISIBLE layers byte-equal: the trigger's shadow-sm
+// rgba(0,0,0,0.05) 0 1px 2px 0 + the content's shadow-md pair) · the
+// token-selection genus (MENU_CONTENT's border-line/bg-surface/
+// text-foreground vs the reference's bare border/bg-popover/
+// text-popover-foreground + the items' focus:bg-line-soft/
+// focus:text-neutral-900 vs focus:bg-accent/focus:text-accent-foreground
+// — computed-equal in BOTH the resting and the REAL-keyboard-highlighted
+// states, the M-81c2-decoded #f5f5f5 wash + the #171717 ink shift) ·
+// the React useId format genus (radix-_R_*/radix-_r_* vs radix-:r*:) ·
+// lucide's aria-hidden version genus (the option's check svg).
+//
+// The battery below is the born-green contract-freeze form (the s173
+// P-p/P-q precedent over working code — the walk surfaced no defect to
+// cure, so the pins freeze the walk-proven contracts whole; the
+// s179-precedent FULL-string upgrades over the register-level
+// fragment pins).
+// ---------------------------------------------------------------------------
+describe("session-180: the dropdown/select OPEN-state interior walk (walk53 — the OPEN faces byte-equal on both axes, zero live defects)", () => {
+  it("the walk53 decode freeze — the two-app OPEN ledger + the REAL keyboard drive + the attribute-selector discovery (the tool's own contract)", () => {
+    const src = read("scripts/walk53-dropdown-open-interior.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // the OPEN-state roots — the dropdown proper + the listbox family
+    expect(src).toContain(`faceOf(page, '[role="menu"]')`);
+    expect(src).toContain(`dumpLedger(page, '[role="menu"]')`);
+    expect(src).toContain(`faceOf(page, '[role="listbox"]')`);
+    expect(src).toContain(`dumpLedger(page, '[role="listbox"]')`);
+    // the REAL keyboard drive (the walk51 form): data-highlighted
+    // fires only under real keyboard focus, which no sweep drives
+    expect(src).toContain('await page.keyboard.press("ArrowDown")');
+    expect(src).toContain(`'[role="menuitem"][data-highlighted]'`);
+    expect(src).toContain(`'[role="option"][data-highlighted]'`);
+    // BOTH axes — both surfaces exist at phone width
+    expect(src).toContain("[1440, 900]");
+    expect(src).toContain("[390, 844]");
+    // THE WALK'S OWN DISCOVERY (the load-bearing locator): Playwright's
+    // getByRole("combobox") engine STOPS matching the trigger once
+    // aria-expanded flips true at open (count 0 while the raw
+    // [role="combobox"] attribute stays live) — the attribute selector
+    // is the only form that matches BOTH the resting and open states.
+    expect(src).toContain(`page.locator('[role="combobox"]').first()`);
+    expect(src).toContain("aria-expanded");
+  });
+
+  it("the account-menu content — MENU_CONTENT stays the walk53-proven OPEN face (the full-string freeze over the register-level pin)", () => {
+    // walk53's computed proof: the OPEN [role=menu] bg/color/border/
+    // radius byte-equal on both axes (bg-surface computing the
+    // reference's bg-popover white; border-line its inherited border
+    // #e5e5e5; text-foreground its popover-foreground #0a0a0a) + the
+    // VISIBLE shadow-md layers byte-equal behind the v4 slot-count
+    // genus. The FULL-string freeze — any token swap, class-order
+    // drift, or animation-arm change REDs here.
+    expect(MENU_CONTENT).toBe(
+      "z-50 min-w-[8rem] overflow-hidden rounded-md border border-line bg-surface p-1 text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+    );
+  });
+
+  it("the account-menu items — MENU_ITEM stays the walk53-proven highlighted-wash form (the full-string freeze)", () => {
+    // walk53's computed proof: the ArrowDown-highlighted Profile item
+    // computes byte-equal on both apps (the #f5f5f5 wash + the #171717
+    // ink shift, the M-81c2 decode) — focus:bg-line-soft is the
+    // computed-equal expression of the reference's focus:bg-accent,
+    // focus:text-neutral-900 of its accent-foreground. The FULL-string
+    // freeze pins the whole carrier.
+    expect(MENU_ITEM).toBe(
+      "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-line-soft focus:text-neutral-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",
+    );
+  });
+
+  it("the select OPEN content — the M-81c1-decoded z-50/max-h-96 family stays whole (the inline carrier's full-string freeze)", () => {
+    // walk53's computed proof: the OPEN [role=listbox] bg/color/border/
+    // radius byte-equal on both axes + the VISIBLE shadow-md layers
+    // byte-equal (the extra v4 slots fully transparent, zero-extent).
+    // The M-81c1 decode (live-DOM on the reference's own open popovers)
+    // is the carrier's provenance; the inline string in select.tsx is
+    // its only home — the pin reads the source.
+    const src = read("src/components/ui/select.tsx");
+    expect(src).toContain(
+      '"relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-line bg-surface text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1"',
+    );
+  });
+
+  it("the select options — the M-81c2-decoded rounded-sm + wash pair stays whole (the item carrier's full-string freeze)", () => {
+    // walk53's computed proof: the Month option's RESTING and
+    // data-highlighted faces byte-equal on both apps — the checked
+    // item carries data-highlighted + data-state=checked identically,
+    // the REAL-keyboard ArrowDown moves the highlight to Week on both.
+    // The M-81c2 decode (rounded-sm 4px + the #f5f5f5/#171717 wash
+    // pair over the reference's accent family) is the carrier's
+    // provenance; the inline string is its only home — the pin reads
+    // the source.
+    const src = read("src/components/ui/select.tsx");
+    expect(src).toContain(
+      '"relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-line-soft focus:text-neutral-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50"',
+    );
+  });
+});

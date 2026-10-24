@@ -739,7 +739,41 @@ const SUITES = 138;
 // standing-script existence freeze]). SUITES 138 HELD (the one-suite
 // doctrine) · E2E 192 HELD (the round is test-only — no product code
 // touched).
-const UNIT = 2744;
+// Session-179: 2740 -> 2744 (+4 — THE REPORTS PILL-TAB FOCUS-STATE
+// INTERIOR RE-WALK [walk52 — the s179 battery in
+// tests/page-layout.test.ts, all four the born-green contract-
+// freeze form over the zero-defect decode, the s173 P-p/P-q
+// precedent: the walk52 decode freeze · the TABS_PILL.trigger
+// FULL-string freeze · the TABS_PILL.track FULL-string freeze ·
+// the data-state genus pin]. SUITES 138 HELD (the one-suite
+// doctrine) · E2E 192 HELD (the round is test-only — no product
+// code touched).
+// Session-180: 2744 -> 2749 (+5 — THE DROPDOWN/SELECT OPEN-STATE
+// INTERIOR WALK [walk53 — the s180 battery in
+// tests/page-layout.test.ts, all five the born-green contract-
+// freeze form over the zero-defect decode, the s173 P-p/P-q
+// precedent: the walk53 decode freeze — the two-app OPEN ledger
+// + the REAL keyboard ArrowDown drive + the attribute-selector
+// discovery · the MENU_CONTENT FULL-string freeze · the
+// MENU_ITEM FULL-string freeze · the SELECT_CONTENT full-string
+// freeze (the M-81c1 carrier) · the SELECT_ITEM full-string
+// freeze (the M-81c2 carrier)]. SUITES 138 HELD (the one-suite
+// doctrine) · E2E 192 HELD (the round is test-only — no product
+// code touched).
+// Session-180: 2744 -> 2750 (+6 — THE DROPDOWN/SELECT OPEN-STATE
+// INTERIOR WALK [walk53 — the s180 battery: 5 the walk53
+// contract-freeze pins in tests/page-layout.test.ts (the walk53
+// decode freeze — the two-app OPEN ledger + the REAL keyboard
+// ArrowDown drive + the attribute-selector discovery · the
+// MENU_CONTENT FULL-string freeze · the MENU_ITEM FULL-string
+// freeze · the select.tsx content/item full-string freezes
+// [M-81c1/M-81c2]) + 1 the docs-counts inventory-row
+// uniqueness pin (RED-first over the 180-a live find: the
+// external s179 ship had TRIPLED its PAD §7.1 inventory row —
+// the single-layer-doctrine violation, cured by the dedupe)].
+// SUITES 138 HELD (the one-suite doctrine) · E2E 192 HELD (the
+// round is test-only — no product code touched).
+const UNIT = 2750;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1204,13 +1238,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-179 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-180 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s178 layer now beneath the s179 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s179 layer now beneath the s180 head)",
     ).toContain(
-      "+ beneath it 2740 unit checks + 192 e2e checks green; the session-178 layer (THE TOPBAR SEARCH FOCUS",
+      "+ beneath it 2744 unit checks + 192 e2e checks green; the session-179 layer (THE REPORTS PILL-TAB FOCUS",
     );
   });
 
@@ -1515,8 +1549,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // pins, the checks 217->221; the MODULE line count 1695 HELD —
     // page-layout.ts untouched this round).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 217 checks");
+    // Session-180: the retired 221 form joins the negatives ladder (the
+    // walk53 dropdown/select OPEN-state round: the session-180 battery
+    // +5 born-green pins, the checks 221->226; the MODULE line count
+    // 1695 HELD — page-layout.ts untouched this round).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 221 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 221 checks",
+      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 226 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");
@@ -1567,6 +1606,40 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // e16efb9; the line is now the one-command gate)
     expect(deployment).not.toContain("smoke-test.sh");
     expect(deployment).toContain("bun run gate");
+  });
+
+  // ------------------------------------------------------------------
+  // Session-180 (the walk53 round's live find): the INVENTORY-ROW
+  // UNIQUENESS pin. The 180-a audit found the external session-179
+  // ship had TRIPLED its PAD §7.1 inventory row (three near-identical
+  // "Unit — THE REPORTS PILL-TAB FOCUS-STATE INTERIOR RE-WALK" rows —
+  // a single-layer-doctrine violation that shipped through the gate
+  // because no pin held the table's row uniqueness; the docs-counts
+  // suite pinned the TOTAL row, never the per-row multiplicity). The
+  // pin: every "Unit — " inventory row's identifying prefix must be
+  // UNIQUE — a future round that doubles its row fails `bun run test`
+  // the same way a stale count does.
+  // ------------------------------------------------------------------
+
+  it("the PAD §7.1 inventory rows are single-layer — no session row duplicated (the s180 find: the external s179 ship tripled its row)", () => {
+    const pad = read("Project_Architecture_Document.md");
+    const rows = pad.split("\n").filter((l) => l.startsWith("| Unit — "));
+    expect(
+      rows.length,
+      "the inventory table must carry its Unit rows (the table is live)",
+    ).toBeGreaterThan(20);
+    const seen = new Set<string>();
+    for (const row of rows) {
+      // the row's identifying prefix — the subject + the session token
+      // (long enough to discriminate sibling sessions, short enough to
+      // stay above the row's per-instance tail variance)
+      const prefix = row.slice(0, 150);
+      expect(
+        seen.has(prefix),
+        `an inventory row appears more than once — the single-layer doctrine: ${prefix.slice(0, 80)}…`,
+      ).toBe(false);
+      seen.add(prefix);
+    }
   });
 
   // ------------------------------------------------------------------

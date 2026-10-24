@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2744) → `bun run build` → `bun run test:e2e` (192) — or the
+   `bun run test` (2750) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -129,7 +129,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2744 checks)            |
+| `bun run test`      | Vitest unit suites (2750 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
@@ -142,7 +142,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2744 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2750 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -319,7 +319,16 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   PAGE_ROOT standard/bare + the per-page-root source pins, the
   table-kit stock strings (container/checkbox variants/hover-50), the
   TABLE_CARD plain-div rule, CALENDAR_CARD, SETTINGS_GRID + the
-  design-tokens `th, td { padding: 1px }` platform reset). Node
+  design-tokens `th, td { padding: 1px }` platform reset, and
+  session-180's walk53 layer — the dropdown/select OPEN-state
+  interior walk's born-green contract-freeze family [the walk53 decode
+  freeze (the tool's own contract, incl. the attribute-selector
+  discovery: Playwright's getByRole("combobox") engine stops matching
+  the trigger once aria-expanded flips true at open — the raw
+  attribute selector is the only form matching both states) · the
+  MENU_CONTENT + MENU_ITEM FULL-string freezes · the select.tsx
+  content/item full-string freezes (the M-81c1/M-81c2 carriers) —
+  `scripts/walk53-dropdown-open-interior.ts`]). Node
   environment; `@` alias resolved.
 - **Property (Vitest + fast-check, 29 checks)** — `tests/property.test.ts`
   (session-172: the invariant layer over the pure seams — the csv
@@ -462,7 +471,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2744).
+the seam (currently 2750).
 
 ## Code Quality Standards
 
