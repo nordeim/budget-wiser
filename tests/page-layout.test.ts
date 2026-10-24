@@ -3277,3 +3277,141 @@ describe("session-181: the dialog-surface focus-state interior walk (walk54 — 
     );
   });
 });
+
+// session-182: THE REPORTS-FILTER SELECTS OPEN-STATE INTERIOR WALK (walk55)
+//
+// The post-181 audit rotation (its trigger THE OWNER'S NEWEST COMMIT —
+// the session_384/385 transcripts, the s181 round's own execution
+// record; the s384 close's first-named candidate: "the reports filter
+// selects' OPEN states beyond the walk53 settings arm" — walk53's
+// Phase B consumed the settings Defaults select, the reports page's
+// own four filter instances never walked). probe:ref STABLE
+// (46bc2d9c) killed the fresh-bundle candidate; the registry's latest
+// 3.10.1 killed the recharts 4.0 gate.
+//
+// THE WALK [scripts/discover-182.ts the discovery probe — the four
+// comboboxes at byte-equal geometry on both apps (329/541/729/917,202
+// 176x36 at 1440x900, the icon-wrap parents byte-equal); OURS carries
+// the four aria-label supersets (Filter by period/owner/stage/
+// status — the same accessible-name genus as the walk53 account-menu
+// trigger), the reference's triggers carry NONE; the mount-focus
+// DIV/option on every open (the walk53 form); the period/stage/
+// status option vocabularies byte-equal (6/7/4 options); the OWNER
+// select the data-borne arm — OURS (seeded) lists All Owners + the 3
+// DISTINCT opp owners, the reference (its live zero-data state) All
+// Owners only. Then scripts/walk55-reports-selects-open.ts, the
+// walk53 ledger form over the reports filter bar's FOUR selects'
+// OPEN states at BOTH axes (1440x900 + 390x844): the trigger
+// RESTING + OPEN faces, the listbox DFS ledger, the option faces
+// RESTING + the checked option's HIGHLIGHTED face, then the REAL
+// keyboard ArrowDown drive (the highlight rides REAL keyboard
+// focus — data-highlighted fires under it, which no sweep drives)]:
+// ZERO LIVE DEFECTS [the period spine 24 rows byte-equal on both
+// axes (6 options, checked This Quarter both, ArrowDown -> YTD
+// both); the stage spine 27 rows byte-equal (7 options, ArrowDown ->
+// Prospecting both); the status spine 18 rows byte-equal (4
+// options, ArrowDown -> Open both); the owner arm the DATA-STATE
+// genus — OURS 18 rows (4 options: All Owners + Omar Haddad · Sara
+// Chen · Lena Fischer) vs the reference's 9 (1 option: All Owners
+// only, its live zero-data state), the listbox height 138-vs-42 the
+// data-borne consequence, the ArrowDown landing Omar Haddad-vs-All
+// Owners the same; the chrome + the static All Owners option
+// byte-equal behind the standing genera]. The genera [the outline
+// VERSION FORM re-met on every face + BOTH its sub-forms — the
+// alpha-color carrier on the triggers (OURS 3px none rgb(10,10,10)
+// vs the reference's 3px none rgba(10,10,10,0.5) — style none
+// paints ZERO pixels on both) · the transparent-solid carrier on
+// the options (OURS 1px none rgb(16,16,16) vs the reference's 2px
+// solid rgba(0,0,0,0) — the s178 fingerprint) · the box-shadow
+// SLOT-COUNT genus (5-vs-3 on the trigger, 6-vs-4 on the content —
+// every VISIBLE layer byte-equal: rgba(0,0,0,0.05) 0px 1px 2px +
+// the content's rgba(0,0,0,0.1) pair) · the token-selection genus
+// (the listbox's border-line/bg-surface/text-foreground vs the
+// reference's border/bg-popover/text-popover-foreground + the
+// options' focus:bg-line-soft focus:text-neutral-900 vs its
+// focus:bg-accent focus:text-accent-foreground — the M-81c2 pair,
+// computed-equal on every face) · the React useId format genus
+// (radix-_r_* vs radix-:r*:) · lucide's aria-hidden version genus
+// (the Check svg — the reference's carries NO aria-hidden) · the
+// aria-label superset genus (our four trigger labels) · the
+// DATA-STATE genus (the owner arm)]; the walk's own decode
+// knowledge: the mount-focus lands ON the checked option (the
+// DIV/option census, activeElement = the highlighted option), the
+// checked option carries data-highlighted at open (Radix's at-open
+// highlight), and the trigger's OPEN face is byte-equal to its own
+// RESTING face on both apps (no visible focus ring paints on the
+// open trigger).
+describe("session-182: the reports-filter selects open-state interior walk (walk55 — the four select OPEN interiors byte-equal on both axes, zero live defects)", () => {
+  it("the walk55 decode freeze — the four-select OPEN ledger + the REAL keyboard highlight drive + the owner DATA-STATE arm (the tool's own contract)", () => {
+    const src = read("scripts/walk55-reports-selects-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // the four-select parameterization (the discovery probe's
+    // contract: period · owner · stage · status, the filter bar's
+    // combobox DOM order)
+    expect(src).toContain('{ key: "period", idx: 0 }');
+    expect(src).toContain('{ key: "owner", idx: 1 }');
+    expect(src).toContain('{ key: "stage", idx: 2 }');
+    expect(src).toContain('{ key: "status", idx: 3 }');
+    // the ATTRIBUTE selector is load-bearing (the walk53 discovery:
+    // Playwright's getByRole("combobox") engine STOPS matching the
+    // trigger once aria-expanded flips true at open)
+    expect(src).toContain(`'main [role="combobox"]'`);
+    // the REAL keyboard ArrowDown drive (the walk53 form): the
+    // data-highlighted wash fires under REAL keyboard focus, which
+    // no sweep drives
+    expect(src).toContain('await page.keyboard.press("ArrowDown")');
+    expect(src).toContain('[role="option"][data-highlighted]');
+    // the mount-focus census + the checked option's HIGHLIGHTED face
+    // (Radix highlights the selected item at open — the walk's own
+    // decode knowledge)
+    expect(src).toContain("activeAfterOpen");
+    expect(src).toContain("checkedFace");
+    // the owner DATA-STATE arm: the option-TEXT census carries the
+    // verdict (our seeded DISTINCT opp owners vs the reference's
+    // zero-data All Owners-only list)
+    expect(src).toContain("optionTexts");
+    // BOTH axes — the s105 seeded-state reports guard holds the
+    // closed phone surface; the OPEN interiors were never walked
+    // at either
+    expect(src).toContain("[1440, 900]");
+    expect(src).toContain("[390, 844]");
+  });
+
+  it("the owner select's option list — the DISTINCT-opportunity-owners derivation stays the s31-decoded contract (the DATA-STATE arm's source carrier)", () => {
+    // The s31 bundle decode (live-confirmed): the reference's owner
+    // dropdown lists the DISTINCT OPPORTUNITY owner strings (its own
+    // `p` memo) — NOT the user directory — over the static
+    // "All Owners" head. walk55's two-app proof: the reference (its
+    // live zero-data state) renders the head ONLY; OURS (seeded)
+    // renders the head + the 3 DISTINCT seeded owners — the list is
+    // data-borne by design on BOTH apps (the DATA-STATE genus), and
+    // this derivation is the arm's only source carrier.
+    const src = read("src/app/(app)/reports/reports-page.tsx");
+    expect(src).toContain(
+      "const oppOwners = React.useMemo(\n    () => [...new Set(opportunities.map((o) => o.owner).filter((n): n is string => Boolean(n)))],\n    [opportunities],\n  );",
+    );
+    expect(src).toContain('<SelectItem value="all">All Owners</SelectItem>');
+    expect(src).toContain("{oppOwners.map((name) => (");
+    expect(src).toContain("<SelectItem key={name} value={name}>{name}</SelectItem>");
+    // the derivation reads the OPPORTUNITY table, not the user
+    // directory (the s31 contract's negative arm — the memo body is
+    // code, so the raw read carries it)
+    expect(src).not.toContain("oppOwners.map((u)");
+  });
+
+  it("the select item's checked indicator — the walk55-proven indicator span + Check pair stays whole (the full-string freeze, the genuine s180-battery gap)", () => {
+    // walk55's computed proof: every checked option row in the two-app
+    // ledger carries the SAME indicator construction — the span
+    // (absolute right-2 flex h-3.5 w-3.5 items-center justify-center)
+    // mounting the Check (h-4 w-4) only when data-state=checked — at
+    // byte-equal geometry on both apps (the 14x14 indicator box). The
+    // s180 battery froze the content + item strings; the indicator
+    // span + icon rode unpinned — the walk's rows 15/16 are this
+    // carrier's first two-app proof.
+    const src = read("src/components/ui/select.tsx");
+    expect(src).toContain('<span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">');
+    expect(src).toContain('<Check className="h-4 w-4" />');
+  });
+});

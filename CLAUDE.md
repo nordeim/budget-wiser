@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2754) → `bun run build` → `bun run test:e2e` (192) — or the
+   `bun run test` (2757) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -129,7 +129,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2754 checks)            |
+| `bun run test`      | Vitest unit suites (2757 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
@@ -142,7 +142,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2754 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2757 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -336,7 +336,15 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   DIALOG_CONTENT.base + DIALOG_CLOSE + DIALOG_OVERLAY FULL-string
   freezes (the close X's focused DOUBLE-ring carrier + the oklab/rgba
   serialization genus's class carrier) —
-  `scripts/walk54-dialog-focus-interior.ts`]. Node
+  `scripts/walk54-dialog-focus-interior.ts`], and session-182's
+  walk55 layer — the reports-filter selects open-state interior
+  walk's born-green contract-freeze family [the walk55 decode freeze
+  (the four-select OPEN ledger + the REAL keyboard highlight drive +
+  the owner DATA-STATE arm) · the DISTINCT-opportunity-owners
+  derivation freeze (the s31 contract, the DATA-STATE arm's source
+  carrier) · the SELECT_ITEM indicator span + Check pair full-string
+  freeze (the genuine s180-battery gap) —
+  `scripts/walk55-reports-selects-open.ts`]. Node
   environment; `@` alias resolved.
 - **Property (Vitest + fast-check, 29 checks)** — `tests/property.test.ts`
   (session-172: the invariant layer over the pure seams — the csv
@@ -479,7 +487,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2754).
+the seam (currently 2757).
 
 ## Code Quality Standards
 

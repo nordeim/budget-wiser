@@ -782,7 +782,19 @@ const SUITES = 138;
 // the DIALOG_OVERLAY FULL-string freeze]. SUITES 138 HELD (the
 // one-suite doctrine) · E2E 192 HELD (the round is test-only —
 // no product code touched).
-const UNIT = 2754;
+// Session-182: 2754 -> 2757 (+3 — THE REPORTS-FILTER SELECTS
+// OPEN-STATE INTERIOR WALK [walk55 — the s182 battery in
+// tests/page-layout.test.ts, all three the born-green contract-
+// freeze form over the zero-defect decode, the s173 P-p/P-q
+// precedent: the walk55 decode freeze (the four-select OPEN
+// ledger + the REAL keyboard highlight drive + the owner
+// DATA-STATE arm) · the DISTINCT-opportunity-owners derivation
+// freeze (the s31 contract, the DATA-STATE arm's source
+// carrier) · the SELECT_ITEM indicator span + Check pair
+// full-string freeze (the genuine s180-battery gap)]. SUITES
+// 138 HELD (the one-suite doctrine) · E2E 192 HELD (the round
+// is test-only — no product code touched).
+const UNIT = 2757;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1247,13 +1259,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-181 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-182 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s180 layer now beneath the s181 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s181 layer now beneath the s182 head)",
     ).toContain(
-      "+ beneath it 2750 unit checks + 192 e2e checks green; the session-180 layer (THE DROPDOWN/SELECT OPEN-STATE",
+      "+ beneath it 2754 unit checks + 192 e2e checks green; the session-181 layer (THE DIALOG-SURFACE FOCUS-STATE",
     );
   });
 
@@ -1568,8 +1580,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // pins, the checks 226->230; the MODULE line count 1695 HELD —
     // page-layout.ts untouched this round).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 226 checks");
+    // Session-182: the retired 230 form joins the negatives ladder (the
+    // walk55 reports-selects round: the session-182 battery +3 born-green
+    // pins, the checks 230->233; the MODULE line count 1695 HELD —
+    // page-layout.ts untouched this round).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 230 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 230 checks",
+      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 233 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");
