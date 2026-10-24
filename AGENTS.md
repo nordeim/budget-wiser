@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2740 checks)      | `bun run test`                         |
+|  Unit tests (2744 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2740) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2744) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -10080,3 +10080,69 @@ transition face).
 type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
 MATCH · probe:ref STABLE · the desktop + phone sweeps CLEAN · the drawer
 battery GREEN · the walk51 visible faces byte-equal.
+
+### Session-179 — THE REPORTS PILL-TAB FOCUS-STATE INTERIOR RE-WALK (walk52) (2026-10-24)
+
+The post-178 audit rotation, its rotation trigger THE OWNER'S NEWEST
+COMMITS `eebf8dc` (the merge of the external session-178 walk51 ship —
+the topbar search focus + settings segmented-active walk — into main).
+A local twin of the s178 round had raced the external ship on this
+workspace (the same walk51 subject from the session-378 close, the same
+2735→2740 ladder, the same decode conclusions); the twin YIELDED to the
+shipped remote per the house single-layer doctrine (git reset to
+`eebf8dc`; the local commit discarded — merging the two would have
+doubled every s178 documentation layer), and this round re-based onto
+the shipped state as **session-179**. The s379 close's first-named
+candidate: "the remaining unwalked focus faces (the s129 close's own
+never-censused list — the pill-tab focus states on the reports family)";
+probe:ref STABLE (`46bc2d9c`) kills the fresh-bundle candidate, the
+registry's `latest` 3.10.1 kills the recharts 4.0 gate. The baseline
+gate GREEN at the exact s178 ship state: lint 0/0 · tsc 0 ·
+**138/2740** · census MATCH — zero live defects.
+
+**The walk** (`scripts/walk52-pill-focus-active.ts` — the two-app
+computed ledger of the PILL family's focus + active faces at BOTH axes
+(1440×900 + 390×844): the REAL keyboard Tab drive (Tab from a known
+origin until a tab trigger holds focus — focus-visible fires only under
+real keyboard focus, which no sweep drives) + the effective-layer
+box-shadow alignment (the zero-width v4 variable-chain layers never
+enter it) + the REAL tab switch): **ZERO LIVE DEFECTS** — the FOCUSED
+pill trigger's ring byte-equal on BOTH axes (`rgb(255,255,255) 0 0 0
+2px` [the ring-offset-2 halo] + `rgb(10,10,10) 0 0 0 4px` [the ring-2]
++ the active bare-shadow pair — the ring-2+offset-2 focus-visible form
+computes IDENTICALLY on both apps) · the pill interior geometry
+byte-equal at zero-data (x=293/515/737/959/1181 · w=222 · h=28 — the
+five columns pixel-exact) · the switched active face byte-equal +
+the post-interaction roving tabindex=0 on BOTH apps (the walk51 decode
+re-confirmed on the pill family). The genera: F-129c1's
+ring-offset-background retirement · the token-selection genus · the
+class-order genus · the outline VERSION FORM (the s178-documented genus
+re-met: ours v4 `none` vs the reference's v3-era `2px solid
+transparent`, both zero-visual) · the **DATA-STATE genus** (the
+seeded-vs-zero 32px page offset above the reports tab bar — the pill
+interior itself byte-equal at zero-data, verified live via
+`scripts/zero-data.ts`; the sweep's own pairing doctrine).
+
+**The TDD ledger**: 4 born-green pins — the contract-freeze family (the
+s173 P-p/P-q precedent): the walk52 decode freeze (the tool's own
+contract) · the TABS_PILL.trigger FULL-string freeze (the ring-2 +
+offset-2 form's class carrier) · the TABS_PILL.track FULL-string freeze
+(the responsive grid-cols-2/lg:grid-cols-5 form) · the data-state genus
+pin (the zero-data pairing discipline). **MUTATION-PROOF**: the planted
+ring-2→ring-1 regression → exactly 1 RED → restored → GREEN.
+**STASH-PROOF**: the round's test file stashed → exactly **138/2740**
+(the s178 ship state) → restored → **138/2744**.
+
+**The count ladder**: 2740 → **2744** (+4, all in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138 HELD ·
+E2E 192 HELD · badge 2932 → **2936** (count-ladder-179.py: 23 flips,
+assert-first, idempotent — the re-run a verified 0-flip no-op). The
+collateral re-anchors: the SKILL §5.6 census checks 217 → 221 (the
+module line count 1695 HELD — page-layout.ts untouched this round) ·
+the F-106a1 layer-axis pin (the s179 layer live, the s178 layer demoted
+beneath it at 2740/192).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2744** unit · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
+MATCH · probe:ref STABLE · the walk52 focus ring byte-equal on both
+axes.

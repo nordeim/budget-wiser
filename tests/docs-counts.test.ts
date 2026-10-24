@@ -728,7 +728,18 @@ const SUITES = 138;
 // standing-script existence freeze]). SUITES 138 HELD (the one-suite
 // doctrine) · E2E 192 HELD (the round is test-only — no product code
 // touched).
-const UNIT = 2740;
+// Session-178: 2740 -> 2744 (+5 — THE TOPBAR SEARCH FOCUS +
+// SETTINGS SEGMENTED-ACTIVE WALK [walk52 — the s179 battery in tests/page-layout.test.ts — the born-green the session-179 battery
+// in tests/page-layout.test.ts, all five the born-green contract-
+// freeze form over the zero-defect decode, the s173 P-p/P-q
+// precedent [the search focus contract — the 1px keyboard-only ring
+// + no ring-offset · the search aria-label superset · the segmented
+// active contract — the s125 bg-white literal + the s129 retired
+// offset re-verified · the roving tabindex superset · the walk51
+// standing-script existence freeze]). SUITES 138 HELD (the one-suite
+// doctrine) · E2E 192 HELD (the round is test-only — no product code
+// touched).
+const UNIT = 2744;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1193,13 +1204,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-178 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-179 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s177 layer now beneath the s178 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s178 layer now beneath the s179 head)",
     ).toContain(
-      "+ beneath it 2735 unit checks + 192 e2e checks green; the session-177 layer (THE DRAWER INTERIOR RE-WALK",
+      "+ beneath it 2740 unit checks + 192 e2e checks green; the session-178 layer (THE TOPBAR SEARCH FOCUS",
     );
   });
 
@@ -1499,8 +1510,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // at 1695 — the round is test-only; the 5 new decode-freeze pins,
     // 212→217).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 212 checks");
+    // Session-179: the retired 217 form joins the negatives ladder (the
+    // walk52 pill-focus round: the session-179 battery +4 born-green
+    // pins, the checks 217->221; the MODULE line count 1695 HELD —
+    // page-layout.ts untouched this round).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 217 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 217 checks",
+      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 221 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");

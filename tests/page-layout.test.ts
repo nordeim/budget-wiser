@@ -2921,3 +2921,89 @@ describe("session-178: the topbar search focus + settings segmented-active walk 
     expect(src).toContain("PHASE B: the settings segmented active state");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-179 (walk52 — THE REPORTS PILL-TAB FOCUS-STATE INTERIOR RE-WALK,
+// the s129 close's own never-censused list ["the pill-tab surfaces' focus
+// states never live-censused"], named first by the session-379 close):
+// the two-app computed ledger of the PILL family's focus + active faces —
+// the external s178 walked the SEGMENTED family's active face (settings);
+// the PILL family (reports) is the remaining blank, the same ADR-022
+// doctrine, the family's own turn.
+//
+// THE VERDICT: ZERO live defects — the FOCUSED pill trigger's ring
+// byte-equal on BOTH axes (rgb(255,255,255) 0 0 0 2px [the ring-offset-2
+// halo] + rgb(10,10,10) 0 0 0 4px [the ring-2] + the active bare-shadow
+// pair — the ring-2+offset-2 focus-visible form computes IDENTICALLY on
+// both apps, desktop AND phone); the pill interior geometry byte-equal
+// at zero-data (x=293/515/737/959/1181 · w=222 · h=28 — the five columns
+// pixel-exact); the switched active face byte-equal (Pipeline & Forecast
+// + the post-interaction roving tabindex=0 on BOTH apps — the REF's
+// [-1,-1,-1] is its INITIAL render, walk51's decode re-confirmed on the
+// pill family). The genera: F-129c1's ring-offset-background retirement
+// (the reference's own stock class still carries it — its ride computes
+// #ffffff) · the token-selection genus (text-muted-ink vs
+// text-muted-foreground — computed-equal) · the class-order genus · the
+// outline VERSION FORM (ours v4 `none` vs the reference's v3-era
+// `2px solid transparent` — both zero-visual, the s178-documented genus)
+// · the DATA-STATE genus (the seeded-vs-zero page offset: ours-seeded
+// renders the reports KPI/chart stack 32px taller above the tab bar —
+// the pill interior geometry itself byte-equal at zero-data, the sweep's
+// own zero-data pairing the standing proof).
+//
+// The battery below is the born-green contract-freeze form (the s173
+// P-p/P-q precedent over working code — the walk surfaced no defect to
+// cure, so the pins freeze the walk-proven contracts whole).
+// ---------------------------------------------------------------------------
+describe("session-179: the reports pill-tab focus-state interior re-walk (walk52 — the focus ring byte-equal on both axes, zero live defects)", () => {
+  it("the walk52 decode freeze — the REAL keyboard Tab drive + the effective-layer alignment + the zero-data phased form (the tool's own contract)", () => {
+    const src = read("scripts/walk52-pill-focus-active.ts");
+    // the REAL keyboard focus (the walk51 form): Tab from a known
+    // origin until a tab trigger holds focus — focus-visible fires
+    // only under real keyboard focus, which no sweep drives
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain('el.getAttribute("role") === "tab"');
+    // the effective-layer alignment — the zero-width v4 variable-chain
+    // layers never enter the comparison
+    expect(src).toMatch(/0px 0px 0px 0px/);
+    // the REAL tab switch — the active face's move is part of the walk
+    expect(src).toContain(`page.locator('[role="tab"]').nth(1).click()`);
+    // BOTH axes — the pill track is responsive (grid-cols-2 below lg)
+    expect(src).toContain('["desktop", 1440, 900]');
+    expect(src).toContain('["phone", 390, 844]');
+  });
+
+  it("the pill focus face — TABS_PILL.trigger stays the walk52-proven ring-2 + offset-2 form (the two-app byte-equal layer's class carrier)", () => {
+    // walk52's computed proof: the focused ring is EXACTLY the
+    // ring-offset-2 white halo + the ring-2 near-black ring + the active
+    // bare-shadow pair on both apps. The FULL-string freeze — any token
+    // swap, class-order drift, or variant-arm change REDs here (the
+    // existing pins are fragment-containment; this is the whole form).
+    expect(TABS_PILL.trigger).toBe(
+      "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow text-xs sm:text-sm data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700",
+    );
+  });
+
+  it("the pill track — the FULL-string freeze (the responsive grid-cols-2/lg:grid-cols-5 form, the computed-equal token family)", () => {
+    // walk52: the track's computed bg/color byte-equal on both axes
+    // (text-muted-ink computing the reference's muted-foreground); the
+    // responsive pair grid-cols-2 lg:grid-cols-5 IS the track's own face
+    // (the phone axis proves the 2-column arm, desktop the 5-column).
+    expect(TABS_PILL.track).toBe(
+      "items-center justify-center rounded-lg p-1 text-muted-ink grid w-full grid-cols-2 lg:grid-cols-5 h-auto bg-white border border-line",
+    );
+  });
+
+  it("the data-state genus pin — the walk's own pairing discipline (the zero-data PASS is the two-app form; the seeded face is ours-only)", () => {
+    // The walk's decode: the seeded-vs-zero page offset (32px above the
+    // reports tab bar) is a DATA-STATE genus, never a pill defect — the
+    // pill interior geometry is byte-equal at zero-data. The phased
+    // form (zero-data PASS for the two-app alignment) is the sweep's
+    // own doctrine (scripts/zero-data.ts, the s91 tool) — pinned here
+    // as the walk's standing pairing discipline.
+    const src = read("scripts/walk52-pill-focus-active.ts");
+    expect(src).toContain("zero-data");
+    const zero = read("scripts/zero-data.ts");
+    expect(zero.length).toBeGreaterThan(0);
+  });
+});
