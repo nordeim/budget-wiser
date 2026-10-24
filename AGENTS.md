@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2750 checks)      | `bun run test`                         |
+|  Unit tests (2754 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2750) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2754) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -10271,3 +10271,114 @@ this round's commit.
 type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
 MATCH · probe:ref STABLE · the walk53 OPEN spines byte-equal on both
 axes.
+
+### Session-181 — THE DIALOG-SURFACE FOCUS-STATE INTERIOR WALK (walk54) (2026-10-24)
+
+The post-180 audit rotation, its rotation trigger THE OWNER'S NEWEST
+COMMITS (`b8e740d`/`c4a5c4e` — the session_383 transcript [the s180
+round's own execution record] + the merge `144f2dd`). The s380 close's
+remaining named candidate: "the dialog-surface focus faces" (the s379
+close's own third arm — walk53 consumed the dropdown/select OPEN arm,
+walk54 takes the dialog family's focus interior). probe:ref STABLE
+(`46bc2d9c`) kills the fresh-bundle candidate; the registry's `latest`
+3.10.1 (verified live against registry.npmjs.org) kills the recharts
+4.0 gate. The baseline gate GREEN at the exact s180 ship state on a
+FRESH CLONE: lint 0/0 · tsc 0 · **138/2750** · build (the type-gate
+artifact) · smoke **14/14** · e2e **192/192** (clean first run) ·
+probe:ref STABLE · the mobile drawer battery GREEN at 390×844 (all
+stages: trigger · OPEN focus-trap + dual scroll lock · NAV-CLOSE ·
+ESC-CLOSE · REOPEN-BEFORE-GROW · RESIZE-PAST-MD release) · the desktop
++ phone drift sweeps CLEAN · db census MATCH · sitemap 11 routes +
+robots + manifest 200.
+
+**The walk** (`scripts/walk54-dialog-focus-interior.ts` — the walk50
+ledger form over the New Lead dialog's OPEN + FOCUS states at BOTH
+axes [1440×900 + 390×844]: Phase A the OPEN spine — the 51-row DFS
+ledger of `[role="dialog"][data-state="open"]` (the D-112a4 rule) +
+the computed faces of the overlay/content/title/close-X/inputs/footer
+RESTING; Phase B the REAL keyboard Tab drive — 10 stops from the
+mount-focused first input through the whole focusable chain (5 inputs
+· Status · Source · Cancel · Create Lead · the close X) with each
+stop's FOCUSED face censused, then the wrap past the last focusable
+[the Radix focus-trap cycle]): **ZERO LIVE DEFECTS** — the 51-row
+spine byte-equal on both axes (identical tag census: 12 div · 8
+option · 7 label · 5 input · 5 button · 4 path · 3 span · 3 svg · 2
+select · 1 h2 · 1 form; ZERO box deltas); the Tab chain
+position-identical on every stop (ld-email → phone → company → value
+→ Status(New) → Source(Email) → Cancel → Create Lead → Close → WRAP
+to ld-name on both apps); the mount-focus on the first input with
+`:focus-visible` TRUE on both (Radix's programmatic mount focus
+paints the ring); every VISIBLE focus face byte-equal — the inputs'/
+triggers'/Cancel's ring `rgb(10,10,10) 0px 0px 0px 1px` + the
+shadow-sm layer, the submit's ring + its shadow pair, and the close
+X's DOUBLE ring `rgb(255,255,255) 0px 0px 0px 2px` +
+`rgb(10,10,10) 0px 0px 0px 4px` (the ring-2 + ring-offset-2 form) —
+on BOTH axes. The genera: the outline VERSION FORM (s178, re-met on
+every dialog face + the alpha-color carrier sub-form) · the box-shadow
+SLOT-COUNT genus (3-vs-1 on the input ring, 4-vs-2 on the content,
+2-vs-0 on the close-X double ring — every VISIBLE layer byte-equal) ·
+the v4 color-serialization genus (the overlay's bg-black/80 computing
+`oklab(0 0 0 / 0.8)` vs `rgba(0,0,0,0.8)` — the SAME visual color,
+the s28 canvas-readback precedent) · the token-selection genus
+(computed-equal on every face) · the class-order genus · the space-y
+margin-BOTTOM family (our `mt-2 mb-0` explicit margins vs the
+v3-era's implicit — computed geometry byte-equal) · the s133
+placeholderState retirement (the reference's trigger still carries
+`data-[placeholder]:text-muted-foreground`) · the F-129c1
+ring-offset-background retirement (the reference's close X still
+carries it — its ride computes #fff on both) · the id-name superset
+(our `ld-` prefixes) · our aria-label supersets (the Status/Source
+triggers) · the React useId format genus · lucide's aria-hidden
+version genus. **THE WALK'S OWN DISCOVERY (the NEW genus)**: the
+DANGLING `aria-describedby` — the reference's OPEN dialog declares
+`aria-describedby="radix-:r8:"` pointing at a NON-EXISTENT node (its
+own platform's dead pointer, live-probed: "NO SUCH ELEMENT"); OURS
+carries no attribute at all (the clean form — the s15-P4
+no-description doctrine; a dangling ARIA reference is the reference's
+own defect, NOT mirrored per the s23 platform-defect precedent).
+
+**The TDD ledger**: 4 born-green pins — the contract-freeze family
+(the s173 P-p/P-q precedent): the walk54 decode freeze (the tool's
+own contract, incl. the D-112a4 root rule and the overlay-selector
+finding — the portal mounts overlay + content as BODY-level
+siblings, `[data-radix-dialog-overlay]` matches nothing on either
+app) · the DIALOG_CONTENT.base FULL-string freeze (over the s15
+fragment pins) · the DIALOG_CLOSE FULL-string freeze (the focused
+DOUBLE-ring carrier, over the s15/s112 fragment pins) · the
+DIALOG_OVERLAY FULL-string freeze (the oklab/rgba serialization
+genus's class carrier). **MUTATION-PROOF**: the planted
+`focus:ring-offset-2` → `focus:ring-offset-4` regression → **exactly
+1 RED** (the full-string pin's unique teeth — the offset arm no
+fragment pin holds) → restored → GREEN. **STASH-PROOF**: the round's
+test file stashed → exactly **138/2750** (the s180 ship state) →
+restored → **138/2754**.
+
+**The count ladder**: 2750 → **2754** (+4, all in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138
+HELD · E2E 192 HELD (the round is test-only — NO product code
+touched) · badge 2942 → **2946** (count-ladder-181.py: 23 flips,
+assert-first, idempotent). The collateral re-anchors: the SKILL §5.6
+census checks 226 → 230 (the module line count 1695 HELD —
+page-layout.ts untouched) · the F-106a1 layer-axis pin (the s181
+layer live, the s180 layer demoted beneath it at 2750/192).
+
+**The operator's round-shaped asks, all verified standing** (the
+session record's own ledger): the `.env` DATABASE_URL
+`file:../db/custom.db` with the `db/` folder at the repo root (census
+MATCH at `<repo>/db/custom.db` — the ambient `DATABASE_URL` shadow
+scrubbed with `env -u` on every DB-touching command, the F-123a1
+doctrine) · the vitest + playwright config files verified standing
+(138/2754 unit + 192/192 e2e this session — no config churn) · the
+sitemap + SEO surface re-verified (the 11-route sitemap.xml +
+robots.txt with the Sitemap line + the installable manifest.json —
+smoke check 12 carries the 200s) · the mobile-nav comparison
+re-verified (the drawer battery GREEN + probe:ref TRUE-390 STANDING)
+· the Tailwind v4 state clean (no new v4 hazard; the walk's every
+delta decoded against the standing genus register) · the
+`.env.example` verified against the six-knob contract and included in
+this round's commit.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2754** unit · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
+MATCH · probe:ref STABLE · the walk54 focus faces byte-equal on both
+axes · the captures both pairs 0.00%.

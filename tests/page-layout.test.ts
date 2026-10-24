@@ -3140,3 +3140,140 @@ describe("session-180: the dropdown/select OPEN-state interior walk (walk53 — 
     );
   });
 });
+
+// session-181: THE DIALOG-SURFACE FOCUS-STATE INTERIOR WALK (walk54)
+//
+// The post-180 audit rotation (its trigger THE OWNER'S NEWEST COMMITS —
+// the session_383 transcript, the s180 round's own execution record;
+// the s380 close's remaining named candidate: "the dialog-surface
+// focus faces" — the s379 close's own third arm). probe:ref STABLE
+// (46bc2d9c) killed the fresh-bundle candidate; the registry's latest
+// 3.10.1 killed the recharts 4.0 gate.
+//
+// THE WALK [scripts/walk54-dialog-focus-interior.ts — the walk50
+// ledger form over the New Lead dialog's OPEN + FOCUS states at BOTH
+// axes (1440x900 + 390x844): Phase A the OPEN spine (the 51-row DFS
+// ledger of [role="dialog"][data-state="open"] — the D-112a4 rule)
+// + the computed faces of the overlay/content/title/close-X/inputs/
+// footer RESTING, Phase B the REAL keyboard Tab drive — 10 stops from
+// the mount-focused first input through the whole focusable chain
+// (5 inputs · Status · Source · Cancel · Create Lead · the close X)
+// with each stop's FOCUSED face censused, then the wrap past the last
+// focusable (the Radix focus-trap cycle)].
+//
+// THE VERDICT: ZERO LIVE DEFECTS — the 51-row spine byte-equal on
+// both axes (identical tag census: 12 div · 8 option · 7 label ·
+// 5 input · 5 button · 4 path · 3 span · 3 svg · 2 select · 1 h2 ·
+// 1 form; ZERO box deltas); the Tab chain position-identical on every
+// stop (ld-email → phone → company → value → Status(New) →
+// Source(Email) → Cancel → Create Lead → Close → WRAP to ld-name on
+// both apps); the mount-focus on the first input with :focus-visible
+// TRUE on both (Radix's programmatic mount focus paints the ring);
+// every VISIBLE focus face byte-equal — the inputs'/triggers'/
+// Cancel's ring rgb(10,10,10) 0px 0px 0px 1px + the shadow-sm layer,
+// the submit's ring + its shadow pair, and the close X's DOUBLE ring
+// rgb(255,255,255) 0px 0px 0px 2px + rgb(10,10,10) 0px 0px 0px 4px
+// (the ring-2 + ring-offset-2 form) — on BOTH axes. The genera: the
+// outline VERSION FORM (s178, re-met on every dialog face + the
+// alpha-color carrier sub-form: OURS 3px none rgb(10,10,10) vs the
+// reference's 3px none rgba(10,10,10,0.5) — style none paints ZERO
+// pixels on both; the inputs' 1px none vs 2px solid transparent the
+// s178 fingerprint) · the box-shadow SLOT-COUNT genus (v4's extra
+// transparent zero-extent slots: 3-vs-1 on the input ring, 4-vs-2 on
+// the content, 2-vs-0 on the close-X double ring — every VISIBLE
+// layer byte-equal) · the v4 color-serialization genus (the overlay's
+// bg-black/80 computing oklab(0 0 0 / 0.8) vs rgba(0,0,0,0.8) — the
+// SAME visual color, the s28 canvas-readback precedent) · the
+// token-selection genus (the content's border-line/bg-surface vs
+// border/bg-background, the inputs' border-line/text-ink/
+// placeholder:text-muted-ink vs border-input/placeholder:
+// text-muted-foreground, the Cancel's border-line/bg-surface/
+// hover:bg-line-soft vs border-input/bg-background/hover:bg-accent,
+// the submit's bg-neutral-900/text-neutral-50 vs bg-primary/
+// text-primary-foreground — computed-equal on every face) · the
+// class-order genus (max-w-lg mid-string vs tail) · the space-y
+// margin-BOTTOM family (our mt-2 mb-0 explicit margins vs the
+// v3-era's implicit — computed geometry byte-equal) · the s133
+// placeholderState retirement (the reference's trigger still carries
+// data-[placeholder]:text-muted-foreground) · the F-129c1
+// ring-offset-background retirement (the reference's close X still
+// carries it — its ride computes #fff on both) · the id-name superset
+// (our ld- prefixes) · our aria-label supersets (the Status/Source
+// triggers) · the React useId format genus (radix-_R_* vs radix-:r*:)
+// · lucide's aria-hidden version genus (the X svg).
+//
+// THE WALK'S OWN DISCOVERY (the NEW genus): the DANGLING
+// aria-describedby — the reference's OPEN dialog declares
+// aria-describedby="radix-:r8:" pointing at a NON-EXISTENT node (its
+// own platform's dead pointer, live-probed: "NO SUCH ELEMENT"); OURS
+// carries no attribute at all (the clean form — the s15-P4
+// no-description doctrine; a dangling ARIA reference is the
+// reference's own defect, NOT mirrored per the s23 platform-defect
+// precedent). Documented here + inside the walk's decode comments.
+// ---------------------------------------------------------------------------
+describe("session-181: the dialog-surface focus-state interior walk (walk54 — the focus faces byte-equal on both axes, zero live defects)", () => {
+  it("the walk54 decode freeze — the two-app dialog focus ledger + the REAL keyboard Tab drive + the D-112a4 root rule (the tool's own contract)", () => {
+    const src = read("scripts/walk54-dialog-focus-interior.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // the OPEN dialog root — the D-112a4 rule (our permanently-mounted
+    // mobile-nav drawer carries role="dialog" with no data-state)
+    expect(src).toContain(`'[role="dialog"][data-state="open"]'`);
+    // the overlay: the ONE non-dialog [data-state=open] node (the
+    // decode probe's finding — the portal mounts overlay + content as
+    // BODY-level siblings; [data-radix-dialog-overlay] matches nothing)
+    expect(src).toContain(`'[data-state="open"]:not([role="dialog"])'`);
+    // the REAL keyboard Tab drive (the walk51 form): focus-visible
+    // fires only under real keyboard focus, which no sweep drives
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    // the Tab-chain census: 10 stops + the wrap past the last focusable
+    // (the Radix focus-trap cycle — stop 10 IS the wrap to ld-name)
+    expect(src).toContain("tabStops");
+    expect(src).toContain("wrapFocus");
+    expect(src).toContain("matchesFocusVisible");
+    // BOTH axes — the family's full-bleed phone form is the s15/s112
+    // geometry; the focus interior was never walked at either
+    expect(src).toContain("[1440, 900]");
+    expect(src).toContain("[390, 844]");
+    // the mount-focus census (the s112 D1 decode) + the mount face
+    expect(src).toContain("mountFocus");
+    expect(src).toContain("mountFace");
+  });
+
+  it("the dialog content — DIALOG_CONTENT stays the walk54-proven OPEN face (the full-string freeze over the s15 fragment pins)", () => {
+    // walk54's computed proof: the OPEN dialog content's bg/color/
+    // border/radius byte-equal on both axes (bg-surface computing the
+    // reference's bg-background white; border-line its bare border
+    // #e5e5e5) + the VISIBLE shadow-lg layers byte-equal behind the v4
+    // slot-count genus. The FULL-string freeze — any token swap,
+    // class-order drift, or animation-arm change REDs here.
+    expect(DIALOG_CONTENT.base).toBe(
+      "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-line bg-surface p-6 shadow-lg outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+    );
+  });
+
+  it("the close X — DIALOG_CLOSE stays the walk54-proven focused DOUBLE-ring face (the full-string freeze over the s15/s112 fragment pins)", () => {
+    // walk54's computed proof: the REAL-keyboard-focused close X
+    // computes the DOUBLE ring on both apps — rgb(255,255,255)
+    // 0px 0px 0px 2px + rgb(10,10,10) 0px 0px 0px 4px (the ring-2 +
+    // ring-offset-2 form) — behind the v4 slot-count genus (our 2
+    // extra transparent zero-extent slots). The full-string freeze
+    // pins the whole carrier, the focus-ring arm included.
+    expect(DIALOG_CLOSE).toBe(
+      "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
+    );
+  });
+
+  it("the overlay — DIALOG_OVERLAY stays the walk54-proven OPEN face (the full-string freeze; the oklab/rgba serialization genus's class carrier)", () => {
+    // walk54's computed proof: the overlay's class byte-equal on both
+    // apps (fixed inset-0 z-50 bg-black/80 + the fade animations) at
+    // 0,0 full-viewport on both axes; the bg computes oklab(0 0 0 /
+    // 0.8) on our v4 vs rgba(0,0,0,0.8) on the reference's v3-era —
+    // the SAME visual color (the s28 canvas-readback precedent). The
+    // full-string freeze pins the carrier the serialization rides on.
+    expect(DIALOG_OVERLAY).toBe(
+      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+    );
+  });
+});

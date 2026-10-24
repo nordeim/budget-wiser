@@ -773,7 +773,16 @@ const SUITES = 138;
 // the single-layer-doctrine violation, cured by the dedupe)].
 // SUITES 138 HELD (the one-suite doctrine) · E2E 192 HELD (the
 // round is test-only — no product code touched).
-const UNIT = 2750;
+// Session-181: 2750 -> 2754 (+4 — THE DIALOG-SURFACE FOCUS-STATE
+// INTERIOR WALK [walk54 — the s181 battery in
+// tests/page-layout.test.ts, all four the born-green contract-
+// freeze form over the zero-defect decode, the s173 P-p/P-q
+// precedent: the walk54 decode freeze · the DIALOG_CONTENT.base
+// FULL-string freeze · the DIALOG_CLOSE FULL-string freeze ·
+// the DIALOG_OVERLAY FULL-string freeze]. SUITES 138 HELD (the
+// one-suite doctrine) · E2E 192 HELD (the round is test-only —
+// no product code touched).
+const UNIT = 2754;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1238,13 +1247,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-180 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-181 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s179 layer now beneath the s180 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s180 layer now beneath the s181 head)",
     ).toContain(
-      "+ beneath it 2744 unit checks + 192 e2e checks green; the session-179 layer (THE REPORTS PILL-TAB FOCUS",
+      "+ beneath it 2750 unit checks + 192 e2e checks green; the session-180 layer (THE DROPDOWN/SELECT OPEN-STATE",
     );
   });
 
@@ -1554,8 +1563,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // +5 born-green pins, the checks 221->226; the MODULE line count
     // 1695 HELD — page-layout.ts untouched this round).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 221 checks");
+    // Session-181: the retired 226 form joins the negatives ladder (the
+    // walk54 dialog-focus round: the session-181 battery +4 born-green
+    // pins, the checks 226->230; the MODULE line count 1695 HELD —
+    // page-layout.ts untouched this round).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 226 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 226 checks",
+      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 230 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");
