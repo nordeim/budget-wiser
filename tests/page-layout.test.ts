@@ -2830,3 +2830,94 @@ describe("session-148: the F-147c3 constants retirement (the delta-chip family +
     expect(block).not.toMatch(/densityOptions:/);
   });
 });
+
+
+// ---------------------------------------------------------------------------
+// Session-178 (walk51 — THE TOPBAR SEARCH FOCUS + SETTINGS SEGMENTED-ACTIVE
+// WALK, the s177 close's two oldest unwalked OPEN/ACTIVE interiors,
+// adjudicated per ADR-022): the two-app element-ledger + computed-census
+// decode found ZERO live defects — every delta a documented genus or a
+// kept superset, every VISIBLE face byte-equal. The decode's register:
+// (a) the search focus face — both apps' FOCUSED input paints the same
+//     1px near-black box-shadow ring (rgb(10,10,10) 0px 0px 0px 1px —
+//     live-censused under REAL keyboard Tab focus, 9 tabs on both apps,
+//     the same placeholder locator) over the same resting shadow
+//     (rgba(0,0,0,0.05) 0px 1px 2px 0px — the s9 re-pin);
+// (b) THE NEW DOCUMENTED GENUS — v4's outline-none is outline-style:none
+//     where the reference's v3-era outline-none is 2px solid transparent:
+//     OURS paints nothing (style none), the REFERENCE paints nothing
+//     visible (transparent) — zero pixels on both, but the computed
+//     outline triplet diverges (1px/none vs 2px/solid) — the
+//     shadow/blur/space-y rename family's fourth member;
+// (c) the box-shadow SLOT-COUNT genus — v4 composes 5 slots
+//     (inset-shadow, inset-ring, ring-offset, ring, shadow) where the
+//     v3-era composes 3: the extra OURS slots are fully transparent, the
+//     reference's zero-extent white slot (rgb(255,255,255) 0px 0px 0px
+//     0px) is clipped inside the border box — the VISIBLE layers
+//     byte-equal in every state (resting · focused · active);
+// (d) the segmented active face — the s125 bg-white literal + the s129
+//     retired ring-offset re-verified live: the active pill computes
+//     rgb(255,255,255) + the bare-shadow pair + ink rgb(10,10,10) +
+//     weight 500, byte-equal on both apps at BOTH viewports (371px
+//     desktop columns · 117px phone columns), the tablist's computed
+//     bg/color byte-equal (the house token idiom bg-line-soft/
+//     text-muted-ink vs the reference's bg-muted/text-muted-foreground);
+// (e) OUR kept supersets re-verified live — the search input's
+//     aria-label (the reference's field carries NONE) and the roving
+//     tabindex (OURS [0,-1,-1] at default where the reference's is
+//     [-1,-1,-1] — the s23 accessible fix over its keyboard-unreachable
+//     platform defect).
+// The pins are the decode's contract freeze — born-green over the
+// working code (the s173 P-p/P-q precedent), mutation-proven at birth.
+describe("session-178: the topbar search focus + settings segmented-active walk (walk51 — the zero-defect decode freeze)", () => {
+  it("the search focus contract — the 1px near-black keyboard-only ring, NO ring-offset (the walk's focused face byte-equal)", () => {
+    // the walk's Phase A: REAL keyboard Tab focus on both apps paints
+    // the identical 1px near-black ring + the identical resting shadow.
+    expect(INPUT_BASE.focusRing).toBe(
+      "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+    );
+    // no ring-offset class — no offset-color divergence is constructible
+    // on this surface (the s129 F-129c1 genus cannot recur here)
+    expect(INPUT_BASE.focusRing).not.toContain("ring-offset");
+    expect(SEARCH_INPUT.extras).toBe("pl-10 bg-gray-50 border-gray-200");
+    expect(SEARCH_INPUT.usesStockInput).toBe(true);
+  });
+
+  it("the search aria-label superset — OUR accessible fix over the reference's unnamed field (the walk: REF carries NO aria-label)", () => {
+    const src = read("src/components/layout/topbar.tsx");
+    expect(src).toContain(
+      'aria-label="Search accounts, contacts and leads"',
+    );
+    // the s10 placeholder decode — the locator that found BOTH apps
+    expect(src).toContain('placeholder="Search Anything..."');
+  });
+
+  it("the segmented active contract — the s125 bg-white literal + the s129 retired offset, re-verified byte-equal at the walk (both viewports)", () => {
+    expect(TABS_SEGMENTED.trigger).toContain("data-[state=active]:bg-white");
+    expect(TABS_SEGMENTED.trigger).toContain("data-[state=active]:shadow");
+    expect(TABS_SEGMENTED.trigger).toContain(
+      "data-[state=active]:text-foreground",
+    );
+    // the s129 retirement stands — the reference's own stock class still
+    // carries ring-offset-background (its ride computes #ffffff); OUR
+    // --color-background is the page bg #f9fafb — the class stays retired
+    expect(TABS_SEGMENTED.trigger).not.toContain("ring-offset-background");
+    // the track's house token idiom — computed-equal live (the walk's
+    // tablist census: bg/color byte-equal on both apps)
+    expect(TABS_SEGMENTED.track).toContain("bg-line-soft");
+    expect(TABS_SEGMENTED.track).toContain("text-muted-ink");
+    expect(TABS_SEGMENTED.track).toContain("h-9");
+    expect(TABS_SEGMENTED.track).toContain("grid w-full");
+  });
+
+  it("the roving tabindex superset — the s23 accessible fix, re-verified live (OURS [0,-1,-1] default; REF [-1,-1,-1] — its platform defect)", () => {
+    const src = read("src/components/ui/tabs.tsx");
+    expect(src).toContain("tabIndex={isActive ? 0 : -1}");
+  });
+
+  it("the walk51 standing script exists (the ADR-022 re-walk tool — re-runnable the day probe:ref trips)", () => {
+    const src = read("scripts/walk51-search-focus-segmented-active.ts");
+    expect(src).toContain("PHASE A: the topbar search focus state");
+    expect(src).toContain("PHASE B: the settings segmented active state");
+  });
+});

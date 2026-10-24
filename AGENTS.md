@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2735 checks)      | `bun run test`                         |
+|  Unit tests (2740 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2735) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2740) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -130,7 +130,17 @@ bun run db:seed && bun run dev`. Demo login: `sepnetflix2023@outlook.com` /
   literal `space-y-2` group class for parity, add an explicit `mt-2` on
   every block-level control (`SETTINGS_DEFAULTS.controlMt` /
   `SETTINGS_DANGER.controlMt`) — the reference's label-top-to-control-top
-  distance is 28px on both apps after the fix. The reference's global stylesheet also ships
+  distance is 28px on both apps after the fix. **Session-178 (walk51)
+  decoded the family's fourth member: v4's `outline-none` is
+  `outline-style: none`** where the reference's v3-era `outline-none` is
+  `outline: 2px solid transparent` — OURS paints nothing (style none),
+  the reference paints nothing visible (transparent), so every
+  `focus-visible:outline-none` surface shows zero outline pixels on BOTH
+  apps and the computed outline triplet (1px/none vs 2px/solid) is the
+  genus's own fingerprint, never a defect claim; the VISIBLE focus face
+  rides the box-shadow ring on both (the search input's 1px near-black
+  `rgb(10,10,10)` ring, byte-equal two-app under REAL keyboard focus).
+  The reference's global stylesheet also ships
   `button, [role="button"] { cursor: pointer; }` — mirrored in our base
   layer (ours computed the arrow cursor before session-10).
 - **Stock-primitive inks (session-10)**: the reference's stock Input/Select
@@ -9971,3 +9981,102 @@ the leads-active drawer).
 type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
 MATCH · probe:ref STABLE · the drift gates CLEAN · the drawer battery
 GREEN.
+
+### Session-178 — THE TOPBAR SEARCH FOCUS + SETTINGS SEGMENTED-ACTIVE WALK (walk51) (2026-10-24)
+
+The post-177 audit round, its rotation trigger the s177 close
+(session_377.md): "The next-rotation candidates: the remaining unwalked
+OPEN interiors (… the oldest unwalked OPEN interior is now the topbar
+search focus state + the settings segmented tabs' active state, each
+adjudicated per ADR-022)". The adjudication: probe:ref STABLE
+(`46bc2d9c`, unchanged since s168) kills the fresh-bundle candidate; 4.0
+unreleased kills the recharts gate — the two named interiors ARE the
+round. The workspace re-cloned fresh at `29b7954` (the intake: bun
+install · a fresh AUTH_SECRET · `env -u DATABASE_URL` on every DB command
+· db:push/seed · census MATCH · the environmental playwright
+chromium-1248 install — a fresh-sandbox intake step, not a code defect);
+the baseline gate GREEN at the exact s177 ship state: lint 0/0 · tsc 0 ·
+**138/2735** · build · smoke **14/14** · e2e **192/192** (5.4m) ·
+probe:ref STABLE · the desktop + phone sweeps CLEAN (dashboard 0.01% ·
+reports 0.20% — within the standing floors) · the mobile drawer battery
+GREEN at 390×844 · census MATCH — **zero live defects.**
+
+**The walk** (`scripts/walk51-search-focus-segmented-active.ts` — one
+tool, two phases, the coverage gaps no standing leg carries: the pixel
+sweep sees the topbar's RESTING face only (focus-visible fires under
+REAL keyboard focus, which no sweep drives), the e2e topbar-search
+battery pins the fetch/abort/envelope BEHAVIOR, the s125/s129 cures are
+source-pinned but the ACTIVE-state element ledger was never walked in
+the ADR-022 form): **Phase A** — the search focus state, both apps at
+1440×900, REAL keyboard Tab focus (9 tabs on both apps, the same
+`placeholder="Search Anything..."` locator, `transition-colors` waited
+out): the resting + focused computed census (box-shadow · border · bg ·
+caret · the outline triplet · placeholder · the icon). **Phase B** — the
+settings segmented active state, both apps at 1440×900 AND 390×844, the
+default-active AND the click-activated second tab: the track + all three
+triggers' tag/class/aria/geometry + the active pill's computed
+bg/shadow/ink/weight.
+
+**The decode: ZERO LIVE DEFECTS** — every delta a documented genus or a
+kept superset, every VISIBLE face byte-equal: the resting `shadow-sm`
+re-pin · the focused 1px near-black ring `rgb(10,10,10) 0px 0px 0px
+1px` over the same shadow · the active white pill `rgb(255,255,255)` +
+the bare-shadow pair + ink `rgb(10,10,10)` + weight 500 at BOTH
+viewports (371px desktop / 117px phone columns, byte-equal geometry) ·
+the tablist's computed bg/color byte-equal (the house token idiom
+`bg-line-soft`/`text-muted-ink` computing exactly the reference's
+`bg-muted`/`text-muted-foreground`). **The new documented genus** — v4's
+`outline-none` is `outline-style: none` where the reference's v3-era
+`outline-none` is `2px solid transparent`: OURS paints nothing (style
+none), the REFERENCE paints nothing visible (transparent) — zero pixels
+on both, the shadow/blur/space-y rename family's FOURTH member (the
+focused computed triplet 1px/none vs 2px/solid is the genus's own
+fingerprint). **The box-shadow slot-count genus**: v4 composes 5 slots
+(inset-shadow · inset-ring · ring-offset · ring · shadow) where the
+v3-era composes 3 — the extra OURS slots fully transparent, the
+reference's zero-extent white slot `rgb(255,255,255) 0px 0px 0px 0px`
+clipped inside the border box — the VISIBLE layers byte-equal in every
+state (resting · focused · active). **Our kept supersets re-verified
+live**: the search input's `aria-label="Search accounts, contacts and
+leads"` (the reference's field carries NONE) · the roving tabindex
+(OURS `[0,-1,-1]` at default where the reference's is `[-1,-1,-1]` — the
+s23 accessible fix over its keyboard-unreachable platform defect) · the
+s125 `bg-white` literal + the s129 retired `ring-offset-background`
+(the reference's own stock class still carries it — its ride computes
+`#ffffff`; ours stays retired). **The standing-gate adjudication (the
+plan's §0.3)**: the maiden pass surfaced ZERO unexplained deltas — the
+two interiors join the documented one-time decode register, the standing
+legs (sweeps + e2e + source pins) are adjudicated sufficient, no census
+extension built (the walk tool itself is the standing script, the walk50
+pairing form).
+
+**The TDD ledger**: all 5 pins born-green over the zero-defect decode —
+the s173 P-p/P-q contract-freeze precedent (the search focus contract —
+the 1px keyboard-only ring + no ring-offset · the search aria-label
+superset · the segmented active contract — the s125 literal + the s129
+retirement re-verified · the roving tabindex · the walk51 standing-script
+existence freeze); **MUTATION-PROOFS**: three planted regressions (the
+focus-ring `ring-1`→`ring-2` · the `ring-offset-background` replant ·
+the `tabIndex={isActive ? 0 : -1}` flip) → **exactly 1 RED each** →
+restored → GREEN; **STASH-PROOF**: the round's test file stashed alone →
+exactly **138/2735** (the s177 ship state) → restored → **138/2740**.
+
+**The count ladder**: 2735 → **2740** (+5, all five pins in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138 HELD ·
+E2E 192 HELD (the round is test-only — NO product code touched; the
+standing legs re-verified at the audit leg carry the parity verdict) ·
+badge 2927 → **2932** (count-ladder-178.py: 23 flips, assert-first,
+idempotent — the re-run a verified 0-flip no-op). The collateral
+re-anchors: the SKILL §5.6 census 212 → 217 checks (the module stays
+1695 — untouched) · the docs-counts lockstep + the F-106a1 layer-axis pin
+(the census policing the census).
+
+**The captures**: 449-452 (the two apps' FOCUSED search inputs
+side-by-side at desktop — the parity anchor · the segmented ACTIVE state
+at desktop · the segmented ACTIVE state at phone · the click-activated
+transition face).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2740** unit · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
+MATCH · probe:ref STABLE · the desktop + phone sweeps CLEAN · the drawer
+battery GREEN · the walk51 visible faces byte-equal.
