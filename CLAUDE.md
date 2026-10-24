@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2733) → `bun run build` → `bun run test:e2e` (192) — or the
+   `bun run test` (2735) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -124,7 +124,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2733 checks)            |
+| `bun run test`      | Vitest unit suites (2735 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
@@ -137,7 +137,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2733 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2735 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -363,7 +363,14 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   pinned because the reference app ships NO mobile navigation; includes the
   resize-past-md lock-release regression, the session-12 focus-entry test,
   the s104 ten-route zero-390px-overflow sweep + the s104 drawer-OPEN
-  seeded-state guard), `reports-mobile.spec.ts` (the s105 seeded-state
+  seeded-state guard; session-177 adds the walk50 doctrine — the drawer's
+  OPEN interior is walk-proven byte-equal via
+  `scripts/walk50-drawer-interior.ts`, whose maiden pass caught the 8px
+  header-rhythm defect no standing leg could see: v4's space-y
+  margin-BOTTOM semantics puts the h2's :where() mb-2 IN flow where the
+  reference's v3-era mt-on-the-sr-only-<p> never was — cured with the
+  explicit `mb-0` on MOBILE_NAV_SHEET.title, the M-92c1 phantom-mb
+  precedent, per ADR-022), `reports-mobile.spec.ts` (the s105 seeded-state
   reports-tabs guard — the SECOND surface family walked at phone width:
   the KPI row + the pill tab bar + the 300px charts at 390×844 on the
   SEEDED e2e.db), `settings-mobile.spec.ts` (the s106 seeded-state
@@ -445,7 +452,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2733).
+the seam (currently 2735).
 
 ## Code Quality Standards
 

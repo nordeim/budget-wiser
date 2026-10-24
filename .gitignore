@@ -64,3 +64,4 @@ scripts/sweep-shots/
 # material on disk (the combined pair state); follows the db-binary
 # discipline: git-ignored, 0600, TTL-bounded. NEVER committed.
 scripts/.sweep-auth-state.json
+scripts/walk50/

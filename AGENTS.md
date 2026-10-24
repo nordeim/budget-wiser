@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2733 checks)      | `bun run test`                         |
+|  Unit tests (2735 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2733) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2735) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -9892,4 +9892,82 @@ the sibling's proven line; the canary stream excluded).
 types) · **138/2733** unit · build (the type-gate artifact) · smoke
 **14/14** · e2e **192/192** · db census MATCH (15/24/10/23/12 + 4 users)
 · probe:ref STABLE · the six drift gates CLEAN · the drawer battery
+GREEN.
+
+### Session-177 — THE DRAWER INTERIOR RE-WALK (walk50) (2026-10-24)
+
+The post-176 audit round, its rotation trigger THE OWNER'S NEWEST COMMIT
+`59c8f13` — the session-376 transcript, whose close names it first ("the
+strongest next moves are the drawer interior re-walk, the fresh-bundle
+re-derivation when the reference next ships a new bundle, or the
+recharts 4.0 Cell → shape gate"). The adjudication: probe:ref STABLE
+(`46bc2d9c`, unchanged since s168) kills the fresh-bundle candidate; 4.0
+unreleased (3.10.1 the registry's latest stable) kills the gate
+candidate. The walk is the round — the six-consecutive-closes candidate
+(s171–s176) no round ever ran as its own rotation. The workspace
+re-cloned fresh at `59c8f13` (the intake: bun install · a fresh AUTH_SECRET ·
+`env -u DATABASE_URL` on every DB command · db:push/seed · census MATCH ·
+playwright chromium); the baseline gate GREEN at the exact s176 ship
+state: lint 0/0 · tsc 0 · **138/2733** · build · smoke **14/14** · e2e
+**192/192** (5.7m) · probe:ref STABLE · the desktop + phone sweeps CLEAN
+· the mobile drawer battery GREEN at 390×844 · census MATCH — **zero
+live defects, the register clean of named code-level candidates.**
+
+**The walk** (`scripts/walk50-drawer-interior.ts` — the two-app
+element-ledger of the drawer-OPEN DOM, the coverage gap no standing leg
+carries: the interior census runs zero drawer-open pages, the battery
+pins behavior, the a11y gate violations, the captures visuals): OURS 61
+rows vs REF 53, every delta root-caused against both DOMs —
+**ONE LIVE DEFECT**: the drawer header's space-y-2 riding the v4
+margin-BOTTOM semantics — the h2's `:where()` mb-2 PARTICIPATES in the
+flex-column layout (header 88px) where the reference's v3-era
+mt-on-the-sr-only-`<p>` never did (absolute = out of flow, header 80px)
+— an **8px spine shift cascading to every nav link and the footer
+group** (nav y 88 vs 80 · footer 436 vs 428 · every icon/rect +8),
+present since the s147 re-derivation and never caught because no leg
+ever walked the open drawer's interior. **The cure**: the M-92c1
+phantom-mb precedent — the explicit `mb-0` on `MOBILE_NAV_SHEET.title`
+((0,1,0) beats `:where()`'s (0,0,0)); the header's space-y-2 class
+string stays byte-parity with the reference's while the COMPUTED rhythm
+goes byte-equal (24+32+24 = 80px).
+
+**The adjudicated genera** (each live-decoded, zero visual): the
+`bg-sidebar` token vs the reference's `bg-[#2563eb]` literal —
+computed-equal rgb(37,99,235), the house token idiom · the Close
+button's shadcn stock-version class drift (`bg-accent` +
+`text-muted-foreground` vs `bg-secondary`; `ring-offset-background`
+absent) — BOTH dead variants (Radix Close carries no data-state; the
+computed bg is transparent on both apps, live-probed) · lucide's
+`aria-hidden` — version genus · the React 19 `useId` format —
+structural genus, the pointing relations identical · OUR kept supersets
+re-verified invisible: the focus-visible ring, `aria-current`, the nav
+`aria-label`s, the `span.truncate` label wrapper (the row-count
+difference's root cause: 61−53 = 8 spans), the icon `shrink-0`.
+
+**The post-cure spine** (the walk re-run): header 80/80 · h2 32/32 ·
+all 9 links byte-equal · footer 428/428 — and the two-app drawer-open
+captures **0.02% apart** (the font-rendering floor; the reference's
+Base44 badge closed). **The TDD ledger**: 1 RED face at birth (the
+title mb-0 pin) + 1 born-green (the walk50 decode freeze — the s173
+P-p/P-q precedent); **MUTATION-PROOF**: the planted mb-0 regression →
+exactly 1 RED → restored → GREEN; **STASH-PROOF**: the round's five
+lockstep files stashed → exactly 138/2733 → restored → 138/2735.
+
+**The count ladder**: 2733 → **2735** (+2, both pins in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138 HELD ·
+E2E 192 HELD (the cure is a class-string fix with zero behavioral face;
+the battery re-run GREEN at the walked tree) · badge 2925 → **2927**
+(count-ladder-177.py: 23 flips, assert-first, idempotent — the re-run a
+verified 0-flip no-op). The collateral re-anchors: the PAD §11
+page-layout row 1687 → 1695 · the SKILL §5.6 census 1687/210 → 1695/212
+· the docs-counts lockstep (the census policing the census).
+
+**The captures**: 443 RE-ANCHORED (the post-cure drawer-open standing
+contract, VLM-verified) + 445-448 (the drawer-open post-cure face · the
+reference's own drawer-open parity face · the header wordmark detail ·
+the leads-active drawer).
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2735** unit · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
+MATCH · probe:ref STABLE · the drift gates CLEAN · the drawer battery
 GREEN.

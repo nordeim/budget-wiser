@@ -2611,8 +2611,10 @@ describe("session-147: the mobile-nav parity event (the reference's Sheet drawer
       "flex flex-col space-y-2 text-center sm:text-left p-6",
     );
     // the title: the WORDMARK replaces the BrandMark circle in the
-    // drawer — the h2 the Radix aria-labelledby points at
-    expect(MOBILE_NAV_SHEET.title).toBe("text-left text-2xl font-bold text-white");
+    // drawer — the h2 the Radix aria-labelledby points at. The
+    // s177 re-anchor: the trailing mb-0 (the walk50 phantom-mb cure —
+    // the v4 space-y cure at the title, see the session-177 block)
+    expect(MOBILE_NAV_SHEET.title).toBe("text-left text-2xl font-bold text-white mb-0");
     expect(MOBILE_NAV_SHEET.titleText).toBe("CRM");
     // the description: sr-only on the reference — "Navigate between
     // your CRM pages" never paints
@@ -2695,6 +2697,52 @@ describe("session-147: the mobile-nav parity event (the reference's Sheet drawer
     // the same — its nav links are onClick-closers)
     const navSrc = read("src/components/layout/mobile-nav.tsx");
     expect(navSrc).toMatch(/onNavigate/);
+  });
+});
+
+// Session-177 (walk50 — THE DRAWER INTERIOR RE-WALK, the six-closes
+// candidate no round ever ran): the two-app element-ledger decode found
+// the drawer header's space-y-2 riding the v4 margin-BOTTOM semantics —
+// the h2's :where() mb-2 PARTICIPATES in the flex-column layout (header
+// 88px), where the reference's v3-era mt-on-the-sr-only-<p> never did
+// (the absolute positioning takes the p out of flow — header 80px). The
+// reference's header computes 24 (p-6) + 32 (the h2 line box) + 24
+// (p-6) = 80px; ours computed 88 — an 8px spine shift cascading to
+// every nav link and the footer group (walk50 ledger: nav y 88 vs 80 ·
+// footer y 436 vs 428 · every icon/rect +8). Never caught before
+// because no standing leg walks the drawer-open interior: the census
+// carries zero drawer-open runs, the battery pins behavior, the a11y
+// gate violations, the captures visuals. The cure is the M-92c1
+// phantom-mb precedent: the explicit mb-0 on the title — (0,1,0) beats
+// the :where() rule's (0,0,0) — keeping the header's space-y-2 class
+// string byte-parity with the reference's (walk50 ROW 7) while the
+// COMPUTED rhythm goes byte-equal too.
+describe("session-177: the drawer interior re-walk (walk50 — the header rhythm's v4 space-y cure)", () => {
+  it("MOBILE_NAV_SHEET.title — the mb-0 override (the M-92c1 phantom-mb precedent, the drawer's own face)", () => {
+    // RED on the s176 tree: the walk50 ledger's header h=88 vs the
+    // reference's 80 — the h2's :where() mb-2 participates in the
+    // layout. The cure: the title class carries the explicit mb-0.
+    expect(MOBILE_NAV_SHEET.title).toBe(
+      "text-left text-2xl font-bold text-white mb-0",
+    );
+  });
+
+  it("the walk50 decode freeze — the header stays byte-parity (the space-y-2 literal preserved; the computed fix rides the title)", () => {
+    // the parity doctrine: keep the reference's literal header classes
+    // (walk50 ROW 7 byte-equal on both apps), fix the v4 COMPUTED
+    // divergence at the title — never rewrite the reference's string
+    expect(MOBILE_NAV_SHEET.header).toBe(
+      "flex flex-col space-y-2 text-center sm:text-left p-6",
+    );
+    // the description stays sr-only — the element the reference's
+    // v3-era mt landed on (out of flow, never a gap; our v4 mb-2 on
+    // the h2 was the gap the mb-0 now kills)
+    expect(MOBILE_NAV_SHEET.description).toBe(
+      "text-sm text-muted-foreground sr-only",
+    );
+    expect(MOBILE_NAV_SHEET.descriptionText).toBe(
+      "Navigate between your CRM pages",
+    );
   });
 });
 

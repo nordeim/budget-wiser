@@ -710,7 +710,14 @@ const SUITES = 138;
 // exclusion · the decoder exact-token source pin]). SUITES 138
 // HELD · E2E 192 HELD (the standing sentinel carries the
 // upgrade-proof).
-const UNIT = 2733;
+// Session-177: 2733 -> 2735 (+2 — THE DRAWER INTERIOR RE-WALK
+// [walk50]: the session-177 battery in tests/page-layout.test.ts
+// [the title mb-0 pin — the honest RED face, the walk50 phantom-mb
+// cure for the drawer header's v4 space-y face · the walk50 decode
+// freeze pin — the born-green contract-freeze form, the s173 P-p/P-q
+// precedent]). SUITES 138 HELD (the one-suite doctrine) · E2E 192
+// HELD (the cure is a class-string fix with zero behavioral face).
+const UNIT = 2735;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1175,13 +1182,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-176 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-177 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s175 layer now beneath the s176 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s176 layer now beneath the s177 head)",
     ).toContain(
-      "+ beneath it 2726 unit checks + 192 e2e checks green; the session-175 layer (THE RESPONSE-SIDE WIRE-CONTRACT",
+      "+ beneath it 2733 unit checks + 192 e2e checks green; the session-176 layer (THE RECHARTS 3.x MIGRATION",
     );
   });
 
@@ -1471,15 +1478,22 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // the APP_GUEST_USER retirement, +45 lines +8 its).
     expect(skill).not.toContain("test-pinned module (1653 lines");
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 197 checks");
+    // Session-177: the retired 1687/210 forms join the negatives ladder
+    // (the walk50 drawer-interior round: the mb-0 title cure +8 comment
+    // lines, 1687→1695; the 2 new pins, 210→212).
+    expect(skill).not.toContain("test-pinned module (1687 lines");
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 210 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1687 lines; `tests/page-layout.test.ts`, 210 checks",
+      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 212 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1687 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1695 |");
+    // Session-177: the retired 1687 form joins the negatives ladder.
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1687 |");
     // Session-148: the retired 1698 form joins the negatives ladder.
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1698 |");
     // Session-143: the retired 1600 form joins the negatives ladder.

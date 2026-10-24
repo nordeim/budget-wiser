@@ -901,8 +901,16 @@ export const MOBILE_NAV_SHEET = {
   // entity dialogs' space-y-1.5)
   header: "flex flex-col space-y-2 text-center sm:text-left p-6",
   // the WORDMARK replaces the BrandMark circle in the drawer (the h2
-  // the Radix aria-labelledby points at — the reference's own swap)
-  title: "text-left text-2xl font-bold text-white",
+  // the Radix aria-labelledby points at — the reference's own swap).
+  // Session-177 (walk50 — the drawer interior re-walk): the trailing
+  // mb-0 is the M-92c1 phantom-mb cure for THIS family's face — v4's
+  // space-y-2 gives the h2 a :where() margin-BOTTOM (8px, IN flow)
+  // where the reference's v3-era rule gave its sr-only <p> the
+  // margin-top (out of flow, never a gap). (0,1,0) beats (0,0,0): the
+  // header computes the reference's 24+32+24 = 80px again (was 88 —
+  // the 8px spine shift walk50 caught, no prior leg ever walked the
+  // drawer-open interior).
+  title: "text-left text-2xl font-bold text-white mb-0",
   titleText: "CRM",
   // sr-only on the reference — the description never paints
   description: "text-sm text-muted-foreground sr-only",
