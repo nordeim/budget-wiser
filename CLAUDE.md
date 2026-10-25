@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2763) → `bun run build` → `bun run test:e2e` (192) — or the
+   `bun run test` (2766) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -129,7 +129,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2763 checks)            |
+| `bun run test`      | Vitest unit suites (2766 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
@@ -142,7 +142,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2763 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2766 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -367,8 +367,23 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   D-183a1 same-family adjudication CLEAN) · the reveal
   construction freeze (the More Types group + the Task/Note
   vocabulary + the revealed checkboxes entering the REAL tab
-  order) — `scripts/walk57-activities-rail-open.ts`]. Node
-  environment; `@` alias resolved.
+  order) — `scripts/walk57-activities-rail-open.ts`], and session-185's
+  walk58 layer — the quick-log dialog open-state interior walk's
+  contract-freeze family [the walk58 decode freeze (the two-app dialog
+  OPEN ledger at BOTH axes — the dialog family reachable at phone,
+  unlike the rail — + the mount-focus census + the REAL Tab drive
+  through the dialog + the select vocabularies + the by-type footer
+  decode) · the quick-log trigger→dialog construction freeze (the
+  genuine battery gap: the s125 pins hold the FORM side, never the
+  PAGE side — the QUICK_LOG quartet + the onClick wiring + the
+  ActivityDialog call-site props) · the by-type footer pair freeze (the
+  defaultChecked checkbox + the htmlFor label + the ••• aria-label
+  superset) · the D-185a1 placeholderState RESTORATION (the s133
+  retirement REVERSED by the walk58 live find: the reference's current
+  trigger carries the stock data-[placeholder] arm; the empty-select
+  placeholder ink rgb(115,115,115) byte-equal post-cure — RED-first
+  over the live find) — `scripts/walk58-quicklog-dialog-open.ts`].
+  Node environment; `@` alias resolved.
 - **Property (Vitest + fast-check, 29 checks)** — `tests/property.test.ts`
   (session-172: the invariant layer over the pure seams — the csv
   escape/parse round-trip [the F-172e parser guard: line-ending
@@ -510,7 +525,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2763).
+the seam (currently 2766).
 
 ## Code Quality Standards
 

@@ -718,20 +718,26 @@ export const INPUT_BASE = {
  *  w-full) — the s77 documented decision. */
 export const SELECT_TRIGGER = {
   base: "flex h-9 items-center justify-between whitespace-nowrap rounded-md border border-line bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background",
-  // Session-133 (D-133a0, F-133c1): the placeholderState arm RETIRED
-  // ("data-[placeholder]:text-muted-ink" deleted) — the s81 M-81c3
-  // bundle decode already established the reference's verbatim trigger
-  // construction carries NO placeholder arm; the s133 walk live-confirmed
-  // it on the DENSITY axis (the only placeholder-state select on either
-  // app): the reference's platform avoids Radix's data-placeholder state
-  // entirely (its density select carries the fixed no-match "format"
-  // value — the N-87c4 decode), so its EMPTY trigger inherits the
-  // foreground ink rgb(10,10,10). Ours entered the state via value=""
-  // and the arm dimmed the trigger (and the chevron at opacity-50) to
-  // #737373 — a real painted divergence on the dead control, both
-  // viewports. The empty string keeps the field for the type shape; the
-  // composition no longer interpolates it.
-  placeholderState: "",
+  // Session-133 (D-133a0, F-133c1) → Session-185 (D-185a1, the walk58
+  // live find): the placeholderState arm RETIRED at s133 (the s81
+  // M-81c3 bundle decode held the reference's trigger carries NO
+  // placeholder arm; the s133 walk live-confirmed it on the DENSITY
+  // axis — the reference's density select avoided Radix's
+  // data-placeholder state via its fixed "format" value, so its empty
+  // trigger inherited the foreground ink while ours dimmed to #737373).
+  // REVERSED at s185: (1) the s133 round's own protected face — the
+  // accounts density select — RETIRED upstream at s148 (F-147c3), the
+  // retirement protecting nothing; (2) the walk58 two-app census proved
+  // the reference's CURRENT bundle (the s147 mobile-nav-fix event,
+  // probe #119 — the s81 decode predates it) carries the stock arm
+  // VERBATIM (data-[placeholder]:text-muted-foreground on both walked
+  // comboboxes) and its placeholder-state select (the Log Activity
+  // dialog's Related To (Type), the "Select type" face) computes the
+  // MUTED ink rgb(115,115,115) where the retirement left ours at the
+  // foreground rgb(10,10,10). RESTORED in our token expression — the
+  // s10 pair: --color-muted-ink (#737373) ≡ its --muted-foreground;
+  // the re-walk proves the face byte-equal on both apps.
+  placeholderState: "data-[placeholder]:text-muted-ink",
   // Session-77 (N-77c11, bundle-falsified S10-2 model): the reference's
   // stock trigger ring is PLAIN focus: — the ring FIRES on mouse click
   // (unlike the Input/Button bases, which are focus-visible on BOTH

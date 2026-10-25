@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2763 checks)      | `bun run test`                         |
+|  Unit tests (2766 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2763) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2766) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -10757,3 +10757,119 @@ census MATCH · probe:ref STABLE · the walk57 expander hover + open
 interiors byte-equal (the computed-equal hover pair + the
 permanently-outline dead face) · the captures: the round's ours+ref
 faces.
+
+### Session-185 — THE QUICK-LOG DIALOG OPEN-STATE INTERIOR WALK + BY-TYPE FOOTER RE-WALK (walk58) (2026-10-25)
+
+The post-184 audit rotation, its rotation trigger THE OWNER'S NEWEST
+COMMIT (`8e48c3d` — the session_390/391 transcripts, the s184 round's
+own execution record). The s390 close's named candidates, adjudicated
+by the discovery probe (`scripts/discover-185.ts`): the FIRST-named
+(the quick-log quartet's OPEN-dialog faces — the Log Activity dialog's
+create-focus arm, the walk54 CREATE-family sibling at this call site)
+**LIVE, BOTH ARMS** — the reference's quartet is FUNCTIONAL (the
+L-125c2 dead-stub doctrine does NOT reach this family; the s76 Mce
+decode's `onSubmit: N => mutate({...N, type: i || N.type})` predicted
+it, the live census proves it): the dialog OPENS on the reference at
+`384,237 672x426` desktop / `0,201 390x442` phone, the labels +
+footer + placeholder byte-equal, the type quintet
+Call/Email/Meeting/Task/Note with WhatsApp NEVER listed (the L-76c6
+doctrine), the related quartet Contact/Account/Opportunity/Lead; the
+second-named (the by-type card's checkbox-footer/••• face — the s13
+construction never re-walked under ADR-022) byte-equal on every
+computed face (the card `1088,821 320x375` · the checkbox 16x16
+checked=true with the dark `rgb(23,23,23)` fill · the ••• identical
+modulo our kept aria-label superset); the standing Edit-family
+re-check: the reference still carries ZERO rows + ZERO calendar chips
+— the candidate STAYS suspended. probe:ref STABLE (`46bc2d9c`) kills
+the fresh-bundle candidate; the registry's `latest` 3.10.1 (verified
+live) kills the recharts 4.0 gate. The baseline gate GREEN at the
+exact s184 ship state on a FRESH CLONE: lint 0/0 · tsc 0 ·
+**138/2763** · build (the type-gate artifact) · smoke **14/14** · e2e
+**192/192** (clean first run, 5.5m) · db census MATCH · sitemap 11
+routes + robots + manifest 200.
+
+**The walk** (`scripts/walk58-quicklog-dialog-open.ts`, the walk53-57
+ledger form over the dialog family's OPEN states at BOTH axes — the
+dialog family reachable at phone, unlike the rail): Phase A the dialog
+OPEN census (the chrome faces + the interior DFS ledger + the
+mount-focus — both arms land on the FIRST combobox, ours carrying the
+aria-label superset — + the combobox faces + the vocabularies + the
+footer pair + the CANCEL round-trip); Phase B the REAL keyboard Tab
+drive through the OPEN dialog (the walk54 focus form, now TWO-APP: 17
+stops, structurally IDENTICAL chains); Phase C the phone-axis census;
+Phase D the by-type footer decode.
+
+**THE LIVE FIND + CURE — D-185a1 THE EMPTY-SELECT PLACEHOLDER INK**
+(the s133 retirement's own counter-case): the reference's CURRENT
+trigger construction carries the stock `data-[placeholder]:
+text-muted-foreground` arm (the walk58 class-string census, both
+comboboxes) and its placeholder-state Related To (Type) select computes
+the MUTED `rgb(115,115,115)` where the s133 retirement left ours at
+the foreground `rgb(10,10,10)`. TWO facts reversed the s133 doctrine:
+its own protected face (the accounts density select) retired upstream
+at session-148 (F-147c3), and the s81-era bundle decode predates the
+s147 mobile-nav-fix bundle event. THE CURE: the arm restored in our
+token expression — `data-[placeholder]:text-muted-ink` (the s10 pair
+for the reference's `text-muted-foreground`) — the composition
+interpolation restored in `select.tsx`; the s133 pin block re-anchored
+RED-first. The re-walk PROVES the face byte-equal
+(`rgb(115,115,115)` on both apps; the value-carrying selects untouched
+at `rgb(10,10,10)`). **THE D-183a1 SAME-FAMILY CHECK: CLEAN** — the
+dialog submit's OPEN face byte-equal at `rgb(23,23,23)` on both apps
+(our neutral-literal pair ≡ the reference's dark stock primary; no
+blue flip). Every remaining delta a documented genus (the box-shadow
+slot-count, every VISIBLE layer byte-equal · the outline VERSION FORM
++ both sub-forms · the oklab/rgba overlay serialization · the
+token-selection M-81c2 pairs · the class-order position · our
+aria-label supersets · the React useId format · lucide's aria-hidden
+X · the Radix SelectContent mount-state offset in the interior
+ledger).
+
+**The TDD ledger**: the pin survey first (the s125 preset/toggle pins,
+the s141 chips palette, the s76 footerRow, the s13/s17 class tokens,
+the walk54 chrome freezes — the PAGE-side wiring + the footer PAIR
+never pinned), 3 born-green pins — the walk58 decode freeze (the
+tool's own contract) · the quick-log trigger→dialog construction freeze
+(the QUICK_LOG quartet + the onClick wiring + the ActivityDialog
+call-site props — the genuine battery gap) · the by-type footer pair
+freeze (the defaultChecked checkbox + the htmlFor label + the •••
+aria-label superset) — + THE D-185a1 CURE PIN (RED-first: exactly 1
+RED at birth → the cure → GREEN). **MUTATION-PROOF**: the planted
+`setDefaultType("call")` wiring regression → **exactly 1 RED** (the
+full-string pin's unique teeth) → restored → GREEN. **STASH-PROOF**:
+the round's test block stashed → exactly **138/2763** (the s184 ship
+state) → restored → **138/2766**.
+
+**The count ladder**: 2763 → **2766** (+3, all in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138 HELD
+· E2E 192 re-verified (the round's ONE product-code touch: the
+D-185a1 restoration in page-layout.ts + select.tsx) · badge 2955 →
+**2958** (count-ladder-185.py: assert-first, idempotent — the re-run a
+verified 0-flip no-op) + the collateral re-anchors (the SKILL §5.6
+census checks 239 → 242, the MODULE lines 1695 → 1701 [the D-185a1
+comment growth +6 — the PAD §11 row + the negatives ladder] · the
+F-106a1 layer-axis pin — the s185 layer live, the s184 demoted beneath
+it at 2763/192 · the s184-era live-tense RED-first arithmetic site
+re-anchored 255 → 258).
+
+**The operator's round-shaped asks, all verified standing** (the
+session record's own ledger): the `.env` DATABASE_URL
+`file:../db/custom.db` with the `db/` folder at the repo root (census
+MATCH at `<repo>/db/custom.db` — the ambient `DATABASE_URL` shadow
+scrubbed with `env -u` on every DB-touching command, the F-123a1
+doctrine) · the vitest + playwright config files verified standing
+(138/2766 unit + the 192-check e2e battery re-verified this session)
+· the sitemap + SEO surface re-verified (the 11-route sitemap.xml +
+robots.txt with its Sitemap line + the installable manifest.json —
+smoke check 12 carries the 200s) · the mobile-nav comparison
+re-verified (probe:ref TRUE-390 STANDING — the reference's own menu
+button live; OURS the Radix Sheet superset) · the Tailwind v4 state
+clean (no new v4 hazard; the walk's every delta decoded against the
+standing genus register) · the `.env.example` verified against the
+six-knob contract and included in this round's commit.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2766** unit · build
+(the type-gate artifact) · smoke **14/14** · e2e **192/192** · db
+census MATCH · probe:ref STABLE · the walk58 dialog OPEN interiors
+byte-equal on both axes (post-cure) · the D-183a1 same-family check
+CLEAN · the captures: the round's ours+ref faces.

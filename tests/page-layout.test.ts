@@ -891,19 +891,36 @@ describe("session-10 stock-primitive pins (DOM-verified 2026-09-30)", () => {
     );
     expect(SELECT_TRIGGER.base).not.toContain("w-full");
     expect(SELECT_TRIGGER.base).not.toContain("gap-2");
-    // Session-133 (D-133a1, F-133c1): the placeholderState arm RETIRED —
-    // the reference's verbatim trigger construction carries NO
-    // data-[placeholder] arm (the s81 M-81c3 bundle decode, live-confirmed
-    // on the density axis both viewports by the s133 walk): its platform
-    // avoids Radix's placeholder state entirely (the N-87c4 fixed
-    // no-match "format" value), so its empty select inherits the
-    // foreground ink rgb(10,10,10) — our dimming arm painted the chevron
-    // a lighter gray. The trigger now inherits the ink in every state.
-    expect(SELECT_TRIGGER.placeholderState).toBe("");
+    // Session-133 (D-133a1, F-133c1) — the s133-era retirement, REVERSED
+    // at session-185 (D-185a1, the walk58 live find): the s133 decode
+    // held the reference's trigger carries NO data-[placeholder] arm
+    // (the s81 M-81c3 bundle decode, live-confirmed on the density axis
+    // — its platform avoided Radix's placeholder state entirely, the
+    // N-87c4 fixed no-match "format" value). TWO later facts reversed
+    // it: (1) the s133 round's own protected face — the accounts
+    // density select — RETIRED upstream at session-148 (F-147c3, the
+    // walk38j toolbar sweep: the density select + the switcher + the
+    // More button all gone), leaving the retirement protecting nothing
+    // while diverging every genuine placeholder-state face; (2) the
+    // walk58 two-app census (scripts/walk58-quicklog-dialog-open.ts)
+    // proved the reference's CURRENT trigger construction carries the
+    // stock arm VERBATIM — `data-[placeholder]:text-muted-foreground` on
+    // BOTH walked comboboxes — and its placeholder-state select (the
+    // Log Activity dialog's Related To (Type), the "Select type" face)
+    // computes the MUTED ink rgb(115,115,115) where ours computed the
+    // foreground rgb(10,10,10): the s81-era bundle predates the s147
+    // mobile-nav-fix bundle event (probe #119), the current reference
+    // build carries the arm. THE CURE: the arm restored in our token
+    // expression — data-[placeholder]:text-muted-ink (the s10 pair for
+    // its data-[placeholder]:text-muted-foreground; --color-muted-ink:
+    // #737373 ≡ its --muted-foreground) — and the composition
+    // interpolation restored; the re-walk proves the Related To (Type)
+    // face byte-equal on both apps.
+    expect(SELECT_TRIGGER.placeholderState).toBe("data-[placeholder]:text-muted-ink");
     expect(
       read("src/components/ui/select.tsx"),
-      "the trigger composition must not interpolate a placeholder arm",
-    ).not.toContain("${SELECT_TRIGGER.placeholderState}");
+      "the trigger composition must interpolate the placeholder arm (the s185 restoration)",
+    ).toContain("${SELECT_TRIGGER.placeholderState}");
     // Session-77 (N-77c11): the ring fires on mouse click — plain
     // focus:, NOT the keyboard-only focus-visible: the S10-2 comment
     // claimed.
@@ -3638,5 +3655,110 @@ describe("session-184: the activities more-filters toggle + rail-actions open-st
     // construction as the visible four (the S17-P3 stock anatomy)
     expect(src.match(/MORE_TYPE_FILTERS\.map/g) ?? []).toHaveLength(1);
     expect(src.match(/VISIBLE_TYPE_FILTERS\.map/g) ?? []).toHaveLength(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-185 (walk58): the quick-log dialog open-state interior walk —
+// the s390 close's FIRST-NAMED candidate (the Log Activity dialog's
+// create-focus arm, the walk54 CREATE-family sibling at this call site)
+// + the second-named (the by-type card's checkbox-footer/••• face, the
+// s13 construction never re-walked under ADR-022). The discovery
+// (scripts/discover-185.ts) proved the reference's quartet FUNCTIONAL
+// (the L-125c2 dead-stub doctrine does NOT reach this family) with the
+// dialog OPEN at byte-equal geometry on both apps (384,237 672x426
+// desktop / 0,201 390x442 phone; the labels + footer + placeholder
+// byte-equal; the type quintet Call/Email/Meeting/Task/Note with
+// WhatsApp NEVER listed, the L-76c6 doctrine; the related quartet
+// Contact/Account/Opportunity/Lead). The walk's verdict: ZERO live
+// defects on the family faces EXCEPT the D-185a1 find (the
+// placeholder-ink cure, pinned in its own re-anchored s133 block) —
+// every remaining delta a documented genus (the box-shadow slot-count
+// with every VISIBLE layer byte-equal · the outline VERSION FORM +
+// both sub-forms · the oklab/rgba serialization on the overlay · the
+// token-selection M-81c2 pairs incl. the footer pair's
+// bg-neutral-900 ≡ bg-primary computed rgb(23,23,23), the D-183a1
+// same-family check CLEAN · the class-order md:text-sm position · our
+// aria-label supersets on the combobox triggers + the ••• dots · the
+// React useId format · lucide's aria-hidden X · the Radix
+// SelectContent mount-state offset in the interior ledger).
+// ---------------------------------------------------------------------------
+
+describe("session-185: the quick-log dialog open-state interior walk (walk58 — the Log Activity dialog's OPEN interiors byte-equal on both apps at both axes; the by-type footer re-walked under ADR-022)", () => {
+  it("the walk58 decode freeze — the two-app dialog OPEN ledger at both axes + the mount-focus census + the REAL Tab drive through the dialog + the select vocabularies + the by-type footer decode (the tool's own contract)", () => {
+    const src = read("scripts/walk58-quicklog-dialog-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // Phase A the dialog OPEN census at BOTH axes (the dialog family is
+    // reachable at phone, unlike the rail) — the chrome faces (root +
+    // overlay + close X), the interior DFS ledger, the mount-focus
+    // census, the combobox faces, the select vocabularies, the footer
+    // pair, the CANCEL round-trip
+    expect(src).toContain("dialogPhase");
+    expect(src).toContain('\'[role="dialog"][data-state="open"]\'');
+    expect(src).toContain("mountFocus");
+    expect(src).toContain("typeOptions");
+    expect(src).toContain("relatedOptions");
+    expect(src).toContain("cancelRoundTrip");
+    expect(src).toContain("{ w: 390, h: 844 }");
+    // Phase B the REAL keyboard Tab drive through the OPEN dialog (the
+    // walk54 focus form, now TWO-APP: the chain from the mount-focus
+    // stop through the trap, each stop's ring carrier, the Escape
+    // round-trip)
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain("escapeClosed");
+    // Phase D the by-type footer decode (the s13 construction
+    // re-walked under ADR-022 — the discovery proved the checkbox +
+    // ••• + label faces byte-equal; the walk freezes the census)
+    expect(src).toContain("byTypePhase");
+    expect(src).toContain('button[role="checkbox"]');
+    expect(src).toContain('"Activities by Type"');
+  });
+
+  it("the quick-log trigger→dialog construction — the QUICK_LOG quartet + the onClick wiring + the ActivityDialog call-site props (the genuine battery gap: the s125 pins hold the FORM side, never the PAGE side; the walk proves the reference's quartet FUNCTIONAL — the L-125c2 dead-stub doctrine does not reach this family)", () => {
+    const src = read("src/app/(app)/activities/activities-page.tsx");
+    // the quartet's vocabulary in ORDER (the walk's census: all four
+    // byte-equal on both apps, the emerald DEFAULT member the WhatsApp
+    // one — the s83 construction)
+    const block = src.slice(src.indexOf("const QUICK_LOG"), src.indexOf("as const;", src.indexOf("const QUICK_LOG")) + 9);
+    expect(block).toContain('{ type: "call", label: "Log Call", icon: Phone }');
+    expect(block.indexOf('"Log Email"')).toBeGreaterThan(block.indexOf('"Log Call"'));
+    expect(block.indexOf('"Log Meeting"')).toBeGreaterThan(block.indexOf('"Log Email"'));
+    expect(block.indexOf('"Log WhatsApp"')).toBeGreaterThan(block.indexOf('"Log Meeting"'));
+    // the trigger→dialog wiring: every quartet member opens the SAME
+    // dialog with the preset (the reference's own Mce construction —
+    // the preset rides the SUBMIT, never the visible form, L-76c6)
+    expect(src).toContain(`onClick={() => {
+                  setEditing(null);
+                  setDefaultType(q.type);
+                  setDialogOpen(true);
+                }}`);
+    // the variant ternary (the s83 stock construction: outline x3 + the
+    // SOLID emerald WhatsApp)
+    expect(src).toContain('variant={q.type === "whatsapp" ? "default" : "outline"}');
+    // the call-site props (the preset carrier + the edit-mode null arm)
+    expect(src).toContain(
+      '<ActivityDialog open={dialogOpen} onOpenChange={setDialogOpen} defaultType={defaultType} activity={editing} />',
+    );
+  });
+
+  it("the by-type footer pair — the defaultChecked checkbox + the htmlFor label + the ••• with the aria-label superset (the genuine gap: the s76/s13 pins hold the CLASS tokens, never the PAIR construction; the walk proves the pair byte-equal on both apps modulo our kept aria superset)", () => {
+    const src = read("src/app/(app)/activities/activities-page.tsx");
+    // the footer's own block (the walk's census: the checkbox checked
+    // fill rgb(23,23,23) byte-equal — the s17 stock doctrine; the •••
+    // face byte-equal with OURS carrying the aria-label superset the
+    // reference's unnamed button lacks — the s88-c9 doctrine, kept)
+    const block = src.slice(src.indexOf("const BY_TYPE_CATEGORIES"), src.indexOf("</Card>", src.indexOf("activities-by-type-toggle")));
+    expect(block).toContain('<Checkbox\n                    id="activities-by-type-toggle"\n                    defaultChecked\n                  />');
+    expect(block).toContain('htmlFor="activities-by-type-toggle"');
+    expect(block).toContain('{BY_TYPE_CARD.footerLabel}');
+    expect(block).toMatch(/labelled-by[\s\S]*Activities[\s\S]*<\/label>|>\s*Activities\s*\n\s*<\/label>/);
+    expect(block).toContain('aria-label="More actions"');
+    expect(block).toContain("•••");
+    // the default-checked face is the walk's own proof (the discovery +
+    // the walk: checked=true at 16x16 with the dark rgb(23,23,23) fill
+    // on BOTH apps)
+    expect(block).toContain("defaultChecked");
   });
 });
