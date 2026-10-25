@@ -3537,3 +3537,106 @@ describe("session-183: the leads-popover + contacts-panel open-state interior wa
     );
   });
 });
+
+describe("session-184: the activities more-filters toggle + rail-actions open-state interior walk (walk57 — the expander's hover + open faces byte-equal; the variant-flip family's second member adjudicated CLEAN)", () => {
+  it("the walk57 decode freeze — the expander hover/open ledger + the reveal census + the REAL Tab chains + the rail action pair + the phone absence (the tool's own contract)", () => {
+    const src = read("scripts/walk57-activities-rail-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // Phase A the expander — THE HOVER PROBE: the first mouse-borne
+    // face ever walked in the battery (every standing walk drives the
+    // REAL keyboard only); the walk's own discovery — Chromium's Tab
+    // drive starts from the last-focused element's position even
+    // after blur(), so the OPEN-rail chain resets via the blank-spot
+    // click (the sequential-navigation starting-point rule, decoded
+    // live in the debug leg)
+    expect(src).toContain("await trigger.hover()");
+    expect(src).toContain("hovered");
+    expect(src).toContain("unhovered");
+    // the CLICK + the reveal census (OURS reveals More Types | Task |
+    // Note — the functional superset; the reference the DEAD STUB,
+    // its face the permanently-outline one, L-125c2 re-verified live)
+    expect(src).toContain("deadStub");
+    expect(src).toContain('=== "More Types"');
+    expect(src).toContain("ariaExpanded");
+    expect(src).toContain("toggleBackLabels");
+    // Phase B the REAL keyboard Tab drive — the closed-rail chain
+    // byte-equal on both apps (9 stops) + OURS-OPEN chain (the
+    // revealed Task/Note checkboxes enter the order — 11 stops)
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain("closedStops");
+    expect(src).toContain("openRail");
+    // Phase C the rail action pair (Save All ghost + Filter primary —
+    // the D-183a1-family adjudication: the reference's Filter rides
+    // its EXPLICIT blue CTA classes, byte-equal rgb(37,99,235)) + the
+    // select triggers + the vocabularies (the owner options the
+    // DATA-STATE genus's activities member)
+    expect(src).toContain("saveAllFace");
+    expect(src).toContain("filterFace");
+    expect(src).toContain("ownerOptions");
+    expect(src).toContain("statusOptions");
+    // Phase D the phone-axis ABSENCE census — the rail is
+    // display:none below lg (the s109 pin), the VISIBLE-expander
+    // count 0 on both apps
+    expect(src).toContain("moreVisible");
+  });
+
+  it("the activities more-filters expander construction — the FIXED outline variant (no flip: the D-183a1 same-family adjudication CLEAN) + the aria-expanded superset + the functional toggle (the genuine battery gap: no pin held the expander's construction; the s125 walk-pins hold the completed/scheduled toggle, never this one)", () => {
+    // walk57's two-app proof: the trigger's RESTING + HOVER faces
+    // byte-equal on both apps (the hover wash rgb(245,245,245) + the
+    // ink rgb(23,23,23) — computed-EQUAL via the token-selection
+    // genus's outline-Button hover member: OURS
+    // hover:bg-line-soft hover:text-neutral-900 ≡ the reference's
+    // hover:bg-accent hover:text-accent-foreground, the M-81c2 pair).
+    // OURS carries the FIXED `variant="outline"` — NO variant flip
+    // anywhere on this trigger (the reference's permanently-outline
+    // dead face is the only face it can ever show; ours matches both
+    // closed AND open). The D-183a1 OPEN-face defect (the contacts
+    // Filters trigger's blue-default flip) has NO second member here.
+    const src = read("src/app/(app)/activities/activities-page.tsx");
+    // the FULL-string freeze (the walk53/56 precedent — the
+    // activities page carries a Badge variant="outline" too; only
+    // the multi-line block pins the EXPANDER's own construction)
+    expect(src).toContain(`variant="outline"
+                  className="w-full"
+                  aria-expanded={showMoreFilters}
+                  onClick={() => setShowMoreFilters((v) => !v)}`);
+    expect(src).not.toContain('variant={showMoreFilters ? "default" : "outline"}');
+    // OUR accessibility superset — the reference's button carries
+    // NO aria (the s88-c9 doctrine, kept)
+    expect(src).toContain("aria-expanded={showMoreFilters}");
+    // the functional toggle — ours over the reference's dead stub
+    // (the s125 fix-over-defect doctrine, L-125c2)
+    expect(src).toContain("onClick={() => setShowMoreFilters((v) => !v)}");
+    expect(src).toContain("More Filters (1)");
+    // the outline Button's hover token contract (the walk's own
+    // decode: the computed-equal hover pair)
+    const button = read("src/components/ui/button.tsx");
+    expect(button).toContain(
+      'outline: "border border-line bg-surface text-foreground shadow-sm hover:bg-line-soft hover:text-neutral-900"',
+    );
+  });
+
+  it("the reveal construction — the More Types group + the Task/Note vocabulary + the walk's own decode knowledge (the revealed checkboxes ENTER the REAL tab order between the type group and the Owner select: the OPEN-rail chain 11 stops vs the closed 9)", () => {
+    // walk57's behavioral proof: OURS-OPEN chain = Save All → 4
+    // type checkboxes → Task → Note → All Owners → Last 7 Days →
+    // More Filters → Filter (11 stops); the closed chain byte-equal
+    // 9 stops on both apps; the reference's dead expander never
+    // changes its chain. The reveal inserts the group BEFORE the
+    // Owner select in DOM order — the tab order follows.
+    const src = read("src/app/(app)/activities/activities-page.tsx");
+    expect(src).toContain('const VISIBLE_TYPE_FILTERS = ["call", "email", "meeting", "whatsapp"] as const;');
+    expect(src).toContain('const MORE_TYPE_FILTERS = ["task", "note"] as const;');
+    // the conditional reveal — the group rides the same
+    // FILTER_RAIL.groupLabel construction as the type group above
+    expect(src).toContain("{showMoreFilters && (");
+    expect(src).toContain('More Types');
+    expect(src).toContain("FILTER_RAIL.groupLabel}>More Types");
+    expect(src).toContain("FILTER_RAIL.checkboxStack");
+    // the reveal's checkboxes ride the SAME stock Checkbox
+    // construction as the visible four (the S17-P3 stock anatomy)
+    expect(src.match(/MORE_TYPE_FILTERS\.map/g) ?? []).toHaveLength(1);
+    expect(src.match(/VISIBLE_TYPE_FILTERS\.map/g) ?? []).toHaveLength(1);
+  });
+});

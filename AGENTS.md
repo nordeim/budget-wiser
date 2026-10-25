@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2760 checks)      | `bun run test`                         |
+|  Unit tests (2763 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2760) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2763) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -10623,3 +10623,137 @@ type-gate artifact) · smoke **14/14** · e2e **192/192** · db census
 MATCH · probe:ref STABLE · the walk56 popover + panel OPEN interiors
 byte-equal on both axes (post-cure) · the captures: the round's
 ours+ref OPEN faces.
+
+### Session-184 — THE ACTIVITIES MORE-FILTERS TOGGLE + RAIL-ACTIONS OPEN-STATE INTERIOR WALK (walk57) (2026-10-25)
+
+The post-183 audit rotation, its rotation trigger THE OWNER'S NEWEST
+COMMIT (`f5792f7` — the session_388/389 transcripts, the s183 round's
+own execution record). The s388 close's named OPEN/focus candidates,
+adjudicated by the discovery probe (`scripts/discover-184.ts`): the
+FIRST-named (the Edit-family dialogs' focus faces) **KILLED BY THE
+DISCOVERY** — the reference's live data state carries ZERO rows on
+/contacts, /leads, /accounts (the "No contacts found" empty-state rows
+alone, zero row-menu triggers) and ZERO calendar chips, so the
+W7/wce/Mke edit dialogs have no trigger there and the two-app ledger
+has no REF arm (the candidate returns the day the reference carries
+rows); the variant-flip-family candidate (the activities More-Filters
+toggle's OPEN face — "the same variant-flip family the D-183a1 find
+rode, the one other variant-flipping trigger in the app") LIVE AND
+WALKED. probe:ref STABLE (`46bc2d9c`) kills the fresh-bundle
+candidate; the registry's `latest` 3.10.1 (verified live against
+registry.npmjs.org) kills the recharts 4.0 gate. The baseline gate
+GREEN at the exact s183 ship state on a FRESH CLONE: lint 0/0 · tsc
+0 · **138/2760** · build (the type-gate artifact) · smoke **14/14** ·
+e2e **192/192** (clean first run, 5.7m) · db census MATCH
+(15/24/10/23/12 + 4 users at `<repo>/db/custom.db`) · sitemap 11
+routes + robots + manifest 200.
+
+**The walk** (`scripts/discover-184.ts` the discovery probe — the
+expander RESTING at byte-equal geometry on both apps (`1113,692
+270x36`, bg white, border `1px solid rgb(229,229,229)`); the CLICK:
+OURS reveals the More Types group (labels 8 → 11: `More Types | Task |
+Note` — the functional superset, the s125 fix-over-defect doctrine),
+the reference's button the DEAD STUB re-verified live (labels 8 → 8,
+no reveal, no variant flip — the L-125c2 doctrine); the rail's action
+pair byte-equal (the Filter primary BLUE `rgb(37,99,235)` on BOTH
+apps — the reference's explicit CTA classes; NO D-183a1 second
+member; the Save All ghost byte-equal) + the quick-log quartet
+byte-equal (the Log WhatsApp emerald DEFAULT member). Then
+`scripts/walk57-activities-rail-open.ts` — the walk53/56 ledger form
+over the rail family's states at the desktop axis 1440×900 (the rail
+is `display:none` below lg — the s109 e2e pin; the phone leg the
+ABSENCE census): Phase A the expander's RESTING + HOVER + OPEN
+faces + the reveal census + the toggle-back round-trip; Phase B the
+REAL keyboard Tab chains (the closed rail byte-equal **9 stops** on
+both apps — `Save All → 4 checkboxes → All Owners → Last 7 Days →
+More Filters (1) → Filter`; OURS-OPEN **11 stops** — the revealed
+Task/Note checkboxes ENTER the order); Phase C the rail action pair +
+the Owner/Status select triggers' faces + the vocabularies (the
+status set byte-equal; the owner options the DATA-STATE genus — ours
+the seeded members, the reference's live platform list + its "See
+all" member); Phase D the phone absence (the visible expander count
+**0 on both apps**):
+
+**THE VERDICT — ZERO LIVE DEFECTS**, every delta a documented genus
+(the box-shadow SLOT-COUNT genus — 5-vs-3 on the outline faces, 6-vs-5
+on the Filter primary, every VISIBLE layer byte-equal · the outline
+VERSION FORM + BOTH sub-forms — the alpha-color carrier on every
+face (`3px none rgb(10,10,10)` vs `3px none rgba(10,10,10,0.5)`) +
+the currentColor cascade member (the hovered outline flips with our
+neutral ink; the Filter's outline with the primary-foreground ink —
+style none paints ZERO pixels on both) · the aria-expanded superset
+genus (s88-c9, kept) · the L-125c2 dead-stub doctrine (ours the
+functional superset; the reference's button permanently outline) ·
+the DATA-STATE genus (the owner options)). **THE WALK'S OWN DECODE
+KNOWLEDGE**: **THE HOVER FACE — the first mouse-borne face ever
+walked in the battery** (every standing walk drives the REAL
+keyboard only): OURS `hover:bg-line-soft hover:text-neutral-900` ≡
+the reference's `hover:bg-accent
+hover:text-accent-foreground`, computed-EQUAL
+`rgb(245,245,245)` + `rgb(23,23,23)` — the M-81c2 token-selection
+pair's outline-Button hover member, walk-proven live with matched
+hover states on both apps; **THE CLICK-THROUGH HOVER-PERSISTENCE
+form** — the functional reveal MOVES the trigger off the mouse (ours
+shows its byte-equal RESTING face post-click) while the dead stub
+keeps the wash (the reference's post-click face IS its hover face),
+both constituent faces proven byte-equal in their own legs; **the
+sequential-focus STARTING-POINT rule** — Chromium's Tab drive starts
+from the last-focused element's position even after `blur()` (the
+maiden pass's open-rail chain truncated to 1 stop; the debug-proved
+fix: the blank-spot click resets the starting point — the walk
+tool's own contract note).
+
+**The TDD ledger**: the pin survey first (FILTER_RAIL's fragment
+pins + ACTIVITY_QUICKLOG standing; the s125 walk-pins hold the
+completed/scheduled toggle, NEVER the expander — the genuine gap), 3
+pins — the walk57 decode freeze (born-green: the tool's own contract
+— the three-phase rail ledger, the hover probe, the REAL Tab chains,
+the dead-stub re-verification, the absence census) · the
+more-filters expander construction FULL-string freeze (born-green —
+the genuine battery gap: the fixed `variant="outline"` + the
+aria-expanded superset + the functional toggle, no pin held the
+construction) · the reveal construction freeze (born-green: the More
+Types group + the Task/Note vocabulary + the revealed checkboxes
+entering the REAL tab order). **MUTATION-PROOF**: the planted
+`variant="outline"` → `variant="secondary"` expander regression →
+**exactly 1 RED** (the full-string pin's unique teeth — the
+activities page's Badge outline and the quick-log ternary untouched) →
+restored → GREEN. **STASH-PROOF**: the round's test block stashed →
+exactly **138/2760** (the s183 ship state) → restored → **138/2763**.
+
+**The count ladder**: 2760 → **2763** (+3, all in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138
+HELD · E2E 192 HELD (**the round touches ZERO product code** — the
+walk57 decode found zero live defects; test-only + scripts + docs) ·
+badge 2952 → **2955** (count-ladder-184.py: 31 flips, assert-first,
+idempotent — the re-run a verified 0-flip no-op) + the collateral
+re-anchors (the SKILL §5.6 census checks 236 → 239, the module line
+count 1695 HELD — page-layout.ts untouched · the F-106a1 layer-axis
+pin — the s184 layer live, the s183 layer demoted beneath it at
+2760/192 · the s183-era live-tense RED-first arithmetic site
+re-anchored 252 → 255).
+
+**The operator's round-shaped asks, all verified standing** (the
+session record's own ledger): the `.env` DATABASE_URL
+`file:../db/custom.db` with the `db/` folder at the repo root (census
+MATCH at `<repo>/db/custom.db` — the ambient `DATABASE_URL` shadow
+scrubbed with `env -u` on every DB-touching command, the F-123a1
+doctrine) · the vitest + playwright config files verified standing
+(138/2763 unit + 192/192 e2e this session — no config churn) · the
+sitemap + SEO surface re-verified (the 11-route sitemap.xml +
+robots.txt with its Sitemap line + the installable manifest.json —
+smoke check 12 carries the 200s) · the mobile-nav comparison
+re-verified (probe:ref TRUE-390 STANDING — the reference's own menu
+button live; OURS the Radix Sheet superset; the walk's phone-absence
+leg re-verified the rail hidden below lg on both apps) · the
+Tailwind v4 state clean (no new v4 hazard; the walk's every delta
+decoded against the standing genus register) · the `.env.example`
+verified against the six-knob contract and included in this round's
+commit.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2763** unit · build
+(the type-gate artifact) · smoke **14/14** · e2e **192/192** · db
+census MATCH · probe:ref STABLE · the walk57 expander hover + open
+interiors byte-equal (the computed-equal hover pair + the
+permanently-outline dead face) · the captures: the round's ours+ref
+faces.

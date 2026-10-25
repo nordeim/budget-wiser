@@ -809,7 +809,19 @@ const SUITES = 138;
 // one-suite doctrine) · E2E 192 HELD (the round's one
 // product-code touch: the D-183a1 call-site pair in
 // contacts-page.tsx).
-const UNIT = 2760;
+// Session-184: 2760 -> 2763 (+3 — THE ACTIVITIES MORE-FILTERS
+// TOGGLE + RAIL-ACTIONS OPEN-STATE INTERIOR WALK [walk57
+// — the s184 battery in tests/page-layout.test.ts: the walk57
+// decode freeze (the expander hover/open ledger + the reveal
+// census + the REAL Tab chains + the rail action pair + the
+// phone absence) · the more-filters expander construction
+// FULL-string freeze (the genuine battery gap: no pin held
+// the expander's construction) · the reveal construction
+// freeze (the More Types group + the Task/Note vocabulary)].
+// SUITES 138 HELD (the one-suite doctrine) · E2E 192 HELD
+// (the round touches ZERO product code — the walk57 decode
+// found zero live defects; test-only + scripts + docs).
+const UNIT = 2763;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1274,13 +1286,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-183 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-184 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s182 layer now beneath the s183 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s183 layer now beneath the s184 head)",
     ).toContain(
-      "+ beneath it 2757 unit checks + 192 e2e checks green; the session-182 layer (THE REPORTS-FILTER SELECTS OPEN-STATE",
+      "+ beneath it 2760 unit checks + 192 e2e checks green; the session-183 layer (THE LEADS-FILTER POPOVER + CONTACTS-FILTER-PANEL OPEN-STATE",
     );
   });
 
@@ -1606,8 +1618,14 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // the MODULE line count 1695 HELD — page-layout.ts untouched
     // this round; the round's product touch was contacts-page.tsx).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 233 checks");
+    // Session-184: the retired 236 form joins the negatives ladder (the
+    // walk57 activities-rail round: the session-184 battery +3 born-green
+    // pins, the checks 236->239; the MODULE line count 1695 HELD —
+    // page-layout.ts untouched this round; the round touched ZERO
+    // product code — the walk57 decode found zero live defects).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 236 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 236 checks",
+      "test-pinned module (1695 lines; `tests/page-layout.test.ts`, 239 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");
