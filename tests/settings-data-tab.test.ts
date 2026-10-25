@@ -36,7 +36,10 @@ function stripComments(src: string): string {
 describe("session-26: the Data tab CardDescription lines (S26-P1)", () => {
   it("SETTINGS_DATA carries the description class pin (the reference's text-sm text-muted-foreground #737373)", () => {
     const layout = read("src/lib/page-layout.ts")!;
-    const block = layout.slice(layout.indexOf("SETTINGS_DATA = {"), layout.indexOf("SETTINGS_DATA = {") + 1400);
+    // Walk60 (D-187a3): the block now carries the listBody decode comment
+    // — the fixed +1400 window under-read; the block-end anchor is
+    // stable under comment growth.
+    const block = layout.slice(layout.indexOf("SETTINGS_DATA = {"), layout.indexOf("SETTINGS_DATA = {") + 2600);
     expect(block).toMatch(/desc:\s*"text-sm text-muted-ink"/);
   });
 
@@ -83,7 +86,8 @@ describe("session-26: the Data tab CardDescription lines (S26-P1)", () => {
 describe("session-26: the per-index button margins (S26-P1)", () => {
   it("SETTINGS_DATA carries the buttonClsAlt pin (ml-0 sm:ml-2 for every 2nd+ button)", () => {
     const layout = read("src/lib/page-layout.ts")!;
-    const block = layout.slice(layout.indexOf("SETTINGS_DATA = {"), layout.indexOf("SETTINGS_DATA = {") + 700);
+    // Walk60 (D-187a3): the same block-growth re-anchor as the desc pin.
+    const block = layout.slice(layout.indexOf("SETTINGS_DATA = {"), layout.indexOf("SETTINGS_DATA = {") + 2600);
     expect(block).toMatch(/buttonClsAlt:\s*"w-full sm:w-auto ml-0 sm:ml-2"/);
   });
 

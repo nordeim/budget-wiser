@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2769) → `bun run build` → `bun run test:e2e` (192) — or the
+   `bun run test` (2773) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -129,7 +129,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2769 checks)            |
+| `bun run test`      | Vitest unit suites (2773 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
@@ -142,7 +142,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2769 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2773 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -398,7 +398,24 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   GLYPH CURE (the rename-trigger's icon is the reference's lucide
   PEN — exactly ONE path, ours added the Pencil's tip line; the M-82c2
   icon-identity class — RED-first over the walk59 live find,
-  re-walked byte-equal) — `scripts/walk59-settings-picklist-open.ts`].
+  re-walked byte-equal) — `scripts/walk59-settings-picklist-open.ts`],
+  and session-187's walk60 layer — the profile photo-upload + Data-tab
+  focus/open interior walk's contract-freeze family [the walk60 decode
+  freeze (the two-app profile + Data-tab OPEN ledgers at both axes +
+  the REAL Tab drives — the programmatic .focus() never triggers
+  :focus-visible there on either app) · the profile avatar family
+  construction freeze (the genuine battery gap: the s13 pins held the
+  ROOT + the icon class, never the fallback's tag or the color
+  carrier — the stock DIV fallback + the ON-SVG color at BOTH sites
+  [the D-187a2 cure]) · the Data-tab list-body rhythm freeze (the
+  genuine gap: the s14/s26/s83 pins held the labels/margins/icon,
+  never the v4-vs-v3 rhythm arm — the D-187a3 carrier, the v4
+  space-y INLINE-FLOW variant: the reference's margin-TOP-on-following
+  drops its baseline-aligned row 8px below our margin-BOTTOM form at
+  byte-equal title/desc/content boxes, cured with the s11-era explicit
+  `[&>*+*]:mt-2` form; + the D-187a1 file-input id + tabIndex
+  retirement, the D-114a2 same-page precedent) —
+  `scripts/walk60-profile-datatab-focus-open.ts`].
   Node environment; `@` alias resolved.
 - **Property (Vitest + fast-check, 29 checks)** — `tests/property.test.ts`
   (session-172: the invariant layer over the pure seams — the csv
@@ -541,7 +558,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2769).
+the seam (currently 2773).
 
 ## Code Quality Standards
 

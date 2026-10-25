@@ -193,18 +193,23 @@ function ProfileForm({
                 {photoUrl ? (
                   <img src={photoUrl} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="flex h-full w-full items-center justify-center bg-blue-100 text-blue-600">
+                  // Walk60 (D-187a2): the reference's fallback is the stock
+                  // two-level structure — a DIV fallback (the stock
+                  // AvatarFallback form the topbar already carries) with
+                  // the color ON THE SVG, not a hand-rolled span carrying
+                  // it on the wrapper.
+                  <div className="flex h-full w-full items-center justify-center bg-blue-100">
                     <User className={PROFILE_LAYOUT.avatarIcon} strokeWidth={PROFILE_LAYOUT.avatarIconStroke} />
-                  </span>
+                  </div>
                 )}
               </span>
               <div className="w-full flex-1">
                 <input
                   ref={fileInputRef}
+                  id="photo-upload"
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  tabIndex={-1}
                   onChange={uploadPhoto}
                 />
                 {/* Session-30 (S30-P3): the reference's aCe — the outline
@@ -327,9 +332,13 @@ function ProfileForm({
               {user.photoUrl ? (
                 <img src={user.photoUrl} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <span className="flex h-full w-full items-center justify-center bg-blue-100 text-blue-600">
-                  <User className="h-10 w-10" strokeWidth={PROFILE_LAYOUT.avatarIconStroke} />
-                </span>
+                // Walk60 (D-187a2): the same two-level stock cure as the
+                // form avatar — the DIV fallback + the color on the svg
+                // (the reference's Account-card svg renders
+                // `lucide-user w-10 h-10 text-blue-600`).
+                <div className="flex h-full w-full items-center justify-center bg-blue-100">
+                  <User className="h-10 w-10 text-blue-600" strokeWidth={PROFILE_LAYOUT.avatarIconStroke} />
+                </div>
               )}
             </span>
             <h3 className="text-lg font-semibold">{user.name}</h3>

@@ -425,7 +425,9 @@ describe("session-169 (WP-1f): the README tree + Quick Start + gate pins (F-169h
       total += (noComments(readFileSync(f, "utf8")).match(/space-y-/g) ?? []).length;
     }
     expect(files.length).toBe(23); // the dialog-geometry census (s170: the boundary family +2)
-    expect(total).toBe(123);
+    // session-187 re-anchor: 123 -> 122 (the walk60 D-187a3 listBody
+    // retirement — the README's Tested row flipped in the same commit)
+    expect(total).toBe(122);
     expect(readme).toContain(`the space-y census at ${files.length} files / ${total} occurrences`);
     expect(readme).not.toContain("the space-y census re-anchored 110/18");
   });

@@ -799,7 +799,12 @@ describe("session-9 component-anatomy pins", () => {
     // "Enter your full name" placeholder.
     expect(PROFILE_LAYOUT.uploadBtn).toBe("w-full sm:w-auto");
     expect(PROFILE_LAYOUT.saveBtn).toBe("w-full sm:w-auto");
-    expect(PROFILE_LAYOUT.avatarIcon).toBe("h-10 w-10 sm:h-12 sm:w-12");
+    // Walk60 (D-187a2): the reference's avatar glyph carries its color ON
+    // THE SVG (text-blue-600 — its DOM `lucide lucide-user w-10 h-10
+    // sm:w-12 sm:h-12 text-blue-600`); the h/w-order delta is the standing
+    // lucide class-order genus, ours keeps its own order. The color arm
+    // moved here from the retired wrapper span at session-187.
+    expect(PROFILE_LAYOUT.avatarIcon).toBe("h-10 w-10 sm:h-12 sm:w-12 text-blue-600");
     expect(PROFILE_LAYOUT.avatarIconStroke).toBe(2);
     expect(PROFILE_LAYOUT.nameWrap).toBe("flex flex-col items-center text-center");
     expect(PROFILE_LAYOUT.columnWrap).toBe("space-y-4 sm:space-y-6");
@@ -1684,11 +1689,22 @@ describe("session-14: settings Data tab structure (S14-P2)", () => {
     expect(SETTINGS_DATA.importTitle).toBe("Import Templates");
   });
 
-  it("both list bodies are vertical space-y-2 stacks", () => {
-    // Reference: `p-6 pt-0 space-y-2` (buttons stacked, 8px apart);
-    // ours shipped `flex flex-wrap gap-2` (horizontal wrap).
-    expect(SETTINGS_DATA.listBody).toBe("p-6 pt-0 space-y-2");
+  it("both list bodies are vertical 8px stacks in the v3 following-sibling form", () => {
+    // Reference: `p-6 pt-0 space-y-2` (buttons stacked, 8px apart) — under
+    // ITS v3-era semantics that is margin-TOP on following siblings.
+    // Walk60 (D-187a3): under our v4 the same class string flips to
+    // margin-BOTTOM on PRECEDING siblings, and the children being
+    // inline-flex buttons makes the flip VISIBLE — the reference's
+    // button-2 margin-top extends the line box 8px ABOVE, dropping the
+    // whole baseline-aligned row 8px below the content top (first button
+    // 313,348 REF vs 313,340 OURS at the same byte-equal
+    // title/desc/content boxes; the same 8px on the Export card). The
+    // house's s11-era explicit form (the CardHeader `[&>*+*]:mt-1.5`
+    // precedent) restores the v3 semantics byte-exactly; the s14-era
+    // `space-y-2` class string retirement rides the same evidence.
+    expect(SETTINGS_DATA.listBody).toBe("p-6 pt-0 [&>*+*]:mt-2");
     expect(SETTINGS_DATA.listBody).not.toContain("flex-wrap");
+    expect(SETTINGS_DATA.listBody).not.toContain("space-y-2");
   });
 
   it("the Data tab buttons are stock outline default-size with w-full sm:w-auto", () => {
@@ -3883,5 +3899,111 @@ describe("session-186: the settings picklist-editor open-state interior walk (wa
     expect(src).toMatch(/defaultCurrency: settings\?\.defaultCurrency \?\? "AED"/);
     expect(src).toMatch(/calendarView: settings\?\.calendarView \?\? "month"/);
     expect(src).toMatch(/firstDayOfWeek: settings\?\.firstDayOfWeek \?\? "monday"/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-187 (walk60): the profile photo-upload family focus/open interior
+// walk + settings Data-tab sibling — the s394 close's named candidates (the
+// profile page's own interactive arms under ADR-022 — the s30-era
+// construction never re-walked live · the Data-tab template/export
+// buttons' focus faces, the s26/s83 margins walked but never the focus
+// faces). The discovery (scripts/discover-187.ts) proved BOTH families
+// LIVE on BOTH apps with the construction byte-equal on the resting
+// faces (h1 + the four labels + the small-card vocabulary + the Upload/
+// name/Save geometry byte-equal at 537,312/425,446/425,730; the
+// Data-tab three cards byte-equal; the ten-button vocabulary byte-equal;
+// the Danger gate states byte-equal), the topbar-search gate KILLED
+// again (populated=0 on both), the Edit-family re-check still zero-row.
+// The walk's verdict: THREE live finds cured (D-187a1 the file input's
+// id + tabIndex retirement — the D-114a2 same-page precedent ·
+// D-187a2 the avatar's stock DIV fallback + the color ON THE SVG at
+// BOTH sites · D-187a3 the Data-tab 8px button-row offset — the v4
+// space-y semantics flip's INLINE-FLOW variant, the reference's
+// margin-TOP-on-following dropping the baseline-aligned row 8px, cured
+// with the house's s11-era explicit form) — every remaining delta a
+// documented genus (the box-shadow slot-count with every VISIBLE layer
+// byte-equal — the shadow-sm resting arm, the 1px near-black ring, the
+// Save's 0.1-alpha shadow pair · the ring-offset white zero-extent
+// slot · the outline VERSION FORM + both sub-forms · the
+// token-selection M-81c2 pairs · the class-order family — the avatar's
+// h/w positions, flex orderings, the lucide w/h order · our aria-hidden
+// supersets · the programmatic-focus stop's :focus-visible absence on
+// BOTH apps — the REAL Tab is the true face, and it paints the
+// byte-equal 1px near-black ring on both) — the re-walk proves all
+// three cures byte-equal (the id/tabIndex pair, the div fallback + the
+// svg color, the 8px cured at BOTH cards on BOTH axes).
+// ---------------------------------------------------------------------------
+
+describe("session-187: the profile photo-upload + Data-tab focus/open interior walk (walk60 — both families byte-equal on both apps at both axes post-cure; the D-187a1/a2/a3 cures re-walked byte-equal)", () => {
+  it("the walk60 decode freeze — the two-app profile OPEN ledger at both axes + the REAL Tab drives + the Data-tab sibling decode (the tool's own contract)", () => {
+    const src = read("scripts/walk60-profile-datatab-focus-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // Phase A the profile OPEN census at BOTH axes — the PI card's DFS
+    // ledger, the avatar's face (the D-187a2 tag/carrier decode), the
+    // Upload button's resting + focus faces + its Camera glyph, the
+    // hidden file input's construction census (the D-187a1 id decode),
+    // the name input's rings, the disabled email/role faces, the Save
+    // button's shadow pair, the right-column census
+    expect(src).toContain("profilePhase");
+    expect(src).toContain('"Personal Information"');
+    expect(src).toContain('input[type="file"]');
+    expect(src).toContain("fileInput");
+    expect(src).toContain("innerTag");
+    expect(src).toContain("svgCls");
+    expect(src).toContain('filter({ hasText: "Upload Photo" })');
+    expect(src).toContain('input[id="display_name"]');
+    expect(src).toContain('filter({ hasText: "Save Changes" })');
+    expect(src).toContain("{ w: 390, h: 844 }");
+    // Phase B the REAL keyboard Tab drive through the profile form +
+    // the Data-tab row (the programmatic .focus() never triggers
+    // :focus-visible there on either app — the REAL keyboard is the
+    // only true face)
+    expect(src).toContain("profileTabPhase");
+    expect(src).toContain("dataTabTabPhase");
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain("normChain");
+    // Phase C the Data-tab sibling — the three cards' geometry ledger
+    // (the D-187a3 8px decode), the template/export buttons' faces,
+    // the Danger Zone's census, the RESET input's ring, the gate
+    // states (the write NEVER fired)
+    expect(src).toContain("dataTabPhase");
+    expect(src).toContain('"Import Templates"');
+    expect(src).toContain('"Danger Zone"');
+    expect(src).toContain('input[placeholder="RESET"]');
+    expect(src).toContain("emptyGate");
+    expect(src).toContain("armed");
+  });
+
+  it("the profile avatar family — the stock two-level structure at BOTH sites (the genuine battery gap: the s13 pins held the ROOT span + the icon class, never the fallback's tag or the color carrier; the walk proves the reference's DIV fallback + the ON-SVG color byte-equal)", () => {
+    const src = read("src/app/(app)/profile/profile-page.tsx");
+    // the form avatar: the span root keeps its aria-hidden superset; the
+    // fallback is the DIV (the stock AvatarFallback form the topbar
+    // already carries); the color rides the SVG via PROFILE_LAYOUT.avatarIcon
+    // (the [\s\S]*? allows the s30-era comment block inside the span)
+    expect(src).toMatch(/<span\s+className="relative flex h-20 w-20 shrink-0 overflow-hidden rounded-full sm:h-24 sm:w-24"\s+aria-hidden="true"\s*>[\s\S]*?\{photoUrl \? \(/);
+    expect(src).toContain('<div className="flex h-full w-full items-center justify-center bg-blue-100">\n                    <User className={PROFILE_LAYOUT.avatarIcon}');
+    // the Account card avatar: the SAME two-level cure (its reference
+    // svg renders `lucide-user w-10 h-10 text-blue-600`)
+    expect(src).toContain('<div className="flex h-full w-full items-center justify-center bg-blue-100">\n                  <User className="h-10 w-10 text-blue-600"');
+    // the retired wrapper-span carrier must stay gone (both sites)
+    expect(src).not.toMatch(/<span className="flex h-full w-full items-center justify-center bg-blue-100 text-blue-600">/);
+  });
+
+  it("the Data-tab list-body rhythm — the v3 following-sibling form wired on both cards (the genuine gap: the s14/s26/s83 pins held the labels/margins/icon, never the v4-vs-v3 rhythm arm; the walk proves the 8px cured byte-equal at both cards on both axes)", () => {
+    const src = read("src/app/(app)/settings/settings-page.tsx");
+    // both list bodies ride the contract (the template card + the
+    // export card) — the D-187a3 carrier
+    const uses = src.match(/SETTINGS_DATA\.listBody/g) ?? [];
+    expect(uses.length).toBe(2);
+    // the contract itself: the explicit following-sibling form, never
+    // the v4 space-y string (the re-anchored s14 pin holds the same
+    // string; this freeze holds the WIRING)
+    const layout = read("src/lib/page-layout.ts")!;
+    const block = layout.slice(layout.indexOf("SETTINGS_DATA = {"), layout.indexOf("SETTINGS_DATA = {") + 2600);
+    expect(block).toMatch(/listBody:\s*"p-6 pt-0 \[&>\*\+\*\]:mt-2"/);
+    expect(block).not.toMatch(/listBody:\s*"p-6 pt-0 space-y-2"/);
   });
 });

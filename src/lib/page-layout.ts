@@ -495,7 +495,18 @@ export const SETTINGS_DEFAULTS = {
  *  (h-8 px-3 text-xs, icon h-3.5, no responsive width). */
 export const SETTINGS_DATA = {
   importTitle: "Import Templates",
-  listBody: "p-6 pt-0 space-y-2",
+  /** Walk60 (D-187a3): the reference's own class is `p-6 pt-0
+   *  space-y-2` — but under ITS v3-era semantics that is margin-TOP on
+   *  following siblings. Under our v4 the same string flips to
+   *  margin-BOTTOM on PRECEDING siblings, and the inline-flex button
+   *  children make the flip VISIBLE: the reference's button-2
+   *  margin-top extends the line box 8px ABOVE, dropping the whole
+   *  baseline-aligned row 8px (first button 313,348 REF vs 313,340
+   *  OURS at byte-equal title/desc/content boxes; the same 8px on the
+   *  Export card). The house's s11-era explicit form (the CardHeader
+   *  `[&>*+*]:mt-1.5` precedent) restores the v3 semantics
+   *  byte-exactly. */
+  listBody: "p-6 pt-0 [&>*+*]:mt-2",
   cardTitle: "font-semibold leading-none tracking-tight",
   buttonCls: "w-full sm:w-auto",
   /** Session-26 (S26-P1): the reference's 2nd+ button margin — live-computed
@@ -1165,7 +1176,13 @@ export const PROFILE_LAYOUT = {
    *  apps). The explicit mt-2 on every control restores the computed
    *  geometry. */
   controlMt: "mt-2",
-  avatarIcon: "h-10 w-10 sm:h-12 sm:w-12",
+  /** Walk60 (D-187a2): the glyph's color arm rides the SVG (the
+   *  reference's own carrier — its DOM `lucide lucide-user w-10 h-10
+   *  sm:w-12 sm:h-12 text-blue-600`); the s13-era wrapper-span carrier
+   *  retired with the hand-rolled span (the stock DIV fallback took its
+   *  place). The h/w-order delta is the standing lucide class-order
+   *  genus — ours keeps its own order. */
+  avatarIcon: "h-10 w-10 sm:h-12 sm:w-12 text-blue-600",
   avatarIconStroke: 2,
   nameWrap: "flex flex-col items-center text-center",
   columnWrap: "space-y-4 sm:space-y-6",

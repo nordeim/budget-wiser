@@ -72,6 +72,25 @@ describe("session-30: the profile upload flow (aCe)", () => {
     expect(raw).toMatch(/accept="image\/\*"/);
   });
 
+  it("the hidden input carries the reference's construction (id + no tabIndex)", () => {
+    // Walk60 (D-187a1): the reference's hidden file input carries
+    // id="photo-upload" and NO tabIndex attribute (the DOM property reads
+    // 0); ours shipped id-less with an explicit tabIndex={-1} (the
+    // property reading -1). Both inert behaviorally — the input is
+    // display:none (never tabbable regardless), and no label wires
+    // htmlFor to it on either app (the "Profile Picture" label carries
+    // no htmlFor on both, no wrapping either) — but the D-114a2
+    // same-page precedent (the s114 email/role id cure: "the
+    // reference's BARE ids — construction parity") names the
+    // reference's ids construction-parity material on this route. The
+    // walk60 live census + the pre-plan micro-probe carry the decode.
+    const raw = pageRaw();
+    expect(raw).toMatch(/ref=\{fileInputRef\}\s+id="photo-upload"\s+type="file"/);
+    expect(raw).toMatch(/accept="image\/\*"/);
+    expect(raw).toMatch(/className="hidden"/);
+    expect(raw).not.toMatch(/tabIndex/);
+  });
+
   it("NO client type-validation alert on this surface (the reference has none)", () => {
     const src = page();
     expect(src).not.toMatch(/Please upload an image file/);

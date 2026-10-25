@@ -851,7 +851,25 @@ const SUITES = 138;
 // doctrine) · E2E 192 re-verified (the round's ONE product-code
 // touch: the D-186a1 Pen glyph cure — settings-page.tsx alone;
 // page-layout.ts UNTOUCHED, the MODULE line count 1701 HELD).
-const UNIT = 2769;
+// Session-187: 2769 -> 2773 (+4 — THE PROFILE PHOTO-UPLOAD
+// FAMILY FOCUS/OPEN INTERIOR WALK + SETTINGS DATA-TAB
+// SIBLING [walk60 — the s187 battery in
+// tests/page-layout.test.ts: the walk60 decode freeze (the
+// two-app profile + Data-tab OPEN ledgers at both axes + the
+// REAL Tab drives through both families) · the profile avatar
+// family construction freeze (the genuine battery gap: the
+// s13 pins held the ROOT + the icon class, never the fallback's
+// tag or the color carrier — the stock DIV fallback + the
+// ON-SVG color at BOTH sites) · the Data-tab list-body rhythm
+// freeze (the genuine gap: the s14/s26/s83 pins held the
+// labels/margins/icon, never the v4-vs-v3 rhythm arm — the
+// D-187a3 carrier)]. SUITES 138 HELD (the one-suite
+// doctrine) · E2E 192 re-verified (the round's product-code
+// touches: the D-187a1 file-input id + tabIndex retirement ·
+// the D-187a2 stock DIV fallback + on-svg color at BOTH
+// avatar sites · the D-187a3 list-body v3-semantics retirement
+// — the MODULE line count 1701 -> 1718 [+17 the cure comments]).
+const UNIT = 2773;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1316,13 +1334,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-186 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-187 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s185 layer now beneath the s186 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s186 layer now beneath the s187 head)",
     ).toContain(
-      "+ beneath it 2766 unit checks + 192 e2e checks green; the session-185 layer (THE QUICK-LOG DIALOG OPEN-STATE INTERIOR WALK + BY-TYPE FOOTER RE-WALK",
+      "+ beneath it 2769 unit checks + 192 e2e checks green; the session-186 layer (THE SETTINGS PICKLIST-EDITOR OPEN-STATE INTERIOR WALK + DEFAULTS-TAB SELECTS SIBLING",
     );
   });
 
@@ -1664,8 +1682,14 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // pins, the checks 242->245; the MODULE line count 1701 HELD — the
     // D-186a1 Pen cure rode settings-page.tsx, page-layout.ts untouched).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 242 checks");
+    // Session-187: the retired 245 form joins the negatives ladder (the
+    // walk60 profile-photo-upload + Data-tab round: the session-187 battery
+    // +3 born-green pins in page-layout + the NEW D-187a1 construction pin
+// in profile-photo, the checks 245->248; the MODULE line count
+    // 1701->1718 — the D-187a2/a3 cure comments grew the module +17).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 245 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1701 lines; `tests/page-layout.test.ts`, 245 checks",
+      "test-pinned module (1718 lines; `tests/page-layout.test.ts`, 248 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");
@@ -1675,7 +1699,10 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     expect(
       pad,
       "the module-table page-layout row must carry the live line count (F-108a2's PAD face)",
-    ).toContain("| `src/lib/page-layout.ts` | 1701 |");
+    ).toContain("| `src/lib/page-layout.ts` | 1718 |");
+    // Session-187: the retired 1701 row form joins the negatives ladder
+    // (the D-187a2/a3 cure comments' growth 1701->1718).
+    expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1701 |");
     // Session-177: the retired 1687 form joins the negatives ladder.
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1687 |");
     // Session-148: the retired 1698 form joins the negatives ladder.

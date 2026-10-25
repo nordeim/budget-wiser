@@ -194,11 +194,15 @@ describe("session-80: the documented parities, pinned green (N-80c5)", () => {
 
   it("the avatar ladders: the form's responsive 80/96 + the Account card's flat 80", async () => {
     const L = await pageLayout();
-    expect(L.avatarIcon).toBe("h-10 w-10 sm:h-12 sm:w-12");
+    // Walk60 (D-187a2): the color arm moved ONTO THE SVG (the reference's
+    // own carrier — its DOM `lucide-user w-10 h-10 sm:w-12 sm:h-12
+    // text-blue-600`); the s13-era wrapper-span carrier retired with the
+    // hand-rolled span (the stock DIV fallback took its place).
+    expect(L.avatarIcon).toBe("h-10 w-10 sm:h-12 sm:w-12 text-blue-600");
     expect(L.avatarIconStroke).toBe(2);
     // The Account card's icon stays FLAT h-10 w-10 (the reference's
-    // own split — no sm arm there).
-    expect(profileSrc()).toContain('<User className="h-10 w-10"');
+    // own split — no sm arm there) + the same on-svg color carrier.
+    expect(profileSrc()).toContain('<User className="h-10 w-10 text-blue-600"');
   });
 
   it("the three chips' inline-color pairs compute equal to the reference's class expressions", () => {
