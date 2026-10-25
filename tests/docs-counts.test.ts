@@ -835,7 +835,23 @@ const SUITES = 138;
 // doctrine) · E2E 192 re-verified (the round's ONE product-
 // code touch: the D-185a1 placeholderState restoration — the
 // s133 retirement REVERSED by the walk58 two-app live find).
-const UNIT = 2766;
+// Session-186: 2766 -> 2769 (+3 — THE SETTINGS
+// PICKLIST-EDITOR OPEN-STATE INTERIOR WALK + DEFAULTS-TAB
+// SELECTS SIBLING [walk59 — the s186 battery in
+// tests/page-layout.test.ts: the walk59 decode freeze (the
+// two-app picklist OPEN ledger at both axes + the mount-focus
+// census + the REAL Tab drive through the swapped row + the
+// add-row + the Defaults combobox decode) · the ListEditor
+// rename-arm construction freeze (the genuine battery gap: the
+// s72 pins hold the ROW + the ADD classes, never the RENAME
+// SWAP's construction) · the Defaults-tab select wiring freeze
+// (the genuine gap: the s14 pins hold the LAYOUT, never the two
+// comboboxes' value wiring — Month/Week + Monday/Sunday + the
+// debounced set() persist)]. SUITES 138 HELD (the one-suite
+// doctrine) · E2E 192 re-verified (the round's ONE product-code
+// touch: the D-186a1 Pen glyph cure — settings-page.tsx alone;
+// page-layout.ts UNTOUCHED, the MODULE line count 1701 HELD).
+const UNIT = 2769;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1300,13 +1316,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-185 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-186 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s184 layer now beneath the s185 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s185 layer now beneath the s186 head)",
     ).toContain(
-      "+ beneath it 2763 unit checks + 192 e2e checks green; the session-184 layer (THE ACTIVITIES MORE-FILTERS TOGGLE + RAIL-ACTIONS OPEN-STATE",
+      "+ beneath it 2766 unit checks + 192 e2e checks green; the session-185 layer (THE QUICK-LOG DIALOG OPEN-STATE INTERIOR WALK + BY-TYPE FOOTER RE-WALK",
     );
   });
 
@@ -1643,8 +1659,13 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
     // pins, the checks 239->242; the MODULE line count 1695->1701 — the
     // D-185a1 placeholderState restoration grew the module +6).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 239 checks");
+    // Session-186: the retired 242 form joins the negatives ladder (the
+    // walk59 settings-picklist round: the session-186 battery +3 born-green
+    // pins, the checks 242->245; the MODULE line count 1701 HELD — the
+    // D-186a1 Pen cure rode settings-page.tsx, page-layout.ts untouched).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 242 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1701 lines; `tests/page-layout.test.ts`, 242 checks",
+      "test-pinned module (1701 lines; `tests/page-layout.test.ts`, 245 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");

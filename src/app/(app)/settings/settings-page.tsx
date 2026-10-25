@@ -2,7 +2,7 @@
 
 import { downloadBlob } from "@/lib/download";
 import * as React from "react";
-import { AlertCircle, Download, Pencil, Plus, Save, Trash2, X } from "lucide-react";
+import { AlertCircle, Download, Pen, Plus, Save, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -31,12 +31,19 @@ interface ListEditorProps {
  * Session-72 (H-72c1, bundle-decoded from the reference's ly
  * component): the picklist rows are BORDERED LIST ROWS — `flex
  * items-center gap-2 p-2 border rounded-lg hover:bg-gray-50` — each
- * carrying a `span.flex-1` name + a Pencil ghost icon button (the
- * inline RENAME: the row swaps to an Input [Enter saves] + a
+ * carrying a `span.flex-1` name + a Pen ghost icon button (the inline
+ * RENAME: the row swaps to an Input [Enter saves] + a
  * Save-icon + an X) + a Trash2 ghost icon button in the reference's
  * red pair. The s7-era chip pills are retired. The icon buttons
  * carry aria-labels — the accessible superset over the reference's
  * unlabeled icons (the roving-tabindex precedent).
+ * Session-186 (D-186a1, the walk59 live find): the rename trigger's
+ * glyph is the lucide PEN, not the Pencil the s72 bundle decode
+ * named — the reference's own row icon renders lucide-pen with
+ * exactly ONE path (the shared body `M21.174 6.812…z`); our Pencil
+ * added the extra tip line `m15 5 4 4` no reference face carries
+ * (the M-82c2 icon-identity class). The calendar chip-edit family
+ * already renders Pen (the s48 bundle-verified site).
  */
 function ListEditor({ title, items, placeholder, onAdd, onUpdate, onDelete }: ListEditorProps) {
   const [editingIndex, setEditingIndex] = React.useState<number | null>(null);
@@ -103,7 +110,7 @@ function ListEditor({ title, items, placeholder, onAdd, onUpdate, onDelete }: Li
                     }}
                     aria-label={`Rename ${item}`}
                   >
-                    <Pencil className="h-4 w-4" />
+                    <Pen className="h-4 w-4" />
                   </Button>
                   <Button
                     size="icon"

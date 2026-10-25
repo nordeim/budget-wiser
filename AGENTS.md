@@ -17,7 +17,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | Production server               | `bun run start`                        |
 | Lint                            | `bun run lint`                         |
 | Type check                      | `bun run typecheck`                    |
-|  Unit tests (2766 checks)      | `bun run test`                         |
+|  Unit tests (2769 checks)      | `bun run test`                         |
 |  Unit tests (watch mode)        | `bun run test:watch`                   |
 |  Browser E2E (192 checks)        | `bun run test:e2e` (needs build first) |
 | Smoke the standalone artifact   | `bun run smoke` (needs build first)    |
@@ -33,7 +33,7 @@ remote via `docs/ssh_git_wrapper_v3.py`.
 | The gate + the six drift gates  | `bun run gate:full`                    |
 
 **Gate order before every push:** `bun run lint` → `bun run typecheck` →
-`bun run test` (2766) → `bun run build` → `bun run smoke` (the standalone
+`bun run test` (2769) → `bun run build` → `bun run smoke` (the standalone
 boot + the 14-check ladder, session-170: the web-app-foundation §13.4/§14
 leg — the boot-gate + artifact-hygiene assertions ride it) →
 `bun run test:e2e` (192) — or the one-command `bun run gate` (session-38:
@@ -10873,3 +10873,140 @@ six-knob contract and included in this round's commit.
 census MATCH · probe:ref STABLE · the walk58 dialog OPEN interiors
 byte-equal on both axes (post-cure) · the D-183a1 same-family check
 CLEAN · the captures: the round's ours+ref faces.
+
+### Session-186 — THE SETTINGS PICKLIST-EDITOR OPEN-STATE INTERIOR WALK + DEFAULTS-TAB SELECTS SIBLING (walk59) (2026-10-25)
+
+The post-185 audit rotation, its rotation trigger THE OWNER'S NEWEST
+COMMIT (`1a1c362` — the session_392/393 transcripts, the s185 round's
+own execution record). The s392 close's named candidates, adjudicated
+by the discovery probe (`scripts/discover-186.ts`): the FIRST-named
+(the settings pages' own interactive arms under ADR-022 — the picklist
+editor's focus/open faces, the s83-era construction never re-walked
+live) **LIVE, rows on BOTH apps** — the picklists are the settings
+singleton's own configuration, NOT the demo data the zero-data state
+wiped (OURS the seeded 8/7/6/3/8, the reference its own 5/6/6/4/10
+defaults — the DATA-STATE genus: the values are data, the construction
+is the comparison); the conditional sibling (the topbar search's
+dropdown arm) **KILLED** — `populated=0` on BOTH apps at the
+seeded-term leg (the placeholder `Search Anything...` byte-equal; the
+s392 gate "if the reference's own suggestions ever populate" FAILS —
+the candidate stays suspended with the s32 dead-stub doctrine
+standing); the standing Edit-family re-check: the reference still
+carries ZERO rows + ZERO calendar chips — the candidate STAYS
+suspended. probe:ref STABLE (`46bc2d9c`) kills the fresh-bundle
+candidate; the registry's `latest` 3.10.1 (verified live) kills the
+recharts 4.0 gate. The baseline gate GREEN at the exact s185 ship
+state on a FRESH CLONE: lint 0/0 · tsc 0 · **138/2766** · build (the
+type-gate artifact) · smoke **14/14** · e2e **192/192** (clean first
+run, 5.7m) · db census MATCH · sitemap 11 routes + robots + manifest
+200.
+
+**The walk** (`scripts/walk59-settings-picklist-open.ts`, the
+walk53-58 ledger form over the settings family's OPEN/focus states at
+BOTH axes — the settings family reachable at phone, like the dialog
+family): Phase A the picklist OPEN census (the first-card first-row
+RESTING face — the row chrome byte-equal: `313,326 502x54`, border
+`1px solid rgb(229,229,229)`, radius 8px, the `flex items-center gap-2
+p-2 border rounded-lg hover:bg-gray-50` construction IDENTICAL — the
+Pencil-click swap opening the rename arm, the mount-focus landing on
+the SAVE button on BOTH apps (the DOM-reuse focus retention), the
+rename Input's resting + focus rings, the Pencil/Trash2 resting faces
+with the red `rgb(220,38,38)` pair byte-equal, the X close
+round-trip — the reference's destructive arms NEVER fired: the
+delete/save writes ride OURS only — the ADD row census with the
+placeholder + the dark Add `rgb(23,23,23)` 48x36 byte-equal, the
+row/Trash2/Add HOVER faces — the walk57 mouse-borne precedent, the
+rowHoverBg `rgb(249,250,251)` + the trashHoverColor `rgb(185,28,28)`
+byte-equal on both); Phase B the REAL keyboard Tab drive through the
+swapped row (the fixed 3-stop chain: the mount-focus Save → Shift-Tab
+the Input → Tab Save → Tab X, each stop's ring carrier) + THE ESCAPE
+PROBE ANSWERED byte-equal (the reference's own rename swap does NOT
+close on Escape either — the X is the cancel on BOTH apps; ours never
+wired Escape and neither did the reference); Phase C the phone-axis
+census (the rename swap + the add row at 390 — the s106
+settings-family-at-phone form); Phase D the Defaults tab decode (the
+two comboboxes' OPEN faces — the Month/Week vocabulary, the s72
+M-72c3 decode with Agenda NEVER listed, + Monday/Sunday, the
+highlighted faces + the trigger faces + the Escape round-trip
+byte-equal on both apps + the four inputs' AED/new/B/3 fallback family
+byte-equal, the M-72c4 decode standing).
+
+**THE LIVE FIND + CURE — D-186a1 THE RENAME-TRIGGER GLYPH** (the
+M-82c2 ACTIVITY-icon class): the s72 H-72c1 bundle decode named the
+reference's row icon "a Pencil ghost icon button" and ours shipped
+lucide `Pencil` accordingly. The walk59 two-app census + the live path
+probe REVERSED the glyph claim: the reference's rename trigger
+renders `lucide lucide-pen w-4 h-4` carrying EXACTLY ONE path (the
+body `M21.174 6.812…z`) where ours rendered Pencil's TWO paths (the
+same body + the extra tip line `m15 5 4 4`) — a different lucide
+member of the same family, NOT a version genus (the body path is
+byte-identical, ours just added the tip stroke; the reference's
+calendar chip-edit family already decodes as Pen — the s48
+bundle-verified site). THE CURE: `Pencil` → `Pen` in
+`settings-page.tsx` (the import + the JSX + the comment); the s72 pin
+block re-anchored RED-first. The re-walk PROVES the glyph byte-equal
+(1 path, the pen class, both apps; the interior ledger aligns — the
+Trash2's 3 paths + 2 lines byte-identical on both). Every remaining
+delta a documented genus (the box-shadow SLOT-COUNT, every VISIBLE
+layer byte-equal — the Input's shadow-sm resting layer, the Add's
+bare shadow pair, the select content's shadow-lg pair, the focused
+1px near-black ring · the ring-offset white zero-extent slot, the s129
+retirement · the outline VERSION FORM + both sub-forms · the
+token-selection M-81c2 pairs · the class-order `md:text-sm` position ·
+our aria-label supersets (the Rename/Save/Cancel/Delete/Add naming —
+the s88-c9 doctrine, kept) · the lucide version genus (the class
+names + the aria-hidden carrier) · the DATA-STATE values).
+
+**The TDD ledger**: the pin survey first (the s72
+SETTINGS_PICKLIST/row-anatomy pins · the s14 SETTINGS_DEFAULTS · the
+s26 settings-data-tab · the s10 INPUT_BASE/SELECT_TRIGGER pins · the
+walk53 select-carrier freezes · the walk55 SELECT_ITEM freeze — the
+RENAME SWAP's construction + the Defaults comboboxes' value wiring
+never pinned), 3 born-green pins — the walk59 decode freeze (the
+tool's own contract: the two-app picklist OPEN ledger at both axes +
+the mount-focus census + the REAL Tab drive + the add-row + the
+Defaults combobox decode) · the ListEditor rename-arm construction
+freeze (the genuine battery gap: the ternary + the Input aria-label +
+the Save/X pair + the Enter wiring + the add-row pair) · the
+Defaults-tab select wiring freeze (the genuine gap: Month/Week +
+Monday/Sunday + the debounced set() persist) — + THE D-186a1 CURE
+PIN (RED-first over the live find: exactly 1 RED at birth → the cure
+→ GREEN). **MUTATION-PROOF**: the planted Pencil replant → **exactly
+1 RED** (the full-string pin's unique teeth) → restored → GREEN, no
+residual. **STASH-PROOF**: the round's test block stashed → exactly
+**138/2766** (the s185 ship state) → restored → **138/2769**.
+
+**The count ladder**: 2766 → **2769** (+3, all in the existing
+page-layout suite — the ADR-017 one-suite doctrine) · SUITES 138 HELD
+· E2E 192 re-verified (the round's ONE product-code touch: the
+D-186a1 Pen cure in settings-page.tsx alone; page-layout.ts UNTOUCHED
+— the MODULE line count 1701 HELD) · badge 2958 → **2961**
+(count-ladder-186.py: assert-first, idempotent — the re-run a
+verified 0-flip no-op) + the collateral re-anchors (the SKILL §5.6
+census checks 242 → 245 · the census era flip — the s186 census HELD
+1701 · the F-106a1 layer-axis pin — the s186 layer live, the s185
+demoted beneath it at 2766/192 · the s185-era live-tense RED-first
+arithmetic site re-anchored 258 → 261) + skill-head-186.py (the SKILL
+v1.183.0, idempotent).
+
+**The operator's round-shaped asks, all verified standing** (the
+session record's own ledger): the `.env` DATABASE_URL
+`file:../db/custom.db` with the `db/` folder at the repo root (census
+MATCH at `<repo>/db/custom.db` — the ambient `DATABASE_URL` shadow
+scrubbed with `env -u` on every DB-touching command, the F-123a1
+doctrine) · the vitest + playwright config files verified standing
+(138/2769 unit + the 192-check e2e battery re-verified this session)
+· the sitemap + SEO surface re-verified (the 11-route sitemap.xml +
+robots.txt with its Sitemap line + the installable manifest.json —
+smoke check 12 carries the 200s) · the mobile-nav comparison
+re-verified (probe:ref TRUE-390 STANDING — the reference's own menu
+button live; OURS the Radix Sheet superset) · the Tailwind v4 state
+clean (no new v4 hazard; the walk's every delta decoded against the
+standing genus register) · the `.env.example` verified against the
+six-knob contract and included in this round's commit.
+
+**THE VERIFICATION**: lint 0/0 · tsc 0 · **138/2769** unit · build
+(the type-gate artifact) · smoke **14/14** · e2e **192/192** · db
+census MATCH · probe:ref STABLE · the walk59 picklist arms byte-equal
+on both axes (post-cure) · the Defaults vocabularies byte-equal ·
+the captures: the round's ours+ref faces.

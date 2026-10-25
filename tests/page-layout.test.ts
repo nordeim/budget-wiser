@@ -3762,3 +3762,126 @@ describe("session-185: the quick-log dialog open-state interior walk (walk58 —
     expect(block).toContain("defaultChecked");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-186 (walk59): the settings picklist-editor open-state interior
+// walk + Defaults-tab selects sibling — the s392 close's FIRST-NAMED
+// candidate (the settings pages' own interactive arms under ADR-022 —
+// the picklist editor's focus/open faces, the s83-era construction
+// never re-walked live) + the Defaults combobox pair. The discovery
+// (scripts/discover-186.ts) proved the picklist rows LIVE on BOTH apps
+// (the settings singleton's own configuration, NOT the demo data the
+// zero-data state wiped — ours the seeded 8/7/6/3/8, the reference its
+// own 5/6/6/4/10 defaults: the DATA-STATE genus) with the row chrome
+// byte-equal, the rename arm OPENING on both, the mount-focus landing
+// on the Save button on both (the DOM-reuse retention), the X/Escape
+// cancels the safe two-app round-trips (the destructive arms never
+// fired on the reference), and the Defaults vocabularies byte-equal
+// (Month/Week — the s72 M-72c3 decode — + Monday/Sunday). The walk's
+// verdict: ONE live find cured (D-186a1 the rename-trigger GLYPH — the
+// Pen, pinned in its own re-anchored s72 block in
+// settings-profile-parity.test.ts) — every remaining delta a
+// documented genus (the box-shadow slot-count with every VISIBLE
+// layer byte-equal incl. the Input's shadow-sm arm + the Add's bare
+// shadow + the select content's shadow-lg · the ring-offset white
+// zero-extent slot · the outline VERSION FORM + both sub-forms · the
+// token-selection M-81c2 pairs · the class-order md:text-sm position ·
+// our aria-label supersets on the Pen/Trash2/Save/X/Add controls ·
+// the lucide version genus on the class names · the DATA-STATE values)
+// — and the Escape probe answered byte-equal (the reference's own
+// rename swap does NOT close on Escape either; the X is the cancel on
+// both apps).
+// ---------------------------------------------------------------------------
+
+describe("session-186: the settings picklist-editor open-state interior walk (walk59 — the picklist arms' faces byte-equal on both apps at both axes; the D-186a1 Pen glyph cured; the Defaults selects decoded)", () => {
+  it("the walk59 decode freeze — the two-app picklist OPEN ledger at both axes + the mount-focus census + the REAL Tab drive through the swapped row + the add-row + the Defaults combobox decode (the tool's own contract)", () => {
+    const src = read("scripts/walk59-settings-picklist-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // Phase A the picklist OPEN census at BOTH axes (the settings family
+    // reachable at phone) — the first-card first-row RESTING face, the
+    // Pencil-click swap, the interior DFS ledger, the mount-focus, the
+    // rename Input's resting + focus ring, the X close round-trip, the
+    // ADD row census (the placeholder + the dark Add + its hover), the
+    // row + Trash2 HOVER faces (the walk57 mouse-borne precedent)
+    expect(src).toContain("picklistPhase");
+    expect(src).toContain('"Contact Sources"');
+    expect(src).toContain("mountFocus");
+    expect(src).toContain("inputFocusRing");
+    expect(src).toContain("xRoundTrip");
+    expect(src).toContain('placeholder^="Add new"');
+    expect(src).toContain("trashHoverColor");
+    expect(src).toContain("rowHoverBg");
+    expect(src).toContain("{ w: 390, h: 844 }");
+    // Phase B the REAL keyboard Tab drive through the swapped row (the
+    // fixed 3-stop chain: the mount-focus Save → Shift-Tab the Input →
+    // Tab Save → Tab X) + the ESCAPE probe (the walk's answer: the
+    // reference's own swap does NOT close on Escape either)
+    expect(src).toContain('await page.keyboard.press("Shift+Tab")');
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain("escapeClosed");
+    // Phase D the Defaults tab decode — the two comboboxes' OPEN faces
+    // (the Month/Week + Monday/Sunday vocabularies, the highlighted
+    // faces, the Escape round-trip) + the four inputs' resting faces
+    expect(src).toContain("defaultsPhase");
+    expect(src).toContain('"Default Values"');
+    expect(src).toContain('[role="listbox"]');
+    expect(src).toContain('[role="option"]');
+  });
+
+  it("the ListEditor rename-arm construction — the editingIndex ternary + the Input aria-label + the Save/X ghost pair + the Enter wiring + the add-row pair (the genuine battery gap: the s72 pins hold the ROW + the ADD classes, never the RENAME SWAP's construction; the walk proves the swap byte-equal on both apps)", () => {
+    const src = read("src/app/(app)/settings/settings-page.tsx");
+    // the swap ternary's RESTING arm — the name span + the Pen (the
+    // D-186a1 glyph) + the red Trash2, each with its aria-label
+    expect(src).toContain(`<>
+                  <Input
+                    value={editingName}`);
+    expect(src).toContain('aria-label={`Rename ${item}`}');
+    expect(src).toContain('aria-label="Save rename"');
+    expect(src).toContain('aria-label="Cancel rename"');
+    // the Enter wiring (the Input's key handler — Enter saves, exactly
+    // the reference's own construction; Escape is NOT wired on either
+    // app — the walk's byte-equal answer)
+    expect(src).toMatch(/if \(e\.key === "Enter"\) \{\s*e\.preventDefault\(\);\s*saveEdit\(\);/);
+    // the swap's Input rides the stock Input (no className override on
+    // the rename field beyond flex-1 — the walk's census: the byte-equal
+    // construction)
+    expect(src).toMatch(/<Input\s+value=\{editingName\}\s+onChange=\{\(e\) => setEditingName\(e\.target\.value\)\}\s+className="flex-1"/);
+    // the add-row pair — the placeholder Input + the dark Add (the
+    // SETTINGS_PICKLIST.addRow/addButton carriers, the s72 pins, riding
+    // the walked add-row census: the placeholder byte-equal, the Add
+    // rgb(23,23,23) 48x36 byte-equal on both apps)
+    expect(src).toMatch(/<Input\s+value=\{value\}\s+onChange=\{\(e\) => setValue\(e\.target\.value\)\}/);
+    expect(src).toContain('aria-label="Add item"');
+    expect(src).toMatch(/aria-label=\{`Add new \$\{title\.toLowerCase\(\)\} item`}/);
+  });
+
+  it("the Defaults-tab select wiring — the Month/Week pair + the Monday/Sunday pair + the debounced set() persist (the genuine gap: the s14 pins hold the LAYOUT, never the two comboboxes' value wiring; the walk proves the vocabularies + the highlighted faces byte-equal on both apps)", () => {
+    const src = read("src/app/(app)/settings/settings-page.tsx");
+    // the two selects' exact vocabularies (the s72 M-72c3 decode frozen
+    // at the walked faces: Month/Week — "Agenda" NEVER returns;
+    // Monday/Sunday only). Assert the ITEM members (the source comment
+    // carries the retired "Agenda" legend — the M-72c3 doctrine lives
+    // in the comment + the item set, never in a bare absence claim)
+    const calView = src.slice(src.indexOf('id="def-calview"'), src.indexOf("</Select>", src.indexOf('id="def-calview"')));
+    expect(calView).toContain('<SelectItem value="month">Month</SelectItem>');
+    expect(calView).toContain('<SelectItem value="week">Week</SelectItem>');
+    expect(calView.match(/<SelectItem /g)?.length).toBe(2);
+    const firstDay = src.slice(src.indexOf('id="def-firstday"'), src.indexOf("</Select>", src.indexOf('id="def-firstday"')));
+    expect(firstDay).toContain('<SelectItem value="monday">Monday</SelectItem>');
+    expect(firstDay).toContain('<SelectItem value="sunday">Sunday</SelectItem>');
+    expect(firstDay.match(/<SelectItem /g)?.length).toBe(2);
+    // the value wiring (the controlled selects ride the defaultsDraft
+    // state; the s46-P2 debounced persist owns the writes)
+    expect(src).toContain('value={defaults.calendarView} onValueChange={(v) => set("calendarView", v)}');
+    expect(src).toContain('value={defaults.firstDayOfWeek} onValueChange={(v) => set("firstDayOfWeek", v)}');
+    expect(src).toContain("timerRef.current = setTimeout(() => void flush(), 500);");
+    // the fallback family (the M-72c4 decode — the instant-render
+    // contract: AED/new/B/3/month/monday before the fetch resolves,
+    // byte-equal on both apps per the walk's input census)
+    expect(src).toMatch(/defaultCurrency: settings\?\.defaultCurrency \?\? "AED"/);
+    expect(src).toMatch(/calendarView: settings\?\.calendarView \?\? "month"/);
+    expect(src).toMatch(/firstDayOfWeek: settings\?\.firstDayOfWeek \?\? "monday"/);
+  });
+});

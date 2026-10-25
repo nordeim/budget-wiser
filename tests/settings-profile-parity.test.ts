@@ -49,10 +49,27 @@ describe("session-72: the picklist bordered-row anatomy (H-72c1, bundle-decoded)
     expect(src).not.toContain("flex flex-wrap");
   });
 
-  it("each row carries the flex-1 name span + the Pencil rename + the red Trash2 delete", () => {
+  it("each row carries the flex-1 name span + the Pen rename + the red Trash2 delete", () => {
     const src = listEditor(page());
     expect(src).toMatch(/<span className="flex-1">\{item\}<\/span>/);
-    expect(src).toContain("<Pencil");
+    // Session-186 (D-186a1, the walk59 live find — the rename-trigger
+    // GLYPH): the s72 H-72c1 bundle decode named the reference's row
+    // icon "a Pencil ghost icon button", and ours shipped lucide
+    // `Pencil` accordingly. The walk59 two-app census
+    // (scripts/walk59-settings-picklist-open.ts) + the live path probe
+    // reversed the glyph claim: the reference's rename trigger renders
+    // `lucide lucide-pen w-4 h-4` carrying EXACTLY ONE path — the body
+    // `M21.174 6.812…z` — while ours rendered `Pencil`'s TWO paths
+    // (the same body + the extra tip line `m15 5 4 4`). The glyph
+    // divergence is the M-82c2 ACTIVITY-icon class (a different lucide
+    // member of the same family, not a version genus: the body path is
+    // byte-identical, ours just adds the tip stroke). The reference's
+    // calendar chip-edit family already decodes as Pen (the s48
+    // bundle-verified site); the picklist rename trigger joins it. THE
+    // CURE: `Pencil` → `Pen` (the import + the JSX); the re-walk
+    // proves the glyph byte-equal (1 path, the pen class, both apps).
+    expect(src).toContain("<Pen ");
+    expect(src).not.toContain("<Pencil");
     expect(src).toContain("<Trash2");
     // The delete icon button rides the SETTINGS_PICKLIST.deleteBtn pin.
     expect(src).toMatch(/className=\{SETTINGS_PICKLIST\.deleteBtn\}/);
