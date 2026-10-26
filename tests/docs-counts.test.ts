@@ -867,9 +867,23 @@ const SUITES = 138;
 // doctrine) · E2E 192 re-verified (the round's product-code
 // touches: the D-187a1 file-input id + tabIndex retirement ·
 // the D-187a2 stock DIV fallback + on-svg color at BOTH
-// avatar sites · the D-187a3 list-body v3-semantics retirement
-// — the MODULE line count 1701 -> 1718 [+17 the cure comments]).
-const UNIT = 2773;
+// Session-188: 2773 -> 2778 (+5 — THE SETTINGS SEGMENTED
+// TAB-BAR FOCUS/OPEN INTERIOR WALK + ACCOUNTS-RAIL/LEADS-
+// SEARCH PAGE-ARMS SIBLING [walk61 — the s188 battery (+ the NEW
+// D-188a1 retired-block pin in docs-counts) in
+// tests/page-layout.test.ts: the walk61 decode freeze (the
+// two-app settings tab-bar OPEN ledger at both axes + the REAL
+// Tab/ArrowRight drives + the mouse-click face + the rail/leads/
+// reports siblings) · the settings tab-bar call-site construction
+// freeze · the accounts rail-selects construction freeze · the
+// leads-search call-site construction freeze] + the NEW D-188a1
+// retired-block ship-line pin in docs-counts.test.ts [the s171-fix
+// doctrine never pinned — the s187 first-pass corruption shipped
+// undetected; the walk61 decode found it, RED-first]). SUITES 138
+// HELD · E2E 192 re-verified (the round: ZERO product-code touches
+// — the ONE live find is a DOCS head defect, the D-188a1 SKILL-head
+// cure; the MODULE line count 1718 HELD).
+const UNIT = 2778;
 // S104-P1: the mobile-nav spec's own census (the README Tested-row
 // phrase + the PAD suite line ride it) — 9 → 10 with the drawer-OPEN
 // seeded-state guard. Session-165 (S165-P1): 11 → 10 — the s147
@@ -1334,13 +1348,68 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
       skill,
       "the project_state head's FIRST layer must be the current session's",
     ).toContain(
-      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-187 layer`,
+      `project_state: ${UNIT} unit checks + ${E2E} e2e checks green; the session-188 layer`,
     );
     expect(
       skill,
-      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s186 layer now beneath the s187 head)",
+      "the head's SECOND layer must be the previous session's — the F-108a1 face (the s187 layer now beneath the s188 head)",
     ).toContain(
-      "+ beneath it 2769 unit checks + 192 e2e checks green; the session-186 layer (THE SETTINGS PICKLIST-EDITOR OPEN-STATE INTERIOR WALK + DEFAULTS-TAB SELECTS SIBLING",
+      "+ beneath it 2773 unit checks + 192 e2e checks green; the session-187 layer (THE PROFILE PHOTO-UPLOAD FAMILY FOCUS/OPEN INTERIOR WALK + SETTINGS DATA-TAB SIBLING",
+    );
+  });
+
+  // ------------------------------------------------------------------
+  // Session-188 (D-188a1): the RETIRED head blocks' ship-line pin — the
+  // s171-fix doctrine (demoted layers keep their OWN ship counts in
+  // their own comment blocks) never had a pin. The s187 first-pass
+  // ladder/head-surgery interaction wrote the LIVE s187 counts + the
+  // layer name into the retired session-186 block (the retired copy
+  // read "project_state: 2773 … the session-187 layer (THE SETTINGS
+  // PICKLIST-EDITOR…walk59" where the doctrine demands the s186 ship
+  // form "2769 … the session-186 layer"), and the corrupted head
+  // shipped undetected at c36c5f4/f1a0a8a — no assertion read inside
+  // the retired blocks. The walk61 round's decode found it (the
+  // head-surgery preflight's duplicate-marker assert); this pin holds
+  // the restored form + the negatives ladder on the corrupted form —
+  // a future ladder that forgets the demotion doctrine fails `bun run
+  // test` the same way a forgotten count does.
+  // ------------------------------------------------------------------
+  it("session-188 (D-188a1): the retired session-186 head block carries its OWN ship counts + layer name (the s171-fix doctrine, pinned)", () => {
+    const skill188 = read("neo-crm_SKILL.md");
+    const retiredStart = skill188.indexOf("<!-- retired session-186 layer");
+    expect(retiredStart, "the retired s186 block must exist").toBeGreaterThan(0);
+    const retiredBlock = skill188.slice(retiredStart, skill188.indexOf("-->", retiredStart));
+    expect(
+      retiredBlock,
+      "the retired s186 block's ship line must be the s186 SHIP form (2769 + its own layer name)",
+    ).toContain(
+      "project_state: 2769 unit checks + 192 e2e checks green; the session-186 layer (THE SETTINGS PICKLIST-EDITOR OPEN-STATE INTERIOR WALK + DEFAULTS-TAB SELECTS SIBLING",
+    );
+    // the corrupted first-pass form (the live s187 counts + the s187
+    // layer name written on the s186 block) must stay gone — the
+    // title keys the assertion to the corrupted line alone (the
+    // legitimate retired s187 block carries the PROFILE PHOTO-UPLOAD
+    // title, never PICKLIST-EDITOR)
+    expect(skill188).not.toContain(
+      "project_state: 2773 unit checks + 192 e2e checks green; the session-187 layer (THE SETTINGS PICKLIST-EDITOR",
+    );
+    // THE DOCTRINE GENERALIZED (the count-ladder-188 re-run's own
+    // corruption, caught by the same lens): the retired session-187
+    // block carries its OWN ship form too (2773 + the PROFILE
+    // PHOTO-UPLOAD title) — a ladder old-form that matches a retired
+    // block's ship line corrupts it on the idempotence re-run; this
+    // assertion makes that class of corruption FAIL the suite.
+    const retired187Start = skill188.indexOf("<!-- retired session-187 layer");
+    expect(retired187Start, "the retired s187 block must exist").toBeGreaterThan(0);
+    const retired187Block = skill188.slice(retired187Start, skill188.indexOf("-->", retired187Start));
+    expect(
+      retired187Block,
+      "the retired s187 block's ship line must be the s187 SHIP form (2773 + its own layer name)",
+    ).toContain(
+      "project_state: 2773 unit checks + 192 e2e checks green; the session-187 layer (THE PROFILE PHOTO-UPLOAD FAMILY FOCUS/OPEN INTERIOR WALK",
+    );
+    expect(skill188).not.toContain(
+      "project_state: 2778 unit checks + 192 e2e checks green; the session-188 layer (THE PROFILE PHOTO-UPLOAD",
     );
   });
 
@@ -1688,8 +1757,14 @@ describe("session-102 (S102-P1): the secondary-sites lockstep — every live-ten
 // in profile-photo, the checks 245->248; the MODULE line count
     // 1701->1718 — the D-187a2/a3 cure comments grew the module +17).
     expect(skill).not.toContain("`tests/page-layout.test.ts`, 245 checks");
+    // Session-188: the retired 248 form joins the negatives ladder (the
+    // walk61 settings-tabs + rail/leads round: the session-188 battery
+    // +4 born-green pins in page-layout [the walk61 decode freeze + the
+    // three construction freezes], the checks 248->252; the MODULE line
+    // count 1718 HELD — the zero-fix round, page-layout.ts untouched).
+    expect(skill).not.toContain("`tests/page-layout.test.ts`, 248 checks");
     expect(skill, "the §5.6 line must carry the live line + check counts").toContain(
-      "test-pinned module (1718 lines; `tests/page-layout.test.ts`, 248 checks",
+      "test-pinned module (1718 lines; `tests/page-layout.test.ts`, 252 checks",
     );
     const pad = read("Project_Architecture_Document.md");
     expect(pad).not.toContain("| `src/lib/page-layout.ts` | 1653 |");

@@ -4007,3 +4007,132 @@ describe("session-187: the profile photo-upload + Data-tab focus/open interior w
     expect(block).not.toMatch(/listBody:\s*"p-6 pt-0 space-y-2"/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-188 (walk61): the settings segmented tab-bar focus/open interior
+// walk + the accounts-rail/leads-search page-arms sibling — the s396 close's
+// named candidates (the settings Data-tab's OWN deeper focus faces — the
+// tab-bar segmented focus faces never walked · the account/leads/reports
+// page-level interactive arms under ADR-022 — the s18/s25-era constructions
+// never re-walked live). The discovery (scripts/discover-188.ts + the
+// micro-probe scripts/probe-leads-search-and-tab-outline.ts) proved ALL
+// families LIVE on BOTH apps with the construction byte-equal on every
+// resting face (the strip `288,189 1120x36` + the three triggers byte-equal
+// at `292/663/1033 371x28`; the rail selects byte-equal at
+// `1113,376/456/536 270x36`; the leads search byte-equal at `304,391
+// 1088x36` + `32,1037 326x36` at phone; the reports pills/selects
+// byte-equal modulo the walk52-documented DATA-STATE y-offset), the
+// density-selects arm KILLED (F-147c3 retired upstream), the leads-search
+// aria-label superset confirmed (the reference's input carries NONE), the
+// topbar-search gate KILLED again (populated=0 on both), the Edit-family
+// re-check still zero-row. The walk's verdict: ZERO LIVE FINDS — every
+// delta a documented genus, the round the s134-precedent zero-fix
+// freeze-pin session. The NEW genus sub-form the decode adds to the
+// register: the outline COLOR-CARRIER arm (at rest and at mouse-click both
+// apps compute outline-style NONE — zero visible pixels — but the carrier
+// color resolves currentColor on OURS [rgb(10,10,10)/rgb(115,115,115)/
+// rgb(29,78,216) per element] against the reference's platform constant
+// rgba(10,10,10,0.5) on every element; under the REAL keyboard the s178
+// outline-none v3/v4 sub-forms hold — OURS `1px none`, REF `2px solid
+// rgba(0,0,0,0)` — and the VISIBLE focus ring layers are byte-equal: the
+// white 2px offset slot + the 4px near-black ring + the active shadow
+// pair). The REAL keyboard Tab chain: STRUCTURALLY IDENTICAL — 13 stops
+// both (the 8 sidebar links → the topbar search → the 3 topbar buttons →
+// the strip), the ArrowRight automatic-activation landing byte-equal.
+// ---------------------------------------------------------------------------
+
+describe("session-188: the settings tab-bar + rail/leads page-arms focus/open interior walk (walk61 — zero live finds; every delta a documented genus, both apps byte-equal on every resting + REAL-keyboard face at both axes)", () => {
+  it("the walk61 decode freeze — the two-app settings tab-bar OPEN ledger at both axes + the REAL Tab/ArrowRight drive + the mouse-click face + the rail/leads/reports siblings' decode (the tool's own contract)", () => {
+    const src = read("scripts/walk61-settings-tabs-rail-focus-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // Phase A the settings tab-bar OPEN census at BOTH axes — the
+    // strip's geometry ledger, the three triggers' resting faces, the
+    // data-state arms, the click-through round-trip (local state, NO
+    // writes), the panel mount census, the s23 live-measured 24px gap
+    expect(src).toContain("tabsPhase");
+    expect(src).toContain('main [role="tablist"]');
+    expect(src).toContain("contentGap");
+    expect(src).toContain("flipRoundTrip");
+    expect(src).toContain('"CRM Configuration"');
+    expect(src).toContain('"Defaults"');
+    expect(src).toContain('{ w: 390, h: 844 }');
+    // Phase B the REAL keyboard Tab drive into the strip (the
+    // programmatic .focus() face is NEVER trusted — the REAL keyboard
+    // is the only true focus face) + the ArrowRight s23 contract
+    expect(src).toContain("tabsRealTabPhase");
+    expect(src).toContain("tabStopIndex");
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain('await page.keyboard.press("ArrowRight")');
+    expect(src).toContain("normChain");
+    // Phase B2 the REAL mouse-click face (the walk57 mouse-borne
+    // precedent — the outline decode: :focus without :focus-visible)
+    expect(src).toContain("tabsMousePhase");
+    expect(src).toContain('filter({ hasText: "Defaults" })');
+    // Phase C the accounts rail sibling — the three filter selects'
+    // geometry + faces + the OPEN listbox census (the DATA-STATE
+    // item-count genus: REF 1 at zero-data vs OURS 5 at the seeded db)
+    expect(src).toContain("railPhase");
+    expect(src).toContain('main [role="combobox"]');
+    expect(src).toContain("firstOpen");
+    expect(src).toContain("itemCount");
+    // Phase D the leads search sibling — the input's resting + focus
+    // faces + the toolbar geometry + the Filters trigger (walk56's
+    // OPEN face re-censused at rest)
+    expect(src).toContain("leadsPhase");
+    expect(src).toContain('main input[placeholder="Search leads..."]');
+    expect(src).toContain("focusRing");
+    // Phase E the reports pills/selects re-walk leg (the walk52/55
+    // re-check on the live tree)
+    expect(src).toContain("reportsPhase");
+  });
+
+  it("the settings tab-bar call-site construction — the segmented strip's OWN wiring (the genuine battery gap: the s23 pins hold the tabs-aria WIRING + the s12/s125/s129 pins the constant's class strings, never the settings page's own segmented call-site)", () => {
+    const src = read("src/app/(app)/settings/settings-page.tsx");
+    // the walk's live decode: the strip `variant="segmented" cols={3}`
+    // with the space-y-6 wrapper (the s23-era construction, the 24px
+    // strip-to-content gap live-measured byte-equal on both apps) +
+    // the three-tab vocabulary byte-equal on both apps
+    expect(src).toContain('variant="segmented"');
+    expect(src).toContain("cols={3}");
+    expect(src).toContain('className="space-y-6"');
+    expect(src).toContain('value={tab}');
+    expect(src).toContain("onValueChange={setTab}");
+    expect(src).toContain('{ id: "config", label: "CRM Configuration" }');
+    expect(src).toContain('{ id: "defaults", label: "Defaults" }');
+    expect(src).toContain('{ id: "data", label: "Data" }');
+    // the panel shells: the mt-2 gap-collapse arms + the space-y
+    // rhythm arms (the s72 space-y-6 Data panel direct form)
+    expect(src).toContain('<TabsPanel tab="config" className="mt-2 space-y-4">');
+    expect(src).toContain('<TabsPanel tab="defaults" className="mt-2 space-y-4">');
+    expect(src).toContain('<TabsPanel tab="data" className="mt-2 space-y-6">');
+  });
+
+  it("the accounts rail-selects construction — the three filter comboboxes' call-sites (the genuine battery gap: the s28 pins hold the row/rail geometry, never the three SelectTrigger sites' construction + the Label pairing; the walk proves the boxes byte-equal at 1113,376/456/536 270x36 on both apps)", () => {
+    const src = read("src/app/(app)/accounts/accounts-page.tsx");
+    // the three rail sites: the aria-label superset (s88-c9, KEPT —
+    // the reference's comboboxes carry NONE; the axe battery requires
+    // the names) + the w-full arm + the reference's placeholder values
+    expect(src).toContain('<SelectTrigger aria-label="Filter by owner" className="w-full"><SelectValue placeholder="John Kuy" /></SelectTrigger>');
+    expect(src).toContain('<SelectTrigger aria-label="Filter by industry" className="w-full"><SelectValue placeholder="Technology" /></SelectTrigger>');
+    expect(src).toContain('<SelectTrigger aria-label="Filter by revenue range" className="w-full"><SelectValue placeholder="$1M to $5M" /></SelectTrigger>');
+    // the Label pairing (the walk's label census: Owner/Industry/
+    // Revenue Range byte-equal on both apps)
+    expect(src).toContain('<Label className={FILTER_RAIL.groupLabelSelect}>Owner</Label>');
+    expect(src).toContain('<Label className={FILTER_RAIL.groupLabelSelect}>Industry</Label>');
+    expect(src).toContain('<Label className={FILTER_RAIL.groupLabelSelect}>Revenue Range</Label>');
+  });
+
+  it("the leads-search call-site construction — the toolbar search row (the genuine battery gap: the s29 pins hold the inline ROW + the s8-4 pin the pl-10 arm, never the search input's own call-site; the walk proves the box byte-equal at 304,391 1088x36 desktop + 32,1037 326x36 phone)", () => {
+    const src = read("src/app/(app)/leads/leads-page.tsx");
+    // the icon + the input: the s8-4 anatomy (w-5 icon + pl-10 input)
+    // + the aria-label superset (s88-c9, KEPT — the reference's input
+    // carries NO aria-label; the placeholder byte-equal both apps)
+    expect(src).toContain('<Search className={cn("pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtle", LEADS_TOOLBAR.searchIcon)} />');
+    expect(src).toContain('<Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search leads..." className={LEADS_TOOLBAR.searchInput} aria-label="Search leads" />');
+    // the Filters trigger row sibling (walk56's popover trigger — the
+    // walk re-censused its resting face byte-equal at 304,443 108x36)
+    expect(src).toContain('aria-label="Open lead filters"');
+  });
+});

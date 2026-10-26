@@ -37,7 +37,7 @@ store for all server state, and Tailwind CSS v4 configured CSS-first
 4. **IMPLEMENT** — Incremental, testable components. Extend the pure seams in
    `src/lib/` rather than inlining logic. Keep lint green as you go.
 5. **VERIFY** — Run the full gate: `bun run lint` → `bun run typecheck` →
-   `bun run test` (2773) → `bun run build` → `bun run test:e2e` (192) — or the
+   `bun run test` (2778) → `bun run build` → `bun run test:e2e` (192) — or the
    one-command `bun run gate` (session-38: the chain as a package script,
    so the build always precedes the e2e boot; session-39: the e2e step
    runs under `CI=1`, forcing a fresh server — a leftover :3100 listener
@@ -129,7 +129,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 | `bun run start`     | Boot the standalone production server         |
 | `bun run lint`      | ESLint (flat config) — must be 0/0            |
 | `bun run typecheck` | `tsc --noEmit` — the real type gate           |
-| `bun run test`      | Vitest unit suites (2773 checks)            |
+| `bun run test`      | Vitest unit suites (2778 checks)            |
 | `bun run test:watch`| Vitest in watch mode                          |
 | `bun run smoke`     | Smoke the standalone artifact (14 checks, needs build first) |
 | `bun run test:e2e`  | Playwright E2E (192 checks, needs build first) |
@@ -142,7 +142,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 2773 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
+- **Unit (Vitest, 2778 checks)** — pure seams: `tests/db-path.test.ts`, `tests/nav-config.test.ts` (s147),
   `tests/auth.test.ts`, `tests/format.test.ts`, `tests/csv.test.ts`,
   `tests/rate-limit.test.ts`, `tests/avatar.test.ts`,
   `tests/constants.test.ts` (the DOM-pinned chart palette + session-10's
@@ -415,7 +415,29 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
   byte-equal title/desc/content boxes, cured with the s11-era explicit
   `[&>*+*]:mt-2` form; + the D-187a1 file-input id + tabIndex
   retirement, the D-114a2 same-page precedent) —
-  `scripts/walk60-profile-datatab-focus-open.ts`].
+  `scripts/walk60-profile-datatab-focus-open.ts`],
+  and session-188's walk61 layer — the settings segmented tab-bar +
+  accounts-rail/leads-search page-arms focus/open interior walk's
+  contract-freeze family [the walk61 decode freeze (the tool's own
+  contract: the two-app settings tab-bar OPEN ledger at both axes + the
+  REAL Tab/ArrowRight drives — 13 stops STRUCTURALLY IDENTICAL on both
+  apps — + the walk57 mouse-click face + the rail/leads/reports
+  siblings' decode) · the settings tab-bar call-site construction
+  freeze (the genuine battery gap: the s23 pins hold the tabs-aria
+  WIRING + the s12/s125/s129 pins the constant's class strings, never
+  the settings page's own segmented call-site) · the accounts
+  rail-selects construction freeze (the genuine gap: the s28 pins
+  hold the row/rail geometry, never the three SelectTrigger sites'
+  construction + the Label pairing) · the leads-search call-site
+  construction freeze (the genuine gap: the s29 pins hold the inline
+  ROW + the s8-4 pin the pl-10 arm, never the search input's own
+  call-site); the round ZERO live finds on the walked surfaces —
+  every delta a documented genus, the outline COLOR-CARRIER sub-form
+  the register's newest arm (zero visible pixels on both) — the
+  ONE live find D-188a1 a DOCS head defect (the retired session-186
+  SKILL-head block's corrupted ship line, the s187 first-pass residue
+  — the s171-fix doctrine now PINNED in docs-counts) —
+  `scripts/walk61-settings-tabs-rail-focus-open.ts`].
   Node environment; `@` alias resolved.
 - **Property (Vitest + fast-check, 29 checks)** — `tests/property.test.ts`
   (session-172: the invariant layer over the pure seams — the csv
@@ -558,7 +580,7 @@ server keeps reading the deleted inode and sees stale data.
 
 Unit coverage of the pure seams (`src/lib/*`) is the gate — every new pure
 helper ships with tests. No hard percentage threshold; the count grows with
-the seam (currently 2773).
+the seam (currently 2778).
 
 ## Code Quality Standards
 
