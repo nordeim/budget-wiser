@@ -4136,3 +4136,118 @@ describe("session-188: the settings tab-bar + rail/leads page-arms focus/open in
     expect(src).toContain('aria-label="Open lead filters"');
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-189 (walk62): the leads Saved-Views select open faces + the
+// calendar month-nav arms interior walk — the s398 close's named
+// candidates (the account INSIGHTS dialog + the leads SAVED-VIEWS
+// select's open faces — the s28/s29-era constructions never re-walked
+// live under ADR-022 · the calendar month-nav arms — the s27-era
+// construction, its interactive faces never walked). The discovery
+// (scripts/discover-189.ts) adjudicated: the Insights arm KILLED (the
+// reference's zero-row state persists — rows=1/rowMenus=0/
+// insightsTriggers=0 on all three entity pages, zero calendar chips),
+// the topbar-search gate KILLED again (populated=0 on both), the
+// Saved-Views select + the month-nav LIVE on BOTH apps. The walk's
+// verdict: ZERO LIVE FINDS — every delta a documented genus, the round
+// the s134/s188-precedent zero-fix freeze-pin session. The byte-equal
+// ledger: the select `428,443 192x36` desktop + `32,482 326x36` phone
+// + the OPEN listbox `428,483 194x42` radius 6 + the one-item
+// vocabulary identical on both apps; the nav heading `313,374 183x32`
+// + prev `877,372 36x36` + Today `921,372 75x36` + next `1003,372
+// 36x36` byte-equal; the REAL-keyboard chains: the select reached at
+// stop 5 on BOTH (Export → New Lead → search → Filters → the select),
+// the nav row reached at stop 15 on BOTH (STRUCTURALLY IDENTICAL tag+
+// geometry sequences); the REAL :focus-visible faces byte-equal on
+// the VISIBLE layers (the 1px near-black ring + shadow-sm; the outline
+// s178 sub-forms + the slot-count + the s129 white zero-extent offset
+// slot the standing genera); the month-flip round-trip identical
+// (prev → "September 2026"; today → "October 2026"); the phone axis:
+// the select w-full stack byte-equal, the Today button hidden below
+// sm on BOTH (the s27 live pin); the Saved-Views persistence OURS the
+// kept superset (localStorage vs the reference's memory-only list —
+// the s29 live-verified contract; the walk's drive runs same-session
+// so the REF's select survives). The aria-label superset (s88-c9,
+// kept) covers the select trigger + both nav icons; the token genus
+// (M-81c2: border-line/bg-surface vs border-input/bg-popover,
+// computed-equal) covers the select + listbox + nav buttons; the
+// class-order genus covers the outline-button ring-position pair.
+// ---------------------------------------------------------------------------
+
+describe("session-189: the leads Saved-Views select + calendar month-nav focus/open interior walk (walk62 — zero live finds; every delta a documented genus, both apps byte-equal on every resting + REAL-keyboard face at both axes)", () => {
+  it("the walk62 decode freeze — the two-arm OPEN ledger at both axes + the REAL Tab/ArrowDown drives + the native-prompt save flow + the month-flip round-trips (the tool's own contract)", () => {
+    const src = read("scripts/walk62-savedviews-calnav-focus-open.ts");
+    // the two-app pair form (the s162 login consolidation)
+    expect(src).toContain("preflightPairState");
+    expect(src).toContain('const REF_URL = process.env.REF_URL ?? "https://neo-crm-8ab2c17c.base44.app"');
+    // Phase A the Saved-Views select OPEN census at BOTH axes — the
+    // pre-save absence census, the save flow (the Filters popover →
+    // Save View → the NATIVE prompt — the s29 live-verified contract),
+    // the mounted select's geometry ledger, the OPEN listbox census
+    // (radius 6, the one-item vocabulary), the apply round-trip
+    expect(src).toContain("savedViewsPhase");
+    expect(src).toContain("preSaveComboCount");
+    expect(src).toContain('accept("Walk62 View")');
+    expect(src).toContain("applyRoundTrip");
+    expect(src).toContain('{ w: 390, h: 844 }');
+    // Phase B the REAL keyboard drive into the mounted select — the
+    // SAME-SESSION form (the reference keeps its view list IN MEMORY
+    // ONLY — ours persists to localStorage, the kept superset; a
+    // reload would kill the REF's select) + the ArrowDown open +
+    // the highlight + the Enter apply
+    expect(src).toContain("IN MEMORY ONLY");
+    expect(src).toContain("selectRealDrivePhase");
+    expect(src).toContain('await page.keyboard.press("Tab")');
+    expect(src).toContain('await page.keyboard.press("ArrowDown")');
+    // Phase C the calendar month-nav census — the header-row geometry
+    // ledger, the three buttons' resting faces, the click round-trip
+    // (prev → the heading flip; today → the today-jump back — local
+    // state, NO writes), the month-flip grid re-census
+    expect(src).toContain("navPhase");
+    expect(src).toContain("flipRoundTrip");
+    expect(src).toContain("gridAfterFlip");
+    // Phase C2 the REAL keyboard Tab drive through the three nav
+    // buttons (the REAL :focus-visible faces — the programmatic face
+    // is never the true face) + the s88-c9 naming normalization
+    expect(src).toContain("navRealTabPhase");
+    expect(src).toContain("landingFaces");
+    expect(src).toContain("tagOf");
+  });
+
+  it("the Saved-Views select call-site construction — the conditionally-mounted select's own chain (the genuine battery gap: the s29 pins hold the toolbar row + the savedViewsSelect width class, never the SelectTrigger call-site's construction; the walk proves the box byte-equal at 428,443 192x36 desktop + 32,482 326x36 phone + the OPEN listbox 428,483 194x42 radius 6 on both apps)", () => {
+    const src = read("src/app/(app)/leads/leads-page.tsx");
+    // the conditional mount (the s29-P3 live-confirmed contract: the
+    // select appears once a view exists) + the uncontrolled Select
+    // riding onValueChange (the apply seam)
+    expect(src).toContain("{savedViews.length > 0 && (");
+    expect(src).toContain("<Select onValueChange={applyView}>");
+    // the trigger: the width class + the aria-label superset (s88-c9,
+    // KEPT — the reference's combobox carries NONE; the axe battery
+    // requires the name) + the byte-equal placeholder both apps
+    expect(src).toContain('<SelectTrigger className={LEADS_FILTERS_POPOVER.savedViewsSelect} aria-label="Saved views">');
+    expect(src).toContain('<SelectValue placeholder="Saved Views" />');
+    // the item map (the savedViews list — ours persisted to
+    // localStorage, the reference's memory-only list the kept
+    // superset)
+    expect(src).toContain("{savedViews.map((v) => (");
+    expect(src).toContain("<SelectItem key={v.name} value={v.name}>{v.name}</SelectItem>");
+  });
+
+  it("the calendar month-nav call-site construction — the three outline buttons' own call-sites (the genuine battery gap: the s16 pins hold the navRow container + the s27 pins the day cells, never the three Button call-sites; the walk proves the boxes byte-equal at 877/921/1003,372 36x36/75x36/36x36 on both apps + the phone-axis Today kill on both)", () => {
+    const src = read("src/app/(app)/calendar/calendar-page.tsx");
+    // the prev/next icon pair: the outline variant + size="icon" + the
+    // aria-label superset (s88-c9, KEPT — the reference's buttons
+    // carry NONE) + the cursor month-flip wiring (local state)
+    expect(src).toContain('<Button variant="outline" size="icon" aria-label="Previous month" onClick={() => setCursor(new Date(year, month - 1, 1))}>');
+    expect(src).toContain('<ChevronLeft className="h-4 w-4" />');
+    expect(src).toContain('<Button variant="outline" size="icon" aria-label="Next month" onClick={() => setCursor(new Date(year, month + 1, 1))}>');
+    expect(src).toContain('<ChevronRight className="h-4 w-4" />');
+    // the Today button: the outline variant + the hidden-below-sm arm
+    // (the s27 live pin — the phone-axis kill byte-verified on BOTH
+    // apps at 390: 2 nav buttons on each) + the today-jump wiring
+    // (cursor + selectedDay, local state)
+    expect(src).toContain('className="hidden sm:flex"');
+    expect(src).toContain("setCursor(now);");
+    expect(src).toContain("setSelectedDay(now);");
+  });
+});
