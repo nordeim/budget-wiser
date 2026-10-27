@@ -113,3 +113,23 @@ Stage Summary:
 - THE RESTYLE RE-MIRROR SHIPPED: the reference's shadcn wave mirrored across every surface — the shell hierarchy + pb-20 clearance, the stock component families, the re-pinned category palette (round-trip-probed, the owner's data restored verbatim), the chart geometry, and the neutral --primary
 - THE VERIFICATION: lint 0/0 · tsc 0 · 387/387 unit · build · smoke 14/14 · e2e 62/62 · census parity · VLM parity clean at four surfaces · byte-verified hierarchy + bar
 - THE DISCIPLINE HELD: red-first TDD, no gate weakening (the e2e selectors re-pinned to the reference's CURRENT semantics; the a11y register extended with matcher entries, never suppressions), the count lockstep in the same change set, no secrets in the tree
+
+---
+Task ID: 195
+Agent: main (Z.ai)
+Task: The session-6 shell-surface round — refresh the workspace, re-audit the codebase and the live reference, mirror the reference's third shell restyle (the outer min-h-screen bg-slate-50 wrapper), TDD, docs lockstep, and the push to main via the SSH wrapper.
+
+Work Log:
+- The intake: git pull to 38578d5 (the owner's docs/session_8.md transcript commit atop 2fd1bce, the s194 ship) · the environment verified standing (the Prisma client regenerated via the local node_modules binary — the global bun cache held a stale v7 entry; .env on the mandated contract; the demo month intact at 2 users / 4 transactions / 0 budgets; chromium-1248 present)
+- The document review: the five root documents + docs/session_7.md + docs/REMEDIATION-PLAN-SESSION-5.md + worklog.md + docs/session_8.md — validated against the tree
+- The gate FIRST: lint 0/0 · tsc 0 · 387/387 unit · build · 14/14 smoke · 62/62 e2e — the exact documented s194 ship state
+- The local audit per skills/web-application/SKILL.md §16: no dangerouslySetInnerHTML, no secrets, no live keys (only the wrapper's redacted placeholders), .env.example matching, docs-count lockstep verified, skills/ excluded from all four scopes (tsc/eslint/vitest/playwright)
+- THE LIVE REFERENCE RE-AUDIT (agent-browser, fresh login after the saved state expired, 1512×945 + 390×844): THE THIRD SHELL RESTYLE — one finding. F-1: an outer DIV.min-h-screen.bg-slate-50 now encloses [NAV, bar, MAIN] inside the bare wrapper (the reference's chrome: body white > DIV('') > [surface > trio, toast viewport]) — ours had the trio directly in the bare DIV. Pixel evidence: the translucent navbar renders rgb(254,254,255) over the wrapper's slate-50 vs our rgb(255,255,255) over the white body (sampled y=8/30/57, both apps). Everything else byte-verified unchanged: the four page trees, the bar's anatomy + rect + ink, the clearance (764 ≤ 767 both apps), both dialogs, the login card, sitemap + robots + the 404s, the owner's data state
+- The remediation TDD per docs/REMEDIATION-PLAN-SESSION-6.md: Phase A red — the SHELL_LAYOUT.outer record pin + the wiring pin born RED (exactly 2 failing assertions); Phase B green — SHELL_LAYOUT.outer added + app-shell.tsx restructured (the bare DIV > outer surface wrapper > [BrandNav, BottomTabBar, main > inner root]); a scratch pngjs dev-dep removed before commit
+- The verification: lint 0/0 · tsc 0 · 388/388 unit (+1 test, +2 assertions) · build · 14/14 smoke · 62/62 e2e HELD · the hierarchy byte-verified live · the navbar band pixel-identical post-fix (254,254,255 both apps) · the mobile geometry unchanged · VLM None/None/None/None (dashboard mobile/desktop, budgets mobile, profile mobile) — the first run's two flags disproven by DOM probes (the platform badge occluding tabs 3-4; the data-borne Balance-badge null-savings conditional) · the 12-image screenshot battery recaptured
+- The docs: README (hierarchy + counts) · AGENTS.md (the shell bullet) · CLAUDE.md (counts) · PAD v2.5.0 (revision block + ADR-006 s195 amendment) · budget-wiser_SKILL.md v1.4.0 (reference-state + Appendix C's s195 row) · docs/REMEDIATION-PLAN-SESSION-6.md · docs/session_9.md + this entry
+
+Stage Summary:
+- THE SHELL-SURFACE RE-MIRROR SHIPPED: the reference's third shell restyle mirrored — the outer min-h-screen bg-slate-50 wrapper (slate-50 behind the translucent navbar + the clearance strip), pinned by SHELL_LAYOUT.outer with the count lockstep in the same commit
+- THE VERIFICATION: lint 0/0 · tsc 0 · 388/388 unit · build · smoke 14/14 · e2e 62/62 · byte-verified hierarchy · pixel-identical navbar band · VLM parity clean at four surfaces
+- THE DISCIPLINE HELD: red-first TDD, no gate weakening, the VLM flags DOM-disproven before acting, the scratch dependency purged, no secrets in the tree

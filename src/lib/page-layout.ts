@@ -241,6 +241,13 @@ export const BOTTOM_NAV = {
  *  dashboard/profile) — the s193 round mirrored the bar itself but
  *  not its clearance padding. */
 export const SHELL_LAYOUT = {
+  // Session-195 (2026-10-27, the reference's third shell restyle): an
+  // outer `min-h-screen bg-slate-50` surface wraps the whole [NAV, bar,
+  // MAIN] trio inside the bare wrapper — the translucent navbar's
+  // white/80 backdrop sits on slate-50 (rgb(254,254,255)), not the white
+  // body (rgb(255,255,255)); the phone clearance strip below the inner
+  // root's box shows slate-50 too. Live-probed on the reference's DOM.
+  outer: "min-h-screen bg-slate-50",
   root: "min-h-screen bg-slate-50",
   main: "pb-20 md:pb-0",
 } as const;

@@ -40,27 +40,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     void hydrate();
   }, [hydrate]);
 
-  // Session-194: the reference's EXACT shell hierarchy (live-probed):
-  //   body (white) > DIV('') > [NAV(sticky), DIV(bottom bar), MAIN.pb-20
-  //   md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]
-  // — a bare wrapper, the navbar + bar as its first two children, main
-  // LAST, and the slate-50 surface INSIDE main (so the navbar/bar sit
-  // on the white body, and main's pb-20 clearance strip is white too —
-  // ours had the min-h-screen root OUTSIDE main, painting slate-50
-  // behind the translucent navbar and inside the clearance strip).
+  // Session-195: the reference's EXACT shell hierarchy (live-probed):
+  //   body (white) > DIV('') > DIV.min-h-screen.bg-slate-50 > [NAV(sticky),
+  //   DIV(bottom bar), MAIN.pb-20 md:pb-0 > DIV.min-h-screen.bg-slate-50 >
+  //   page]
+  // — the outer surface wrapper encloses the whole trio (the reference's
+  // third shell restyle): the translucent navbar's white/80 backdrop sits
+  // on slate-50 — rgb(254,254,255) — instead of the white body
+  // (rgb(255,255,255)), and the phone clearance strip below the inner
+  // root's box shows slate-50 too. s194's form had the trio directly in
+  // the bare wrapper; s193's had the root OUTSIDE main.
   return (
     <div>
-      <BrandNav pathname={pathname} />
-      {/* The bar precedes main in the reference's own DOM order (its
-          wrapper: NAV, bar, MAIN) — byte-mirrored. */}
-      <BottomTabBar pathname={pathname} />
-      {/* The main carries the reference's bar-clearing padding (pb-20
-          md:pb-0 — session-194): below md, the last content clears the
-          fixed bottom bar at scroll-end; at md+ the bar is hidden and
-          the padding drops to zero. */}
-      <main className={SHELL_LAYOUT.main}>
-        <div className={SHELL_LAYOUT.root}>{children}</div>
-      </main>
+      <div className={SHELL_LAYOUT.outer}>
+        <BrandNav pathname={pathname} />
+        {/* The bar precedes main in the reference's own DOM order (its
+            wrapper: NAV, bar, MAIN) — byte-mirrored. */}
+        <BottomTabBar pathname={pathname} />
+        {/* The main carries the reference's bar-clearing padding (pb-20
+            md:pb-0 — session-194): below md, the last content clears the
+            fixed bottom bar at scroll-end; at md+ the bar is hidden and
+            the padding drops to zero. */}
+        <main className={SHELL_LAYOUT.main}>
+          <div className={SHELL_LAYOUT.root}>{children}</div>
+        </main>
+      </div>
     </div>
   );
 }

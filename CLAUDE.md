@@ -75,7 +75,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 387 checks)**: domain math, vocabularies, Zod contracts, infra seams (db-path, auth, rate-limit, metadata), chrome contracts.
+- **Unit (Vitest, 388 checks)**: domain math, vocabularies, Zod contracts, infra seams (db-path, auth, rate-limit, metadata), chrome contracts.
 - **E2E (Playwright, 62 checks)**: real UI against the production standalone server on an isolated port + seeded `db/e2e.db`. Auth rides a saved storageState (the rate limiter forbids per-test logins).
 - **Smoke (14 checks)**: the standalone artifact boots, serves, walls, and ships clean.
 
@@ -164,7 +164,7 @@ Prisma + SQLite. Three models: `User` (auth + preferences), `Transaction` (type/
 
 You are successful when:
 
-- The full gate is green (387 unit + 62 e2e + 14 smoke) and stays green.
+- The full gate is green (388 unit + 62 e2e + 14 smoke) and stays green.
 - Visual parity holds against the reference at both axes (VLM-verified structural parity), including the mobile bottom tab bar.
 - The bottom-tab-bar battery never regresses.
 - No new lint suppressions, no weakened assertions, no secrets in the tree.

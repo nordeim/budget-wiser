@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.4.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.5.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,12 @@
 **Last Updated:** 2026-10-27
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.5.0 (Tracked Changes)
+
+- `[AUTH]` **The session-6 shell-surface round (session 195): the reference's THIRD shell restyle re-mirrored.** The platform's owner wrapped the whole chrome in an outer surface div. Remediated: the shell now rides `body (WHITE) > DIV('') > DIV.min-h-screen.bg-slate-50 > [NAV(sticky), DIV(bar), MAIN.pb-20 md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]` — the outer wrapper puts slate-50 behind the translucent navbar (`bg-white/80 backdrop-blur-sm` renders rgb(254,254,255) over it, vs rgb(255,255,255) over the white body — pixel-sampled on both apps before and after the fix) and behind the phone clearance strip. The bar's own anatomy, the clearance guarantee (764 ≤ 767), and every page surface re-verified unchanged.
+- `[SYN]` The VLM battery's first run flagged two items, both disproven by DOM probes (the discipline held): the "only two tabs" read was the reference's own "Edit with Base44" platform badge occluding tabs 3–4 in the capture (elementFromPoint at the flagged pixels), and the Balance-card badge absence is data-borne (the reference's savings rate is null with zero income txns; ours renders the conditional badge at 88.5%).
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **388 unit** (+1 the outer-surface record pin; the wiring assertion joined the existing bar contract test) · build · smoke 14/14 · e2e **62** HELD · the shell hierarchy byte-verified live · the navbar band pixel-identical (254,254,255 both apps) · VLM None/None/None/None (dashboard mobile/desktop, budgets mobile, profile mobile) · the screenshot battery recaptured (12 images).
 
 #### Revision Block — v2.4.0 (Tracked Changes)
 
@@ -125,7 +131,7 @@ This PAD is the single source of truth for Budget Wise's architecture. Use it to
 - **Context:** At the s190 audit the reference shipped no navigation below 768px (links `display:none`, no hamburger) — live-verified 2026-10-27 at 390×844. The reference has since REDESIGNED its phone nav (the s193 audit): a fixed bottom tab bar on every app page, and no footer on the app surface.
 - **Decision (superseded, s190):** Ship a Radix-Dialog sheet drawer (hamburger `< md`, 288px slate-900 surface) with the full behavioral battery — the answer to the then-empty phone surface.
 - **Decision (current, s193):** Retire the drawer + hamburger + APP_FOOTER; byte-mirror the reference's bottom tab bar (the `BOTTOM_NAV` contracts) with the kept a11y superset (`aria-current="page"` + the labelled nav landmark — the reference ships neither).
-- **Decision (amended, s194):** The bar rides the reference's exact shell hierarchy — `body (WHITE) > DIV('') > [NAV(sticky), DIV(bar), MAIN.pb-20 md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]` — and the ACTIVE item's ink rides its svg (`w-6 h-6 text-slate-900`). The pb-20 clearance is pinned by the e2e scroll-end test on every app page.
+- **Decision (amended, s195):** The bar rides the reference's exact shell hierarchy — `body (WHITE) > DIV('') > DIV.min-h-screen.bg-slate-50 > [NAV(sticky), DIV(bar), MAIN.pb-20 md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]` — the outer surface wrapper (slate-50 behind the translucent navbar) added in the s195 re-mirror; the ACTIVE item's ink rides its svg (`w-6 h-6 text-slate-900`). The pb-20 clearance is pinned by the e2e scroll-end test on every app page.
 - **Rationale:** Supersets live only while invisible-to-pixels. The redesign put a bottom bar (and no hamburger, no footer) on the phone surface — the drawer family became visible divergences, so parity wins.
 - **Consequences:** + the phone nav byte-matches the reference (bar rect, item classes, icons, ink split — live-verified identical); − the drawer's behavioral hardening (focus trap, scroll lock, auto-close) retired with it; the bottom-bar battery (10 e2e checks) pins the parity surface.
 - **Alternatives rejected:** Keeping the drawer as a dual nav (two phone navigations — a visible superset break); mirroring the reference's missing aria-current (weaker a11y for no pixel gain).
@@ -395,7 +401,7 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 |---|---|---|---|
 | Lint | ESLint (0 warnings) | — | No suppressions; the set-state-in-effect family stays clean |
 | Types | tsc + the build | — | Strict mode; the build enforces it |
-| Unit | Vitest | 387 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
+| Unit | Vitest | 388 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
 | E2E | Playwright | 62 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery (+ the scroll-end clearance), the a11y two-gate |
 | Smoke | bash ladder | 14 | The artifact boots, serves, walls, rate-limits, refuses secretless boots, ships clean |
 

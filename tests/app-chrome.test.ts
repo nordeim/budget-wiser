@@ -111,6 +111,17 @@ describe("the shell + page contracts", () => {
     expect(SHELL_LAYOUT.root).toContain("min-h-screen bg-slate-50");
   });
 
+  it("the shell's outer surface wrapper (session-195): slate-50 behind the translucent navbar", () => {
+    // Live-extracted 2026-10-27 (the reference's third shell restyle): a
+    // `min-h-screen bg-slate-50` DIV now encloses the whole [NAV, bar,
+    // MAIN] trio inside the bare wrapper — the translucent navbar
+    // (`bg-white/80 backdrop-blur-sm`) renders white/80 over slate-50
+    // (rgb(254,254,255)) instead of over the white body (rgb(255,255,255));
+    // the phone scroll-end clearance strip below the inner root's box
+    // shows slate-50 too. Ours rendered the trio directly in the bare DIV.
+    expect(SHELL_LAYOUT.outer).toContain("min-h-screen bg-slate-50");
+  });
+
   it("the shell main clears the bottom bar below md (pb-20 md:pb-0)", () => {
     // Live-extracted session-194 (2026-10-27): the reference's shell <main>
     // carries `pb-20 md:pb-0` on every app page — 80px of bottom padding
@@ -290,6 +301,12 @@ describe("the app-shell construction (the chrome consumes the contracts)", () =>
     // reference's pb-20 md:pb-0 — scrolled-to-end content clears the
     // fixed bar below md; zero at md+ where the bar is hidden).
     expect(shell).toContain("<main className={SHELL_LAYOUT.main}>");
+    // Session-195: the whole trio rides inside the outer surface wrapper —
+    // `body (white) > DIV('') > DIV.min-h-screen.bg-slate-50 > [NAV, bar,
+    // MAIN.pb-20 > DIV.min-h-screen.bg-slate-50 > page]` (the reference's
+    // byte-extracted chrome; the navbar's white/80 backdrop sits on
+    // slate-50, not the white body).
+    expect(shell).toContain("<div className={SHELL_LAYOUT.outer}>");
   });
 
   it("the bottom bar is an a11y-labelled nav landmark (OUR kept superset)", () => {
