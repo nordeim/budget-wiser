@@ -95,9 +95,12 @@ describe("session-174: THE TYPE-GATE HARDENING (the build fails on type errors)"
     // §15 gate order survives the hardening — the build is now the
     // ENFORCER (type errors fail the artifact), typecheck remains the
     // quick diagnostic.
+    // Session-192: the gateFull twin assert is RETIRED — `gate:full`
+    // (the CRM-era drift-gate composite) was removed with its five dead
+    // script-target siblings; the plain gate below carries the same
+    // order and is the one chain that ships (see the dead-script guard
+    // in tests/gate-script.test.ts).
     const gate = pkg().scripts?.["gate"] ?? "";
     expect(gate).toMatch(/lint.*typecheck.*test.*build.*smoke.*test:e2e/);
-    const gateFull = pkg().scripts?.["gate:full"] ?? "";
-    expect(gateFull).toMatch(/lint.*typecheck.*test.*build/);
   });
 });

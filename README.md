@@ -182,6 +182,7 @@ The reference app ships **no navigation below 768px** — its link row is `displ
 | e2e login 429s on repeated runs | The auth rate limiter is per-IP/15min; run with `CI=1` (fresh server = fresh buckets) or wait out the window |
 | `AUTH_SECRET` boot failure in production | Generate one: `openssl rand -hex 32` — the server refuses to serve without it |
 | Tailwind classes silently missing | This is Tailwind v4 CSS-first config — check `src/app/globals.css` `@theme` tokens, not a config JS file (there is none) |
+| Dev server stuck in a reload loop (page re-fetches `/login` + `/manifest.json` several times per second) | A `next build` ran concurrently with (or was killed half-into) `next dev` — both write `.next/`, and turbopack watching the half-written tree full-reloads forever. Stop both processes, `rm -rf .next`, restart `bun run dev`. Never run `bun run build` while the dev server is live on the same tree. |
 
 ## License
 

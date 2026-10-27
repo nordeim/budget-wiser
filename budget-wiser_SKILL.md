@@ -1,9 +1,9 @@
 ---
 name: budget-wise
 description: "Complete, codebase-verified engineering skill for Budget Wise — a self-hosted personal finance app (Next.js 16 App Router + React 19 + TypeScript strict + Tailwind CSS 4 CSS-first + Radix/shadcn + one Zustand store + Prisma/SQLite + Zod-validated API + scrypt/HMAC cookie auth + recharts dashboards) that is a functional superset of budget-wiser.base44.app with visual parity. Distilled from the session-190 domain transformation and the session-191 remediation round; every rule traces to a failure that actually happened or a live-verified reference finding."
-version: 1.0.0
+version: 1.1.0
 last_updated: 2026-10-27
-provenance: "Distilled at session-191 (the remediation round: retired-brand purge, the four-button OAuth row, the login brand mark, dead-code retirement, package identity). Source sessions: 190 (the NEO CRM → Budget Wise domain transformation — 374 unit + 61 e2e + 14 smoke green, VLM parity verified) and 191 (382 unit + 61 e2e + 14 smoke green). The infra seam lineage (auth stack, db-path, boot-env, UI primitives, test harness) is the neo-crm scaffold's — its own skill (neo-crm_SKILL.md, v1.180.0) and skills/web-application/SKILL.md (v1.2.0) remain the deeper references."
+provenance: "Distilled at session-191 (the remediation round: retired-brand purge, the four-button OAuth row, the login brand mark, dead-code retirement, package identity); updated at session-192 (the session-3 re-audit round: the dead-script guard, the dev-vs-build race hazard, zero-drift re-verification). Source sessions: 190 (the NEO CRM → Budget Wise domain transformation — 374 unit + 61 e2e + 14 smoke green, VLM parity verified), 191 (382 unit + 61 e2e + 14 smoke green), and 192 (382 unit HELD + 61 e2e + 14 smoke green — the session-3 re-audit). The infra seam lineage (auth stack, db-path, boot-env, UI primitives, test harness) is the neo-crm scaffold's — its own skill (neo-crm_SKILL.md, v1.180.0) and skills/web-application/SKILL.md (v1.2.0) remain the deeper references."
 ---
 
 # Budget Wise — Complete Engineering Skill
@@ -222,7 +222,8 @@ src/
   types/index.ts              # the API wire shapes
 prisma/                       # schema.prisma + seed.ts
 tests/ + tests/e2e/           # the two test layers
-scripts/                      # prisma-env wrapper + smoke-test.sh (+ sweep/census helpers)
+scripts/                      # prisma-env wrapper + smoke-test.sh (the CRM-era sweep/census
+                              # family was retired at s190; its package.json entries at s192)
 db/                           # SQLite files (git-ignored)
 ```
 
@@ -751,6 +752,7 @@ git status                   # no secrets, no db files, no stray artifacts
 - [ ] No lint suppressions, no weakened assertions, no `any`
 - [ ] `rg "<retired brand>"` clean in shipped surfaces (comments may cite history)
 - [ ] The dead-import census is clean (no zero-consumer modules or deps)
+- [ ] **The dead-script census is clean** (the session-192 guard in `tests/gate-script.test.ts`: every script's repo-local file target exists + every `bun run <name>` resolves — a removed file's package.json entry is a landmine the string-pinning tests will NOT catch)
 - [ ] New repo-root files joined `outputFileTracingExcludes`
 - [ ] Screenshots refreshed under `docs/screenshots/` if visuals changed
 - [ ] worklog.md appended; Conventional Commit message explains why
@@ -762,3 +764,4 @@ git status                   # no secrets, no db files, no stray artifacts
 |---|---|---|
 | 190 | The domain transformation | NEO CRM → Budget Wise: schema swap, six domain routes, four pages + dialogs + charts, the mobile-nav superset, 374 unit + 61 e2e + 14 smoke green, VLM parity verified, two commits pushed to main |
 | 191 | The remediation round | The retired-brand purge (404 title, package identity, config comments), the four-button OAuth row, the login brand mark, the AI-Insights copy true-up, dead-code retirement (pdf-export/download/format + jspdf/html2canvas-pro), 382 unit + 61 e2e + 14 smoke green, live re-audit of every reference surface, this skill distilled |
+| 192 | The session-3 re-audit round | Zero reference drift re-confirmed; VLM parity None/None (login + dashboard); the dead-script retirement (six CRM-scaffold package.json entries incl. the broken `gate:full` composite) + the dead-script guard born green; the dev-vs-build `.next/` race hazard documented (README + AGENTS); 382 unit HELD + 61 e2e + 14 smoke green; the screenshot battery recaptured (8/13 byte-identical — render-stability evidence) |

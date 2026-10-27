@@ -109,44 +109,22 @@ describe("session-69: the E2E_PORT single source (N-69g)", () => {
   });
 });
 
-describe("session-97 (S97-P3): the gate:full composite — the drift gate promoted into the CI chain", () => {
-  // The s96 suggested next #3: the standing `gate` chain proves the
-  // code, but the PARITY regression (a page drifting from its standing
-  // screenshot genus) only fails inside `bun run sweep -- --fail-on-drift`.
-  // `gate:full` chains the standing gate + the three walked viewport
-  // classes so the one command proves code AND parity.
-  it("package.json ships a `gate:full` script", () => {
-    expect(typeof pkg.scripts?.["gate:full"]).toBe("string");
-    expect(pkg.scripts!["gate:full"].length).toBeGreaterThan(0);
-  });
-
-  it("gate:full = the standing gate chain (with the s170 smoke leg) + the SIX drift gates (desktop, phone 390, tablet 768, landscape 1024 — the s99 fourth sweep — + the s149 FULLPAGE landing gate + the s152 INTERIOR census gate)", () => {
-    const steps = pkg.scripts!["gate:full"].split("&&").map((s) => s.trim());
-    expect(steps).toEqual([
-      "bun run lint",
-      "bun run typecheck",
-      "bun run test",
-      "bun run build",
-      "./scripts/smoke-test.sh",
-      "CI=1 bun run test:e2e",
-      "bun run sweep -- --fail-on-drift",
-      "bun run sweep -- --width 390 --height 844 --fail-on-drift",
-      "bun run sweep -- --width 768 --height 1024 --fail-on-drift",
-      "bun run sweep -- --width 1024 --height 768 --fail-on-drift",
-      // s149 (F-149c3): the FIFTH gate — the below-the-fold landing axis
-      // (the full-page capture pair the owner's skill motivated; the
-      // four viewport sweeps structurally clip at y≈900)
-      "bun run sweep:fullpage -- --fail-on-drift",
-      // s152 (the 152-c rotation): the SIXTH gate — the interior
-      // full-geometry census (the L-151c2 dead-zone cure: the five
-      // pixel gates clip at their capture height; the census walks
-      // every element inside main.overflow-auto at 390×844)
-      // s158 (the 158-c rotation): the census leg runs the probe-validated
-      // concurrency — the four axis walks CONCURRENTLY (logins staggered);
-      // the six-gate chain stays six commands
-      "bun run census:interior -- --fail-on-drift --parallel 4",
-    ]);
-  });
+describe("session-97 (S97-P3) → session-192 retirement: the gate chain's smoke-leg order (the gate:full composite is RETIRED)", () => {
+  // The s96 suggested next #3 once chained `gate:full` = the standing
+  // gate + six drift-gate legs (sweep at four viewports + fullpage +
+  // interior census) — the CRM-era parity tooling. The s190 domain
+  // transformation removed the ~60 drift-gate scripts but left the
+  // package.json entries behind, and this block's pins read the script
+  // STRINGS without checking the targets existed — green tests masking
+  // dead infrastructure for two sessions. Session-192 retired the six
+  // dead entries (db:census, sweep, probe:ref, sweep:fullpage,
+  // census:interior, gate:full) and replaced the pins with the
+  // dead-script guard (see the session-192 describe below); the Budget
+  // Wise parity workflow is agent-browser + VLM, not the sweep family.
+  // The ONE surviving pin is the plain gate's smoke-leg order — the
+  // §14 build → smoke → e2e sequencing (session-170), kept here as the
+  // block's historical anchor (also pinned exactly by session-38's
+  // step-array assert).
 
   it("the plain `gate` carries the smoke leg (session-170: the §14 order — build → smoke → e2e)", () => {
     expect(pkg.scripts!.gate).toBe(
@@ -154,13 +132,70 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
     );
   });
 
-  it("every drift gate in gate:full carries --fail-on-drift (a report-only gate would gate nothing)", () => {
-    const gates = pkg.scripts!["gate:full"]
-      .split("&&")
-      .map((s) => s.trim())
-      .filter((s) => /^(bun run sweep|bun run census)/.test(s));
-    expect(gates.length).toBe(6); // the four viewport sweeps + the s149 fullpage gate + the s152 interior census gate
-    for (const s of gates) expect(s).toContain("--fail-on-drift");
+  it("the drift-gate composite is gone (gate:full chained scripts whose files were deleted at the s190 transformation)", () => {
+    // The retirement pin: the composite must NOT come back without its
+    // targets. The dead-script guard above is the general form; this is
+    // the specific tombstone for the family that actually bit us.
+    expect(pkg.scripts?.["gate:full"]).toBeUndefined();
+    expect(pkg.scripts?.sweep).toBeUndefined();
+    expect(pkg.scripts?.["probe:ref"]).toBeUndefined();
+    expect(pkg.scripts?.["db:census"]).toBeUndefined();
+    expect(pkg.scripts?.["sweep:fullpage"]).toBeUndefined();
+    expect(pkg.scripts?.["census:interior"]).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-192 (the session-3 remediation round): the dead-script guard.
+// The s190 transformation removed ~60 CRM scripts (the sweep/census/walk
+// family) but five package.json entries survived pointing at the deleted
+// files — and `gate:full` chained six of the dead legs, so the composite
+// failed on its first drift gate. The session-97 pins below kept that
+// GREEN because they read the script STRINGS and never checked that the
+// referenced files exist — green tests masking dead infrastructure, the
+// same class s191 cured for dead modules. The guard closes the class
+// structurally: every script's repo-local file target must exist on
+// disk, and every `bun run <name>` reference must resolve to a defined
+// script.
+// ---------------------------------------------------------------------------
+describe("session-192: the dead-script guard (no script may reference a missing file or script)", () => {
+  // Repo-local SOURCE targets only: build outputs (.next/) and runtime
+  // artifacts (*.log — the dev script's `tee dev.log` writes it live)
+  // are legitimately absent from a fresh clone.
+  const SKIP_PREFIXES = [".next/", "node_modules/"];
+  const SKIP_SUFFIXES = [".log"];
+  const FILE_TOKEN =
+    /(?:^|[\s"'=(&|;])((?:\.\/|[A-Za-z0-9_@./-]+\/)?[A-Za-z0-9_.@-]+\.(?:ts|tsx|sh|mjs|cjs|js))(?=[\s&|;)]|$)/g;
+
+  it("every repo-local file target referenced by a script exists on disk (the db:census/sweep/probe:ref/sweep:fullpage/census:interior leftovers all pointed at deleted files)", () => {
+    const repoRoot = path.resolve(import.meta.dirname, "..");
+    const offenders: string[] = [];
+    for (const [name, cmd] of Object.entries(pkg.scripts ?? {})) {
+      // matchAll + the CAPTURE group: String.match(/g) would return full
+      // matches with the consumed delimiter char glued to the token.
+      const tokens = [...cmd.matchAll(FILE_TOKEN)].map((m) => m[1]);
+      for (const token of tokens) {
+        const rel = token.startsWith("./") ? token.slice(2) : token;
+        if (SKIP_PREFIXES.some((p) => rel.startsWith(p))) continue;
+        if (SKIP_SUFFIXES.some((s) => rel.endsWith(s))) continue;
+        if (!existsSync(path.join(repoRoot, rel))) {
+          offenders.push(`${name} → ${token}`);
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it("every `bun run <name>` reference inside a script resolves to a defined script (gate:full chained the dead drift-gate family by name)", () => {
+    const offenders: string[] = [];
+    const defined = new Set(Object.keys(pkg.scripts ?? {}));
+    for (const [name, cmd] of Object.entries(pkg.scripts ?? {})) {
+      const refs = cmd.matchAll(/bun run ([A-Za-z0-9:_-]+)/g);
+      for (const [, ref] of refs) {
+        if (!defined.has(ref)) offenders.push(`${name} → bun run ${ref}`);
+      }
+    }
+    expect(offenders).toEqual([]);
   });
 });
 

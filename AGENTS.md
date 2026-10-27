@@ -23,6 +23,8 @@ Guidance for AI coding agents working in this repository. Every line answers: *w
 
 **Run the gate before pushing.** There is no hosted CI — the local gate is the only gate.
 
+**Never run `bun run build` while `bun run dev` is live** — both write `.next/`, and turbopack watching a half-written tree enters an endless full-reload loop (page re-fetches every ~300ms). If it happens: stop both, `rm -rf .next`, restart dev. The gate's own chain is safe (build and e2e run sequentially).
+
 ## Architecture facts an agent will guess wrong
 
 - **The store is Zustand, not React Query/SWR.** One client store (`src/stores/budget-store.ts`) holds session user, transactions, budgets, dashboard aggregates, and profile. Actions call the API envelope then refresh the affected slices. `call()` (inside the store) is the only sanctioned JSON client.

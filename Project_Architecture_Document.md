@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.1.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.2.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,13 @@
 **Last Updated:** 2026-10-27
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.2.0 (Tracked Changes)
+
+- `[AUTH]` **The session-3 re-audit round (session 192):** the dead-script retirement. Five package.json entries (`db:census`, `sweep`, `probe:ref`, `sweep:fullpage`, `census:interior`) still pointed at CRM-scaffold scripts deleted by the s190 transformation, and `gate:full` chained six of the dead legs — a composite that failed on its first drift gate. The session-97 pins had kept this GREEN by reading the script strings without ever checking the targets existed (green tests masking dead infrastructure — the same class s191 cured for dead modules). All six entries retired via the package manager; the pins replaced by the **dead-script guard** (every script's repo-local file target must exist on disk + every `bun run <name>` reference must resolve) and a drift-gate tombstone.
+- `[RES]` Re-audit of the live reference (2026-10-27, second pass): **zero drift** since session 191 — the four-button OAuth row, the 404 title, the empty demo-data state, and the no-mobile-nav gap at 390×844 all re-confirmed. VLM side-by-side: login **"Structural Differences: None"** and dashboard **"Structural Differences: None"** (the empty-vs-seeded data states excluded per the documented genus).
+- `[DOC]` The dev-vs-build `.next/` race hazard documented (README Troubleshooting + AGENTS.md): a `next build` running concurrently with (or killed half-into) `next dev` corrupts turbopack's dev state into an endless full-reload loop; the cure is stop-both + `rm -rf .next` + restart. Hit live in sessions 191 ("session dropped after the HMR rebuild") and 192.
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **382 unit HELD** (−3 retired pins + 3 born-green guards) · build · smoke 14/14 · e2e 61/61 · the screenshot battery recaptured (8 of 13 byte-identical to the s191 set — render-stability evidence; the 5 refreshed frames are recharts/dialog animation capture states).
 
 #### Revision Block — v2.1.0 (Tracked Changes)
 

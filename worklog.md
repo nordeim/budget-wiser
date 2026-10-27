@@ -43,3 +43,28 @@ Stage Summary:
 - THE REMEDIATION SHIPPED: the retired-brand purge complete (404 title, package identity, config comments, dead code), the login parity gaps closed (the four-button OAuth row + the brand-mark logo), the copy drifts trued up
 - THE VERIFICATION: lint 0/0 · tsc 0 · 382/382 unit (+8 pins) · build · smoke 14/14 · e2e 61/61 · VLM login parity clean · the mobile-nav battery green
 - THE DISCIPLINE HELD: TDD red-first, no gate weakening, no secrets in the tree, count lockstep in the same change set
+
+---
+
+Task ID: 192
+Agent: main (Z.ai)
+Task: The session-3 re-audit round — refresh the workspace, re-validate the documented state, re-audit the codebase and the live reference, remediate the findings TDD-first, recapture the screenshot battery, align the docs, and ship to main via the SSH wrapper.
+
+Work Log:
+- The intake: git pull to 17c9cce (the owner's session_2.md log commit) · the five root documents + the session-2 plan + worklog re-read and validated against the tree · environment verified standing (deps, .env with DATABASE_URL="file:../db/custom.db", the seeded db/ at the repo root)
+- The gate FIRST: lint 0/0 · typecheck 0 · 382/382 unit · build clean · 14/14 smoke · 61/61 e2e (1.2m, first run)
+- The live reference re-audit (agent-browser, saved auth state valid, 1512×945 + 390×844): ZERO drift since session 191 — the 4-button OAuth row, the "Budget Wise" 404 title, the empty demo data, the no-mobile-nav gap at 390px (0 hamburgers; our drawer superset stands) re-confirmed on every page
+- The local audit: demo login, all four pages (the seeded month rendering as documented), both dialogs, the guest wall (/Dashboard → /login?from_url=…), the mobile-nav battery live (open/Escape-close/no stranded lock), the SEO surface live (sitemap + robots + manifest + per-route metadata), .env.example matching, Tailwind v4 discipline (CSS-first @theme, no config JS, hover unwrap, shadow/blur re-pins)
+- THE INCIDENT root-caused: the first dev boot looped (~4 full-reloads/sec, 2,260 requests, /Dashboard ↔ /login?from_url= ping-pong). The tee dev.log hypothesis A/B-DISPROVEN (12 requests over 35s idle with tee active); the trigger was the concurrently-launched-then-killed `next build` leaving a half-written .next/ that turbopack kept re-watching — the same class session 191 logged as "Session dropped after the HMR rebuild". Cure documented: never build while dev is live; if looped, stop both + rm -rf .next + restart (README Troubleshooting + AGENTS.md)
+- THE VLM BATTERY: login → "Structural Differences: None" (the inline-SVG-vs-hosted-JPEG logo note is the documented s191 boundary); dashboard → "Structural Differences: None" (empty-vs-seeded excluded per the documented genus)
+- THE FINDING (F-1 Medium): five dead package.json script targets (db:census, sweep, probe:ref, sweep:fullpage, census:interior — all pointing at scripts deleted by the s190 transformation) + gate:full chaining six dead legs; the session-97 pins (and a type-gate twin assert) kept it GREEN by reading script STRINGS without checking the targets existed — green tests masking dead infrastructure
+- The remediation TDD per docs/REMEDIATION-PLAN-SESSION-3.md (validated against the seams first): the dead-script guard born RED with exactly the five intended offenders (two sub-bugs caught in-test: an unescaped / terminating the regex literal; String.match(/g) full-match capture — fixed to matchAll + capture group) → the six entries retired via npm pkg delete (diff surgical) → the session-97 block retired to its surviving plain-gate pin + a drift-gate tombstone → the type-gate twin retired with citation → 382/382 GREEN
+- Mutation-proof: the planted probe:mutation → scripts/does-not-exist.ts fired exactly 1 RED; restored → 14/14 GREEN. The guard has teeth
+- The screenshot battery recaptured (13 images): 8 of 13 byte-identical to the s191 set (render-stability evidence); the 5 refreshed frames are recharts/dialog animation capture states (the donut verified present live: 3 sectors + legend)
+- The doc alignment: PAD v2.2.0 (the round's revision block) · budget-wiser_SKILL.md v1.1.0 (audit history row + the pre-ship checklist's dead-script census item + provenance + the stale file-tree line) · README Troubleshooting + AGENTS.md (the dev-vs-build race) · session_3.md (this round's log)
+- The full gate re-ran green post-remediation: lint 0/0 · tsc 0 · 382/382 unit (count HELD: −3 retired pins + 3 born-green guards) · build · 14/14 smoke · 61/61 e2e
+
+Stage Summary:
+- THE RE-AUDIT SHIPPED: zero reference drift re-confirmed, VLM parity None/None on the headline surfaces, the dead-script landmine family retired with a born-green structural guard, the dev-vs-build race hazard documented at its root cause
+- THE VERIFICATION: lint 0/0 · tsc 0 · 382/382 unit · build · smoke 14/14 · e2e 61/61 · mutation-proof guard · 8/13 screenshots byte-stable across sessions
+- THE DISCIPLINE HELD: red-first TDD, no gate weakening, the count held at 382, no secrets in the tree, package-manager-only manifest edits
