@@ -251,3 +251,67 @@ test.describe("the profile page", () => {
     await expect(select).toHaveValue("USD");
   });
 });
+
+test.describe("the 404 surface (the reference's interpolated title + quoted path)", () => {
+  // Session-196: live-probed on the reference (2026-10-28) — its SPA
+  // answers a 404 with the tab title "<Humanized last non-empty
+  // segment> | Budget Wise" (hyphens + camelCase split, first-letter
+  // capitalization, rest-case preserved) and its body quotes the
+  // unmatched pathname WITHOUT the leading slash. Our SSR keeps the
+  // s191 absolute "Budget Wise" (the reference's own served head
+  // answers the same) — the NotFoundBody effect updates the tab
+  // post-hydration, so the assertion WAITS for the client title.
+
+  test("the title interpolates the humanized path (post-hydration)", async ({ page }) => {
+    await page.goto("/some-fake-route");
+    // Wait for the client-side title update (the hydration race family).
+    await expect
+      .poll(() => page.title(), { timeout: 10_000 })
+      .toBe("Some Fake Route | Budget Wise");
+  });
+
+  test("the message quotes the path without the leading slash", async ({ page }) => {
+    await page.goto("/fake/deep/route");
+    await expect(page.getByText("Page Not Found")).toBeVisible();
+    await expect(
+      page.getByText('The page "fake/deep/route" could not be found in this application.'),
+    ).toBeVisible();
+  });
+
+  test("the Go Home pill returns to the landing and restores its title", async ({ page }) => {
+    await page.goto("/nonexistent-route-xyz");
+    await expect
+      .poll(() => page.title(), { timeout: 10_000 })
+      .toBe("Nonexistent Route Xyz | Budget Wise");
+    await page.getByRole("link", { name: "Go Home" }).click();
+    await page.waitForURL("/");
+    // The route change restores the landing's title (the metadata
+    // system re-applies it — no stranded 404 title).
+    await expect
+      .poll(() => page.title(), { timeout: 10_000 })
+      .toBe("Budget Wise");
+  });
+});
+
+test.describe("the page titles (the capitalized nav-href forms)", () => {
+  // Session-196: found live — the .jsx alias stubs dropped the lowercase
+  // pages' metadata, so /Transactions, /Budgets, /Profile (the reference's
+  // own nav-href forms — the links every navbar click follows) served the
+  // layout default "Budget Wise". The reference serves the full titles on
+  // its capitalized routes (curl-verified 2026-10-28). /Dashboard titles
+  // "Budget Wise" on BOTH apps (the reference's own form — it carries no
+  // page metadata by design).
+
+  test("each capitalized route serves its page title", async ({ page }) => {
+    const cases: Array<[string, string]> = [
+      ["/Dashboard", "Budget Wise"],
+      ["/Transactions", "Transactions | Budget Wise"],
+      ["/Budgets", "Budgets | Budget Wise"],
+      ["/Profile", "Profile | Budget Wise"],
+    ];
+    for (const [route, title] of cases) {
+      await page.goto(route);
+      await expect(page).toHaveTitle(title);
+    }
+  });
+});

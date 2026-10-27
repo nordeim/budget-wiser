@@ -190,22 +190,70 @@ describe("session-18: sitemap.xml + robots.txt (S18-P4)", () => {
 // Session-191 (the session-2 remediation round): the 404 route's title
 // shipped the RETIRED product's name ("This Page Does Not Exist |
 // NEO CRM" — the CRM-era absolute spelling survived the domain
-// transformation). The Budget Wise reference's 404 title is the plain
-// site title (live-verified on /nonexistent-route-xyz 2026-10-27);
-// the pin keeps the retired brand out of the tab forever.
-describe("session-191: the 404 route's title (the retired-brand purge)", () => {
-  it("answers 404s with the site title — never the retired CRM brand", () => {
+// transformation). The Budget Wise reference's 404 title was pinned to
+// the plain site title (then live-verified on /nonexistent-route-xyz
+// 2026-10-27); the pin keeps the retired brand out of the tab forever.
+//
+// Session-196 (2026-10-28, live-probed incl. the served HTML): the
+// reference's 404 title is the INTERPOLATED form — `<Humanized last
+// non-empty path segment> | Budget Wise`, served directly in its HTML
+// head (curl: <title>Curl Probe Route | Budget Wise</title>). The
+// not-found now interpolates server-side through generateMetadata +
+// the middleware's x-pathname stamp (src/lib/not-found-title.ts carries
+// the probed transformation; tests/not-found-title.test.ts pins it).
+// The brand-purge purpose below is UNCHANGED — the retired spelling
+// stays out of every title form.
+describe("session-191/196: the 404 route's title (the retired-brand purge + the interpolated form)", () => {
+  it("answers 404s with the interpolated title — never the retired CRM brand", () => {
     // Comments are stripped first: the file's institutional-memory note
     // may cite the retired spelling, but the SHIPPED metadata may not.
     const src = notFoundSrc()
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/\/\/[^\n]*/g, "");
-    expect(src).toMatch(/title:\s*\{\s*absolute:\s*"Budget Wise"\s*\}/);
+    expect(src).toMatch(/generateMetadata/);
+    expect(src).toMatch(/notFoundTitle\(pathname\)/);
     expect(src).not.toMatch(/NEO CRM/);
     expect(src).not.toMatch(/neo-crm/i);
   });
 
   it("keeps the designed NotFoundBody surface (the reference's custom 404)", () => {
     expect(notFoundSrc()).toContain("<NotFoundBody />");
+  });
+});
+
+describe("session-196: the capital aliases re-export the lowercase pages' metadata (the title-drop bug)", () => {
+  // Found live (2026-10-28): the .jsx alias stubs re-exported ONLY the
+  // default export — the alias routes (/Transactions, /Budgets,
+  // /Profile — the reference's own nav-href forms, the links every
+  // navbar click follows) silently served the layout default "Budget
+  // Wise" instead of "<Page> | Budget Wise". The reference serves the
+  // full titles on its capitalized routes (curl-verified). /Dashboard
+  // carries NO metadata by design (both apps title it "Budget Wise").
+  // Invisible to every prior gate: the unit pins read the lowercase
+  // files; no e2e asserted titles — green tests masking the drift (the
+  // s192 dead-scripts genus).
+  const aliasSrc = (name: string) => readOr(`src/app/(app)/${name}/page.jsx`);
+
+  it.each(["Transactions", "Budgets", "Profile"])(
+    "/%s re-exports the lowercase page's metadata export",
+    (name) => {
+      const lower = name.toLowerCase();
+      expect(aliasSrc(name)).toMatch(
+        new RegExp(`export \\{ metadata \\} from ["']\\.\\./${lower}/page["']`),
+      );
+      // The lowercase page still owns the metadata (single source).
+      expect(readOr(`src/app/(app)/${lower}/page.tsx`)).toMatch(
+        /export const metadata = pageMetadata\(/,
+      );
+    },
+  );
+
+  it("/Dashboard stays metadata-less (both apps title the dashboard \"Budget Wise\")", () => {
+    const src = aliasSrc("Dashboard").replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(src).not.toMatch(/export \{ metadata \}/);
+    expect(src).not.toMatch(/export const metadata/);
+    expect(readOr("src/app/(app)/dashboard/page.tsx")).not.toMatch(
+      /export const metadata/,
+    );
   });
 });

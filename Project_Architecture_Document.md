@@ -1,11 +1,17 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.5.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.6.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
 **Companion Document:** [README.md](README.md) (user-facing) · [AGENTS.md](AGENTS.md) (agent-facing) · [CLAUDE.md](CLAUDE.md) (workflow)
-**Last Updated:** 2026-10-27
+**Last Updated:** 2026-10-28
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.6.0 (Tracked Changes)
+
+- `[AUTH]` **The session-7 title-surface round (session 196): TWO title-family parity breaks remediated — both invisible to every prior gate.** (F-1) The reference's 404 title is the INTERPOLATED form — `<Humanized last non-empty path segment> | Budget Wise`, served directly in its HTML head (curl-verified: `<title>Curl Probe Route | Budget Wise</title>`); the humanize splits hyphens AND camelCase boundaries, capitalizing each token's first letter while preserving the rest (9 live-probed cases incl. `/iPhoneCaseTEST` → "I Phone Case TEST", `/foo/bar` → "Bar", `/foo/` → "Foo"). Our 404 answered the static s191 "Budget Wise" and quoted `"/pathname"` WITH the leading slash where the reference quotes `"pathname"` without it. Remediated: `src/middleware.ts` (NEW — the minimal x-pathname request-header stamp; the only way the unmatched path reaches the render, probed: no path header exists otherwise) + `not-found.tsx` generateMetadata + `src/lib/not-found-title.ts` (the pure probed transformation) + the body's quoted-path strip. A client document.title effect was probed and DISCARDED — the metadata reconciliation re-applies the static title over it during hydration. The 404 still answers a REAL 404 status (the reference's 200-everything is its SPA platform's face — our real status is the kept production-grade posture). (F-2) The .jsx capital-alias stubs re-exported ONLY the default export — `/Transactions`, `/Budgets`, `/Profile` (the reference's own nav-href forms, the links every navbar click follows) silently served the layout default "Budget Wise" instead of "<Page> | Budget Wise". Remediated: the three stubs now `export { metadata } from` the lowercase pages (/Dashboard carries no metadata BY DESIGN — both apps title the dashboard "Budget Wise"). The genus: green tests masking drift — the unit pins read the lowercase files, no e2e asserted titles.
+- `[RES]` Re-audit of the live reference (2026-10-28): ZERO structural drift since session 195 — the shell (the outer surface wrapper intact, fourth consecutive census with no new wave), all four pages, the bottom bar (byte-identical), the clearance (764 ≤ 767), both dialogs, the sitemap + robots, the login card. Every page TITLE cross-checked on both apps (the census that surfaced F-1/F-2): `/`→"Budget Wise", `/login`→"Budget Wise", `/Dashboard`→"Budget Wise", `/Transactions|/Budgets|/Profile`→"<Page> | Budget Wise" — identical post-fix.
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **401 unit** (+13: the 9 not-found-title pins + the 4 alias-metadata pins; the s191 404 pin re-formed for generateMetadata) · build · smoke 14/14 · e2e **66** (+4: the three 404-surface tests + the capitalized-route titles test) · the 404 titles live-verified on 9 paths + the nested `/Dashboard/fake-nested` · the alias titles curl-verified on all four routes · VLM None/None/None/None + the dialog spot-check "None" · the mutation-proof (a reverted alias stub → exactly 1 RED, restored → green) · the screenshot battery recaptured (12 images, several byte-identical to the s195 set — render-stability evidence).
 
 #### Revision Block — v2.5.0 (Tracked Changes)
 
@@ -401,8 +407,8 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 |---|---|---|---|
 | Lint | ESLint (0 warnings) | — | No suppressions; the set-state-in-effect family stays clean |
 | Types | tsc + the build | — | Strict mode; the build enforces it |
-| Unit | Vitest | 388 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
-| E2E | Playwright | 62 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery (+ the scroll-end clearance), the a11y two-gate |
+| Unit | Vitest | 401 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
+| E2E | Playwright | 66 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery (+ the scroll-end clearance), the a11y two-gate, the 404/title surfaces |
 | Smoke | bash ladder | 14 | The artifact boots, serves, walls, rate-limits, refuses secretless boots, ships clean |
 
 **Load-bearing details:** the e2e suite shares one SQLite file (`workers: 1`); auth rides a saved storageState (per-test logins would trip the limiter); repeated local runs need `CI=1` (fresh server = fresh buckets). **Tests that fill async-hydrated forms must wait for hydration first** — a fill racing the controlled-value re-render appends instead of replaces.
