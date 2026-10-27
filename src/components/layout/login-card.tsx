@@ -621,12 +621,17 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
               </>
             ) : (
               <>
-            {/* Logo — CSS brand mark (white circle + blue dot) with a soft
-                slate glow, ringed and shadowed like the reference avatar. */}
+            {/* Logo — the reference's circular brand badge: a white disc
+                (ring-4 ring-white/50, shadow-lg) carrying a blue bar-chart
+                mark over the "BUDGET WISE" micro-wordmark. The reference
+                hotlinks a supabase-hosted JPEG (unhotlinkable) — this inline
+                SVG mirrors its structure (live-verified 2026-10-27: blue
+                ascending bars above the wordmark, centered, ~the inner 60%
+                of the badge). */}
             <div className={LOGIN_LAYOUT.logoWrap}>
               <div className={LOGIN_LAYOUT.logoGlow} aria-hidden="true" />
               <span className={LOGIN_LAYOUT.logo} aria-hidden="true">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sidebar sm:h-12 sm:w-12" />
+                <BudgetWiseLogoMark />
               </span>
             </div>
 
@@ -650,6 +655,13 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                 reference's inert space-y-3 class. */}
             <div className="w-full">
               <div className="space-y-3">
+              {/* Session-191: the reference's FULL four-button OAuth row
+                  (live DOM census 2026-10-27: Google, Microsoft, Facebook,
+                  Apple — stacked in this order, one anatomy). Each button is
+                  visual parity only: a REAL provider redirect is
+                  unimplementable self-hosted, so every button surfaces the
+                  not-configured toast.info (the s7-era documented boundary,
+                  now family-wide). */}
               <button
                 type="button"
                 className={LOGIN_LAYOUT.google}
@@ -664,6 +676,51 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
                   <GoogleIcon />
                 </div>
                 <span>Continue with Google</span>
+              </button>
+              <button
+                type="button"
+                className={LOGIN_LAYOUT.google}
+                onClick={() =>
+                  toast.info(
+                    "Microsoft sign-in not configured",
+                    "This self-hosted clone uses email and password sign-in (demo credentials in the README).",
+                  )
+                }
+              >
+                <div className={LOGIN_LAYOUT.googleIcon}>
+                  <MicrosoftIcon />
+                </div>
+                <span>Continue with Microsoft</span>
+              </button>
+              <button
+                type="button"
+                className={LOGIN_LAYOUT.google}
+                onClick={() =>
+                  toast.info(
+                    "Facebook sign-in not configured",
+                    "This self-hosted clone uses email and password sign-in (demo credentials in the README).",
+                  )
+                }
+              >
+                <div className={LOGIN_LAYOUT.googleIcon}>
+                  <FacebookIcon />
+                </div>
+                <span>Continue with Facebook</span>
+              </button>
+              <button
+                type="button"
+                className={LOGIN_LAYOUT.google}
+                onClick={() =>
+                  toast.info(
+                    "Apple sign-in not configured",
+                    "This self-hosted clone uses email and password sign-in (demo credentials in the README).",
+                  )
+                }
+              >
+                <div className={LOGIN_LAYOUT.googleIcon}>
+                  <AppleIcon />
+                </div>
+                <span>Continue with Apple</span>
               </button>
               </div>
 
@@ -787,6 +844,36 @@ function InfoCallout({ message }: { message: string }) {
   );
 }
 
+/* Session-191: the login logo mark — mirrors the reference's circular
+ * brand badge content (blue ascending bar-chart glyph above the
+ * "BUDGET WISE" micro-wordmark) without hotlinking its hosted JPEG.
+ * Decorative by contract: the badge span is aria-hidden and the H1
+ * carries the accessible name. */
+function BudgetWiseLogoMark() {
+  return (
+    <svg viewBox="0 0 96 96" className="h-full w-full" aria-hidden="true">
+      {/* ascending blue bars — the reference logo's chart glyph */}
+      <rect x="18" y="44" width="10" height="16" rx="2" fill="#2563eb" />
+      <rect x="32" y="36" width="10" height="24" rx="2" fill="#2563eb" />
+      <rect x="46" y="28" width="10" height="32" rx="2" fill="#1d4ed8" />
+      <rect x="60" y="20" width="10" height="40" rx="2" fill="#2563eb" />
+      {/* the micro-wordmark */}
+      <text
+        x="44"
+        y="72"
+        textAnchor="middle"
+        fontSize="9.5"
+        fontWeight="700"
+        letterSpacing="0.5"
+        fill="#0f172a"
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+      >
+        BUDGET WISE
+      </text>
+    </svg>
+  );
+}
+
 function GoogleIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
@@ -802,6 +889,44 @@ function GoogleIcon() {
       <path
         fill="#EA4335"
         d="M12 4.7c2.2 0 3.7.9 4.5 1.7l3.3-3.2C17.9 1.2 15.2 0 12 0 7.4 0 3.5 2.7 1.3 6.7l3.9 3c1-2.9 3.7-5 6.8-5z"
+      />
+    </svg>
+  );
+}
+
+/* Session-191: the three remaining reference OAuth icons — the standard
+ * provider marks (Microsoft's four-square, Facebook's f, Apple's glyph),
+ * sized to the Google icon's h-5 w-5 anatomy. Decorative: aria-hidden,
+ * the button text carries the accessible name. */
+function MicrosoftIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <rect x="1" y="1" width="10.5" height="10.5" fill="#F25022" />
+      <rect x="12.5" y="1" width="10.5" height="10.5" fill="#7FBA00" />
+      <rect x="1" y="12.5" width="10.5" height="10.5" fill="#00A4EF" />
+      <rect x="12.5" y="12.5" width="10.5" height="10.5" fill="#FFB900" />
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <circle cx="12" cy="12" r="12" fill="#1877F2" />
+      <path
+        fill="#ffffff"
+        d="M16.5 15.5l.6-3.7h-3.4V9.4c0-1 .5-2 2-2h1.5V4.2S15.9 4 14.7 4c-2.5 0-4.1 1.5-4.1 4.2v3.6H7.5v3.7h3.1V24h3.1v-8.5h2.8z"
+      />
+    </svg>
+  );
+}
+
+function AppleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        fill="#000000"
+        d="M17.05 12.54c-.02-2.2 1.79-3.26 1.87-3.31-1.02-1.49-2.6-1.7-3.16-1.72-1.35-.14-2.63.79-3.31.79-.7 0-1.74-.77-2.87-.75-1.48.02-2.84.86-3.6 2.18-1.53 2.66-.39 6.6 1.11 8.76.73 1.06 1.6 2.24 2.75 2.2 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.71.71 2.87.69 1.19-.02 1.95-1.08 2.68-2.14.84-1.22 1.19-2.4 1.21-2.46-.03-.01-2.33-.9-2.36-3.53zM14.9 5.87c.61-.74 1.02-1.77.91-2.8-.88.04-1.95.59-2.58 1.33-.57.65-1.06 1.7-.93 2.7.98.08 1.99-.5 2.6-1.23z"
       />
     </svg>
   );

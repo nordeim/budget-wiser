@@ -20,7 +20,7 @@
 @custom-variant hover (&:hover);
 
 /* ---------------------------------------------------------------------------
-   NEO CRM design tokens — Tailwind CSS v4 CSS-first configuration.
+   Budget Wise design tokens — Tailwind CSS v4 CSS-first configuration.
    Rules (validated against docs/Tailwind-V4-Validation-Report.md):
    - No tailwind.config.js — everything lives in @theme.
    - No var() chains inside @theme — semantic tokens are LITERAL hex values.

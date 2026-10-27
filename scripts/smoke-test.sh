@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # The smoke leg (session-170, WP-5 — the web-app-foundation §13.4
-# skeleton, the neo-crm form). Boots the STANDALONE ARTIFACT (not the dev
-# server — the e2e doctrine: validate what ships) on :3210 with its OWN
-# scratch database (db/smoke.db, gitignored like db/custom.db) and a
-# dedicated throwaway AUTH_SECRET, then walks the assertion ladder:
+# skeleton, the family-standard form). Boots the STANDALONE ARTIFACT (not
+# the dev server — the e2e doctrine: validate what ships) on :3210 with
+# its OWN scratch database (db/smoke.db, gitignored like db/custom.db)
+# and a dedicated throwaway AUTH_SECRET, then walks the assertion ladder:
 #
 #   01  /api/health 200 + "status":"healthy"        (the db round-trip)
-#   02  unauthenticated /api/contacts -> 401        (the session wall)
+#   02  unauthenticated /api/transactions -> 401  (the session wall)
 #   03  unauthenticated /api/dashboard -> 401
 #   04  /login renders the page title               (the SSR shell)
 #   05  / renders the landing hero                  (the public surface)
 #   06  the demo login -> the neo_session cookie    (the auth round-trip)
-#   07  the sessioned /api/contacts -> 200          (the envelope ok:true)
+#   07  the sessioned /api/transactions -> 200      (the envelope ok:true)
 #   08  an invalid payload POST -> 400              (the Zod seam)
 #   09  a valid create -> 200                       (the CRUD round-trip)
 #   10  logout -> /api/auth/me 401                  (the cookie teardown)

@@ -21,7 +21,12 @@ import { describe, expect, it } from "vitest";
 
 const pkg = JSON.parse(
   readFileSync(path.resolve(import.meta.dirname, "..", "package.json"), "utf-8"),
-) as { scripts?: Record<string, string> };
+) as {
+  name?: string;
+  description?: string;
+  scripts?: Record<string, string>;
+  dependencies?: Record<string, string>;
+};
 
 describe("session-38: the gate umbrella script (S38-P6)", () => {
   it("package.json ships a `gate` script", () => {
@@ -156,5 +161,29 @@ describe("session-97 (S97-P3): the gate:full composite — the drift gate promot
       .filter((s) => /^(bun run sweep|bun run census)/.test(s));
     expect(gates.length).toBe(6); // the four viewport sweeps + the s149 fullpage gate + the s152 interior census gate
     for (const s of gates) expect(s).toContain("--fail-on-drift");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-191 (the session-2 remediation round): the package identity.
+// package.json still carried the CRM's name/description ("neo-crm" /
+// "NEO CRM — … CRM application") after the domain transformation — the
+// identity ships in every bun run banner and the standalone artifact's
+// manifest. The pin keeps the package honest about what this app is.
+// ---------------------------------------------------------------------------
+describe("session-191: the package identity (the retired-brand purge)", () => {
+  it("names the package for the app it actually is", () => {
+    expect(pkg.name).toBe("budget-wise");
+  });
+
+  it("describes the app as the personal finance platform (no CRM copy)", () => {
+    expect(pkg.description).toMatch(/Budget Wise/);
+    expect(pkg.description).toMatch(/personal finance/i);
+    expect(pkg.description).not.toMatch(/CRM/i);
+  });
+
+  it("the dead PDF-export dependencies are retired (the dead-code census)", () => {
+    expect(pkg.dependencies?.jspdf).toBeUndefined();
+    expect(pkg.dependencies?.["html2canvas-pro"]).toBeUndefined();
   });
 });

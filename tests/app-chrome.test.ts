@@ -182,3 +182,22 @@ describe("the app-shell construction (the chrome consumes the contracts)", () =>
     expect(shell).toContain("{APP_FOOTER.copyright}");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-191 (the session-2 remediation round): the dashboard's AI
+// Insights empty-state copy. The reference's live text is "Get
+// personalized insights based on your spending patterns" (a11y census
+// 2026-10-27); ours had drifted to a different sentence. The pin keeps
+// the reference's exact user-facing words.
+// ---------------------------------------------------------------------------
+describe("the dashboard copy contracts (the reference's user-facing words)", () => {
+  const dashboardSrc = () => read("src/app/(app)/dashboard/dashboard-page.tsx");
+
+  it("the AI Insights empty state carries the reference's sentence", () => {
+    expect(dashboardSrc()).toContain(
+      "Get personalized insights based on your spending patterns",
+    );
+    // the drifted spelling is gone
+    expect(dashboardSrc()).not.toContain("Personalized spending analysis");
+  });
+});

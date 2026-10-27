@@ -12,7 +12,7 @@ import { LandingPage } from "@/components/landing/landing-page";
 // post-login — the login card redirects to `/`).
 //
 // NO page-level metadata export: the ROOT layout's object already IS the
-// reference's landing head, axis for axis — title "NEO CRM" (absolute,
+// reference's landing head, axis for axis — title "Budget Wise" (absolute,
 // no template), the 405-char description (byte-identical), the
 // bare-origin canonical, the OG family (+ og-image.png), the Twitter
 // family (summary_large_image + twitter:url via `other`), the PWA metas.

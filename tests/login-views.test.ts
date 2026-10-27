@@ -100,6 +100,33 @@ describe("session-21: zero toasts on the auth flows (S21-P2)", () => {
     // the toast.info fallback is the s7-era documented superset.
     expect(loginCardSrc()).toMatch(/toast\.info\s*\(/);
   });
+
+  // Session-191 (the session-2 remediation round): the reference's login
+  // card renders the FOUR-button OAuth row (live DOM census 2026-10-27:
+  // Google, Microsoft, Facebook, Apple — stacked, white bg, slate-200
+  // border, brand icons). Our card shipped Google alone, a one-of-four
+  // parity gap. The pins below keep the full row shipping and keep every
+  // button on the same not-configured toast.info family (a real OAuth
+  // redirect is unimplementable self-hosted — the documented boundary).
+  it("renders the reference's full FOUR-button OAuth row (Google, Microsoft, Facebook, Apple)", () => {
+    const src = loginCardSrc();
+    expect(src).toContain("Continue with Google");
+    expect(src).toContain("Continue with Microsoft");
+    expect(src).toContain("Continue with Facebook");
+    expect(src).toContain("Continue with Apple");
+  });
+
+  it("every OAuth button rides the not-configured toast.info fallback (no partial OAuth)", () => {
+    const src = loginCardSrc();
+    for (const provider of ["Google", "Microsoft", "Facebook", "Apple"]) {
+      expect(src).toMatch(
+        new RegExp(`${provider} sign-in not configured`),
+      );
+    }
+    // the buttons are decorative-parity: no window.location / href
+    // redirects to any provider domain
+    expect(src).not.toMatch(/accounts\.google\.com|login\.live\.com|facebook\.com|appleid\.apple\.com/);
+  });
 });
 
 describe("session-21: the Callout error banner (S21-P3)", () => {

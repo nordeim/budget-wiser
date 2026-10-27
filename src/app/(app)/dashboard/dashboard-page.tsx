@@ -356,7 +356,7 @@ function AiInsightsPanel({ data }: { data: DashboardData }) {
             <Target className="h-4 w-4" />
           </span>
           <p className="text-sm text-slate-600">
-            Personalized spending analysis — press Generate.
+            Get personalized insights based on your spending patterns
           </p>
         </div>
       )}

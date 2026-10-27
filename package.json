@@ -1,7 +1,7 @@
 {
-  "name": "neo-crm",
+  "name": "budget-wise",
   "version": "1.0.0",
-  "description": "NEO CRM — Next.js 16 + React 19 + Prisma/SQLite CRM application",
+  "description": "Budget Wise — Next.js 16 + React 19 + Prisma/SQLite personal finance application",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
@@ -35,8 +35,6 @@
     "@radix-ui/react-slot": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "html2canvas-pro": "^2.5.2",
-    "jspdf": "^4.2.1",
     "lucide-react": "^0.525.0",
     "next": "^16.4.2",
     "prisma": "^6.19.3",

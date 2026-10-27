@@ -39,6 +39,7 @@ const readOr = (rel: string): string => {
 const layoutSrc = () => readOr("src/app/layout.tsx");
 const sitemapSrc = () => readOr("src/app/sitemap.xml/route.ts");
 const robotsSrc = () => readOr("src/app/robots.txt/route.ts");
+const notFoundSrc = () => readOr("src/app/not-found.tsx");
 
 describe("session-18: the siteUrl seam (S18-P4)", () => {
   it("falls back to the canonical localhost origin when the env var is unset", async () => {
@@ -180,5 +181,28 @@ describe("session-18: sitemap.xml + robots.txt (S18-P4)", () => {
 
   it("retires the static public/robots.txt (route conflict)", () => {
     expect(existsSync(repoFile("public/robots.txt"))).toBe(false);
+  });
+});
+
+// Session-191 (the session-2 remediation round): the 404 route's title
+// shipped the RETIRED product's name ("This Page Does Not Exist |
+// NEO CRM" — the CRM-era absolute spelling survived the domain
+// transformation). The Budget Wise reference's 404 title is the plain
+// site title (live-verified on /nonexistent-route-xyz 2026-10-27);
+// the pin keeps the retired brand out of the tab forever.
+describe("session-191: the 404 route's title (the retired-brand purge)", () => {
+  it("answers 404s with the site title — never the retired CRM brand", () => {
+    // Comments are stripped first: the file's institutional-memory note
+    // may cite the retired spelling, but the SHIPPED metadata may not.
+    const src = notFoundSrc()
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    expect(src).toMatch(/title:\s*\{\s*absolute:\s*"Budget Wise"\s*\}/);
+    expect(src).not.toMatch(/NEO CRM/);
+    expect(src).not.toMatch(/neo-crm/i);
+  });
+
+  it("keeps the designed NotFoundBody surface (the reference's custom 404)", () => {
+    expect(notFoundSrc()).toContain("<NotFoundBody />");
   });
 });

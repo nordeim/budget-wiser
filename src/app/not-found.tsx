@@ -6,12 +6,16 @@ import { NotFoundBody } from "./not-found-body";
 // font-light "404" display heading, "Page Not Found", the quoted-pathname
 // message and a white bordered Go Home pill (lucide Home icon) that
 // navigates to `/`. No app shell (the reference renders it bare). The
-// pathname interpolation lives in the client body (usePathname); the title
-// is the reference's `This Page Does Not Exist | NEO CRM` — an ABSOLUTE
-// title, because the root layout's "%s | NEO CRM" template would double
-// the suffix otherwise.
+// pathname interpolation lives in the client body (usePathname).
+//
+// Session-191: the title. The reference's 404 answers with the plain site
+// title "Budget Wise" (live-verified on /nonexistent-route-xyz — its SPA
+// serves the root head under the fallback). The ABSOLUTE spelling keeps
+// the root layout's "%s | Budget Wise" template from doubling the suffix.
+// (The CRM-era "This Page Does Not Exist | NEO CRM" absolute retired with
+// the domain transformation — pinned by tests/metadata.test.ts.)
 export const metadata: Metadata = {
-  title: { absolute: "This Page Does Not Exist | NEO CRM" },
+  title: { absolute: "Budget Wise" },
 };
 
 export default function NotFound() {
