@@ -46,7 +46,7 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | 🧾 **Transactions** | Search, type and category filters, weekday-dated rows, delete with confirmation |
 | ✨ **AI Insights** | One-tap, deterministic insights derived from your own data (top category, savings pace, budget warnings) — no external LLM dependency |
 | 👤 **Profile & preferences** | Currency (USD/EUR/GBP/CAD/AUD), about-me with live counter, monthly savings goal, photo upload |
-| 🔐 **Hardened auth** | Scrypt password hashing, HMAC cookie sessions, rate limiting, email verification + password reset funnels |
+| 🔐 **Hardened auth** | Scrypt password hashing, HMAC cookie sessions, rate limiting, email verification + password reset funnels — with the reference's four-button OAuth row (Google, Microsoft, Facebook, Apple) as visual parity over the self-hosted email/password path |
 | 📱 **Mobile navigation** | A working hamburger + slide-out drawer on phones — a functional **superset** over the reference (which ships no mobile nav) |
 
 ## Architecture
@@ -61,7 +61,7 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | Charts | Recharts | 3.10 | Donut + weekly bars |
 | Database | SQLite via Prisma | 6.19 | `db/custom.db` at the repo root |
 | Validation | Zod | 4.6 | Every API boundary |
-| Unit tests | Vitest | 5.0 | 374 checks |
+| Unit tests | Vitest | 5.0 | 382 checks |
 | E2E tests | Playwright | 1.64 | 61 checks against the standalone build |
 | Runtime | Bun | ≥ 1.3 | Package manager + script runner |
 
@@ -134,7 +134,7 @@ The relative `DATABASE_URL` is resolved by `src/lib/db-path.ts` — the CLI, `ne
 ## Testing
 
 ```bash
-bun run test           # Vitest unit layer (374 checks) — pure seams, no browser
+bun run test           # Vitest unit layer (382 checks) — pure seams, no browser
 bun run test:e2e       # Playwright e2e (61 checks) — requires `bun run build` first
 bun run lint           # ESLint, zero warnings allowed
 bun run typecheck      # tsc --noEmit

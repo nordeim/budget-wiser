@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.0.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.1.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,13 @@
 **Last Updated:** 2026-10-27
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.1.0 (Tracked Changes)
+
+- `[AUTH]` **The remediation round (session 191):** the retired-brand purge + parity true-ups. The 404 route's absolute title (which still read "This Page Does Not Exist | NEO CRM"), the package identity (`name: neo-crm` → `budget-wise`), and the config-file comments were corrected; the dead CRM-era modules (`lib/pdf-export.ts`, `lib/download.ts`, `lib/format.ts`) and their zero-consumer dependencies (`jspdf`, `html2canvas-pro`) were retired.
+- `[RES]` Re-audit of the live reference (2026-10-27): the login card now renders a **four-button OAuth row** (Google, Microsoft, Facebook, Apple) — mirrored as visual parity with the family-wide not-configured fallback; the login logo mirrored as a local inline-SVG brand mark (the reference hotlinks a hosted JPEG); the AI Insights empty-state copy true-up ("Get personalized insights based on your spending patterns"); the reference's demo data was found reset to empty (our seed keeps the original demo month — a data-state note, not a divergence); the no-mobile-nav gap re-confirmed at 390×844.
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **382 unit** (+8 session-191 pins: the retired-brand purge, the OAuth row, the AI-Insights copy, the package identity + dead-dep census) · build · smoke 14/14 · e2e 61/61 · VLM login-parity re-verified (4/4 buttons, matching order).
+- `[DOC]` `budget-wiser_SKILL.md` distilled at the repo root (per `skills/to-distill-project-into-skill`); joined the artifact excludes.
 
 #### Revision Block — v2.0.0 (Tracked Changes)
 
@@ -365,7 +372,7 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 |---|---|---|---|
 | Lint | ESLint (0 warnings) | — | No suppressions; the set-state-in-effect family stays clean |
 | Types | tsc + the build | — | Strict mode; the build enforces it |
-| Unit | Vitest | 374 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
+| Unit | Vitest | 382 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
 | E2E | Playwright | 61 | Real flows against the standalone build: auth walls, every CRUD round trip, the mobile drawer battery, the a11y two-gate |
 | Smoke | bash ladder | 14 | The artifact boots, serves, walls, rate-limits, refuses secretless boots, ships clean |
 

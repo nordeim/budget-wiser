@@ -19,3 +19,27 @@ Stage Summary:
 - THE VERIFICATION: lint 0/0 · tsc 0 · 374/374 unit · build (the type-gate artifact) · smoke 14/14 · e2e 61/61 · VLM parity clean · the mobile-nav battery 11/11
 - THE DISCIPLINE HELD: no lint suppressions, no weakened assertions, no secrets in the tree (the artifact-hygiene check green), the db-path seam untouched, the Tailwind v4 re-pins preserved
 - SHIPPED: committed to main and pushed via docs/ssh_git_wrapper_v3.py (the remote verified; no new branches)
+
+---
+
+Task ID: 191
+Agent: main (Z.ai)
+Task: The remediation round — re-audit the codebase and the live reference, then fix the identified issues, gaps, and hygiene debt; distill budget-wiser_SKILL.md; recapture the screenshot battery; ship to main via the SSH wrapper.
+
+Work Log:
+- The fresh-sandbox intake: git clone at 98f0fdf · bun install (537 packages) · .env recreated with DATABASE_URL="file:../db/custom.db" + a fresh AUTH_SECRET · db:push + db:seed (the demo month intact) · Playwright Chromium installed (the e2e leg's missing browser)
+- The document review: AGENTS.md, CLAUDE.md, README.md, PAD v2.0.0, docs/session_1.md, docs/IMPLEMENTATION-PLAN.md, worklog — then validated against the tree (structure, routes both casings, the store, the shell, the theme re-pins all as documented)
+- The audit: the full gate run FIRST (lint 0/0 · tsc 0 · 374/374 unit · build · smoke 14/14 · e2e 61/61) — then the live reference re-audit with agent-browser (logged in, 1512×945 + 390×844): every page census, the Add Transaction dialog, the in-place signup swap, the guest-root behavior, the 404 title, and the VLM side-by-side on the login page
+- THE FINDINGS: (F-1 critical) the 404 title still read "This Page Does Not Exist | NEO CRM" — the retired brand in every tab; (F-2 high) the login OAuth row rendered ONE of the reference's FOUR buttons; (F-3 high) package.json still carried the CRM identity; (F-4) the login logo was a bare blue disc vs the reference's bar-chart brand badge; (F-5) the AI Insights empty-state copy had drifted; (F-6) dead modules pdf-export/download/format + the jspdf/html2canvas-pro deps; (F-7) stale CRM comments across configs; (F-8) the excludes list needed the new skill file. The mobile-nav battery re-verified GREEN (open/nav-close/Escape/resize-auto-close/no stranded lock) — the reference still ships NO phone nav, our drawer remains the documented superset
+- The remediation plan written and validated against the codebase first (docs/REMEDIATION-PLAN-SESSION-2.md — every test seam checked before editing)
+- TDD execution — the red state first (8 new failing pins across metadata/login-views/app-chrome/gate-script), then the fixes: the 404 title → "Budget Wise" (the reference's own 404 spelling, live-verified) · the FULL four-button OAuth row (Google, Microsoft, Facebook, Apple — one anatomy, family-wide toast.info fallback, brand SVGs aria-hidden) · the login logo → the inline-SVG BudgetWiseLogoMark (four ascending blue bars + the micro-wordmark in the ringed badge — mirroring the reference's hosted JPEG without hotlinking it) · the AI Insights copy → the reference's exact sentence · package identity via npm pkg set (name "budget-wise") · the dead modules + deps removed via bun remove · the stale comments corrected in six files · budget-wiser_SKILL.md joined the artifact excludes
+- The regression caught and fixed in-test: the 404 pin initially failed on its own institutional-memory comment — the established stripComments pattern applied (comments may cite history; shipped metadata may not)
+- The VLM re-verification: the login page now matches the reference (4/4 OAuth buttons, identical order, consistent layout/spacing); the logo structurally mirrored; the "Edit with Base44" overlay correctly absent
+- budget-wiser_SKILL.md distilled at the repo root per skills/to-distill-project-into-skill (27 sections + 3 appendices, every claim tree-verified at the session-191 pin)
+- The captures: 13 screenshots recaptured under docs/screenshots/ from the remediated dev server (landing, login with the 4-button row, all four pages at desktop + mobile, the drawer OPEN, both dialogs)
+- The doc alignment: test counts 374→382 lockstepped across README/CLAUDE/PAD · the PAD revision block v2.1.0 · AGENTS.md verified count-free · .env.example verified matching the codebase (no env changes this round)
+
+Stage Summary:
+- THE REMEDIATION SHIPPED: the retired-brand purge complete (404 title, package identity, config comments, dead code), the login parity gaps closed (the four-button OAuth row + the brand-mark logo), the copy drifts trued up
+- THE VERIFICATION: lint 0/0 · tsc 0 · 382/382 unit (+8 pins) · build · smoke 14/14 · e2e 61/61 · VLM login parity clean · the mobile-nav battery green
+- THE DISCIPLINE HELD: TDD red-first, no gate weakening, no secrets in the tree, count lockstep in the same change set
