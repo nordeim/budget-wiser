@@ -40,15 +40,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     void hydrate();
   }, [hydrate]);
 
+  // Session-194: the reference's EXACT shell hierarchy (live-probed):
+  //   body (white) > DIV('') > [NAV(sticky), DIV(bottom bar), MAIN.pb-20
+  //   md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]
+  // — a bare wrapper, the navbar + bar as its first two children, main
+  // LAST, and the slate-50 surface INSIDE main (so the navbar/bar sit
+  // on the white body, and main's pb-20 clearance strip is white too —
+  // ours had the min-h-screen root OUTSIDE main, painting slate-50
+  // behind the translucent navbar and inside the clearance strip).
   return (
-    <div className={SHELL_LAYOUT.root}>
+    <div>
       <BrandNav pathname={pathname} />
-      <main>{children}</main>
-
-      {/* Mobile bottom tab bar (< md) — the reference's redesigned phone
-          navigation, byte-mirrored. OUR kept a11y superset: the nav
-          landmark label + aria-current (the reference ships neither). */}
+      {/* The bar precedes main in the reference's own DOM order (its
+          wrapper: NAV, bar, MAIN) — byte-mirrored. */}
       <BottomTabBar pathname={pathname} />
+      {/* The main carries the reference's bar-clearing padding (pb-20
+          md:pb-0 — session-194): below md, the last content clears the
+          fixed bottom bar at scroll-end; at md+ the bar is hidden and
+          the padding drops to zero. */}
+      <main className={SHELL_LAYOUT.main}>
+        <div className={SHELL_LAYOUT.root}>{children}</div>
+      </main>
     </div>
   );
 }
@@ -107,7 +119,13 @@ function BottomTabBar({ pathname }: { pathname: string }) {
                 active ? BOTTOM_NAV.itemActive : BOTTOM_NAV.itemInactive,
               )}
             >
-              <item.icon className={BOTTOM_NAV.icon} strokeWidth={2} />
+              {/* The ACTIVE icon carries the ink class too — the
+                  reference's active-svg form (session-194); inactive
+                  icons ride the base sizing alone. */}
+              <item.icon
+                className={cn(BOTTOM_NAV.icon, active && BOTTOM_NAV.iconActive)}
+                strokeWidth={2}
+              />
               <span className={BOTTOM_NAV.label}>{item.label}</span>
             </Link>
           );

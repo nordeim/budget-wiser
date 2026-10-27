@@ -39,7 +39,7 @@ const buttonVariants = cva(
         // primaries (New Account/Lead/Event/Contact + the activities
         // Filter) compute rgba(0,0,0,.1) 0 1px 3px 0 (the bare scale);
         // shadow-sm was one step light under the s9-re-pinned scale.
-        default: "bg-primary text-primary-foreground shadow hover:bg-primary-hover",
+        default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         secondary: "bg-white text-foreground border border-line shadow-sm hover:bg-line-soft",
         // Session-17 (S17-P5): NO base text color — the stock ghost. The
         // reference's ghost carries only the hover pair; its one

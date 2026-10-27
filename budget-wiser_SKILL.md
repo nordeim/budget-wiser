@@ -1,9 +1,9 @@
 ---
 name: budget-wise
 description: "Complete, codebase-verified engineering skill for Budget Wise — a self-hosted personal finance app (Next.js 16 App Router + React 19 + TypeScript strict + Tailwind CSS 4 CSS-first + Radix/shadcn + one Zustand store + Prisma/SQLite + Zod-validated API + scrypt/HMAC cookie auth + recharts dashboards) that is a functional superset of budget-wiser.base44.app with visual parity. Distilled from the session-190 domain transformation and the session-191 remediation round; every rule traces to a failure that actually happened or a live-verified reference finding."
-version: 1.2.0
+version: 1.3.0
 last_updated: 2026-10-27
-provenance: "Distilled at session-191 (the remediation round: retired-brand purge, the four-button OAuth row, the login brand mark, dead-code retirement, package identity); updated at session-192 (the session-3 re-audit round: the dead-script guard, the dev-vs-build race hazard, zero-drift re-verification) and session-193 (the session-4 mobile-parity round: the reference's phone-nav redesign mirrored — the bottom tab bar, the drawer + hamburger + footer retirement, the CircleUser→User icon true-up). Source sessions: 190 (the NEO CRM → Budget Wise domain transformation — 374 unit + 61 e2e + 14 smoke green, VLM parity verified), 191 (382 unit + 61 e2e + 14 smoke green), 192 (382 unit + 61 e2e + 14 smoke green), and 193 (381 unit + 61 e2e + 14 smoke green — the bottom-tab-bar parity). The infra seam lineage (auth stack, db-path, boot-env, UI primitives, test harness) is the neo-crm scaffold's — its own skill (neo-crm_SKILL.md, v1.180.0) and skills/web-application/SKILL.md (v1.2.0) remain the deeper references."
+provenance: "Distilled at session-191 (the remediation round: retired-brand purge, the four-button OAuth row, the login brand mark, dead-code retirement, package identity); updated at session-192 (the session-3 re-audit round: the dead-script guard, the dev-vs-build race hazard, zero-drift re-verification), session-193 (the session-4 mobile-parity round: the reference's phone-nav redesign mirrored — the bottom tab bar, the drawer + hamburger + footer retirement, the CircleUser→User icon true-up), and session-194 (the session-5 full-surface restyle round: the reference's shadcn wave re-mirrored — the stock surface families, the shell hierarchy + pb-20 clearance, the category palette round-trip re-pin, the chart geometry, the --primary neutral). Source sessions: 190 (the NEO CRM → Budget Wise domain transformation — 374 unit + 61 e2e + 14 smoke green, VLM parity verified), 191 (382 unit + 61 e2e + 14 smoke green), 192 (382 unit + 61 e2e + 14 smoke green), 193 (381 unit + 61 e2e + 14 smoke green — the bottom-tab-bar parity), and 194 (387 unit + 62 e2e + 14 smoke green — the shadcn restyle re-mirror). The infra seam lineage (auth stack, db-path, boot-env, UI primitives, test harness) is the neo-crm scaffold's — its own skill (neo-crm_SKILL.md, v1.180.0) and skills/web-application/SKILL.md (v1.2.0) remain the deeper references."
 ---
 
 # Budget Wise — Complete Engineering Skill
@@ -68,7 +68,8 @@ Plus the public landing at `/`, the login card (four OAuth buttons + email/passw
 - **One deployable.** `next build` emits `.next/standalone` — the app boots anywhere Bun/Node runs with one SQLite file.
 
 **Reference-state notes (live-verified 2026-10-27):**
-- The reference **redesigned its phone navigation** (session 193, 2026-10-27): a fixed bottom tab bar below md (`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, active `text-slate-900` / inactive `text-slate-400`, lucide icons `w-6 h-6`, labels `text-xs font-medium`) with **no footer** on the app surface. We byte-mirror the bar (the `BOTTOM_NAV` contracts) + the kept a11y superset (`aria-current` + the labelled landmark). Sessions 190–192 had shipped a drawer + hamburger as the superset while the reference had NO phone nav — retired when the redesign landed.
+- The reference **redesigned its phone navigation** (session 193, 2026-10-27): a fixed bottom tab bar below md (`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, active `text-slate-900` on BOTH the anchor and its svg / inactive `text-slate-400`, lucide icons `w-6 h-6`, labels `text-xs font-medium`) with **no footer** on the app surface. We byte-mirror the bar (the `BOTTOM_NAV` contracts) + the kept a11y superset (`aria-current` + the labelled landmark). Sessions 190–192 had shipped a drawer + hamburger as the superset while the reference had NO phone nav — retired when the redesign landed.
+- The reference **restyled its entire surface system onto stock shadcn/ui** (session 194, 2026-10-27): per-page containers (7xl/5xl/5xl/4xl), sm-stacking plain-DIV headers with tracking-tight H1s, the h-9 stock Button/Card/Input/Select/Badge/Tabs forms, gradient KPI/summary/dark cards, divide-y transaction rows with description-first titles + category badges, the native currency select on Profile, and --primary as the neutral #171717. The shell rides the exact hierarchy `body (WHITE) > DIV > [NAV, bar, MAIN.pb-20 md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]` — the pb-20 clearance guarantees content clears the fixed bar below md. The category palette is the round-trip-probed set (food emerald+Utensils, transport blue, entertainment violet+Film, shopping amber, bills red+Receipt, healthcare cyan+Heart, education lime, other slate+Ellipsis; salary indigo, freelance purple+Wallet, investment teal, gift pink).
 - The reference serves app HTML to guests (its platform's face). We ship a public landing + server-side `(app)` guard — the production-grade posture.
 - The reference's demo data was reset to empty at the session-191 audit (balance $0.00). Our seed keeps the original demo month ($5,000 Salary + $575.45 expenses across 4 transactions, balance $4,424.55, 88.5% saved) — README-documented.
 - The reference's OAuth buttons (Google, Microsoft, Facebook, Apple) redirect to real providers — unimplementable self-hosted. Ours render the full four-button row (visual parity) surfacing a not-configured `toast.info` (the documented boundary).
@@ -432,11 +433,11 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 
 **The law: the dev server lies about production.** E2E runs against the production standalone build.
 
-### Tier 1 — Unit (Vitest, 381 checks)
+### Tier 1 — Unit (Vitest, 387 checks)
 
 Domain math, vocabularies, Zod contracts, infra seams (db-path, auth, rate-limit, boot-env, metadata, pwa-metadata, http-headers, upload), chrome contracts (page-layout records, nav config, landing copy), the login view machine, error boundaries, the gate script. **TDD default at the pure seams** (red → green → refactor). Source-regex pins (the established pattern): read the component source and assert the contract — comments stripped where institutional memory may cite retired spellings.
 
-### Tier 2 — E2E (Playwright, 61 checks)
+### Tier 2 — E2E (Playwright, 62 checks)
 
 Real UI against the standalone server on an isolated port + its own seeded `db/e2e.db`:
 
@@ -466,10 +467,10 @@ Boots the standalone artifact on :3210 with a scratch `db/smoke.db` and a throwa
 ```bash
 bun run lint            # eslint . --max-warnings 0 (hook rules are errors)
 bun run typecheck       # tsc --noEmit
-bun run test            # full unit suite (381)
+bun run test            # full unit suite (387)
 bun run build           # clean compile + standalone assembly (the type gate enforcer)
 ./scripts/smoke-test.sh # 14 checks against the artifact
-CI=1 bun run test:e2e   # 61 checks against the artifact
+CI=1 bun run test:e2e   # 62 checks against the artifact
 # — or all of it: bun run gate
 ```
 
@@ -741,7 +742,7 @@ The API wire shapes live in `src/types/index.ts` (named domain types — `User`,
 ## Appendix B — Pre-Ship Checklist
 
 ```bash
-bun run gate                 # lint → typecheck → test (381) → build → smoke (14) → e2e (61)
+bun run gate                 # lint → typecheck → test (387) → build → smoke (14) → e2e (62)
 rg "TODO\|FIXME\|lorem" src/ # zero placeholders
 rg "console\.log" src/       # zero debug output (console.error in sanctioned handlers only)
 git status                   # no secrets, no db files, no stray artifacts
@@ -766,3 +767,4 @@ git status                   # no secrets, no db files, no stray artifacts
 | 191 | The remediation round | The retired-brand purge (404 title, package identity, config comments), the four-button OAuth row, the login brand mark, the AI-Insights copy true-up, dead-code retirement (pdf-export/download/format + jspdf/html2canvas-pro), 382 unit + 61 e2e + 14 smoke green, live re-audit of every reference surface, this skill distilled |
 | 192 | The session-3 re-audit round | Zero reference drift re-confirmed; VLM parity None/None (login + dashboard); the dead-script retirement (six CRM-scaffold package.json entries incl. the broken `gate:full` composite) + the dead-script guard born green; the dev-vs-build `.next/` race hazard documented (README + AGENTS); 382 unit HELD + 61 e2e + 14 smoke green; the screenshot battery recaptured (8/13 byte-identical — render-stability evidence) |
 | 193 | The session-4 mobile-parity round | **The reference's first structural drift**: its phone-nav redesign (a fixed bottom tab bar below md, no footer, /About + /Contact removed, Profile icon unified on lucide-user) mirrored byte-for-byte — the `BOTTOM_NAV` contracts + the `safe-area-pb` v4 utility + the kept aria-current superset; the drawer/hamburger/APP_FOOTER family retired with ADR-006 superseded; the e2e battery rewritten test-for-test; the a11y sanctioned register extended for the reference's own slate-400 inactive ink; 381 unit + 61 e2e + 14 smoke green; VLM parity None/None/None (mobile dashboard/login/budgets) |
+| 194 | The session-5 full-surface restyle round | **The reference's second structural wave**: every app surface restyled onto stock shadcn/ui — the shell hierarchy re-mirrored (`body WHITE > DIV > [NAV, bar, MAIN.pb-20 > min-h-screen]`, the pb-20 bar-clearance), the stock Button/Card/Input/Select/Badge/Tabs families, per-page containers + sm-stacking headers, the gradient KPI/summary/dark cards, divide-y rows with description-first titles, the restyled Profile + dialogs, the category palette re-pinned by a live round-trip probe (the owner's data restored verbatim), the chart geometry re-tuned, --primary → the neutral #171717; 387 unit + 62 e2e + 14 smoke green; VLM parity None/None/None/None (dashboard/budgets/profile/login) |

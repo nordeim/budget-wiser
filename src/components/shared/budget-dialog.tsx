@@ -6,12 +6,11 @@
 // delete this budget? This action cannot be undone." — Cancel/Delete).
 
 import * as React from "react";
-import { Target, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -26,7 +25,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EXPENSE_CATEGORIES, categoryMeta } from "@/lib/categories";
-import { monthLabel } from "@/lib/budget-math";
 import { useBudgetStore } from "@/stores/budget-store";
 
 export function SetBudgetDialog({
@@ -41,9 +39,6 @@ export function SetBudgetDialog({
   const [limit, setLimit] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [submitting, setSubmitting] = React.useState(false);
-
-  const now = new Date();
-  const subtitle = `Set a monthly spending limit for ${monthLabel(now.getFullYear(), now.getMonth() + 1)}`;
 
   const reset = () => {
     setCategory("");
@@ -79,12 +74,11 @@ export function SetBudgetDialog({
     <Dialog open={open} onOpenChange={close}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">Set Budget</DialogTitle>
-          <DialogDescription className="text-sm text-muted">{subtitle}</DialogDescription>
+          <DialogTitle className="tracking-tight text-xl font-semibold">Set Budget</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div className="space-y-1.5">
+        <form onSubmit={onSubmit} className="space-y-6 pt-4">
+          <div className="space-y-2">
             <Label htmlFor="budget-category">Category</Label>
             <Select value={category} onValueChange={setCategory} required>
               <SelectTrigger id="budget-category" className="w-full" aria-label="Category">
@@ -100,10 +94,10 @@ export function SetBudgetDialog({
             </Select>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="budget-limit">Monthly Limit</Label>
             <div className="relative">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-500">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
                 $
               </span>
               <Input
@@ -113,7 +107,7 @@ export function SetBudgetDialog({
                 step="0.01"
                 inputMode="decimal"
                 placeholder="0.00"
-                className="pl-7"
+                className="pl-8 text-lg font-medium"
                 value={limit}
                 onChange={(e) => setLimit(e.target.value)}
                 required
@@ -129,7 +123,6 @@ export function SetBudgetDialog({
           ) : null}
 
           <Button type="submit" disabled={!valid || submitting} className="w-full">
-            <Target className="mr-1 h-4 w-4" />
             {submitting ? "Saving…" : "Set Budget"}
           </Button>
         </form>

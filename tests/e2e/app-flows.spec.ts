@@ -66,7 +66,7 @@ test.describe("the transactions page", () => {
     await page.goto("/Transactions");
     const search = page.getByLabel("Search transactions");
     await search.fill("transport");
-    await expect(page.getByRole("heading", { name: "Transport" })).toBeVisible();
+    await expect(page.getByText("Transport").first()).toBeVisible();
     await expect(page.getByText(/Monday, Oct 26, 2026/)).toBeHidden();
     await search.fill("zzz-no-match");
     await expect(page.getByText("No transactions match your filters")).toBeVisible();
@@ -76,8 +76,8 @@ test.describe("the transactions page", () => {
     await page.goto("/Transactions");
     await page.getByLabel("Filter by type").click();
     await page.getByRole("option", { name: "Income" }).click();
-    await expect(page.getByRole("heading", { name: "Salary" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Transport" })).toBeHidden();
+    await expect(page.getByText("Salary").first()).toBeVisible();
+    await expect(page.getByText("Transport").first()).toBeHidden();
   });
 
   test("the Add Transaction round trip (expense)", async ({ page }) => {
@@ -100,8 +100,8 @@ test.describe("the transactions page", () => {
     await expect(page.getByRole("dialog")).toBeHidden();
 
     // The new row appears at the top of the list.
-    await expect(page.getByRole("heading", { name: "Food & Dining" })).toBeVisible();
     await expect(page.getByText("e2e lunch")).toBeVisible();
+    await expect(page.getByText("Food & Dining").first()).toBeVisible();
   });
 
   test("the Income tab swaps the category vocabulary and the submit label", async ({ page }) => {
@@ -131,7 +131,8 @@ test.describe("the transactions page", () => {
     await dialog.getByLabel("Category").click();
     await page.getByRole("option", { name: "Shopping" }).click();
     await dialog.getByRole("button", { name: "Add Expense" }).click();
-    await expect(page.getByRole("heading", { name: "Shopping" })).toBeVisible();
+    // Session-194: the row title is a <p> (the reference's restyled form).
+    await expect(page.getByText("Shopping").first()).toBeVisible();
 
     // Delete it — the confirmation alertdialog first.
     await page.getByRole("button", { name: "Delete Shopping transaction" }).first().click();
@@ -139,12 +140,12 @@ test.describe("the transactions page", () => {
     await expect(confirm).toBeVisible();
     await confirm.getByRole("button", { name: "Cancel" }).click();
     await expect(confirm).toBeHidden();
-    await expect(page.getByRole("heading", { name: "Shopping" })).toBeVisible();
+    await expect(page.getByText("Shopping").first()).toBeVisible();
 
     await page.getByRole("button", { name: "Delete Shopping transaction" }).first().click();
     await page.getByRole("alertdialog", { name: "Delete Transaction" }).getByRole("button", { name: "Delete" }).click();
     await expect(page.getByRole("alertdialog")).toBeHidden();
-    await expect(page.getByRole("heading", { name: "Shopping" })).toBeHidden();
+    await expect(page.getByText("Shopping")).toBeHidden();
   });
 });
 
@@ -212,9 +213,11 @@ test.describe("the profile page", () => {
     await expect(page.getByRole("heading", { name: "Profile" })).toBeVisible();
     await expect(page.getByText("sepnetflix2023@outlook.com")).toBeVisible();
     await expect(page.getByText(/Member since/)).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Preferences" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Financial Overview" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Summary/ })).toBeVisible();
+    // Session-194: the card titles are DIVs (the reference's restyled
+    // CardTitle form — tracking-tight text-base font-semibold).
+    await expect(page.getByText("Preferences", { exact: true })).toBeVisible();
+    await expect(page.getByText("Financial Overview", { exact: true })).toBeVisible();
+    await expect(page.getByText(/Summary/)).toBeVisible();
   });
 
   test("the Save Preferences round trip (about-me + the counter)", async ({ page }) => {
@@ -237,11 +240,14 @@ test.describe("the profile page", () => {
   });
 
   test("the currency select carries the five options", async ({ page }) => {
+    // Session-194: the reference's currency control is a NATIVE select
+    // (w-full border-slate-200 rounded-lg) — not a Radix one.
     await page.goto("/Profile");
-    await page.getByLabel("Currency").click();
+    const select = page.getByLabel("Currency");
+    await expect(select).toBeVisible();
     for (const label of ["USD ($)", "EUR (€)", "GBP (£)", "CAD (C$)", "AUD (A$)"]) {
-      await expect(page.getByRole("option", { name: label })).toBeVisible();
+      await expect(select.locator("option", { hasText: label })).toBeAttached();
     }
-    await page.keyboard.press("Escape");
+    await expect(select).toHaveValue("USD");
   });
 });

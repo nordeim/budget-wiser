@@ -1,14 +1,15 @@
 "use client";
 
-// The Transactions page — the reference's own layout mirrored:
-//   header (H1 + "Manage your income and expenses" + Add Transaction)
-//   summary cards (Total Income / Total Expenses)
-//   toolbar (search + All Types + All Categories filters)
-//   transaction rows (tinted category icon, label, full weekday date,
-//   amount, delete button with confirmation)
+// The Transactions page — the reference's restyled layout mirrored
+// (session-194, live-censused 2026-10-27):
+//   header (the sm-stacking DIV + the DIRECT Add Transaction button —
+//   full-width below sm) → the p-4 gradient summary pair → the ONE
+//   filter card (search + the two shadcn selects) → the divide-y row
+//   list (p-2.5 category chips, the category badge pill, the text-lg
+//   amounts, the ghost icon delete).
 
 import * as React from "react";
-import { ArrowDownLeft, ArrowUpRight, Plus, Search, Trash2 } from "lucide-react";
+import { Plus, Search, Trash2 } from "lucide-react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +28,7 @@ import {
 } from "@/lib/categories";
 import { money } from "@/lib/budget-math";
 import { useBudgetStore } from "@/stores/budget-store";
-import { HEADER_BUTTONS, PAGE_HEADER, PAGE_ROOT } from "@/lib/page-layout";
+import { HEADER_BUTTONS, PAGE_HEADER, PAGE_ROOT, SUMMARY_CARD, TXN_LIST } from "@/lib/page-layout";
 import type { Transaction } from "@/types";
 
 export function TransactionsPage() {
@@ -57,62 +58,50 @@ export function TransactionsPage() {
   const totalExpenses = sumWhere(transactions, "expense");
 
   return (
-    <div className={PAGE_ROOT.standard}>
-      <header className={PAGE_HEADER.root}>
+    <div className={PAGE_ROOT.content}>
+      {/* Session-194: the sm-stacking header with the button DIRECTLY in
+          the row (full-width below sm — the reference's own form). */}
+      <div className={PAGE_HEADER.root}>
         <div>
           <h1 className={PAGE_HEADER.title}>Transactions</h1>
           <p className={PAGE_HEADER.subtitle}>Manage your income and expenses</p>
         </div>
-        <div className={PAGE_HEADER.actions}>
-          <button type="button" className={HEADER_BUTTONS.dark} onClick={() => setTxOpen(true)}>
-            <Plus className="h-4 w-4" />
-            Add Transaction
-          </button>
-        </div>
-      </header>
+        <button type="button" className={HEADER_BUTTONS.dark} onClick={() => setTxOpen(true)}>
+          <Plus className={HEADER_BUTTONS.icon} />
+          Add Transaction
+        </button>
+      </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-        <section className="bg-emerald-50/40 p-6 rounded-2xl border border-emerald-100/50" aria-label="Total Income">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm">
-              <ArrowUpRight className="h-4 w-4" />
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Total Income
-            </span>
-          </div>
-          <div className="mt-3 text-2xl font-bold text-slate-900">{money(totalIncome)}</div>
+      {/* Summary pair — the p-4 gradient cards (the sections keep our
+          aria-label superset; the reference ships plain DIVs). */}
+      <div className={SUMMARY_CARD.grid}>
+        <section className={SUMMARY_CARD.rootIncome} aria-label="Total Income">
+          <p className={SUMMARY_CARD.labelIncome}>Total Income</p>
+          <p className={SUMMARY_CARD.valueIncome}>{money(totalIncome)}</p>
         </section>
-        <section className="bg-red-50/40 p-6 rounded-2xl border border-red-100/50" aria-label="Total Expenses">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-rose-600 shadow-sm">
-              <ArrowDownLeft className="h-4 w-4" />
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Total Expenses
-            </span>
-          </div>
-          <div className="mt-3 text-2xl font-bold text-slate-900">{money(totalExpenses)}</div>
+        <section className={SUMMARY_CARD.rootExpenses} aria-label="Total Expenses">
+          <p className={SUMMARY_CARD.labelExpenses}>Total Expenses</p>
+          <p className={SUMMARY_CARD.valueExpenses}>{money(totalExpenses)}</p>
         </section>
       </div>
 
-      {/* List card */}
-      <section className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-        <div className="mb-6 flex flex-col sm:flex-row gap-3">
+      {/* The ONE filter card — search + the two selects (sm:w-40 /
+          sm:w-48 — the reference's own widths). */}
+      <div className="rounded-xl bg-card text-card-foreground p-4 border-0 shadow-sm mb-6">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
               type="search"
               placeholder="Search transactions..."
-              className="pl-9"
+              className="pl-10"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               aria-label="Search transactions"
             />
           </div>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-full sm:w-40" aria-label="Filter by type">
+            <SelectTrigger className="sm:w-40" aria-label="Filter by type">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -122,7 +111,7 @@ export function TransactionsPage() {
             </SelectContent>
           </Select>
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-full sm:w-44" aria-label="Filter by category">
+            <SelectTrigger className="sm:w-48" aria-label="Filter by category">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -135,9 +124,14 @@ export function TransactionsPage() {
             </SelectContent>
           </Select>
         </div>
+      </div>
 
+      {/* The list card — divide-y rows (the reference's restyled form:
+          the category title + the category badge pill + the weekday
+          date + the text-lg amount + the ghost icon delete). */}
+      <div className={TXN_LIST.card}>
         {filtered.length === 0 ? (
-          <div className="flex min-h-[200px] flex-col items-center justify-center gap-2">
+          <div className="flex min-h-[200px] flex-col items-center justify-center gap-2 p-6">
             {transactions.length === 0 && hydrated ? (
               <>
                 <p className="text-slate-500">No transactions yet</p>
@@ -151,47 +145,44 @@ export function TransactionsPage() {
             )}
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className={TXN_LIST.rows}>
             {filtered.map((t) => {
               const meta = categoryMeta(t.category);
               const income = t.type === "income";
               return (
-                <div key={t.id} className="flex items-center justify-between py-4">
-                  <div className="flex min-w-0 items-center gap-4">
-                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${meta.tile}`}>
-                      <meta.icon className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0">
-                      <h4 className="truncate text-sm font-semibold text-slate-900">
-                        {meta.label}
-                      </h4>
-                      <p className="text-xs text-slate-500">
-                        {formatFullDate(t.date)}
-                        {t.description ? ` · ${t.description}` : ""}
-                      </p>
-                    </div>
+                <div key={t.id} className={TXN_LIST.row}>
+                  <div className={`${TXN_LIST.chip} ${meta.tile}`}>
+                    <meta.icon className="w-5 h-5" />
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`flex items-center gap-1 text-sm font-bold ${
-                        income ? "text-emerald-600" : "text-rose-600"
-                      }`}
-                    >
-                      {income ? (
-                        <ArrowUpRight className="h-3 w-3 opacity-60" />
-                      ) : (
-                        <ArrowDownLeft className="h-3 w-3 opacity-60" />
-                      )}
-                      {income ? "+" : "-"}
-                      {money(t.amount)}
-                    </span>
+                  <div className={TXN_LIST.body}>
+                    <div className={TXN_LIST.titleRow}>
+                      {/* Session-194: the reference's row title is the
+                          DESCRIPTION when present (its food row reads
+                          "food"), the category label otherwise; the
+                          badge always carries the category. */}
+                      <p className={TXN_LIST.title}>{t.description || meta.label}</p>
+                      <div className={TXN_LIST.badge}>{meta.label}</div>
+                    </div>
+                    <p className={TXN_LIST.sub}>{formatFullDate(t.date)}</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`${TXN_LIST.amount} ${
+                          income ? "text-emerald-600" : "text-rose-600"
+                        }`}
+                      >
+                        {income ? "+" : "-"}
+                        {money(t.amount)}
+                      </span>
+                    </div>
                     <button
                       type="button"
                       onClick={() => setPendingDelete(t)}
                       aria-label={`Delete ${meta.label} transaction`}
-                      className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className={TXN_LIST.delete}
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 />
                     </button>
                   </div>
                 </div>
@@ -199,7 +190,7 @@ export function TransactionsPage() {
             })}
           </div>
         )}
-      </section>
+      </div>
 
       <TransactionDialog open={txOpen} onOpenChange={setTxOpen} />
       <DeleteTransactionDialog
@@ -236,7 +227,7 @@ function DeleteTransactionDialog({
           <AlertDialogPrimitive.Title className="text-lg font-semibold">
             Delete Transaction
           </AlertDialogPrimitive.Title>
-          <AlertDialogPrimitive.Description className="mt-2 text-sm text-muted">
+          <AlertDialogPrimitive.Description className="mt-2 text-sm text-muted-foreground">
             Are you sure you want to delete this transaction? This action cannot be undone.
           </AlertDialogPrimitive.Description>
           <div className="mt-6 flex justify-end gap-3">

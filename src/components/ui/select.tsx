@@ -42,7 +42,7 @@ function SelectTrigger({
       // the s133 round's own protected face — the density select —
       // retired upstream at s148, so the restoration diverges nothing.
       className={cn(
-        `${SELECT_TRIGGER.base} ${SELECT_TRIGGER.placeholderState} ${SELECT_TRIGGER.focusRing} disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1`,
+        `${SELECT_TRIGGER.base} ${SELECT_TRIGGER.placeholderState} ${SELECT_TRIGGER.focusRing} disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 w-full`,
         className,
       )}
       {...props}
@@ -102,7 +102,7 @@ function SelectContent({
 }
 
 function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
-  return <SelectPrimitive.Label className={cn("px-2 py-1.5 text-xs font-medium text-muted", className)} {...props} />;
+  return <SelectPrimitive.Label className={cn("px-2 py-1.5 text-xs font-medium text-muted-foreground", className)} {...props} />;
 }
 
 function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {

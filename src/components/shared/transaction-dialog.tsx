@@ -7,11 +7,9 @@
 // the form is valid (its label flips "Add Expense" / "Add Income").
 
 import * as React from "react";
-import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -93,13 +91,15 @@ export function TransactionDialog({
     <Dialog open={open} onOpenChange={close}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">Add Transaction</DialogTitle>
-          <DialogDescription className="text-sm text-muted">
-            Record a new income or expense
-          </DialogDescription>
+          {/* Session-194: the reference's restyled dialog title —
+              tracking-tight text-xl font-semibold, NO description
+              paragraph (byte-extracted; ours had shipped a subtitle). */}
+          <DialogTitle className="tracking-tight text-xl font-semibold">
+            Add Transaction
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-6 pt-4">
           <Tabs
             tabs={[
               { id: "expense", label: "Expense" },
@@ -114,10 +114,10 @@ export function TransactionDialog({
             cols={2}
           />
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="tx-amount">Amount</Label>
             <div className="relative">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-500">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
                 $
               </span>
               <Input
@@ -127,7 +127,7 @@ export function TransactionDialog({
                 step="0.01"
                 inputMode="decimal"
                 placeholder="0.00"
-                className="pl-7"
+                className="pl-8 text-lg font-medium"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 required
@@ -136,7 +136,7 @@ export function TransactionDialog({
             </div>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="tx-category">Category</Label>
             <Select value={category} onValueChange={setCategory} required>
               <SelectTrigger id="tx-category" className="w-full" aria-label="Category">
@@ -152,7 +152,7 @@ export function TransactionDialog({
             </Select>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="tx-date">Date</Label>
             <Input
               id="tx-date"
@@ -163,13 +163,13 @@ export function TransactionDialog({
             />
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="tx-description">Description (optional)</Label>
             <Input
               id="tx-description"
               type="text"
               maxLength={200}
-              placeholder="What was this for?"
+              placeholder="Add a note..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -185,13 +185,10 @@ export function TransactionDialog({
             type="submit"
             disabled={!valid || submitting}
             className="w-full"
-            variant={type === "expense" ? "default" : "default"}
+            variant="default"
           >
-            {type === "expense" ? (
-              <ArrowDownCircle className="mr-1 h-4 w-4" />
-            ) : (
-              <ArrowUpCircle className="mr-1 h-4 w-4" />
-            )}
+            {/* Session-194: the reference's submit is TEXT-ONLY (no
+                icons — byte-extracted); the label flips with the tab. */}
             {submitting ? "Adding…" : type === "expense" ? "Add Expense" : "Add Income"}
           </Button>
         </form>

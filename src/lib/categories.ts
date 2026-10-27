@@ -6,16 +6,16 @@
 // the DB; labels/tints/icons are presentation only.
 
 import {
-  UtensilsCrossed,
+  Utensils,
   Car,
-  Clapperboard,
+  Film,
   ShoppingBag,
-  FileText,
-  HeartPulse,
+  Receipt,
+  Heart,
   GraduationCap,
-  MoreHorizontal,
+  Ellipsis,
   Briefcase,
-  Laptop,
+  Wallet,
   TrendingUp,
   Gift,
   type LucideIcon,
@@ -62,54 +62,59 @@ export interface CategoryMeta {
  * transaction rows and donut legend (Other gray, Transport blue,
  * Bills & Utilities red — live-snapshotted 2026-10-27).
  */
+// Session-194: the reference REDESIGNED its category palette in the
+// shadcn restyle wave — every tile, icon, and donut fill re-extracted
+// via a live round-trip (one $1 txn per category added to the reference,
+// chips + icons + donut sectors censused, then every probe row deleted
+// and the owner's original food transaction restored verbatim).
 export const EXPENSE_CATEGORY_META: Record<ExpenseCategory, CategoryMeta> = {
   food: {
     label: "Food & Dining",
-    tile: "bg-orange-50 text-orange-500",
-    color: "#f97316",
-    icon: UtensilsCrossed,
+    tile: "bg-emerald-50 text-emerald-600",
+    color: "#10b981",
+    icon: Utensils,
   },
   transport: {
     label: "Transport",
-    tile: "bg-blue-50 text-blue-500",
+    tile: "bg-blue-50 text-blue-600",
     color: "#3b82f6",
     icon: Car,
   },
   entertainment: {
     label: "Entertainment",
-    tile: "bg-purple-50 text-purple-500",
-    color: "#a855f7",
-    icon: Clapperboard,
+    tile: "bg-violet-50 text-violet-600",
+    color: "#8b5cf6",
+    icon: Film,
   },
   shopping: {
     label: "Shopping",
-    tile: "bg-pink-50 text-pink-500",
-    color: "#ec4899",
+    tile: "bg-amber-50 text-amber-600",
+    color: "#f59e0b",
     icon: ShoppingBag,
   },
   bills: {
     label: "Bills & Utilities",
-    tile: "bg-rose-50 text-rose-500",
+    tile: "bg-red-50 text-red-600",
     color: "#ef4444",
-    icon: FileText,
+    icon: Receipt,
   },
   healthcare: {
     label: "Healthcare",
-    tile: "bg-emerald-50 text-emerald-500",
-    color: "#10b981",
-    icon: HeartPulse,
+    tile: "bg-cyan-50 text-cyan-600",
+    color: "#06b6d4",
+    icon: Heart,
   },
   education: {
     label: "Education",
-    tile: "bg-cyan-50 text-cyan-500",
-    color: "#06b6d4",
+    tile: "bg-lime-50 text-lime-600",
+    color: "#84cc16",
     icon: GraduationCap,
   },
   other: {
     label: "Other",
-    tile: "bg-slate-100 text-slate-500",
-    color: "#94a3b8",
-    icon: MoreHorizontal,
+    tile: "bg-slate-50 text-slate-600",
+    color: "#6b7280",
+    icon: Ellipsis,
   },
 };
 
@@ -118,35 +123,36 @@ export const EXPENSE_CATEGORY_META: Record<ExpenseCategory, CategoryMeta> = {
  * tab listbox ("Salary", "Freelance", "Investment", "Gift", "Other").
  */
 export const INCOME_CATEGORY_META: Record<IncomeCategory, CategoryMeta> = {
+  // Session-194: the income family re-extracted in the same round-trip.
   salary: {
     label: "Salary",
-    tile: "bg-emerald-50 text-emerald-600",
-    color: "#10b981",
+    tile: "bg-indigo-50 text-indigo-600",
+    color: "#6366f1",
     icon: Briefcase,
   },
   freelance: {
     label: "Freelance",
-    tile: "bg-indigo-50 text-indigo-500",
-    color: "#6366f1",
-    icon: Laptop,
+    tile: "bg-purple-50 text-purple-600",
+    color: "#a855f7",
+    icon: Wallet,
   },
   investment: {
     label: "Investment",
-    tile: "bg-teal-50 text-teal-500",
+    tile: "bg-teal-50 text-teal-600",
     color: "#14b8a6",
     icon: TrendingUp,
   },
   gift: {
     label: "Gift",
-    tile: "bg-pink-50 text-pink-500",
+    tile: "bg-pink-50 text-pink-600",
     color: "#ec4899",
     icon: Gift,
   },
   other_income: {
     label: "Other",
-    tile: "bg-slate-100 text-slate-500",
-    color: "#94a3b8",
-    icon: MoreHorizontal,
+    tile: "bg-slate-50 text-slate-600",
+    color: "#6b7280",
+    icon: Ellipsis,
   },
 };
 
@@ -158,9 +164,9 @@ export function categoryMeta(raw: string): CategoryMeta {
   // Unknown raw value (foreign data) — the neutral fallback, never a crash.
   return {
     label: raw,
-    tile: "bg-slate-100 text-slate-500",
-    color: "#94a3b8",
-    icon: MoreHorizontal,
+    tile: "bg-slate-50 text-slate-600",
+    color: "#6b7280",
+    icon: Ellipsis,
   };
 }
 

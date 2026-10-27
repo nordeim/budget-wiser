@@ -40,7 +40,7 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | Feature | Description |
 |---|---|
 | 📊 **Live dashboard** | Balance, Income, Expenses, and Transaction-count KPIs recalculate with every entry; savings-rate badge included |
-| 🍩 **Spending by Category** | Donut chart with the eight expense categories, live legend |
+| 🍩 **Spending by Category** | Donut chart (outer 100 / inner 60 at 280px) with the eight expense categories, live legend |
 | 🎯 **Category budgets** | Monthly limits with progress bars — emerald under, amber near the line, rose over; per-card remaining amounts |
 | 📅 **Spend summary** | Mon–Sun weekly bar chart (spent vs earned) + year-to-date totals |
 | 🧾 **Transactions** | Search, type and category filters, weekday-dated rows, delete with confirmation |
@@ -61,8 +61,8 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | Charts | Recharts | 3.10 | Donut + weekly bars |
 | Database | SQLite via Prisma | 6.19 | `db/custom.db` at the repo root |
 | Validation | Zod | 4.6 | Every API boundary |
-| Unit tests | Vitest | 5.0 | 381 checks |
-| E2E tests | Playwright | 1.64 | 61 checks against the standalone build |
+| Unit tests | Vitest | 5.0 | 387 checks |
+| E2E tests | Playwright | 1.64 | 62 checks against the standalone build |
 | Runtime | Bun | ≥ 1.3 | Package manager + script runner |
 
 ```mermaid
@@ -134,8 +134,8 @@ The relative `DATABASE_URL` is resolved by `src/lib/db-path.ts` — the CLI, `ne
 ## Testing
 
 ```bash
-bun run test           # Vitest unit layer (381 checks) — pure seams, no browser
-bun run test:e2e       # Playwright e2e (61 checks) — requires `bun run build` first
+bun run test           # Vitest unit layer (387 checks) — pure seams, no browser
+bun run test:e2e       # Playwright e2e (62 checks) — requires `bun run build` first
 bun run lint           # ESLint, zero warnings allowed
 bun run typecheck      # tsc --noEmit
 bun run gate           # lint + typecheck + test + build + smoke + e2e (the full chain)
@@ -172,7 +172,7 @@ An **absolute** `DATABASE_URL` is recommended in production (see `docs/DEPLOYMEN
 
 ## The Mobile Navigation Bottom Tab Bar
 
-The reference app redesigned its phone navigation (audited 2026-10-27): a fixed bottom tab bar now carries the four destinations below 768px — `md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, items with `w-6 h-6` lucide icons and `text-xs` labels, active `text-slate-900` / inactive `text-slate-400`. This clone byte-mirrors that bar (plus the kept a11y superset: an `aria-current="page"` marker and a labelled nav landmark, which the reference ships without). An earlier round shipped a hamburger + slide-out drawer as a superset while the reference had NO phone nav — the redesign retired it. The full battery lives in `tests/e2e/mobile-navigation.spec.ts`.
+The reference app redesigned its phone navigation (audited 2026-10-27): a fixed bottom tab bar now carries the four destinations below 768px — `md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, items with `w-6 h-6` lucide icons and `text-xs` labels, active `text-slate-900` (the ink on the anchor AND its svg) / inactive `text-slate-400`. This clone byte-mirrors that bar (plus the kept a11y superset: an `aria-current="page"` marker and a labelled nav landmark, which the reference ships without). The bar-clearance contract: the shell's `<main>` carries `pb-20 md:pb-0` so scrolled-to-end content clears the fixed bar below md, and the whole chrome rides the reference's exact hierarchy (`body (white) > DIV > [NAV, bar, MAIN.pb-20 > DIV.min-h-screen.bg-slate-50 > page]`). An earlier round shipped a hamburger + slide-out drawer as a superset while the reference had NO phone nav — the redesign retired it. The full battery (visibility, anchoring, navigation, the ink split, the scroll-end clearance) lives in `tests/e2e/mobile-navigation.spec.ts`.
 
 ## Troubleshooting
 

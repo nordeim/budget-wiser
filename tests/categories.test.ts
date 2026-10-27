@@ -80,7 +80,8 @@ describe("the category vocabularies (the reference's own lists)", () => {
   it("categoryMeta falls back neutrally on a foreign raw value (never crashes)", () => {
     const meta = categoryMeta("something-foreign");
     expect(meta.label).toBe("something-foreign");
-    expect(meta.color).toBe("#94a3b8");
+    // Session-194: the fallback rides the re-pinned Other palette.
+    expect(meta.color).toBe("#6b7280");
   });
 
   it("the donut's canonical order index is stable", () => {
@@ -91,8 +92,13 @@ describe("the category vocabularies (the reference's own lists)", () => {
   });
 
   it("the reference's donut legend colors (Other gray, Transport blue, Bills red)", () => {
-    expect(EXPENSE_CATEGORY_META.other.color).toBe("#94a3b8");
+    // Session-194: re-pinned by the live round-trip probe (Other now the
+    // gray-500 #6b7280; food emerald; shopping amber; entertainment violet).
+    expect(EXPENSE_CATEGORY_META.other.color).toBe("#6b7280");
     expect(EXPENSE_CATEGORY_META.transport.color).toBe("#3b82f6");
     expect(EXPENSE_CATEGORY_META.bills.color).toBe("#ef4444");
+    expect(EXPENSE_CATEGORY_META.food.color).toBe("#10b981");
+    expect(EXPENSE_CATEGORY_META.shopping.color).toBe("#f59e0b");
+    expect(EXPENSE_CATEGORY_META.entertainment.color).toBe("#8b5cf6");
   });
 });

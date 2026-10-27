@@ -4,6 +4,9 @@ import { describe, expect, it } from "vitest";
 
 import {
   BOTTOM_NAV,
+  BUDGET_CARD,
+  DARK_CARD,
+  EMPTY_STATE,
   HEADER_BUTTONS,
   KPI_CARD,
   PAGE_HEADER,
@@ -11,6 +14,8 @@ import {
   PANEL,
   SHELL_LAYOUT,
   SITE_NAV,
+  SUMMARY_CARD,
+  TXN_LIST,
 } from "@/lib/page-layout";
 import { NAV_ITEMS, isNavActive } from "@/components/layout/nav-config";
 
@@ -106,34 +111,105 @@ describe("the shell + page contracts", () => {
     expect(SHELL_LAYOUT.root).toContain("min-h-screen bg-slate-50");
   });
 
-  it("the page container rides the navbar's max-w-7xl rhythm", () => {
-    expect(PAGE_ROOT.standard).toContain("max-w-7xl mx-auto");
-    expect(PAGE_ROOT.standard).toContain("py-8");
+  it("the shell main clears the bottom bar below md (pb-20 md:pb-0)", () => {
+    // Live-extracted session-194 (2026-10-27): the reference's shell <main>
+    // carries `pb-20 md:pb-0` on every app page — 80px of bottom padding
+    // below md so scrolled-to-end content clears the 77px fixed bottom
+    // bar (verified all four pages). Without it, content boxes sit
+    // BEHIND the bar at scroll-end (ours measured +20px behind on
+    // dashboard/profile) — the s193 round mirrored the bar itself but
+    // not its clearance padding.
+    expect(SHELL_LAYOUT.main).toContain("pb-20");
+    expect(SHELL_LAYOUT.main).toContain("md:pb-0");
   });
 
-  it("the header family: 3xl bold title, slate-500 subtitle, dual actions", () => {
-    expect(PAGE_HEADER.title).toContain("text-3xl font-bold text-slate-900");
-    expect(PAGE_HEADER.subtitle).toContain("text-slate-500");
-    expect(PAGE_HEADER.actions).toContain("flex items-center gap-3");
+  it("the page containers: the per-page widths (7xl/5xl/4xl — session-194)", () => {
+    expect(PAGE_ROOT.wide).toContain("max-w-7xl mx-auto");
+    expect(PAGE_ROOT.wide).toContain("lg:px-8");
+    expect(PAGE_ROOT.content).toContain("max-w-5xl mx-auto");
+    expect(PAGE_ROOT.content).not.toContain("lg:px-8");
+    expect(PAGE_ROOT.narrow).toContain("max-w-4xl mx-auto");
+    expect(PAGE_ROOT.narrow).toContain("py-8");
   });
 
-  it("the KPI cards: rounded-2xl white + the tinted income/expense variants", () => {
-    expect(KPI_CARD.root).toContain("bg-white p-6 rounded-2xl");
-    expect(KPI_CARD.rootIncome).toContain("bg-emerald-50/40");
-    expect(KPI_CARD.rootExpenses).toContain("bg-red-50/40");
-    expect(KPI_CARD.value).toContain("text-3xl font-bold");
+  it("the header family: the sm-stacking div, tracking-tight title, mt-1 subtitle", () => {
+    // Session-194: the reference's restyled header — stacks below sm (not
+    // md), a plain DIV, tracking-tight H1, mt-1 subtitle, the gap-3 row.
+    expect(PAGE_HEADER.root).toContain("flex flex-col sm:flex-row");
+    expect(PAGE_HEADER.root).toContain("sm:justify-between");
+    expect(PAGE_HEADER.title).toContain("text-3xl font-bold text-slate-900 tracking-tight");
+    expect(PAGE_HEADER.subtitle).toContain("text-slate-500 mt-1");
+    expect(PAGE_HEADER.actions).toContain("flex gap-3");
   });
 
-  it("the panel family and the 4/7/5 grid spans", () => {
-    expect(PANEL.root).toContain("bg-white p-6 rounded-2xl");
-    expect(PANEL.colSpan4).toBe("lg:col-span-4");
-    expect(PANEL.colSpan7).toBe("lg:col-span-7");
-    expect(PANEL.colSpan5).toBe("lg:col-span-5");
+  it("the KPI cards: rounded-xl border-0 shadow-sm + the gradient variants", () => {
+    // Session-194: the restyled family — hover:shadow-md, tracking-tight
+    // values, p-3 rounded-2xl chips, the emerald/rose gradient cards.
+    expect(KPI_CARD.root).toContain("rounded-xl");
+    expect(KPI_CARD.root).toContain("bg-white border-0 shadow-sm");
+    expect(KPI_CARD.root).toContain("hover:shadow-md");
+    expect(KPI_CARD.rootIncome).toContain("bg-gradient-to-br from-emerald-50 to-white");
+    expect(KPI_CARD.rootExpenses).toContain("bg-gradient-to-br from-rose-50 to-white");
+    expect(KPI_CARD.value).toContain("text-3xl font-bold text-slate-900 tracking-tight");
+    expect(KPI_CARD.chip).toContain("p-3 rounded-2xl bg-slate-50");
+    expect(KPI_CARD.label).toContain("tracking-wide uppercase");
   });
 
-  it("the header buttons: outline + dark forms", () => {
-    expect(HEADER_BUTTONS.outline).toContain("border border-slate-200 bg-white");
-    expect(HEADER_BUTTONS.dark).toContain("bg-slate-900");
+  it("the panel family: the stock shadcn Card anatomy", () => {
+    // Session-194: rounded-xl bg-card border-0 shadow-sm + the p-6 pb-2
+    // header + the p-6 pt-0 content + the tracking-tight text-lg DIV title.
+    expect(PANEL.root).toContain("rounded-xl bg-card text-card-foreground border-0 shadow-sm");
+    expect(PANEL.header).toContain("flex flex-col space-y-1.5 p-6 pb-2");
+    expect(PANEL.title).toContain("tracking-tight text-lg font-semibold text-slate-900");
+    expect(PANEL.content).toContain("p-6 pt-0");
+  });
+
+  it("the header buttons: the stock shadcn forms (h-9, full arms)", () => {
+    expect(HEADER_BUTTONS.outline).toContain("border bg-background shadow-sm hover:bg-accent");
+    expect(HEADER_BUTTONS.outline).toContain("h-9 px-4 py-2 border-slate-200");
+    expect(HEADER_BUTTONS.dark).toContain("bg-slate-900 hover:bg-slate-800");
+    expect(HEADER_BUTTONS.dark).toContain("text-primary-foreground shadow h-9 px-4 py-2");
+  });
+
+  it("the transactions summary pair: the p-4 gradient cards", () => {
+    expect(SUMMARY_CARD.grid).toContain("grid grid-cols-2 gap-4 mb-6");
+    expect(SUMMARY_CARD.rootIncome).toContain("p-4 border-0 shadow-sm bg-gradient-to-br from-emerald-50 to-white");
+    expect(SUMMARY_CARD.rootExpenses).toContain("bg-gradient-to-br from-rose-50 to-white");
+    expect(SUMMARY_CARD.labelIncome).toContain("text-sm text-emerald-600 font-medium");
+    expect(SUMMARY_CARD.valueIncome).toContain("text-2xl font-bold text-emerald-700");
+  });
+
+  it("the transactions list: divide-y rows + the badge + ghost delete", () => {
+    expect(TXN_LIST.card).toContain("rounded-xl bg-card text-card-foreground border-0 shadow-sm overflow-hidden");
+    expect(TXN_LIST.rows).toContain("divide-y divide-slate-100");
+    expect(TXN_LIST.row).toContain("flex items-center gap-4 p-4 hover:bg-slate-50");
+    expect(TXN_LIST.chip).toContain("p-2.5 rounded-xl");
+    expect(TXN_LIST.badge).toContain("rounded-md border px-2.5 py-0.5");
+    expect(TXN_LIST.amount).toContain("font-semibold text-lg");
+    expect(TXN_LIST.delete).toContain("h-9 w-9 text-slate-400 hover:text-rose-600");
+  });
+
+  it("the budgets dark card: the gradient + 4xl value + NO percent", () => {
+    expect(DARK_CARD.root).toContain("bg-gradient-to-br from-slate-900 to-slate-800 text-white");
+    expect(DARK_CARD.value).toContain("text-4xl font-bold");
+    expect(DARK_CARD.track).toContain("[&>div]:bg-gradient-to-r [&>div]:from-emerald-400");
+    expect(DARK_CARD.trio).toContain("flex gap-6");
+    expect(DARK_CARD.trioValue).toContain("text-3xl font-bold");
+  });
+
+  it("the budgets empty state: the bare w-12 icon (no tinted container)", () => {
+    expect(EMPTY_STATE.root).toContain("bg-card text-card-foreground p-12 border-0 shadow-sm text-center");
+    expect(EMPTY_STATE.icon).toContain("w-12 h-12 text-slate-300 mx-auto mb-4");
+    expect(EMPTY_STATE.title).toContain("text-lg font-semibold text-slate-900 mb-2");
+  });
+
+  it("the budget cards: the gradient top strip + the primary/20 track", () => {
+    expect(BUDGET_CARD.root).toContain("rounded-xl bg-card text-card-foreground border-0 shadow-sm overflow-hidden");
+    expect(BUDGET_CARD.strip).toContain("h-2 bg-gradient-to-r from-emerald-500 to-emerald-600");
+    expect(BUDGET_CARD.body).toContain("p-5");
+    expect(BUDGET_CARD.track).toContain("rounded-full bg-primary/20 h-3 mb-3");
+    expect(BUDGET_CARD.badgeOver).toContain("bg-rose-100 text-rose-700");
+    expect(BUDGET_CARD.delete).toContain("h-9 w-9 text-slate-400 hover:text-rose-600");
   });
 
   // The APP_FOOTER was retired with the reference's redesign — it ships
@@ -206,8 +282,14 @@ describe("the app-shell construction (the chrome consumes the contracts)", () =>
     // The item composes the base with the active/inactive ink (cn).
     expect(shell).toContain("BOTTOM_NAV.item,");
     expect(shell).toContain("active ? BOTTOM_NAV.itemActive : BOTTOM_NAV.itemInactive");
-    expect(shell).toContain("className={BOTTOM_NAV.icon}");
+    // The icon composes the active ink (the reference's active-svg form,
+    // session-194); the label rides the label record alone.
+    expect(shell).toContain("cn(BOTTOM_NAV.icon, active && BOTTOM_NAV.iconActive)");
     expect(shell).toContain("className={BOTTOM_NAV.label}");
+    // The shell main carries the bar-clearing padding (session-194: the
+    // reference's pb-20 md:pb-0 — scrolled-to-end content clears the
+    // fixed bar below md; zero at md+ where the bar is hidden).
+    expect(shell).toContain("<main className={SHELL_LAYOUT.main}>");
   });
 
   it("the bottom bar is an a11y-labelled nav landmark (OUR kept superset)", () => {

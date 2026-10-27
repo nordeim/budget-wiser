@@ -36,18 +36,23 @@ export const BUTTON_BASE = {
 } as const;
 
 export const INPUT_BASE = {
-  size: "text-base md:text-sm",
-  bg: "bg-transparent",
-  ink: "text-ink",
-  placeholder: "placeholder:text-muted-ink",
-  transition: "transition-colors",
-  focusRing: "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-  file: "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
+  // Session-194: the reference's restyled stock Input — byte-assembled
+  // from its live DOM (the search field + the dialog fields): border-
+  // input, NO explicit text color (typed text inherits --foreground),
+  // placeholder:text-muted-foreground, and the md:text-sm arm at the
+  // END (the platform's own assembly order). The scaffold's renamed
+  // tokens (border-line / text-ink / text-muted-ink) carried the same
+  // hexes — this is the class-string rename the restyle wave demands.
+  base: "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
 } as const;
 
 export const SELECT_TRIGGER = {
-  base: "flex h-9 items-center justify-between whitespace-nowrap rounded-md border border-line bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background",
-  placeholderState: "data-[placeholder]:text-muted-ink",
+  // Session-194: the reference's restyled stock trigger — border-input
+  // + data-[placeholder]:text-muted-foreground (byte-extracted from its
+  // dialog + filter-bar selects; the widths append per-surface — the
+  // dialog carries w-full, the filter bar w-full sm:w-40/sm:w-48).
+  base: "flex h-9 items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background",
+  placeholderState: "data-[placeholder]:text-muted-foreground",
   focusRing: "focus:outline-none focus:ring-1 focus:ring-ring",
 } as const;
 
@@ -56,7 +61,7 @@ export const CARD = {
 } as const;
 
 export const DIALOG_TEXTAREA =
-  "flex min-h-[60px] w-full rounded-md border border-line bg-transparent px-3 py-2 text-base md:text-sm text-ink shadow-sm transition-colors placeholder:text-muted-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
+  "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm";
 
 export const MENU_CONTENT =
   "z-50 min-w-[8rem] overflow-hidden rounded-md border border-line bg-surface p-1 text-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2";
@@ -125,9 +130,16 @@ export const TABS_PILL = {
 } as const;
 
 export const TABS_SEGMENTED = {
-  track: "h-9 items-center justify-center rounded-lg bg-line-soft p-1 text-muted-ink grid w-full",
+  // Session-194: the reference's restyled segmented family — bg-muted /
+  // text-muted-foreground (the stock token names) + the trigger's
+  // ring-offset-background arm and data-[state=active]:bg-background
+  // active fill (byte-extracted from its dialog + spend-summary tabs).
+  // The base carries no display arm: the dialog form appends grid +
+  // w-full + grid-cols-N; the dashboard's inline form appends
+  // inline-flex (both byte-extracted from the live reference).
+  track: "h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
   trigger:
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow data-[state=active]:bg-white data-[state=active]:text-foreground",
+    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -208,20 +220,39 @@ export const BOTTOM_NAV = {
   itemActive: "text-slate-900",
   itemInactive: "text-slate-400",
   icon: "w-6 h-6",
+  // Session-194: the reference's ACTIVE item carries the ink on its SVG
+  // too (`lucide lucide-layout-dashboard w-6 h-6 text-slate-900` — the
+  // inactive svgs carry no ink class). The color resolves identically
+  // through currentColor either way; mirroring the class keeps the
+  // string byte-equal to the reference's live DOM.
+  iconActive: "text-slate-900",
   label: "text-xs font-medium",
 } as const;
 
 /** The window-scrolls model: the reference scrolls at the body level
- *  with a sticky navbar (no shell overflow gymnastics). */
+ *  with a sticky navbar (no shell overflow gymnastics).
+ *
+ *  Session-194: `main` carries the reference's bar-clearing padding —
+ *  its own shell <main> is `pb-20 md:pb-0` on every app page
+ *  (live-extracted 2026-10-27): 80px of bottom padding below md so
+ *  scrolled-to-end content clears the 77px fixed bottom bar, zero at
+ *  md+ where the bar is hidden. Without it, content boxes sit BEHIND
+ *  the bar at phone-axis scroll-end (measured +20px behind on
+ *  dashboard/profile) — the s193 round mirrored the bar itself but
+ *  not its clearance padding. */
 export const SHELL_LAYOUT = {
   root: "min-h-screen bg-slate-50",
-  main: "",
+  main: "pb-20 md:pb-0",
 } as const;
 
-/** Page content container — the reference's pages ride the same
- *  max-w-7xl rhythm as the navbar container. */
+/** Page content containers — Session-194: the reference's restyled
+ *  pages carry PER-PAGE widths (live-censused 2026-10-27): the
+ *  dashboard keeps the wide 7xl + lg:px-8; transactions + budgets ride
+ *  5xl; profile 4xl. The narrow forms drop the lg:px-8 arm. */
 export const PAGE_ROOT = {
-  standard: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8",
+  wide: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8",
+  content: "max-w-5xl mx-auto px-4 sm:px-6 py-8",
+  narrow: "max-w-4xl mx-auto px-4 sm:px-6 py-8",
 } as const;
 
 // APP_FOOTER was retired at session-193: the reference's app surface
@@ -230,45 +261,168 @@ export const PAGE_ROOT = {
 // own footer (src/app/page.tsx — our public-site IA, the documented
 // landing superset).
 
-/** Page-header family — the reference's H1 + subtitle + action buttons. */
+/** Page-header family — Session-194: the reference's restyled header —
+ *  a plain DIV (not a semantic <header>) that stacks below **sm**
+ *  (title above, actions below), tracking-tight H1, mt-1 subtitle.
+ *  Single action buttons sit DIRECTLY in the row (full-width below
+ *  sm); the dashboard's dual actions nest in the gap-3 row. */
 export const PAGE_HEADER = {
-  root: "flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4",
-  title: "text-3xl font-bold text-slate-900",
-  subtitle: "text-slate-500 text-base",
-  actions: "flex items-center gap-3",
+  root: "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8",
+  title: "text-3xl font-bold text-slate-900 tracking-tight",
+  subtitle: "text-slate-500 mt-1",
+  actions: "flex gap-3",
 } as const;
 
-/** KPI stat card — the reference's four dashboard cards. */
+/** KPI stat card — Session-194: the reference's restyled family —
+ *  rounded-xl border-0 shadow-sm cards with hover:shadow-md + the
+ *  gradient income/expenses variants, tracking-wide uppercase labels,
+ *  tracking-tight 3xl values, and p-3 rounded-2xl bg-slate-50 icon
+ *  chips with w-6 h-6 text-slate-600 icons (the round w-9 chips
+ *  retired). */
 export const KPI_CARD = {
-  root: "bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-shadow hover:shadow-md",
-  rootIncome: "bg-emerald-50/40 p-6 rounded-2xl shadow-sm border border-emerald-100/50 transition-shadow hover:shadow-md",
-  rootExpenses: "bg-red-50/40 p-6 rounded-2xl shadow-sm border border-red-100/50 transition-shadow hover:shadow-md",
-  topRow: "flex items-start justify-between mb-3",
-  label: "text-xs font-semibold uppercase tracking-wide text-slate-500",
-  chip: "w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center text-slate-500",
-  chipIncome: "w-9 h-9 rounded-full bg-white flex items-center justify-center text-slate-700 shadow-sm",
-  value: "text-3xl font-bold text-slate-900",
+  root: "rounded-xl text-card-foreground p-6 bg-white border-0 shadow-sm hover:shadow-md transition-all duration-300",
+  rootIncome:
+    "rounded-xl text-card-foreground p-6 border-0 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-emerald-50 to-white",
+  rootExpenses:
+    "rounded-xl text-card-foreground p-6 border-0 shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-rose-50 to-white",
+  topRow: "flex items-start justify-between",
+  inner: "space-y-2",
+  label: "text-sm font-medium text-slate-500 tracking-wide uppercase",
+  chip: "p-3 rounded-2xl bg-slate-50",
+  chipIcon: "w-6 h-6 text-slate-600",
+  value: "text-3xl font-bold text-slate-900 tracking-tight",
   badge: "inline-flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-md text-xs font-semibold text-emerald-700",
-  hint: "text-sm text-slate-500 mt-1",
+  hint: "text-sm text-slate-500",
 } as const;
 
-/** The white panel family (donut / budget progress / spend summary /
- *  recent transactions cards). */
+/** The panel family — Session-194: the stock shadcn Card anatomy
+ *  (rounded-xl bg-card border-0 shadow-sm + the p-6 pb-2 header + the
+ *  p-6 pt-0 content + the tracking-tight text-lg semibold DIV title —
+ *  no H3, no per-panel colSpan arms; the dashboard grid carries the
+ *  spans). */
 export const PANEL = {
-  root: "bg-white p-6 rounded-2xl shadow-sm border border-slate-100",
-  title: "text-lg font-bold text-slate-900 mb-6",
-  colSpan4: "lg:col-span-4",
-  colSpan7: "lg:col-span-7",
-  colSpan5: "lg:col-span-5",
-  empty: "text-slate-500 text-center",
+  root: "rounded-xl bg-card text-card-foreground border-0 shadow-sm",
+  header: "flex flex-col space-y-1.5 p-6 pb-2",
+  title: "tracking-tight text-lg font-semibold text-slate-900",
+  content: "p-6 pt-0",
+  empty: "text-slate-400",
 } as const;
 
-/** The reference's iconless row buttons in headers. */
+/** The reference's restyled header buttons — the stock shadcn forms
+ *  (byte-extracted 2026-10-27): the dark `bg-slate-900 hover:bg-slate-800`
+ *  primary and the `border-slate-200` outline, both h-9 px-4 py-2 with
+ *  the full focus-ring/svg arms; icons w-4 h-4 mr-2. */
 export const HEADER_BUTTONS = {
   outline:
-    "px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 border-slate-200",
   dark:
-    "px-5 py-2.5 rounded-lg bg-slate-900 text-white font-medium text-sm hover:bg-slate-800 transition-all flex items-center gap-2 shadow-md shadow-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow h-9 px-4 py-2 bg-slate-900 hover:bg-slate-800",
+  icon: "w-4 h-4 mr-2",
+} as const;
+
+/** Session-194: the transactions summary pair — the p-4 gradient
+ *  cards (emerald income / rose expenses) with their tinted labels
+ *  and 2xl values. */
+export const SUMMARY_CARD = {
+  grid: "grid grid-cols-2 gap-4 mb-6",
+  rootIncome:
+    "rounded-xl text-card-foreground p-4 border-0 shadow-sm bg-gradient-to-br from-emerald-50 to-white",
+  rootExpenses:
+    "rounded-xl text-card-foreground p-4 border-0 shadow-sm bg-gradient-to-br from-rose-50 to-white",
+  labelIncome: "text-sm text-emerald-600 font-medium",
+  labelExpenses: "text-sm text-rose-600 font-medium",
+  valueIncome: "text-2xl font-bold text-emerald-700",
+  valueExpenses: "text-2xl font-bold text-rose-700",
+} as const;
+
+/** Session-194: the transactions list — the one card + divide-y rows
+ *  (p-4 hover wash, the p-2.5 rounded-xl category chips, the shadcn
+ *  Badge category pill, the text-lg amounts, the ghost icon delete). */
+export const TXN_LIST = {
+  card: "rounded-xl bg-card text-card-foreground border-0 shadow-sm overflow-hidden",
+  rows: "divide-y divide-slate-100",
+  row: "flex items-center gap-4 p-4 hover:bg-slate-50 transition-colors",
+  chip: "p-2.5 rounded-xl",
+  body: "flex-1 min-w-0",
+  titleRow: "flex items-center gap-2",
+  title: "font-medium text-slate-900 truncate",
+  badge:
+    "inline-flex items-center rounded-md border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground text-xs",
+  sub: "text-sm text-slate-500",
+  amount: "font-semibold text-lg",
+  delete:
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 w-9 text-slate-400 hover:text-rose-600",
+} as const;
+
+/** Session-194: the budgets dark overall-usage card — the gradient
+ *  slate-900→800 rounded-xl with the 4xl value, NO percent label, the
+ *  emerald gradient progress fill, and the flex-gap-6 KPI trio. */
+export const DARK_CARD = {
+  root: "rounded-xl p-6 border-0 shadow-sm mb-8 bg-gradient-to-br from-slate-900 to-slate-800 text-white",
+  inner: "flex flex-col md:flex-row md:items-center md:justify-between gap-6",
+  left: "space-y-2",
+  label: "text-slate-300 text-sm font-medium",
+  value: "text-4xl font-bold",
+  total: "text-slate-400",
+  track:
+    "relative w-full overflow-hidden rounded-full h-2 bg-slate-700 [&>div]:bg-gradient-to-r [&>div]:from-emerald-400 [&>div]:to-emerald-500",
+  fill: "h-full transition-all",
+  trio: "flex gap-6",
+  trioCell: "text-center",
+  trioValue: "text-3xl font-bold",
+  trioLabel: "text-slate-400 text-sm",
+} as const;
+
+/** Session-194: the budgets empty state — the bg-card p-12 centered
+ *  panel with the BARE w-12 h-12 slate-300 icon (no tinted container). */
+export const EMPTY_STATE = {
+  root: "rounded-xl bg-card text-card-foreground p-12 border-0 shadow-sm text-center",
+  icon: "w-12 h-12 text-slate-300 mx-auto mb-4",
+  title: "text-lg font-semibold text-slate-900 mb-2",
+  sub: "text-slate-500 mb-6",
+} as const;
+
+/** Session-194: the reference's restyled recent-transaction rows (the
+ *  dashboard's list) — p-3 rounded-xl hover rows + p-2.5 chips. */
+export const RECENT_ROW = {
+  row: "flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors",
+  chip: "p-2.5 rounded-xl",
+  body: "flex-1 min-w-0",
+  title: "font-medium text-slate-900 truncate",
+  sub: "text-sm text-slate-500",
+  amount: "font-semibold",
+} as const;
+
+/** Session-194: the per-budget cards — the overflow-hidden card with
+ *  the h-2 gradient top strip + the p-5 body (byte-extracted from the
+ *  reference's populated state). */
+export const BUDGET_CARD = {
+  root: "rounded-xl bg-card text-card-foreground border-0 shadow-sm overflow-hidden",
+  strip: "h-2 bg-gradient-to-r from-emerald-500 to-emerald-600",
+  stripAmber: "h-2 bg-gradient-to-r from-amber-400 to-amber-500",
+  stripRose: "h-2 bg-gradient-to-r from-rose-500 to-rose-600",
+  body: "p-5",
+  topRow: "flex items-start justify-between mb-4",
+  title: "font-semibold text-slate-900",
+  spent: "text-sm text-slate-500 mt-1",
+  actions: "flex items-center gap-2",
+  badge:
+    "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent shadow",
+  badgeOver: "bg-rose-100 text-rose-700 hover:bg-rose-100",
+  badgeWarn: "bg-amber-100 text-amber-700 hover:bg-amber-100",
+  badgeOk: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100",
+  badgeIcon: "w-3 h-3 mr-1",
+  delete:
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 w-9 text-slate-400 hover:text-rose-600",
+  track:
+    "relative w-full overflow-hidden rounded-full bg-primary/20 h-3 mb-3 [&>div]:bg-rose-500",
+  trackWarn:
+    "relative w-full overflow-hidden rounded-full bg-primary/20 h-3 mb-3 [&>div]:bg-amber-500",
+  trackOk:
+    "relative w-full overflow-hidden rounded-full bg-primary/20 h-3 mb-3 [&>div]:bg-emerald-500",
+  fill: "h-full transition-all",
+  remainingOver: "text-sm font-medium text-rose-600",
+  remaining: "text-sm text-slate-500",
 } as const;
 
 export type PageRootKind = keyof typeof PAGE_ROOT;

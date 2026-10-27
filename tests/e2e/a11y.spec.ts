@@ -37,10 +37,19 @@ const SANCTIONED: Record<string, Array<{ any: string[]; cite: string }>> = {
       // own redesigned phone-nav ink (text-slate-400 on white, the exact
       // class split live-extracted 2026-10-27). The flagged node is the
       // label span (text-xs), which INHERITS the anchor's color — axe's
-      // generated selector cites the anchor's .gap-1.rounded-xl chain,
+      // generated selector cites the anchor's item chain (`.gap-1.rounded-xl`
+      // on one build, `.gap-1.flex-col` on another — both forms sanctioned),
       // not a slate class — hence this dedicated matcher.
-      any: [".gap-1.rounded-xl"],
+      any: [".gap-1.rounded-xl", ".gap-1.flex-col"],
       cite: "the bottom bar's inactive slate-400 items — the reference's own redesigned phone-nav ink",
+    },
+    {
+      // Session-194: the About-Me counter (text-xs text-slate-400
+      // text-right) — the reference's OWN counter form (byte-extracted
+      // from its live Preferences card); axe's generated selector cites
+      // only the .text-right utility.
+      any: [".text-right"],
+      cite: "the About-Me counter's slate-400 ink — the reference's own form",
     },
     {
       // The inactive segmented-tab triggers (the Radix tab ids) — the

@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.3.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.4.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,13 @@
 **Last Updated:** 2026-10-27
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.4.0 (Tracked Changes)
+
+- `[AUTH]` **The session-5 full-surface restyle round (session 194): the reference's SECOND structural wave re-mirrored.** The platform's owner restyled every app surface onto stock shadcn/ui. Remediated: the shell hierarchy (`body WHITE > DIV > [NAV, bar, MAIN.pb-20 md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]` — the s193 shell had the root OUTSIDE main, painting slate-50 behind the translucent navbar); the pb-20 bar-clearance padding (content boxes sat +20px behind the fixed bar at phone scroll-end); the per-page containers (7xl/5xl/5xl/4xl) + sm-stacking plain-DIV headers with tracking-tight H1s and direct action buttons; the stock shadcn Button/Card/Input/Select/Badge/Tabs forms (--primary → the neutral #171717; the dialog submits had computed the CRM-era blue); the gradient KPI/summary/dark-card families; divide-y transaction rows with description-first titles + category badges; the restyled Profile (h-20 gradient header, w-20 border-4 avatar, native currency select, pastel overview cells); the dialog true-ups; the category palette re-pinned by a live round-trip probe (one $1 txn per category added + censused + deleted, the owner's data restored verbatim); the chart geometry (donut 280/outer-100/inner-60, weekly 200 with both grid directions).
+- `[RES]` Re-audit of the live reference (2026-10-27): the login card, top navbar, bottom bar anatomy, both dialogs' field sets, 404 surface, sitemap format, robots.txt all re-verified UNCHANGED; /About + /Contact still 404 (our documented own-IA superset stands); the data state still the one food transaction (data-borne, excluded).
+- `[CA]` The e2e selectors re-pinned to the restyled semantics (p row titles, the native currency select, text card-title assertions); the a11y two-gate's sanctioned register extended for the reference's own About-Me counter ink + the bar label's alternate selector form (new matcher entries, no suppressions).
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **387 unit** (+6 restyled-family pins) · build · smoke 14/14 · e2e **62** (+1 the scroll-end clearance test) · census parity on all four pages at the desktop axis (residuals: the SECTION-vs-DIV a11y supersets + data-borne rows) · the shell hierarchy + bar byte-verified live · VLM None/None/None/None (dashboard/budgets/profile/login) · the screenshot battery recaptured (12 images).
 
 #### Revision Block — v2.3.0 (Tracked Changes)
 
@@ -118,6 +125,7 @@ This PAD is the single source of truth for Budget Wise's architecture. Use it to
 - **Context:** At the s190 audit the reference shipped no navigation below 768px (links `display:none`, no hamburger) — live-verified 2026-10-27 at 390×844. The reference has since REDESIGNED its phone nav (the s193 audit): a fixed bottom tab bar on every app page, and no footer on the app surface.
 - **Decision (superseded, s190):** Ship a Radix-Dialog sheet drawer (hamburger `< md`, 288px slate-900 surface) with the full behavioral battery — the answer to the then-empty phone surface.
 - **Decision (current, s193):** Retire the drawer + hamburger + APP_FOOTER; byte-mirror the reference's bottom tab bar (the `BOTTOM_NAV` contracts) with the kept a11y superset (`aria-current="page"` + the labelled nav landmark — the reference ships neither).
+- **Decision (amended, s194):** The bar rides the reference's exact shell hierarchy — `body (WHITE) > DIV('') > [NAV(sticky), DIV(bar), MAIN.pb-20 md:pb-0 > DIV.min-h-screen.bg-slate-50 > page]` — and the ACTIVE item's ink rides its svg (`w-6 h-6 text-slate-900`). The pb-20 clearance is pinned by the e2e scroll-end test on every app page.
 - **Rationale:** Supersets live only while invisible-to-pixels. The redesign put a bottom bar (and no hamburger, no footer) on the phone surface — the drawer family became visible divergences, so parity wins.
 - **Consequences:** + the phone nav byte-matches the reference (bar rect, item classes, icons, ink split — live-verified identical); − the drawer's behavioral hardening (focus trap, scroll lock, auto-close) retired with it; the bottom-bar battery (10 e2e checks) pins the parity surface.
 - **Alternatives rejected:** Keeping the drawer as a dual nav (two phone navigations — a visible superset break); mirroring the reference's missing aria-current (weaker a11y for no pixel gain).
@@ -387,8 +395,8 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 |---|---|---|---|
 | Lint | ESLint (0 warnings) | — | No suppressions; the set-state-in-effect family stays clean |
 | Types | tsc + the build | — | Strict mode; the build enforces it |
-| Unit | Vitest | 381 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
-| E2E | Playwright | 61 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery, the a11y two-gate |
+| Unit | Vitest | 387 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
+| E2E | Playwright | 62 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery (+ the scroll-end clearance), the a11y two-gate |
 | Smoke | bash ladder | 14 | The artifact boots, serves, walls, rate-limits, refuses secretless boots, ships clean |
 
 **Load-bearing details:** the e2e suite shares one SQLite file (`workers: 1`); auth rides a saved storageState (per-test logins would trip the limiter); repeated local runs need `CI=1` (fresh server = fresh buckets). **Tests that fill async-hydrated forms must wait for hydration first** — a fill racing the controlled-value re-render appends instead of replaces.

@@ -89,7 +89,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           text-rendering override; the scaffold-era shadcn double-smoothing
           (this class + the retired html rule in globals.css) rendered
           thinner text than the reference on macOS. */}
-      <body className="min-h-screen bg-background font-sans text-foreground">
+      <body className="bg-background font-sans text-foreground">
         {children}
         <Toaster />
       </body>

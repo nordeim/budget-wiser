@@ -119,7 +119,15 @@ function Tabs({ tabs, value, onValueChange, className, variant = "underline", co
 
   const trackClass =
     variant === "segmented"
-      ? cn(TABS_SEGMENTED.track, cols && "w-full", cols ? GRID_COLS[cols] ?? null : "flex items-center gap-1 overflow-x-auto scrollbar-thin")
+      ? cn(
+          TABS_SEGMENTED.track,
+          // Session-194: the two reference forms — the dialog's grid track
+          // (grid + w-full + grid-cols-N) and the dashboard's inline track
+          // (inline-flex, no width). Both byte-extracted from the live
+          // reference's restyled DOM.
+          cols ? GRID_COLS[cols] ?? null : "inline-flex",
+          cols && "w-full",
+        )
       : variant === "pill"
         ? TABS_PILL.track
         : cn(
@@ -159,7 +167,7 @@ function Tabs({ tabs, value, onValueChange, className, variant = "underline", co
                   triggerClass,
                   underline &&
                     "-mb-px whitespace-nowrap rounded-t-md border-b-2 px-3.5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  underline && (isActive ? "border-primary text-primary" : "border-transparent text-muted hover:border-line hover:text-foreground"),
+                  underline && (isActive ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:border-line hover:text-foreground"),
                 )}
               >
                 {tab.label}

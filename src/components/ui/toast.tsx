@@ -124,7 +124,7 @@ function ToastCard({ item }: { item: ToastItem }) {
       <span className="mt-0.5 shrink-0">{ICONS[item.variant]}</span>
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium text-foreground">{item.title}</p>
-        {item.description && <p className="mt-0.5 text-xs text-muted">{item.description}</p>}
+        {item.description && <p className="mt-0.5 text-xs text-muted-foreground">{item.description}</p>}
       </div>
       <button
         type="button"

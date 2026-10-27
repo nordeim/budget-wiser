@@ -126,6 +126,58 @@ test.describe("mobile bottom tab bar", () => {
 
     await expect(page.getByRole("navigation", { name: "Main navigation" })).toHaveCount(0);
   });
+
+  test("scrolled-to-end content clears the bar (the pb-20 md:pb-0 clearance)", async ({ page }) => {
+    // Session-194: the reference's shell <main> carries `pb-20 md:pb-0`
+    // — 80px of bottom padding below md so the LAST content clears the
+    // 77px fixed bar (live-verified on all four reference pages). Without
+    // it, content boxes sit BEHIND the bar at scroll-end (ours measured
+    // +20px behind on dashboard/profile before the fix).
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    for (const route of ["/dashboard", "/transactions", "/budgets", "/profile"]) {
+      await page.goto(route);
+
+      // Wait for the hydrated content first (the fill-vs-hydration race
+      // doctrine — the store fetch renders the page's real height). The
+      // budgets page's seeded 0-budget state renders identically pre and
+      // post fetch, so it rides networkidle alone.
+      if (route === "/budgets") {
+        await page.waitForLoadState("networkidle");
+      } else if (route === "/profile") {
+        await expect(page.getByText("sepnetflix2023@outlook.com")).toBeVisible();
+      } else {
+        await expect(page.getByText("$5,000.00").first()).toBeVisible();
+      }
+
+      await page.evaluate(() => window.scrollTo(0, Number.MAX_SAFE_INTEGER));
+      const clearance = await page.evaluate<
+        { missing: true } | { missing: false; barTop: number; lowest: number }
+      >(() => {
+        const main = document.querySelector("main");
+        const bar = document.querySelector("nav[class*='fixed'][class*='bottom-0']");
+        if (!main || !bar) return { missing: true };
+        const barTop = bar.getBoundingClientRect().top;
+        // The lowest content box inside main (every in-flow element with
+        // a nonzero box — the pb-20 padding must clear them all).
+        const elements = [...main.querySelectorAll("*")].filter((el): el is HTMLElement => {
+          if (!(el instanceof HTMLElement)) return false;
+          return el.offsetParent !== null && el.getBoundingClientRect().height > 0;
+        });
+        let lowest = 0;
+        for (const el of elements) {
+          const bottom = el.getBoundingClientRect().bottom;
+          if (bottom > lowest) lowest = bottom;
+        }
+        return { barTop: Math.round(barTop), lowest: Math.round(lowest), missing: false };
+      });
+
+      // The pb-20 guarantee: the lowest content box clears the bar's top
+      // edge (with a 1px rounding allowance).
+      if (clearance.missing) throw new Error("main or bottom bar missing on " + route);
+      expect(clearance.lowest).toBeLessThanOrEqual(clearance.barTop + 1);
+    }
+  });
 });
 
 test.describe("desktop navigation (>= md)", () => {

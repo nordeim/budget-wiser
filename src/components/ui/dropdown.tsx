@@ -77,7 +77,7 @@ function DropdownItem({
 // mirror's completeness is part of the parity contract).
 
 function DropdownLabel({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("px-2 py-1.5 text-xs font-medium text-muted", className)} {...props} />;
+  return <div className={cn("px-2 py-1.5 text-xs font-medium text-muted-foreground", className)} {...props} />;
 }
 
 export { Dropdown, DropdownTrigger, DropdownContent, DropdownItem, DropdownLabel };
