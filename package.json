@@ -4,7 +4,7 @@
   "description": "Budget Wise — Next.js 16 + React 19 + Prisma/SQLite personal finance application",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3000 2>&1 | tee dev.log",
+    "dev": "bun scripts/dev-preflight.ts && next dev -p 3000 2>&1 | tee dev.log",
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/ && rm -f .next/standalone/.env",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint . --max-warnings 0",

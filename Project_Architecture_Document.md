@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.6.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.7.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,12 @@
 **Last Updated:** 2026-10-28
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.7.0 (Tracked Changes)
+
+- `[AUTH]` **The session-8 dev-boot guard round (session 197): the dev-vs-build `.next` race — hit LIVE, then guarded at the boot seam.** After the baseline gate's `next build` completed CLEANLY (no concurrency, no killed process — the natural gate-then-dev workflow the docs themselves invite), booting `bun run dev` entered the documented infinite reload loop (646 `GET /login` re-fetches; form fills wiped by the reloads). The prior wording ("a build ran concurrently with / was killed half-into dev") under-described the genus: turbopack dev watching a tree last written by the PRODUCTION compiler loops regardless of how cleanly the tree was produced. Remediated with a boot-time preflight: `scripts/dev-preflight.ts` (NEW) rides the `dev` script (`bun scripts/dev-preflight.ts && next dev …`) and removes a stale production tree before dev boots — the detection is the live-probed marker pair (the production build writes top-level `.next/BUILD_ID`; dev turbopack writes `.next/dev/lock` `{pid, port}` with NO top-level BUILD_ID). The guard's own guard: it never cleans under a live dev server (the lock-pid signal-0 liveness check — EPERM counts as alive), it asks no prompts (agents cannot answer them), and it exits 0 on every pass-through. All three decision branches live-verified: clean (0 loops vs the 646 unguarded), none (normal dev boot untouched), pass-through (a planted BUILD_ID under a live server → warn, tree intact).
+- `[RES]` Re-audit of the live reference (2026-10-28, second pass of the day): **ZERO structural drift since session 196** — the FIFTH consecutive shell census with no new restyle wave: the shell, all four pages (containers 7xl/5xl/5xl/4xl, headers, H1s, action buttons), the mobile bottom bar byte-identical on every dimension (bar classes, the `flex items-center justify-around py-2` row wrapper, item classes, ink split, rect y=767 h=77), the scroll-end clearance (732 ≤ 767 on both), both dialogs, the 404 surface (the interpolated humanized title + the slash-less quoted path), the sitemap + robots, the login card, the data state (the single −$1,000 food txn — data-borne, excluded).
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **410 unit** (+9: the dev-preflight decision matrix — fresh/dev/clean/pass-through — the lock parser, the pid-liveness helper, and the package.json wiring pin; mutation-proofed: a reverted wiring → exactly 1 RED, restored → green) · build · smoke 14/14 · e2e **66 HELD** · the VLM battery 3× "Structural Differences: None" + the dashboard-mobile pair's two flags DOM-disproven (the platform-badge occlusion + the data-borne savings badge — the s195/s196 genus) · the screenshot battery recaptured from the remediated dev server (12 images; 10/12 byte-identical across THREE generations — s196, first capture, remediated capture — render-stability evidence).
 
 #### Revision Block — v2.6.0 (Tracked Changes)
 
@@ -407,7 +413,7 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 |---|---|---|---|
 | Lint | ESLint (0 warnings) | — | No suppressions; the set-state-in-effect family stays clean |
 | Types | tsc + the build | — | Strict mode; the build enforces it |
-| Unit | Vitest | 401 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
+| Unit | Vitest | 410 | Domain math, vocabularies, Zod contracts, infra seams (incl. the dev-boot race guard), chrome contracts |
 | E2E | Playwright | 66 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery (+ the scroll-end clearance), the a11y two-gate, the 404/title surfaces |
 | Smoke | bash ladder | 14 | The artifact boots, serves, walls, rate-limits, refuses secretless boots, ships clean |
 

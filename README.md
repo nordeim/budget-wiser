@@ -61,7 +61,7 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | Charts | Recharts | 3.10 | Donut + weekly bars |
 | Database | SQLite via Prisma | 6.19 | `db/custom.db` at the repo root |
 | Validation | Zod | 4.6 | Every API boundary |
-| Unit tests | Vitest | 5.0 | 401 checks |
+| Unit tests | Vitest | 5.0 | 410 checks |
 | E2E tests | Playwright | 1.64 | 66 checks against the standalone build |
 | Runtime | Bun | ≥ 1.3 | Package manager + script runner |
 
@@ -134,7 +134,7 @@ The relative `DATABASE_URL` is resolved by `src/lib/db-path.ts` — the CLI, `ne
 ## Testing
 
 ```bash
-bun run test           # Vitest unit layer (401 checks) — pure seams, no browser
+bun run test           # Vitest unit layer (410 checks) — pure seams, no browser
 bun run test:e2e       # Playwright e2e (66 checks) — requires `bun run build` first
 bun run lint           # ESLint, zero warnings allowed
 bun run typecheck      # tsc --noEmit
@@ -182,7 +182,7 @@ The reference app redesigned its phone navigation (audited 2026-10-27): a fixed 
 | e2e login 429s on repeated runs | The auth rate limiter is per-IP/15min; run with `CI=1` (fresh server = fresh buckets) or wait out the window |
 | `AUTH_SECRET` boot failure in production | Generate one: `openssl rand -hex 32` — the server refuses to serve without it |
 | Tailwind classes silently missing | This is Tailwind v4 CSS-first config — check `src/app/globals.css` `@theme` tokens, not a config JS file (there is none) |
-| Dev server stuck in a reload loop (page re-fetches `/login` + `/manifest.json` several times per second) | A `next build` ran concurrently with (or was killed half-into) `next dev` — both write `.next/`, and turbopack watching the half-written tree full-reloads forever. Stop both processes, `rm -rf .next`, restart `bun run dev`. Never run `bun run build` while the dev server is live on the same tree. |
+| Dev server stuck in a reload loop (page re-fetches `/login` + `/manifest.json` several times per second) | A `.next` tree written by `next build` — concurrently with dev, killed half-into a run, **or cleanly completed and then booted onto** (turbopack dev watching production-compiler output full-reloads forever; hit live after a plain gate-then-dev sequence). The `dev` script's preflight guard (`scripts/dev-preflight.ts`) now removes the stale production tree automatically before `next dev` boots. If a loop is already live: stop the server, `rm -rf .next`, restart `bun run dev`. Never run `bun run build` while the dev server is live on the same tree. |
 
 ## License
 

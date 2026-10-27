@@ -23,7 +23,7 @@ Guidance for AI coding agents working in this repository. Every line answers: *w
 
 **Run the gate before pushing.** There is no hosted CI — the local gate is the only gate.
 
-**Never run `bun run build` while `bun run dev` is live** — both write `.next/`, and turbopack watching a half-written tree enters an endless full-reload loop (page re-fetches every ~300ms). If it happens: stop both, `rm -rf .next`, restart dev. The gate's own chain is safe (build and e2e run sequentially).
+**Never run `bun run build` while `bun run dev` is live** — both write `.next/`, and turbopack watching a half-written tree enters an endless full-reload loop (page re-fetches every ~300ms). The sequence case is equally lethal: booting dev onto a tree last written by a COMPLETED `next build` loops the same way (hit live 2026-10-28 after a plain gate-then-dev sequence — 646 re-fetches). The `dev` script's preflight guard (`scripts/dev-preflight.ts`) removes the stale production tree (detected by `.next/BUILD_ID` + no live `.next/dev/lock` pid) before `next dev` boots; it never cleans under a live dev server. If a loop is already live: stop the server, `rm -rf .next`, restart dev. The gate's own chain is safe (build and e2e run sequentially).
 
 ## Architecture facts an agent will guess wrong
 
@@ -66,7 +66,7 @@ The config is **CSS-first**: every token lives in `src/app/globals.css` `@theme`
 |---|---|---|
 | Domain unit | `tests/{categories,budget-math,currency,domain-schemas}.test.ts` | vocabularies, money math, Zod contracts |
 | Chrome contracts | `tests/app-chrome.test.ts`, `tests/landing-page.test.ts` | layout records, nav config, shell wiring |
-| Infra seams | `tests/{db-path,auth,auth-contract,auth-reset,rate-limit,login-reset,login-views,metadata,pwa-metadata,http-headers,boot-env,password-seam,upload-api,uploads-path,error-boundaries,gate-script,type-gate,body-pregate,reset-flow,avatar,not-found-title}.test.ts` | the scaffold's hardened seams + the 404 title helpers + the alias metadata pins |
+| Infra seams | `tests/{db-path,auth,auth-contract,auth-reset,rate-limit,login-reset,login-views,metadata,pwa-metadata,http-headers,boot-env,password-seam,upload-api,uploads-path,error-boundaries,gate-script,type-gate,body-pregate,reset-flow,avatar,not-found-title,dev-preflight}.test.ts` | the scaffold's hardened seams + the 404 title helpers + the alias metadata pins + the dev-boot race guard |
 | E2E | `tests/e2e/*.spec.ts` | real UI against the production standalone build |
 
 The e2e suite shares one seeded SQLite file (`db/e2e.db`) — `workers: 1` is load-bearing. The auth endpoints are rate-limited per IP/15min; **repeated local e2e runs can trip the limiter** — export `CI=1` (forces a fresh server = fresh in-memory buckets) or wait out the window.
