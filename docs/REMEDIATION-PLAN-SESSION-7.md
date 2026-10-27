@@ -120,7 +120,7 @@
        PAD v2.6.0 (revision block), budget-wiser_SKILL.md v1.5.0
        (reference-state note + Appendix C's session-196 row),
        `docs/session_11.md`, the worklog entry (Task ID 196).
-10. [ ] Commit (atomic) → push `HEAD:refs/heads/main` via
+10. [x] Commit (atomic) → push `HEAD:refs/heads/main` via
         `docs/ssh_git_wrapper_v3.py`; verify the remote ref; shred the
         key.
 
