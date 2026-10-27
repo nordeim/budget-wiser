@@ -1,10 +1,11 @@
 /**
  * Budget Wise layout-system contracts.
  *
- * The shell family (SITE_NAV / MOBILE_NAV_* / APP_FOOTER / PAGE_ROOT) is
- * extracted from the LIVE reference app's DOM (budget-wiser.base44.app,
- * agent-browser class-dump at 1512×945 + 390×844 on 2026-10-27 — the
- * byte-exact nav markup is preserved in docs/IMPLEMENTATION-PLAN.md §2).
+ * The shell family (SITE_NAV / BOTTOM_NAV / PAGE_ROOT) is extracted from
+ * the LIVE reference app's DOM (budget-wiser.base44.app, agent-browser
+ * class-dump at 1512×945 + 390×844 on 2026-10-27 — the byte-exact nav
+ * markup is preserved in docs/IMPLEMENTATION-PLAN.md §2; the bottom bar
+ * re-extracted the same day when the reference redesigned its phone nav).
  * The stock primitive family (BUTTON_BASE / INPUT_BASE / SELECT_TRIGGER /
  * CARD / DIALOG_* / MENU_* / TABS_* / CHECKBOX) is carried over VERBATIM
  * from the NEO CRM scaffold — those mirror shadcn/Radix stock anatomy and
@@ -187,39 +188,27 @@ export const SITE_NAV = {
   linkActive:
     "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 text-white",
   linkIcon: "w-4 h-4",
-  /** OUR superset trigger — the reference ships NO mobile navigation
-   *  (its links are display:none below md). The hamburger fills that
-   *  gap without touching any desktop pixel. */
-  hamburger:
-    "md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
 } as const;
 
-/** The mobile Sheet drawer (our superset). Left-anchored Radix Dialog on
- *  the repo's vendored tw-animate.css data-[state] machinery — the same
- *  pattern the entity dialogs ride. Slate-900 brand surface. */
-export const MOBILE_NAV_SHEET = {
-  content:
-    "fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 text-white shadow-xl transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
-  close:
-    "absolute right-4 top-4 rounded-sm text-white/70 opacity-80 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white/50 disabled:pointer-events-none",
-  header: "px-6 pt-6 pb-2",
-  title: "text-lg font-semibold text-white",
-  titleText: "BudgetWise",
-  description: "text-sm text-white/60",
-  descriptionText: "Personal finance, simplified",
-  nav: "px-3 py-2 space-y-1",
-  navFooter: "px-3 py-2 mt-4 border-t border-white/10 space-y-1",
-  link: "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white",
-  linkActive:
-    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium bg-white/20 text-white",
-  icon: "h-4 w-4",
-} as const;
-
-/** The auto-close media query — MUST match the hamburger's md:hidden
- *  range (768px) so a viewport growing past md always dismisses the
- *  drawer (and its scroll locks). */
-export const MOBILE_NAV_LAYOUT = {
-  autoCloseQuery: "(min-width: 768px)",
+// ---------------------------------------------------------------------------
+// Session-193: the reference REDESIGNED its phone navigation — a fixed
+// bottom tab bar replaced the nothing-at-all we had superseded with a
+// drawer. Byte-extracted from the reference's live DOM 2026-10-27 at
+// 390×844. The MOBILE_NAV_SHEET / MOBILE_NAV_LAYOUT / SITE_NAV.hamburger
+// records (the drawer family) were retired with the redesign: a
+// hamburger trigger is a visible pixel the reference's navbar no longer
+// carries, and a drawer is an overlay where the reference ships a bar.
+// The bar is NOT an overlay — no scroll lock, no focus trap, no
+// matchMedia auto-close; it is plain fixed chrome below md.
+// ---------------------------------------------------------------------------
+export const BOTTOM_NAV = {
+  bar: "md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb",
+  row: "flex items-center justify-around py-2",
+  item: "flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all",
+  itemActive: "text-slate-900",
+  itemInactive: "text-slate-400",
+  icon: "w-6 h-6",
+  label: "text-xs font-medium",
 } as const;
 
 /** The window-scrolls model: the reference scrolls at the body level
@@ -235,14 +224,11 @@ export const PAGE_ROOT = {
   standard: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8",
 } as const;
 
-export const APP_FOOTER = {
-  footer: "border-t border-slate-200 bg-white px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-500",
-  inner: "max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2",
-  copyright: "© 2026 BudgetWise",
-  link: "hover:text-slate-800 transition-colors",
-  about: { href: "/About", label: "About" },
-  contact: { href: "/Contact", label: "Contact" },
-} as const;
+// APP_FOOTER was retired at session-193: the reference's app surface
+// ships NO footer (live-verified 2026-10-27 on every app page, both
+// axes — its body ends with the page content). The LANDING keeps its
+// own footer (src/app/page.tsx — our public-site IA, the documented
+// landing superset).
 
 /** Page-header family — the reference's H1 + subtitle + action buttons. */
 export const PAGE_HEADER = {

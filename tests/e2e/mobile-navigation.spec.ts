@@ -1,151 +1,141 @@
 import { expect, test } from "@playwright/test";
 
-// THE MOBILE NAVIGATION SHEET — our functional superset over the
-// reference app (budget-wiser.base44.app ships NO navigation below md:
-// its link row is display:none on phones with no hamburger — live-
-// verified 2026-10-27 at 390×844). This suite pins the drawer that
-// closes that gap: the hamburger, the Radix Sheet, every destination,
-// and the kept behavioral supersets (route-change close, resize-past-md
-// auto-close, the body scroll lock, Escape + scrim close, the focus
-// contract).
+// THE MOBILE BOTTOM TAB BAR — the reference's redesigned phone navigation
+// (live-extracted 2026-10-27 at 390×844: a `md:hidden fixed bottom-0
+// left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`
+// bar, items `flex flex-col items-center gap-1 px-4 py-2 rounded-xl
+// transition-all`, active text-slate-900 / inactive text-slate-400, lucide
+// icons w-6 h-6, labels text-xs font-medium).
+//
+// History: sessions 190–192 shipped a Radix drawer + hamburger as our
+// documented SUPERSET because the reference had NO phone navigation
+// (its link row was display:none below md with no trigger). The
+// reference's redesign shipped its own bottom bar — making our drawer a
+// visible-pixel divergence — so the drawer was retired (session 193) and
+// this battery now pins the parity surface: visibility below md, the four
+// destinations, navigation, the active item, and the kept a11y superset
+// (aria-current — the reference ships none).
 
-test.describe("mobile navigation sheet", () => {
-  test("hamburger opens the sheet with every nav destination", async ({ page }) => {
+test.describe("mobile bottom tab bar", () => {
+  test("the bar renders on every app page below md with all four destinations", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/dashboard");
 
-    // The desktop link row is display:none at 390px (the reference's own
-    // `hidden md:flex` split) — the pills are unreachable.
-    const desktopLinks = page.locator("nav .hidden.md\\:flex");
-    await expect(desktopLinks).toBeHidden();
-
-    // OUR trigger — the superset the reference never shipped.
-    const trigger = page.getByRole("button", { name: "Open navigation menu" });
-    await expect(trigger).toBeVisible();
-
-    // Open the sheet — the accessible name is the title "BudgetWise"
-    // (the Radix aria-labelledby wiring).
-    await trigger.click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    await expect(dialog).toBeVisible();
-
-    // Every destination is reachable from the sheet.
-    for (const label of ["Dashboard", "Transactions", "Budgets", "Profile"]) {
-      await expect(dialog.getByRole("link", { name: label, exact: true })).toBeVisible();
+    for (const route of ["/dashboard", "/transactions", "/budgets", "/profile"]) {
+      await page.goto(route);
+      const bar = page.getByRole("navigation", { name: "Main navigation" });
+      await expect(bar).toBeVisible();
+      for (const label of ["Dashboard", "Transactions", "Budgets", "Profile"]) {
+        await expect(bar.getByRole("link", { name: label, exact: true })).toBeVisible();
+      }
     }
   });
 
-  test("tapping a sheet link navigates and closes the sheet", async ({ page }) => {
+  test("the bar is anchored to the bottom of the viewport (fixed)", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard");
 
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    await dialog.getByRole("link", { name: "Transactions", exact: true }).click();
+    const bar = page.getByRole("navigation", { name: "Main navigation" });
+    const box = await bar.boundingBox();
+    expect(box).toBeTruthy();
+    // Fixed to the bottom: the bar's bottom edge IS the viewport's.
+    expect(box!.y + box!.height).toBeCloseTo(844, 0);
 
-    // The nav hrefs are the reference's CAPITALIZED paths — the sheet's
+    // It stays anchored while the document scrolls (fixed, not absolute).
+    await page.evaluate(() => window.scrollTo(0, 800));
+    const box2 = await bar.boundingBox();
+    expect(box2!.y + box2!.height).toBeCloseTo(844, 0);
+  });
+
+  test("tapping a bar link navigates (the capitalized hrefs render in place)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/dashboard");
+
+    const bar = page.getByRole("navigation", { name: "Main navigation" });
+    await bar.getByRole("link", { name: "Transactions", exact: true }).click();
+
+    // The nav hrefs are the reference's CAPITALIZED paths — the bar's
     // Transactions link lands on /Transactions (rendered in place, never
     // normalized to the lowercase canonical).
     await page.waitForURL("**/Transactions");
-    await expect(page.getByRole("heading", { name: "Transactions" })).toBeVisible();
-    await expect(page.getByRole("dialog")).toBeHidden();
+    await expect(page.getByRole("heading", { name: "Transactions", exact: true })).toBeVisible();
+
+    // The bar persists across navigation (it is chrome, not a overlay).
+    await expect(bar).toBeVisible();
   });
 
-  test("Escape closes the sheet; focus returns to the trigger", async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/dashboard");
-
-    const trigger = page.getByRole("button", { name: "Open navigation menu" });
-    await trigger.click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    await expect(dialog).toBeVisible();
-
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
-    // Radix restores focus to the trigger on close.
-    await expect(trigger).toBeFocused();
-  });
-
-  test("the scrim click closes the sheet", async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/dashboard");
-
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    await expect(dialog).toBeVisible();
-
-    // Click the overlay to the right of the 288px sheet.
-    await page.mouse.click(370, 400);
-    await expect(dialog).toBeHidden();
-  });
-
-  test("body scroll locks while the sheet is open", async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/dashboard");
-
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    await expect(dialog).toBeVisible();
-
-    const locked = await page.evaluate(() => document.body.style.overflow);
-    expect(locked).toBe("hidden");
-
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
-    const unlocked = await page.evaluate(() => document.body.style.overflow);
-    expect(unlocked).not.toBe("hidden");
-  });
-
-  test("growing the viewport past md auto-closes the sheet (no stranded locks)", async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/dashboard");
-
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    await expect(dialog).toBeVisible();
-
-    // Resize past the md breakpoint (768px) — the sheet must dismiss AND
-    // release the scroll lock (the pinned regression class).
-    await page.setViewportSize({ width: 1024, height: 768 });
-    await expect(dialog).toBeHidden();
-    const overflow = await page.evaluate(() => document.body.style.overflow);
-    expect(overflow).not.toBe("hidden");
-    // The desktop pills are now reachable.
-    await expect(page.getByRole("link", { name: "Transactions", exact: true })).toBeVisible();
-  });
-
-  test("browser back closes the sheet (the route-change close)", async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/dashboard");
-
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    await expect(dialog).toBeVisible();
-
-    await page.goBack();
-    await expect(dialog).toBeHidden();
-  });
-
-  test("the active link carries aria-current in the sheet", async ({ page }) => {
+  test("the active item follows the route (the ink + OUR aria-current superset)", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/budgets");
 
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "BudgetWise" });
-    const active = dialog.getByRole("link", { name: "Budgets", exact: true });
+    const bar = page.getByRole("navigation", { name: "Main navigation" });
+    const active = bar.getByRole("link", { name: "Budgets", exact: true });
     await expect(active).toHaveAttribute("aria-current", "page");
+
+    // The reference's visual split: active slate-900, inactive slate-400.
+    await expect(active).toHaveClass(/text-slate-900/);
+    const inactive = bar.getByRole("link", { name: "Profile", exact: true });
+    await expect(inactive).toHaveClass(/text-slate-400/);
+    await expect(inactive).not.toHaveAttribute("aria-current");
+  });
+
+  test("the desktop pill row stays hidden at 390px (the reference's split)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/dashboard");
+
+    // The reference's own `hidden md:flex` split — the pills are
+    // unreachable on phones; the bottom bar is THE phone navigation.
+    const desktopLinks = page.locator("nav .hidden.md\\:flex");
+    await expect(desktopLinks).toBeHidden();
+  });
+
+  test("the body scroll is never locked (the bar is not an overlay)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/dashboard");
+
+    // Wait for the hydrated content (the async store fetch) so the
+    // document is tall enough to scroll — the fill-vs-hydration race's
+    // scroll twin.
+    await expect(page.getByRole("region", { name: "Balance" })).toBeVisible();
+
+    // The retired drawer's scroll-lock class of bugs: an overlay nav can
+    // strand a body overflow lock. The bottom bar never locks — assert
+    // the document scrolls freely with the bar present.
+    const overflow = await page.evaluate(() => document.body.style.overflow);
+    expect(overflow).not.toBe("hidden");
+    await page.evaluate(() => window.scrollTo(0, 500));
+    const scrolled = await page.evaluate(() => window.scrollY);
+    expect(scrolled).toBeGreaterThan(0);
+  });
+
+  test("no hamburger on the navbar (the reference's redesigned chrome)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/dashboard");
+
+    // The reference's navbar carries no menu trigger — ours must not
+    // either (the drawer's trigger was retired with the redesign).
+    await expect(page.getByRole("button", { name: "Open navigation menu" })).toHaveCount(0);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  });
+
+  test("the bar does not render on the login page (app chrome only)", async ({ page }) => {
+    // The reference mounts its bottom bar in the APP shell — the login
+    // card (outside the app group) ships no bar (live-verified
+    // 2026-10-27). Ours must match: the bar is app chrome, not global.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/login");
+
+    await expect(page.getByRole("navigation", { name: "Main navigation" })).toHaveCount(0);
   });
 });
 
 test.describe("desktop navigation (>= md)", () => {
-  test("the pill row renders every destination with the active state", async ({ page }) => {
+  test("the bar is hidden at md and above; the pill row carries the nav", async ({ page }) => {
     await page.setViewportSize({ width: 1512, height: 945 });
     await page.goto("/dashboard");
 
-    // No hamburger at desktop widths.
-    await expect(page.getByRole("button", { name: "Open navigation menu" })).toBeHidden();
+    // The bottom bar is display:none at desktop (the md:hidden split).
+    const bar = page.getByRole("navigation", { name: "Main navigation" });
+    await expect(bar).toBeHidden();
 
     for (const label of ["Dashboard", "Transactions", "Budgets", "Profile"]) {
       await expect(page.locator("nav").getByRole("link", { name: label, exact: true })).toBeVisible();

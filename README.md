@@ -47,7 +47,7 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | ✨ **AI Insights** | One-tap, deterministic insights derived from your own data (top category, savings pace, budget warnings) — no external LLM dependency |
 | 👤 **Profile & preferences** | Currency (USD/EUR/GBP/CAD/AUD), about-me with live counter, monthly savings goal, photo upload |
 | 🔐 **Hardened auth** | Scrypt password hashing, HMAC cookie sessions, rate limiting, email verification + password reset funnels — with the reference's four-button OAuth row (Google, Microsoft, Facebook, Apple) as visual parity over the self-hosted email/password path |
-| 📱 **Mobile navigation** | A working hamburger + slide-out drawer on phones — a functional **superset** over the reference (which ships no mobile nav) |
+| 📱 **Mobile navigation** | A fixed bottom tab bar on phones (4 icons + labels, active/inactive ink) — byte-mirrored from the reference's redesigned phone nav |
 
 ## Architecture
 
@@ -61,7 +61,7 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | Charts | Recharts | 3.10 | Donut + weekly bars |
 | Database | SQLite via Prisma | 6.19 | `db/custom.db` at the repo root |
 | Validation | Zod | 4.6 | Every API boundary |
-| Unit tests | Vitest | 5.0 | 382 checks |
+| Unit tests | Vitest | 5.0 | 381 checks |
 | E2E tests | Playwright | 1.64 | 61 checks against the standalone build |
 | Runtime | Bun | ≥ 1.3 | Package manager + script runner |
 
@@ -101,7 +101,7 @@ budget-wiser/
     📂 login/            # the login card (email + OAuth-parity buttons)
     📄 page.tsx          # the PUBLIC landing page at /
   📂 components/
-    📂 layout/           # app-shell (navbar + mobile drawer), nav-config, login-card
+    📂 layout/           # app-shell (navbar + bottom tab bar), nav-config, login-card
     📂 shared/           # transaction-dialog, budget-dialog
     📂 charts/           # donut + weekly bars (recharts)
     📂 ui/               # shadcn-style primitives (Radix)
@@ -134,7 +134,7 @@ The relative `DATABASE_URL` is resolved by `src/lib/db-path.ts` — the CLI, `ne
 ## Testing
 
 ```bash
-bun run test           # Vitest unit layer (382 checks) — pure seams, no browser
+bun run test           # Vitest unit layer (381 checks) — pure seams, no browser
 bun run test:e2e       # Playwright e2e (61 checks) — requires `bun run build` first
 bun run lint           # ESLint, zero warnings allowed
 bun run typecheck      # tsc --noEmit
@@ -170,9 +170,9 @@ An **absolute** `DATABASE_URL` is recommended in production (see `docs/DEPLOYMEN
 | Reset tokens | SHA-256 hashed at rest, single-use, atomic consumption, 60-min TTL |
 | Artifact hygiene | The standalone build excludes .env/.git/db/docs/skills (pinned by smoke check 14) |
 
-## The Mobile Navigation Superset
+## The Mobile Navigation Bottom Tab Bar
 
-The reference app ships **no navigation below 768px** — its link row is `display:none` on phones with no hamburger. This clone closes that gap with a Radix-Dialog sheet drawer (left-anchored, 288px, slate-900 brand surface) that keeps every behavioral hardening from the scaffold: Escape and scrim close, focus trap + focus restoration, body scroll lock, route-change close, and resize-past-md auto-close (no stranded scroll locks). The full battery lives in `tests/e2e/mobile-navigation.spec.ts`.
+The reference app redesigned its phone navigation (audited 2026-10-27): a fixed bottom tab bar now carries the four destinations below 768px — `md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, items with `w-6 h-6` lucide icons and `text-xs` labels, active `text-slate-900` / inactive `text-slate-400`. This clone byte-mirrors that bar (plus the kept a11y superset: an `aria-current="page"` marker and a labelled nav landmark, which the reference ships without). An earlier round shipped a hamburger + slide-out drawer as a superset while the reference had NO phone nav — the redesign retired it. The full battery lives in `tests/e2e/mobile-navigation.spec.ts`.
 
 ## Troubleshooting
 

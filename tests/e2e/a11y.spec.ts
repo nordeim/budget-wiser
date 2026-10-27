@@ -26,10 +26,21 @@ const SANCTIONED: Record<string, Array<{ any: string[]; cite: string }>> = {
       cite: "the muted slate/gray families — the reference's own palette",
     },
     {
-      // The white-wash family on the slate-900 surfaces (the mobile
-      // drawer's white/80 links, the year-summary's slate-400 labels).
+      // The white-wash family on the slate-900 surfaces (the year-
+      // summary's slate-400 labels) + the bottom bar's inactive slate-400
+      // items (the reference's own redesigned ink, live-verified).
       any: ["text-white\\/", "bg-white\\/", "text-slate-400"],
       cite: "the white-wash family on the slate-900 surfaces — the reference's own palette",
+    },
+    {
+      // Session-193: the bottom tab bar's INACTIVE items — the reference's
+      // own redesigned phone-nav ink (text-slate-400 on white, the exact
+      // class split live-extracted 2026-10-27). The flagged node is the
+      // label span (text-xs), which INHERITS the anchor's color — axe's
+      // generated selector cites the anchor's .gap-1.rounded-xl chain,
+      // not a slate class — hence this dedicated matcher.
+      any: [".gap-1.rounded-xl"],
+      cite: "the bottom bar's inactive slate-400 items — the reference's own redesigned phone-nav ink",
     },
     {
       // The inactive segmented-tab triggers (the Radix tab ids) — the

@@ -1,9 +1,9 @@
 ---
 name: budget-wise
 description: "Complete, codebase-verified engineering skill for Budget Wise — a self-hosted personal finance app (Next.js 16 App Router + React 19 + TypeScript strict + Tailwind CSS 4 CSS-first + Radix/shadcn + one Zustand store + Prisma/SQLite + Zod-validated API + scrypt/HMAC cookie auth + recharts dashboards) that is a functional superset of budget-wiser.base44.app with visual parity. Distilled from the session-190 domain transformation and the session-191 remediation round; every rule traces to a failure that actually happened or a live-verified reference finding."
-version: 1.1.0
+version: 1.2.0
 last_updated: 2026-10-27
-provenance: "Distilled at session-191 (the remediation round: retired-brand purge, the four-button OAuth row, the login brand mark, dead-code retirement, package identity); updated at session-192 (the session-3 re-audit round: the dead-script guard, the dev-vs-build race hazard, zero-drift re-verification). Source sessions: 190 (the NEO CRM → Budget Wise domain transformation — 374 unit + 61 e2e + 14 smoke green, VLM parity verified), 191 (382 unit + 61 e2e + 14 smoke green), and 192 (382 unit HELD + 61 e2e + 14 smoke green — the session-3 re-audit). The infra seam lineage (auth stack, db-path, boot-env, UI primitives, test harness) is the neo-crm scaffold's — its own skill (neo-crm_SKILL.md, v1.180.0) and skills/web-application/SKILL.md (v1.2.0) remain the deeper references."
+provenance: "Distilled at session-191 (the remediation round: retired-brand purge, the four-button OAuth row, the login brand mark, dead-code retirement, package identity); updated at session-192 (the session-3 re-audit round: the dead-script guard, the dev-vs-build race hazard, zero-drift re-verification) and session-193 (the session-4 mobile-parity round: the reference's phone-nav redesign mirrored — the bottom tab bar, the drawer + hamburger + footer retirement, the CircleUser→User icon true-up). Source sessions: 190 (the NEO CRM → Budget Wise domain transformation — 374 unit + 61 e2e + 14 smoke green, VLM parity verified), 191 (382 unit + 61 e2e + 14 smoke green), 192 (382 unit + 61 e2e + 14 smoke green), and 193 (381 unit + 61 e2e + 14 smoke green — the bottom-tab-bar parity). The infra seam lineage (auth stack, db-path, boot-env, UI primitives, test harness) is the neo-crm scaffold's — its own skill (neo-crm_SKILL.md, v1.180.0) and skills/web-application/SKILL.md (v1.2.0) remain the deeper references."
 ---
 
 # Budget Wise — Complete Engineering Skill
@@ -61,14 +61,14 @@ Plus the public landing at `/`, the login card (four OAuth buttons + email/passw
 
 **Non-negotiable principles:**
 
-- **Parity with the reference, superset where it is broken.** Visual parity at desktop + phone axes; functional supersets must be invisible to pixels (the mobile drawer) or strictly additive (AI insights, a11y naming, the working email/password funnels). Every deviation lives in the PAD's Known Issues.
+- **Parity with the reference, superset where it is broken.** Visual parity at desktop + phone axes; functional supersets must be invisible to pixels (the a11y naming on the bottom tab bar) or strictly additive (AI insights, the public landing, the working email/password funnels). Every deviation lives in the PAD's Known Issues.
 - **The gate is the only gate.** No hosted CI exists — `bun run gate` must be green before any push.
 - **Money math is server-side and unit-tested.** `/api/dashboard` computes every number the dashboard renders; the client never re-derives. Pure helpers live in `src/lib/budget-math.ts`.
 - **Nothing reaches Prisma unvalidated.** Zod at every boundary; DB-bound checks (ownership, FK existence) stay route-side.
 - **One deployable.** `next build` emits `.next/standalone` — the app boots anywhere Bun/Node runs with one SQLite file.
 
 **Reference-state notes (live-verified 2026-10-27):**
-- The reference ships **no mobile navigation** (link row `display:none` below md, no hamburger — confirmed twice, sessions 190 and 191). Our Radix-Dialog sheet drawer is the documented superset.
+- The reference **redesigned its phone navigation** (session 193, 2026-10-27): a fixed bottom tab bar below md (`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, active `text-slate-900` / inactive `text-slate-400`, lucide icons `w-6 h-6`, labels `text-xs font-medium`) with **no footer** on the app surface. We byte-mirror the bar (the `BOTTOM_NAV` contracts) + the kept a11y superset (`aria-current` + the labelled landmark). Sessions 190–192 had shipped a drawer + hamburger as the superset while the reference had NO phone nav — retired when the redesign landed.
 - The reference serves app HTML to guests (its platform's face). We ship a public landing + server-side `(app)` guard — the production-grade posture.
 - The reference's demo data was reset to empty at the session-191 audit (balance $0.00). Our seed keeps the original demo month ($5,000 Salary + $575.45 expenses across 4 transactions, balance $4,424.55, 88.5% saved) — README-documented.
 - The reference's OAuth buttons (Google, Microsoft, Facebook, Apple) redirect to real providers — unimplementable self-hosted. Ours render the full four-button row (visual parity) surfacing a not-configured `toast.info` (the documented boundary).
@@ -206,7 +206,7 @@ src/
     globals.css  icon.png  apple-icon.png  robots.txt/  sitemap.xml/  manifest.json/
     error.tsx global-error.tsx not-found.tsx not-found-body.tsx
   components/
-    layout/app-shell.tsx      # sticky navbar + mobile sheet drawer + footer
+    layout/app-shell.tsx      # sticky navbar + the mobile bottom tab bar
     layout/nav-config.ts      # the four items + isNavActive
     layout/login-card.tsx     # the multi-view auth card (signin/signup/verify/reset/forgot)
     layout/guest-login-redirect.tsx reset-password-screen.tsx
@@ -265,9 +265,9 @@ if (profile && profile.id !== hydratedProfileId) {
 
 *Why:* `setState` inside an effect trips the lint rule and cascades renders; comparing the last-seen id renders the correction synchronously. (E2E tests that fill these fields must wait for hydration first — see §12.)
 
-### 5.6 Pattern 3 — the app shell + the mobile drawer superset
+### 5.6 Pattern 3 — the app shell + the mobile bottom tab bar
 
-`app-shell.tsx`: sticky `h-16` navbar (`bg-white/80 backdrop-blur border-b`), gradient slate-900→700 logo tile + "BudgetWise" wordmark, desktop pill row `hidden md:flex` (active `bg-slate-900 text-white`), and **our hamburger** (`md:hidden`, a real `DialogPrimitive.Trigger` — focus restores to it on close). The drawer: left-anchored Radix Dialog sheet (288px slate-900 surface) with the full behavioral battery — Escape/scrim close, focus trap + restoration, body scroll lock, route-change close (adjust-during-render on pathname), resize-past-md auto-close (the matchMedia query MUST match the hamburger's md:hidden range).
+`app-shell.tsx`: sticky `h-16` navbar (`bg-white/80 backdrop-blur border-b`), gradient slate-900→700 logo tile + "BudgetWise" wordmark, desktop pill row `hidden md:flex` (active `bg-slate-900 text-white`), and the **bottom tab bar** below md — the reference's redesigned phone nav, byte-mirrored (`BOTTOM_NAV` in page-layout.ts): `md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, items `flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all` + active `text-slate-900` / inactive `text-slate-400`, lucide icons `w-6 h-6` (LayoutDashboard / ArrowLeftRight / Target / User), labels `text-xs font-medium`. OUR kept a11y superset: `aria-current="page"` + the labelled nav landmark. The bar is plain fixed chrome — NOT an overlay: no portal, no focus trap, no scroll lock, no matchMedia. The reference's app surface ships NO footer (the landing keeps its own). History: sessions 190–192 shipped a Radix drawer + hamburger as the superset while the reference had NO phone nav — both retired the moment the reference shipped its own bar (visible-pixel divergence).
 
 ---
 
@@ -413,7 +413,7 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 - **Dialog Tabs need real panels** — `aria-controls` pointing at nonexistent ids flags `aria-valid-attr-value`.
 - **Exit animations keep nodes mounted ~200–300ms** — automation (or a11y probes) asserting "closed" must settle-wait first.
 - **44px touch floor on mobile bands** (document exceptions where the reference demands parity).
-- **The standalone sheet drawer rides the Radix focus machinery** — the hamburger is a real `DialogPrimitive.Trigger` so focus restores to it on close.
+- **The bottom tab bar rides plain anchor semantics** — a labelled nav landmark + `aria-current` on the active item (OUR superset; the reference ships neither).
 
 ---
 
@@ -432,7 +432,7 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 
 **The law: the dev server lies about production.** E2E runs against the production standalone build.
 
-### Tier 1 — Unit (Vitest, 382 checks)
+### Tier 1 — Unit (Vitest, 381 checks)
 
 Domain math, vocabularies, Zod contracts, infra seams (db-path, auth, rate-limit, boot-env, metadata, pwa-metadata, http-headers, upload), chrome contracts (page-layout records, nav config, landing copy), the login view machine, error boundaries, the gate script. **TDD default at the pure seams** (red → green → refactor). Source-regex pins (the established pattern): read the component source and assert the contract — comments stripped where institutional memory may cite retired spellings.
 
@@ -442,7 +442,7 @@ Real UI against the standalone server on an isolated port + its own seeded `db/e
 
 - `auth.spec.ts` — walls + login/logout round trips (logged-out surface opts out of storageState)
 - `app-flows.spec.ts` — every CRUD round trip, the dialogs, filters, the profile form
-- `mobile-navigation.spec.ts` — **the 11-check drawer battery** (the superset's guard: open/close/Escape/scrim/nav-close/resize auto-close/focus restoration/scroll lock)
+- `mobile-navigation.spec.ts` — **the 10-check bottom-bar battery** (the parity surface's guard: renders on every app page, viewport-anchored fixed, navigation round-trip, the active item's ink + aria-current, the desktop pill split, the never-locked body scroll, no hamburger, absent on login, hidden at md, capitalized hrefs)
 - `a11y.spec.ts` — the axe two-gate
 - `landing.spec.ts`, `reset-password.spec.ts` — the public surface + the full reset funnel
 
@@ -466,7 +466,7 @@ Boots the standalone artifact on :3210 with a scratch `db/smoke.db` and a throwa
 ```bash
 bun run lint            # eslint . --max-warnings 0 (hook rules are errors)
 bun run typecheck       # tsc --noEmit
-bun run test            # full unit suite (382)
+bun run test            # full unit suite (381)
 bun run build           # clean compile + standalone assembly (the type gate enforcer)
 ./scripts/smoke-test.sh # 14 checks against the artifact
 CI=1 bun run test:e2e   # 61 checks against the artifact
@@ -527,7 +527,7 @@ NODE_ENV=production PORT=3000 \
 | Hover styles no-op on touch | Tailwind v4's `@media (hover: hover)` wrap | The `@custom-variant hover (&:hover)` unwrap in globals.css — never remove it |
 | Colors drift 1–3 units from the reference | v4's oklch default palette | The v3 re-pin block in globals.css — never "clean it up" |
 | `shadow-sm` renders one step too heavy | v4 renamed the shadow scale | The `--shadow-sm` re-pin — leave it |
-| The Radix drawer's focus restoration breaks | A stray `DialogPrimitive.Title` outside `DialogContent` broke the context | Keep every dialog piece inside Content; the hamburger must be a real Trigger |
+| A dialog's focus restoration breaks | A stray `DialogPrimitive.Title` outside `DialogContent` broke the context (the retired drawer's original bug — the class generalizes) | Keep every dialog piece inside Content |
 | E2E login 429s on repeated runs | The in-memory rate buckets survive a reused server | `CI=1` (fresh boot) or wait out the 15-min window |
 | Test fails on a pinned string you just changed | The pin is the contract | Update the pin and the string together, same commit |
 | Capital route alias fails TS1149 | The alias is a `.ts` file | Capital aliases are `.jsx` re-export stubs only |
@@ -684,12 +684,12 @@ function BudgetWiseLogoMark() {
 
 | Breakpoint | Behavior |
 |---|---|
-| `< 768px` (base) | The hamburger appears (`md:hidden`); the desktop pill row is `display:none` (the reference's own state — it ships NO mobile nav); single-column grids; the drawer superset operates |
-| `≥ 768px` (md) | Desktop pill row; the drawer auto-closes if open (the matchMedia query mirrors md:hidden exactly) |
+| `< 768px` (base) | The bottom tab bar appears (`md:hidden` — the reference's redesigned phone nav, byte-mirrored); the desktop pill row is `display:none` (the reference's own split); single-column grids |
+| `≥ 768px` (md) | Desktop pill row; the bottom bar is `display:none` |
 | `≥ 1024px` (lg) | The dashboard's 4-col KPI grid; the 2-col panel rows (donut 7 / insights 5) |
 | `≥ 1280px` (xl) | max-w-7xl container breathes |
 
-**Layout constants:** the document scrolls at the WINDOW level (`min-h-screen bg-slate-50`, sticky navbar, footer at the document end — no shell overflow gymnastics). The only scroll lock is the mobile drawer's body lock. The page container: `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8`.
+**Layout constants:** the document scrolls at the WINDOW level (`min-h-screen bg-slate-50`, sticky navbar, NO footer on the app surface — the reference's own redesign; the landing keeps its own). No scroll locks anywhere (the drawer's body lock was retired with the drawer). The page container: `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8`.
 
 **Z-index is a flat documented scale** — navbar `z-50`, the sheet `z-50`, overlays `z-50` (Radix portals to body), toasts above. No `z-[9999]`.
 
@@ -732,7 +732,7 @@ The API wire shapes live in `src/types/index.ts` (named domain types — `User`,
 | 003 | scrypt + HMAC cookie sessions (no framework) | Self-hosted, evictable, no dependency sprawl |
 | 004 | One Zustand store; server-derived money math | One truth; the client never disagrees about money |
 | 005 | Tailwind v4 CSS-first, v3 palette re-pinned | Visual parity survives upgrades |
-| 006 | The mobile drawer as a documented superset | Phones can navigate; the reference cannot |
+| 006 | The mobile navigation — from documented superset to byte-mirrored parity (s193) | The phone nav matches the reference's redesigned bottom bar |
 | 007 | Deterministic AI Insights (no external LLM) | Hermetic production build |
 | 008 | Artifact hygiene via tracing excludes | A deployable carrying its own .env is an incident |
 
@@ -741,7 +741,7 @@ The API wire shapes live in `src/types/index.ts` (named domain types — `User`,
 ## Appendix B — Pre-Ship Checklist
 
 ```bash
-bun run gate                 # lint → typecheck → test (382) → build → smoke (14) → e2e (61)
+bun run gate                 # lint → typecheck → test (381) → build → smoke (14) → e2e (61)
 rg "TODO\|FIXME\|lorem" src/ # zero placeholders
 rg "console\.log" src/       # zero debug output (console.error in sanctioned handlers only)
 git status                   # no secrets, no db files, no stray artifacts
@@ -765,3 +765,4 @@ git status                   # no secrets, no db files, no stray artifacts
 | 190 | The domain transformation | NEO CRM → Budget Wise: schema swap, six domain routes, four pages + dialogs + charts, the mobile-nav superset, 374 unit + 61 e2e + 14 smoke green, VLM parity verified, two commits pushed to main |
 | 191 | The remediation round | The retired-brand purge (404 title, package identity, config comments), the four-button OAuth row, the login brand mark, the AI-Insights copy true-up, dead-code retirement (pdf-export/download/format + jspdf/html2canvas-pro), 382 unit + 61 e2e + 14 smoke green, live re-audit of every reference surface, this skill distilled |
 | 192 | The session-3 re-audit round | Zero reference drift re-confirmed; VLM parity None/None (login + dashboard); the dead-script retirement (six CRM-scaffold package.json entries incl. the broken `gate:full` composite) + the dead-script guard born green; the dev-vs-build `.next/` race hazard documented (README + AGENTS); 382 unit HELD + 61 e2e + 14 smoke green; the screenshot battery recaptured (8/13 byte-identical — render-stability evidence) |
+| 193 | The session-4 mobile-parity round | **The reference's first structural drift**: its phone-nav redesign (a fixed bottom tab bar below md, no footer, /About + /Contact removed, Profile icon unified on lucide-user) mirrored byte-for-byte — the `BOTTOM_NAV` contracts + the `safe-area-pb` v4 utility + the kept aria-current superset; the drawer/hamburger/APP_FOOTER family retired with ADR-006 superseded; the e2e battery rewritten test-for-test; the a11y sanctioned register extended for the reference's own slate-400 inactive ink; 381 unit + 61 e2e + 14 smoke green; VLM parity None/None/None (mobile dashboard/login/budgets) |

@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.2.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.3.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,13 @@
 **Last Updated:** 2026-10-27
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.3.0 (Tracked Changes)
+
+- `[AUTH]` **The session-4 mobile-parity round (session 193): the drawer retirement + the bottom tab bar.** The reference REDESIGNED its phone navigation (first structural drift since the s190 transformation): a fixed bottom tab bar now ships below md on every app page — `md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-pb`, items `flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all` with active `text-slate-900` / inactive `text-slate-400`, lucide icons `w-6 h-6` (LayoutDashboard / ArrowLeftRight / Target / User), labels `text-xs font-medium` — byte-extracted and mirrored as the parity surface (`BOTTOM_NAV` in page-layout.ts, the `safe-area-pb` v4 `@utility`). ADR-006's drawer + hamburger — the documented superset while the reference shipped NO phone nav — became visible-pixel divergences the moment the reference shipped its own bar; both retired with the drawer family (MOBILE_NAV_SHEET / MOBILE_NAV_LAYOUT / APP_FOOTER / SITE_NAV.hamburger). The reference's app surface also ships NO footer now — APP_FOOTER retired with it (the landing keeps its own). Profile's nav icon trued up CircleUser → User (the reference's unified lucide set, both navs).
+- `[RES]` Re-audit of the live reference (2026-10-27, third pass): the redesign also removed the reference's /About + /Contact (both 404 now; its sitemap lists only /, /Budgets, /Profile, /Transactions) and its demo data gained one food transaction (−$1,000 — data-borne, the excluded genus). OUR /about /contact sitemap entries STAY — they list OUR real public-marketing routes (linked from the landing's footer; the landing is the documented superset surface); the stale D-142a3 reference-parity comments corrected in the sitemap route + tests. Login card, top navbar, both dialogs, Profile structure, 404 surface, sitemap FORMAT, robots.txt: all re-verified unchanged.
+- `[CA]` The mobile-nav e2e battery REWRITTEN for the bottom bar (10 tests: renders on every app page, viewport-anchored fixed, navigation round-trip, the active item's ink + OUR aria-current superset, the desktop pill split, the never-locked body scroll, no hamburger, absent on login, hidden at md, capitalized hrefs). The a11y two-gate's sanctioned register gains the bottom bar's inactive-item citation (the reference's own slate-400-on-white ink — the flagged label span inherits the anchor's color, so the matcher cites the anchor's `.gap-1.rounded-xl` chain).
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **381 unit** (−11 retired drawer/footer pins + 10 born-green bottom-bar pins + 1 icon pin = −1, lockstepped across README/CLAUDE) · build · smoke 14/14 · e2e **61 HELD** (the drawer battery replaced test-for-test) · VLM side-by-side: mobile dashboard / mobile login / mobile budgets all **"Structural Differences: None"** · the screenshot battery recaptured (12 images; the drawer-open frame retired with the drawer).
 
 #### Revision Block — v2.2.0 (Tracked Changes)
 
@@ -107,12 +114,13 @@ This PAD is the single source of truth for Budget Wise's architecture. Use it to
 - **Consequences:** + parity that survives Tailwind upgrades; − an unusual globals.css a new agent might want to "clean" (the do-not-touch list forbids it).
 - **Alternatives rejected:** v3 (EOL); accepting v4's palette (visible drift).
 
-**ADR-006: The mobile drawer as a documented superset**
-- **Context:** The reference ships no navigation below 768px (links `display:none`, no hamburger) — live-verified 2026-10-27 at 390×844.
-- **Decision:** Ship a Radix-Dialog sheet drawer (hamburger `< md`, 288px slate-900 surface) with the full behavioral battery: Escape/scrim close, focus trap + restoration, body scroll lock, route-change close, resize-past-md auto-close.
-- **Rationale:** "Production-ready superset in functionality, visual parity in pixels" — the drawer adds a capability the reference lacks without touching a desktop pixel.
-- **Consequences:** + phones can actually navigate; − the drawer is ours alone to keep green (10 e2e checks pin it).
-- **Alternatives rejected:** Mirroring the gap (unusable phones); a bottom tab bar (a bigger visual delta).
+**ADR-006: The mobile navigation — from documented superset to byte-mirrored parity**
+- **Context:** At the s190 audit the reference shipped no navigation below 768px (links `display:none`, no hamburger) — live-verified 2026-10-27 at 390×844. The reference has since REDESIGNED its phone nav (the s193 audit): a fixed bottom tab bar on every app page, and no footer on the app surface.
+- **Decision (superseded, s190):** Ship a Radix-Dialog sheet drawer (hamburger `< md`, 288px slate-900 surface) with the full behavioral battery — the answer to the then-empty phone surface.
+- **Decision (current, s193):** Retire the drawer + hamburger + APP_FOOTER; byte-mirror the reference's bottom tab bar (the `BOTTOM_NAV` contracts) with the kept a11y superset (`aria-current="page"` + the labelled nav landmark — the reference ships neither).
+- **Rationale:** Supersets live only while invisible-to-pixels. The redesign put a bottom bar (and no hamburger, no footer) on the phone surface — the drawer family became visible divergences, so parity wins.
+- **Consequences:** + the phone nav byte-matches the reference (bar rect, item classes, icons, ink split — live-verified identical); − the drawer's behavioral hardening (focus trap, scroll lock, auto-close) retired with it; the bottom-bar battery (10 e2e checks) pins the parity surface.
+- **Alternatives rejected:** Keeping the drawer as a dual nav (two phone navigations — a visible superset break); mirroring the reference's missing aria-current (weaker a11y for no pixel gain).
 
 **ADR-007: Deterministic AI Insights (no external LLM)**
 - **Context:** The reference's AI Insights panel offers a Generate button behind a hosted model.
@@ -191,7 +199,7 @@ src/
     login/ signup/ reset-password/
     page.tsx                  # the PUBLIC landing (outside every guard)
   components/
-    layout/app-shell.tsx      # sticky navbar + the mobile sheet drawer + footer
+    layout/app-shell.tsx      # sticky navbar + the mobile bottom tab bar
     layout/nav-config.ts      # the four items + isNavActive
     shared/transaction-dialog.tsx  # Add Transaction (tabs swap the category vocabulary)
     shared/budget-dialog.tsx  # Set Budget + the Delete-Budget alertdialog
@@ -379,8 +387,8 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 |---|---|---|---|
 | Lint | ESLint (0 warnings) | — | No suppressions; the set-state-in-effect family stays clean |
 | Types | tsc + the build | — | Strict mode; the build enforces it |
-| Unit | Vitest | 382 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
-| E2E | Playwright | 61 | Real flows against the standalone build: auth walls, every CRUD round trip, the mobile drawer battery, the a11y two-gate |
+| Unit | Vitest | 381 | Domain math, vocabularies, Zod contracts, infra seams, chrome contracts |
+| E2E | Playwright | 61 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery, the a11y two-gate |
 | Smoke | bash ladder | 14 | The artifact boots, serves, walls, rate-limits, refuses secretless boots, ships clean |
 
 **Load-bearing details:** the e2e suite shares one SQLite file (`workers: 1`); auth rides a saved storageState (per-test logins would trip the limiter); repeated local runs need `CI=1` (fresh server = fresh buckets). **Tests that fill async-hydrated forms must wait for hydration first** — a fill racing the controlled-value re-render appends instead of replaces.

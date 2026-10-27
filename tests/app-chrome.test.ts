@@ -3,11 +3,9 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
-  APP_FOOTER,
+  BOTTOM_NAV,
   HEADER_BUTTONS,
   KPI_CARD,
-  MOBILE_NAV_LAYOUT,
-  MOBILE_NAV_SHEET,
   PAGE_HEADER,
   PAGE_ROOT,
   PANEL,
@@ -49,32 +47,57 @@ describe("the site-nav contracts (byte-extracted from the reference's live DOM)"
     expect(SITE_NAV.linkActive).toContain("bg-slate-900 text-white");
     expect(SITE_NAV.link).toContain("text-slate-600 hover:bg-slate-100");
   });
-
-  it("OUR superset hamburger is md:hidden with focus-visible support", () => {
-    expect(SITE_NAV.hamburger).toContain("md:hidden");
-    expect(SITE_NAV.hamburger).toContain("focus-visible:ring");
-  });
 });
 
-describe("the mobile Sheet (OUR superset over the reference's missing nav)", () => {
-  it("left-anchored, w-72, slate-900 brand surface, z-50", () => {
-    expect(MOBILE_NAV_SHEET.content).toContain("inset-y-0 left-0 z-50 w-72");
-    expect(MOBILE_NAV_SHEET.content).toContain("bg-slate-900");
+// ---------------------------------------------------------------------------
+// Session-193 (the session-4 round): the reference REDESIGNED its mobile
+// navigation — it now ships a fixed bottom tab bar (live-extracted
+// 2026-10-27 at 390×844: `md:hidden fixed bottom-0 left-0 right-0 z-50
+// bg-white border-t border-slate-200 safe-area-pb`, items `flex flex-col
+// items-center gap-1 px-4 py-2 rounded-xl transition-all` + active
+// text-slate-900 / inactive text-slate-400, lucide icons w-6 h-6, labels
+// text-xs font-medium). The drawer + hamburger we shipped as the superset
+// while the reference had NO phone nav became visible-pixel divergences
+// the moment the reference shipped its own bar — both retired, replaced
+// by this byte-mirrored parity surface.
+// ---------------------------------------------------------------------------
+describe("the mobile bottom tab bar (byte-extracted from the reference's redesigned live DOM)", () => {
+  it("the bar: md:hidden, fixed to the bottom, white, slate-200 top border, safe-area padded", () => {
+    expect(BOTTOM_NAV.bar).toContain("md:hidden");
+    expect(BOTTOM_NAV.bar).toContain("fixed bottom-0 left-0 right-0");
+    expect(BOTTOM_NAV.bar).toContain("z-50");
+    expect(BOTTOM_NAV.bar).toContain("bg-white");
+    expect(BOTTOM_NAV.bar).toContain("border-t border-slate-200");
+    expect(BOTTOM_NAV.bar).toContain("safe-area-pb");
   });
 
-  it("the slide animations ride the data-[state] machinery (tw-animate)", () => {
-    expect(MOBILE_NAV_SHEET.content).toContain("data-[state=open]:animate-in");
-    expect(MOBILE_NAV_SHEET.content).toContain("data-[state=closed]:animate-out");
-    expect(MOBILE_NAV_SHEET.content).toContain("data-[state=open]:slide-in-from-left");
+  it("the row: flex items-center justify-around py-2", () => {
+    expect(BOTTOM_NAV.row).toContain("flex items-center justify-around");
+    expect(BOTTOM_NAV.row).toContain("py-2");
   });
 
-  it("the active link is white/20; inactive is white/80 (the drawer's own styles)", () => {
-    expect(MOBILE_NAV_SHEET.linkActive).toContain("bg-white/20");
-    expect(MOBILE_NAV_SHEET.link).toContain("text-white/80");
+  it("the item: flex-col, gap-1, px-4 py-2, rounded-xl, transition-all", () => {
+    expect(BOTTOM_NAV.item).toContain("flex flex-col items-center gap-1");
+    expect(BOTTOM_NAV.item).toContain("px-4 py-2");
+    expect(BOTTOM_NAV.item).toContain("rounded-xl");
+    expect(BOTTOM_NAV.item).toContain("transition-all");
   });
 
-  it("the auto-close query matches the hamburger's md range (768px)", () => {
-    expect(MOBILE_NAV_LAYOUT.autoCloseQuery).toBe("(min-width: 768px)");
+  it("the ink: active slate-900, inactive slate-400 (the reference's exact split)", () => {
+    expect(BOTTOM_NAV.itemActive).toContain("text-slate-900");
+    expect(BOTTOM_NAV.itemInactive).toContain("text-slate-400");
+  });
+
+  it("the icon is w-6 h-6; the label is text-xs font-medium", () => {
+    expect(BOTTOM_NAV.icon).toContain("w-6 h-6");
+    expect(BOTTOM_NAV.label).toContain("text-xs");
+    expect(BOTTOM_NAV.label).toContain("font-medium");
+  });
+
+  it("the safe-area-pb utility exists in globals.css (the reference's own class name, made real)", () => {
+    const css = read("src/app/globals.css");
+    expect(css).toContain("@utility safe-area-pb");
+    expect(css).toContain("padding-bottom: env(safe-area-inset-bottom)");
   });
 });
 
@@ -113,11 +136,11 @@ describe("the shell + page contracts", () => {
     expect(HEADER_BUTTONS.dark).toContain("bg-slate-900");
   });
 
-  it("the footer: the BudgetWise copyright + About/Contact links", () => {
-    expect(APP_FOOTER.copyright).toBe("© 2026 BudgetWise");
-    expect(APP_FOOTER.about.href).toBe("/About");
-    expect(APP_FOOTER.contact.href).toBe("/Contact");
-  });
+  // The APP_FOOTER was retired with the reference's redesign — it ships
+  // NO footer on the app surface (live-verified 2026-10-27 on every app
+  // page, both axes: no footer element in the DOM). The landing keeps its
+  // OWN footer (our public-site IA — the landing is the documented
+  // superset surface).
 });
 
 describe("the nav config (the reference's four items)", () => {
@@ -133,6 +156,19 @@ describe("the nav config (the reference's four items)", () => {
       "Transactions",
       "Budgets",
       "Profile",
+    ]);
+  });
+
+  it("the icons: the reference's exact lucide set (User, not CircleUser)", () => {
+    // Live-extracted 2026-10-27: the reference's top pills AND its bottom
+    // bar both carry lucide-user for Profile (CircleUser was the s190
+    // extraction — the reference has since unified on the plain User).
+    const iconNames = NAV_ITEMS.map((i) => i.icon.displayName);
+    expect(iconNames).toEqual([
+      "LayoutDashboard",
+      "ArrowLeftRight",
+      "Target",
+      "User",
     ]);
   });
 
@@ -159,27 +195,34 @@ describe("the app-shell construction (the chrome consumes the contracts)", () =>
     expect(shell).toContain("active ? SITE_NAV.linkActive : SITE_NAV.link");
   });
 
-  it("the hamburger opens the drawer (the superset wiring)", () => {
-    expect(shell).toContain('aria-label="Open navigation menu"');
-    // A REAL Radix Trigger (focus restores to it on close).
-    expect(shell).toContain("DialogPrimitive.Trigger asChild");
+  // The drawer family (hamburger, Radix sheet, matchMedia auto-close,
+  // scroll lock) was RETIRED with the reference's mobile redesign — the
+  // pins above describe the retired surfaces. The bottom bar replaced
+  // them (the wiring pins below).
+  it("the bottom tab bar rides the BOTTOM_NAV contracts", () => {
+    for (const ref of ["BOTTOM_NAV.bar", "BOTTOM_NAV.row"]) {
+      expect(shell).toContain(`className={${ref}}`);
+    }
+    // The item composes the base with the active/inactive ink (cn).
+    expect(shell).toContain("BOTTOM_NAV.item,");
+    expect(shell).toContain("active ? BOTTOM_NAV.itemActive : BOTTOM_NAV.itemInactive");
+    expect(shell).toContain("className={BOTTOM_NAV.icon}");
+    expect(shell).toContain("className={BOTTOM_NAV.label}");
   });
 
-  it("the resize-past-md auto-close effect survives (the kept superset)", () => {
-    expect(shell).toContain("matchMedia(MOBILE_NAV_LAYOUT.autoCloseQuery)");
+  it("the bottom bar is an a11y-labelled nav landmark (OUR kept superset)", () => {
+    expect(shell).toContain('aria-label="Main navigation"');
+    // The reference ships NO aria-current on its bottom bar; ours adds it
+    // (invisible to pixels, the established a11y superset pattern).
+    expect(shell).toContain('aria-current={active ? "page" : undefined}');
   });
 
-  it("the scroll lock engages while the sheet is open", () => {
-    expect(shell).toContain('document.body.style.overflow = "hidden"');
-  });
-
-  it("the route-change close: adjust-during-render on pathname", () => {
-    expect(shell).toContain("prevPathname !== pathname");
-  });
-
-  it("the footer renders inside the document after main", () => {
-    expect(shell).toContain("className={APP_FOOTER.footer}");
-    expect(shell).toContain("{APP_FOOTER.copyright}");
+  it("no hamburger, no drawer, no footer (the reference's redesigned chrome)", () => {
+    expect(shell).not.toContain("Open navigation menu");
+    expect(shell).not.toContain("DialogPrimitive");
+    expect(shell).not.toContain("<footer");
+    expect(shell).not.toContain("matchMedia");
+    expect(shell).not.toContain("document.body.style.overflow");
   });
 });
 

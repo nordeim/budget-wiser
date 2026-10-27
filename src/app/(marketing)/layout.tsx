@@ -22,5 +22,5 @@ export const dynamic = "force-dynamic";
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const user = await getSessionUser();
   if (!user) return <GuestLoginRedirect />;
-  return <AppShell user={user}>{children}</AppShell>;
+  return <AppShell>{children}</AppShell>;
 }

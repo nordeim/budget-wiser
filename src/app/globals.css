@@ -367,6 +367,16 @@
    Custom utilities (v4 native @utility — NOT @layer utilities)
 --------------------------------------------------------------------------- */
 
+/* Session-193: the reference's bottom-nav bar carries a `safe-area-pb`
+   class on its fixed bottom surface (live-extracted 2026-10-27). The
+   class is the notched-phone padding: inert everywhere without a safe
+   area (desktop browsers compute env() to 0px), real padding on
+   notched devices so the bar clears the home indicator. Defined as a
+   plain v4 @utility — no config file exists and none may ever. */
+@utility safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 @utility scrollbar-thin {
   scrollbar-width: thin;
   scrollbar-color: #d1d5db transparent;

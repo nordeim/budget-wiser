@@ -159,11 +159,14 @@ describe("session-18: sitemap.xml + robots.txt (S18-P4)", () => {
     expect(src).not.toContain('"/Accounts"');
   });
 
-  it("session-142: the marketing layer's two routes join the sitemap (D-142a3)", () => {
+  it("session-193: the marketing layer's two routes STAY (our own public IA)", () => {
     const src = sitemapSrc();
-    // The reference's s142 URL surface adds /About + /Contact (its new
-    // marketing-layer app pages); ours mirrors them at the lowercase
-    // canonicals — `/` stays 1.0 (now the public landing page).
+    // The reference's s142 URL surface had /About + /Contact — it has
+    // since REMOVED them (both 404 at the 2026-10-27 session-193 audit;
+    // its sitemap now lists only /, /Budgets, /Profile, /Transactions).
+    // OUR entries stay: the routes are real pages here — our public
+    // marketing layer, linked from the landing's footer (the landing
+    // itself is the documented superset surface). `/` stays 1.0.
     expect(src).toContain('{ path: "/about", priority: "0.8" }');
     expect(src).toContain('{ path: "/contact", priority: "0.8" }');
   });

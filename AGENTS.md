@@ -31,8 +31,8 @@ Guidance for AI coding agents working in this repository. Every line answers: *w
 - **Money math lives server-side.** `/api/dashboard` computes every number the dashboard renders; the client never re-derives it. Pure helpers (rounding, buckets, ranges) live in `src/lib/budget-math.ts` — unit-tested, importable both sides.
 - **Routes are BOTH casings.** Nav hrefs are capitalized (`/Dashboard`, `/Transactions`, `/Budgets`, `/Profile`) — the reference's own form. Lowercase folders carry the implementation; the capital aliases are `.jsx` re-export stubs. **Never make the alias a `.ts`/`.tsx` file** — TS1149 fires on same-program paths differing only in casing.
 - **The (app) route group guards server-side.** A guest never receives app-page HTML — `GuestLoginRedirect` lands them on `/login?from_url=<abs>`. The landing at `/` is public and outside the group.
-- **`main` scrolls at the window level.** Sticky navbar + document flow — there is no shell overflow gymnastics. The only scroll lock is the mobile drawer's body lock.
-- **The mobile drawer is a superset, not a parity surface.** The reference has NO mobile nav (links `display:none` below md, no hamburger). Ours is a Radix Dialog sheet — keep its behavioral battery green (auto-close past md, scroll lock, route-change close, focus restoration) in `tests/e2e/mobile-navigation.spec.ts`.
+- **`main` scrolls at the window level.** Sticky navbar + document flow — there is no shell overflow gymnastics, and NO scroll locks anywhere (the drawer's body lock was retired with the drawer).
+- **The mobile nav is the reference's bottom tab bar** (a `md:hidden fixed bottom-0` white bar, byte-mirrored — live-extracted when the reference redesigned its phone nav, session 193). It is plain fixed chrome, NOT an overlay: no portal, no focus trap, no scroll lock, no matchMedia. Keep its battery green in `tests/e2e/mobile-navigation.spec.ts`. The reference's app surface ships NO footer — do not add one to the app shell (the landing keeps its own).
 
 ## Tailwind CSS v4 — read this before writing classes
 

@@ -23,7 +23,7 @@ Budget Wise is a production-grade, self-hosted personal finance application — 
 
 ### Project-Specific Principles
 
-- **Parity with the reference, superset where it is broken.** Visual parity at desktop + phone axes; functional supersets must be invisible to pixels (the mobile drawer) or strictly additive (AI insights, a11y naming).
+- **Parity with the reference, superset where it is broken.** Visual parity at desktop + phone axes; functional supersets must be invisible to pixels (the a11y naming on the bottom tab bar) or strictly additive (AI insights, the public landing).
 - **The gate is the only gate.** No hosted CI exists — `bun run gate` (lint → typecheck → test → build → smoke → e2e) must be green before any push.
 - **Money math is server-side and unit-tested.** The client renders; it never re-derives.
 - **Nothing reaches Prisma unvalidated.** Zod at every boundary; DB-bound checks stay route-side.
@@ -40,7 +40,7 @@ Budget Wise is a production-grade, self-hosted personal finance application — 
 
 ### Language & Framework Guidelines
 
-- **React 19**: no `forwardRef` wrappers needed; adjust-state-during-render for same-component state resets (see `app-shell.tsx`); `key`-based resets otherwise.
+- **React 19**: no `forwardRef` wrappers needed; `key`-based resets for state resets across renders. (The adjust-state-during-render pattern lived in the retired mobile drawer — see the s192 worklog for the history.)
 - **Zustand** for all server state — one store, selector subscriptions, no prop drilling of server data.
 - **Tailwind v4 CSS-first**: tokens in `globals.css` `@theme` only; literal class strings (v4 scans source); static maps for dynamic variants.
 - **Radix primitives** for every overlay (Dialog, AlertDialog, Select, Tabs) — never hand-roll focus trapping or dismissal.
@@ -75,7 +75,7 @@ Demo login: `sepnetflix2023@outlook.com` / `$Abcd1234`.
 
 ### Test Pyramid
 
-- **Unit (Vitest, 382 checks)**: domain math, vocabularies, Zod contracts, infra seams (db-path, auth, rate-limit, metadata), chrome contracts.
+- **Unit (Vitest, 381 checks)**: domain math, vocabularies, Zod contracts, infra seams (db-path, auth, rate-limit, metadata), chrome contracts.
 - **E2E (Playwright, 61 checks)**: real UI against the production standalone server on an isolated port + seeded `db/e2e.db`. Auth rides a saved storageState (the rate limiter forbids per-test logins).
 - **Smoke (14 checks)**: the standalone artifact boots, serves, walls, and ships clean.
 
@@ -164,7 +164,7 @@ Prisma + SQLite. Three models: `User` (auth + preferences), `Transaction` (type/
 
 You are successful when:
 
-- The full gate is green (382 unit + 61 e2e + 14 smoke) and stays green.
-- Visual parity holds against the reference at both axes (VLM-verified structural parity).
-- The mobile superset battery never regresses.
+- The full gate is green (381 unit + 61 e2e + 14 smoke) and stays green.
+- Visual parity holds against the reference at both axes (VLM-verified structural parity), including the mobile bottom tab bar.
+- The bottom-tab-bar battery never regresses.
 - No new lint suppressions, no weakened assertions, no secrets in the tree.

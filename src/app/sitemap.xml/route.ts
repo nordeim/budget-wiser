@@ -7,15 +7,18 @@ import { siteUrl } from "@/lib/site";
 // handler because Next's sitemap.ts serializer DROPS the number
 // formatting ("1.0" serializes as "1") — and its MetadataRoute type
 // spells the field changeFrequency, easy to mis-pin. One deliberate fix:
-// the reference's locs are CAPITALIZED (/Accounts…) — its platform routes
+// the reference's locs are CAPITALIZED (/Budgets…) — its platform routes
 // case-insensitively; our router is case-sensitive (the documented s14
-// decision, /Profile as the one aliased casing), so this sitemap lists
-// the real lowercase routes the router actually serves.
-// Session-142 (D-142a3): + /about + /contact (the reference's two new
-// marketing-layer app pages — its URL surface now includes them; ours
-// mirrors at the lowercase canonicals). `/` stays 1.0 — it is now the
-// PUBLIC landing page (the reference's own root), still the highest-
-// priority crawlable route.
+// decision), so this sitemap lists the real lowercase routes the router
+// actually serves.
+// Session-142 (D-142a3) added /about + /contact when the reference's URL
+// surface included them. Session-193 (2026-10-27 re-audit): the reference
+// REMOVED its own /About /Contact (both now 404, and its sitemap dropped
+// them — it now lists only /, /Budgets, /Profile, /Transactions). OUR
+// entries STAY: the routes are real pages in this app — OUR public
+// marketing layer, linked from the landing's footer (the landing itself
+// is the documented superset surface). `/` stays 1.0 — it is the PUBLIC
+// landing page, the highest-priority crawlable route.
 export const dynamic = "force-static";
 
 const ROUTES: Array<{ path: string; priority: string }> = [
