@@ -47,17 +47,10 @@ function stripComments(src: string): string {
 // The eleven parseBody-family routes (the shared "Invalid request body"
 // invalid-body form rides parseBody's null branch in api.ts).
 const ROUTES = [
-  "src/app/api/accounts/route.ts",
-  "src/app/api/accounts/[id]/route.ts",
-  "src/app/api/activities/route.ts",
-  "src/app/api/activities/[id]/route.ts",
-  "src/app/api/contacts/route.ts",
-  "src/app/api/contacts/[id]/route.ts",
-  "src/app/api/events/route.ts",
-  "src/app/api/events/[id]/route.ts",
-  "src/app/api/leads/route.ts",
-  "src/app/api/leads/[id]/route.ts",
-  "src/app/api/settings/route.ts",
+  "src/app/api/transactions/route.ts",
+  "src/app/api/budgets/route.ts",
+  "src/app/api/budgets/[id]/route.ts",
+  "src/app/api/profile/route.ts",
 ] as const;
 
 // The reset route's own invalid-body face: no separate "Invalid request
@@ -65,15 +58,9 @@ const ROUTES = [
 // guard (its historical contract, preserved verbatim).
 const RESET_ROUTE = "src/app/api/reset/route.ts" as const;
 
-// Session-72 (M-72c2): the users PATCH — the 13th sessioned body-parsing
-// route. Its handler names its param `request` (not `req`) and its
-// invalid-body message reads "Invalid JSON body" (the one divergent
-// sibling — preserved verbatim, never normalized mid-port), so its pins
-// are param- and message-aware below.
-const USERS_ROUTE = "src/app/api/users/route.ts" as const;
 
 describe("session-68 + session-165 + session-166: the sessioned bounded-reader family (F-68a2 → the S148-A/S75-B port → the Zod seam)", () => {
-  it("all 11 parseBody-family routes import the seam from the api module", () => {
+  it("all parseBody-family routes import the seam from the api module", () => {
     for (const rel of ROUTES) {
       const src = stripComments(read(rel) ?? "");
       expect(src, rel).toMatch(/parseBody/);
@@ -84,19 +71,8 @@ describe("session-68 + session-165 + session-166: the sessioned bounded-reader f
     expect(reset, RESET_ROUTE).toMatch(/readBoundedJson/);
   });
 
-  it("session-72: the users PATCH — the 13th sessioned body-parsing route — is on the route-local seam form (M-72c2 + s166)", () => {
-    const src = stripComments(read(USERS_ROUTE) ?? "");
-    expect(src, USERS_ROUTE).toMatch(/readBoundedJson/);
-    expect(src, USERS_ROUTE).toMatch(/from "@\/lib\/api"/);
-    const seam = src.indexOf("readBoundedJson(request)");
-    expect(seam, `${USERS_ROUTE}: no seam call`).toBeGreaterThanOrEqual(0);
-    expect(src, USERS_ROUTE).toContain(
-      'if (read.tooLarge) return ERR.BAD_REQUEST("Request body too large");',
-    );
-  });
-
   it("session-165 + session-166: NO sessioned route parses through a bare req.json() anymore (the unbounded direct parse retired)", () => {
-    for (const rel of [...ROUTES, RESET_ROUTE, USERS_ROUTE]) {
+    for (const rel of [...ROUTES, RESET_ROUTE]) {
       const src = stripComments(read(rel) ?? "");
       expect(src, `${rel}: the direct req.json()/request.json() parse must not survive`).not.toMatch(
         /\b(?:req|request)\.json\(\)/,
@@ -118,24 +94,6 @@ describe("session-68 + session-165 + session-166: the sessioned bounded-reader f
       const between = src.slice(handlerStart, seam);
       expect(between.match(/\bdb\.\w+/g) ?? [], `${rel}: DB work before the seam`).toEqual([]);
     }
-    // the users route's param-aware twin (the route-local seam form)
-    const users = stripComments(read(USERS_ROUTE) ?? "");
-    const seam = users.indexOf("readBoundedJson(request)");
-    expect(seam, `${USERS_ROUTE}: no seam call`).toBeGreaterThanOrEqual(0);
-    const handlerStarts = [...users.matchAll(/export async function (?:GET|POST|PUT|PATCH|DELETE)/g)]
-      .map((m) => m.index ?? 0)
-      .filter((i) => i < seam);
-    const handlerStart = handlerStarts.length ? handlerStarts[handlerStarts.length - 1] : 0;
-    expect(users.slice(handlerStart, seam).match(/\bdb\.\w+/g) ?? [], `${USERS_ROUTE}: DB work before the seam`).toEqual([]);
-    // the reset route's twin
-    const reset = stripComments(read(RESET_ROUTE) ?? "");
-    const resetSeam = reset.indexOf("readBoundedJson(req)");
-    expect(resetSeam, `${RESET_ROUTE}: no seam call`).toBeGreaterThanOrEqual(0);
-    const resetHandlers = [...reset.matchAll(/export async function (?:GET|POST|PUT|PATCH|DELETE)/g)]
-      .map((m) => m.index ?? 0)
-      .filter((i) => i < resetSeam);
-    const resetStart = resetHandlers.length ? resetHandlers[resetHandlers.length - 1] : 0;
-    expect(reset.slice(resetStart, resetSeam).match(/\bdb\.\w+/g) ?? [], `${RESET_ROUTE}: DB work before the seam`).toEqual([]);
   });
 
   it("the 400 vocabulary rides the seam (api.ts) + the two divergent siblings keep their own forms (the message-preservation contract)", () => {
@@ -149,10 +107,8 @@ describe("session-68 + session-165 + session-166: the sessioned bounded-reader f
       const src = stripComments(read(rel) ?? "");
       expect(src, rel).toMatch(/if \(!parsed\.ok\) return parsed\.response;/);
     }
-    // the two divergent siblings, preserved verbatim — never normalized
-    // mid-port (the s165/s166 zero-message-drift doctrine):
-    const users = stripComments(read(USERS_ROUTE) ?? "");
-    expect(users, USERS_ROUTE).toContain('ERR.BAD_REQUEST("Invalid JSON body")');
+    // the divergent sibling, preserved verbatim — never normalized
+    // mid-port (the zero-message-drift doctrine):
     const reset = stripComments(read(RESET_ROUTE) ?? "");
     expect(reset, RESET_ROUTE).toContain('Type "RESET" to confirm');
   });

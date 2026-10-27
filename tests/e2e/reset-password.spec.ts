@@ -28,7 +28,7 @@ test.describe("reset-password landing (no token → the invalid-link card)", () 
 
     await page.getByRole("button", { name: "Back to login" }).click();
     await expect(page).toHaveURL(/\/login$/);
-    await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Welcome to Budget Wise" })).toBeVisible();
   });
 
   test("an empty token and a differently-named param both render the invalid card", async ({ page }) => {
@@ -43,7 +43,7 @@ test.describe("reset-password form (a non-empty token)", () => {
   test("renders the set-password form with the helper text", async ({ page }) => {
     await page.goto("/reset-password?token=e2e-shape-probe");
     await expect(page.getByRole("heading", { name: "Set new password" })).toBeVisible();
-    await expect(page.getByText("Enter your new password for NEO CRM")).toBeVisible();
+    await expect(page.getByText("Enter your new password for Budget Wise")).toBeVisible();
 
     const password = page.locator("input#password");
     const confirm = page.locator("input#confirmPassword");
@@ -76,7 +76,7 @@ test.describe("reset-password form (a non-empty token)", () => {
     await page.goto("/reset-password?token=e2e-shape-probe");
     await page.getByRole("button", { name: "Back to login" }).first().click();
     await expect(page).toHaveURL(/\/login$/);
-    await expect(page.getByRole("heading", { name: "Welcome to NEO CRM" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Welcome to Budget Wise" })).toBeVisible();
   });
 });
 

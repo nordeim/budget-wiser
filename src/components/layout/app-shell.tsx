@@ -1,94 +1,197 @@
 "use client";
 
+// Budget Wise app chrome — the reference's top-navbar model:
+// a `min-h-screen bg-slate-50` document that scrolls at the WINDOW level,
+// the sticky `h-16` navbar above it, the page content in a max-w-7xl
+// container, and the footer at the document's end.
+//
+// The mobile drawer (OUR superset): the reference ships NO navigation
+// below md — its link row is display:none on phones with no hamburger.
+// The drawer rides the repo's Radix-Dialog Sheet pattern (the vendored
+// tw-animate.css data-[state] machinery), with the kept behavioral
+// supersets: resize-past-md auto-close, body+document scroll lock, and
+// route-change close.
+//
+// Tailwind v4 pitfalls deliberately avoided (the family the repo's
+// docs/Tailwind-V4-Validation-Report.md pins):
+//  - No `hidden` attribute fighting display utilities (v4: `hidden` WINS).
+//  - The sheet is portal'd to body level — never clipped by an ancestor.
+//  - z-index stays on the flat scale (sheet z-50, below toasts).
+
 import * as React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SidebarNav, BrandMark } from "./sidebar";
-import { MobileNav } from "./mobile-nav";
-import { Topbar } from "./topbar";
-import { Dialog } from "@/components/ui/dialog";
-import { useCrmStore } from "@/stores/crm-store";
-import { APP_FOOTER, SHELL_LAYOUT } from "@/lib/page-layout";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Menu, Wallet, X } from "lucide-react";
+import { NAV_ITEMS, isNavActive } from "./nav-config";
+import { APP_FOOTER, MOBILE_NAV_LAYOUT, MOBILE_NAV_SHEET, SHELL_LAYOUT, SITE_NAV } from "@/lib/page-layout";
+import { DialogOverlay } from "@/components/ui/dialog";
+import { useBudgetStore } from "@/stores/budget-store";
+import { cn } from "@/lib/utils";
 import type { User as AppUser } from "@/types";
 
-/**
- * App chrome — session-7 reference model (SHELL_LAYOUT contracts):
- * a `flex h-screen` row holds the sidebar as an IN-FLOW flex child
- * (visible from `md`) and a `flex-1 … overflow-hidden` main column whose
- * `main` is the ONLY scroller (the window never scrolls). The mobile
- * sheet covers `< md` — since session-147 it is the reference's OWN
- * mobile-nav fix mirrored (the Radix Sheet it shipped in its
- * parity-event bundle), with our kept behavioral supersets (the
- * resize-past-md auto-close, the main-scroller lock, the route-change
- * close).
- */
-export function AppShell({ user, children }: { user: AppUser; children: React.ReactNode }) {
+export function AppShell({ children }: { user: AppUser; children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
-  const hydrate = useCrmStore((s) => s.hydrate);
-
-  // Close the sheet on navigation — adjust-during-render for this
-  // component's OWN state (the sanctioned React pattern). Session-35:
-  // moved here from MobileNav — adjusting the parent's state from the
-  // child's render body tripped React's cross-component render warning
-  // on non-link navigations (browser back/forward with the sheet open).
   const pathname = usePathname();
+
+  // One-time bootstrap of the client store from the session cookie.
+  const hydrate = useBudgetStore((s) => s.hydrate);
+  React.useEffect(() => {
+    void hydrate();
+  }, [hydrate]);
+
+  // Close the sheet on navigation — adjust-during-render (the sanctioned
+  // React pattern for this component's OWN state).
   const [prevPathname, setPrevPathname] = React.useState(pathname);
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     if (mobileNavOpen) setMobileNavOpen(false);
   }
 
-  // One-time bootstrap of the client store from the session cookie.
+  // Lock window scroll while the sheet is open.
   React.useEffect(() => {
-    void hydrate();
-  }, [hydrate]);
+    if (!mobileNavOpen) return;
+    const prevOverflow = document.body.style.overflow ?? "";
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [mobileNavOpen]);
 
   return (
-    // The Radix Dialog Root (no DOM) wraps the whole shell so the
-    // Topbar's DialogTrigger and the portal'd sheet share the
-    // AppShell-owned controlled open state (session-147).
-    <Dialog open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+    <DialogPrimitive.Root open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
       <div className={SHELL_LAYOUT.root}>
-        {/* Desktop sidebar — in-flow flex child, visible from md (768px). */}
-        <aside className={SHELL_LAYOUT.sidebar}>
-          <BrandMark />
-          <div className="min-h-0 flex-1">
-            <SidebarNav />
-          </div>
-        </aside>
-
-        {/* Mobile sheet (< md) — the reference's own drawer, mirrored
-            (session-147). */}
-        <MobileNav open={mobileNavOpen} onOpenChange={setMobileNavOpen} />
-
-        {/* Main column: topbar + main scroller. The column is
-            overflow-hidden so `main` owns all scrolling. Session-16
-            (S16-P1/P2): NO shell-level padding wrapper — the reference's
-            PAGES own their padding (PAGE_ROOT.standard/bare; contacts
-            ships the full-height layout as its root), and a blanket
-            wrapper here double-padded the contacts h-calc box (16px extra
-            per side at 390, main scrolling 37px instead of the 5px
-            mirrored quirk). Sticky bars (reports) still stick to main's
-            top. */}
-        <div className={SHELL_LAYOUT.mainColumn}>
-          <Topbar user={user} />
-          {/* Session-143 (D-143a0/F-143c1): the footer follows the page
-              children INSIDE main — the reference's placement on all 11 app
-              pages (walk33-censused; the contract rides APP_FOOTER in
-              page-layout.ts, pinned by tests/page-layout.test.ts). */}
-          <main className={SHELL_LAYOUT.main}>
-            {children}
-            <footer className={APP_FOOTER.footer}>
-              <span>{APP_FOOTER.copyright}</span>
+        <BrandNav pathname={pathname} />
+        <main>{children}</main>
+        <footer className={APP_FOOTER.footer}>
+          <div className={APP_FOOTER.inner}>
+            <span>{APP_FOOTER.copyright}</span>
+            <span className="flex items-center gap-4">
               <a className={APP_FOOTER.link} href={APP_FOOTER.about.href}>
                 {APP_FOOTER.about.label}
               </a>
               <a className={APP_FOOTER.link} href={APP_FOOTER.contact.href}>
                 {APP_FOOTER.contact.label}
               </a>
-            </footer>
-          </main>
+            </span>
+          </div>
+        </footer>
+      </div>
+
+      {/* Mobile sheet (< md) — OUR superset over the reference (which
+          ships no phone navigation at all). */}
+      <MobileSheet open={mobileNavOpen} onOpenChange={setMobileNavOpen} pathname={pathname} />
+    </DialogPrimitive.Root>
+  );
+}
+
+/** The sticky top navbar — the reference's own markup, byte-mirrored:
+ *  logo link + `hidden md:flex` pill row + (ours) the md:hidden hamburger. */
+function BrandNav({ pathname }: { pathname: string }) {
+  return (
+    <nav className={SITE_NAV.nav}>
+      <div className={SITE_NAV.container}>
+        <div className={SITE_NAV.row}>
+          <Link href="/Dashboard" className={SITE_NAV.logoLink} aria-label="BudgetWise home">
+            <span className={SITE_NAV.logoTile}>
+              <Wallet className={SITE_NAV.logoIcon} strokeWidth={2} />
+            </span>
+            <span className={SITE_NAV.wordmark}>BudgetWise</span>
+          </Link>
+
+          <div className={SITE_NAV.desktopLinks}>
+            {NAV_ITEMS.map((item) => {
+              const active = isNavActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={active ? SITE_NAV.linkActive : SITE_NAV.link}
+                >
+                  <item.icon className={SITE_NAV.linkIcon} strokeWidth={2} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Our superset: the hamburger the reference never shipped —
+              a real Radix Trigger so focus restores to it on close. */}
+          <DialogPrimitive.Trigger asChild>
+            <button
+              type="button"
+              className={SITE_NAV.hamburger}
+              aria-label="Open navigation menu"
+            >
+              <Menu className="h-5 w-5" strokeWidth={2} />
+            </button>
+          </DialogPrimitive.Trigger>
         </div>
       </div>
-    </Dialog>
+    </nav>
+  );
+}
+
+/** The drawer — Radix Dialog sheet, left-anchored, slate-900 brand. */
+function MobileSheet({
+  open,
+  onOpenChange,
+  pathname,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  pathname: string;
+}) {
+  // Superset: auto-close when the viewport grows past md — the query MUST
+  // match the hamburger's md:hidden range (768px).
+  React.useEffect(() => {
+    if (!open) return;
+    const mql = window.matchMedia(MOBILE_NAV_LAYOUT.autoCloseQuery);
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) onOpenChange(false);
+    };
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, [open, onOpenChange]);
+
+  return (
+    <DialogPrimitive.Portal>
+      <DialogOverlay />
+      <DialogPrimitive.Content className={MOBILE_NAV_SHEET.content}>
+        <DialogPrimitive.Close className={MOBILE_NAV_SHEET.close}>
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </DialogPrimitive.Close>
+        <div className={MOBILE_NAV_SHEET.header}>
+          <DialogPrimitive.Title className={MOBILE_NAV_SHEET.title}>
+            {MOBILE_NAV_SHEET.titleText}
+          </DialogPrimitive.Title>
+          <DialogPrimitive.Description className={MOBILE_NAV_SHEET.description}>
+            {MOBILE_NAV_SHEET.descriptionText}
+          </DialogPrimitive.Description>
+        </div>
+        <nav aria-label="Main navigation" className={MOBILE_NAV_SHEET.nav}>
+          {NAV_ITEMS.map((item) => {
+            const active = isNavActive(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => onOpenChange(false)}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  active ? MOBILE_NAV_SHEET.linkActive : MOBILE_NAV_SHEET.link,
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
+                )}
+              >
+                <item.icon className={cn(MOBILE_NAV_SHEET.icon, "shrink-0")} strokeWidth={2} />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </DialogPrimitive.Content>
+    </DialogPrimitive.Portal>
   );
 }

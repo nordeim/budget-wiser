@@ -24,20 +24,22 @@ import { toast } from "@/components/ui/toast";
 
 type Mode = "signin" | "signup";
 
-/** Session-147 (F-147c2 — walk37): the reference's from_url round-trip.
- *  Its new auth wall lands guests on /login?from_url=<absolute-url> and
- *  returns them to the target after a successful sign-in. THE
- *  OPEN-REDIRECT GUARD: the param is untrusted query input — only a
- *  SAME-ORIGIN URL navigates (relative values resolve against our own
- *  origin, foreign origins fall back to the plain-login target "/",
- *  malformed values too). Never router.push(<the raw param>). */
+/** The from_url round-trip: the auth wall lands guests on
+ *  /login?from_url=<absolute-url> and returns them to the target after a
+ *  successful sign-in. THE OPEN-REDIRECT GUARD: the param is untrusted
+ *  query input — only a SAME-ORIGIN URL navigates (relative values
+ *  resolve against our own origin, foreign origins fall back to the
+ *  plain-login target "/Dashboard", malformed values too). Never
+ *  router.push(<the raw param>). The default target is /Dashboard — our
+ *  landing at "/" is the public marketing surface (the reference's "/"
+ *  IS the app; we split the two). */
 function resolveFromUrl(raw: string): string {
   try {
     const u = new URL(raw, window.location.origin);
-    if (u.origin !== window.location.origin) return "/";
-    return `${u.pathname}${u.search}` || "/";
+    if (u.origin !== window.location.origin) return "/Dashboard";
+    return `${u.pathname}${u.search}` || "/Dashboard";
   } catch {
-    return "/";
+    return "/Dashboard";
   }
 }
 
@@ -137,7 +139,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
         setError(body?.error?.message ?? "Sign in failed. Try again.");
         return;
       }
-      router.push(resolveFromUrl(fromUrl ?? "/"));
+      router.push(resolveFromUrl(fromUrl ?? "/Dashboard"));
       router.refresh();
     } catch {
       setError("Network error — check your connection and try again.");
@@ -205,7 +207,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
         setError(body?.error?.message ?? "Invalid verification code.");
         return;
       }
-      router.push("/");
+      router.push("/Dashboard");
       router.refresh();
     } catch {
       setError("Network error — check your connection and try again.");
@@ -629,7 +631,7 @@ export function LoginCard({ mode = "signin" }: { mode?: Mode }) {
             </div>
 
             <div className="space-y-2 sm:space-y-3">
-              <h1 className={LOGIN_LAYOUT.title}>Welcome to NEO CRM</h1>
+              <h1 className={LOGIN_LAYOUT.title}>Welcome to Budget Wise</h1>
               <p className={LOGIN_LAYOUT.subtitle}>Sign in to continue</p>
             </div>
 

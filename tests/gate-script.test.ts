@@ -93,17 +93,14 @@ describe("session-69: the E2E_PORT single source (N-69g)", () => {
     return existsSync(p) ? readFileSync(p, "utf-8") : "";
   }
 
-  it("the 3100 default lives exactly once (in e2e-port.ts) and both consumers import it", () => {
+  it("the 3100 default lives exactly once (in e2e-port.ts) and the config imports it", () => {
     const port = stripComments(read("tests/e2e/e2e-port.ts"));
     expect(port).toContain('"3100"');
     const config = stripComments(read("playwright.config.ts"));
-    const spec = stripComments(read("tests/e2e/crm.spec.ts"));
-    // neither consumer carries the literal anymore
+    // the consumer carries no literal anymore
     expect(config).not.toContain("?? 3100");
-    expect(spec).not.toContain('?? "3100"');
-    // both consume the shared module
+    // the config consumes the shared module
     expect(config).toMatch(/e2e-port/);
-    expect(spec).toMatch(/e2e-port/);
   });
 });
 

@@ -15,7 +15,9 @@ test("authenticate demo user", async ({ page }) => {
   await page.getByLabel("Password").fill("$Abcd1234");
   await page.getByRole("button", { name: "Sign in" }).click();
 
-  await page.waitForURL("/");
+  // The post-login default target: /Dashboard (the landing at "/" is the
+  // public marketing surface).
+  await page.waitForURL("**/Dashboard");
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 
   await page.context().storageState({ path: STORAGE });

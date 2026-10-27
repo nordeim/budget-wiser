@@ -2,23 +2,10 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-// Session-26 pins (S26-P2): the reset flow's native-dialog contract,
-// byte-extracted from the reference's minified bundle:
-//
-//   if (e !== "RESET") { alert("Please type RESET to confirm"); return; }
-//   if (confirm("This will permanently delete all contacts, accounts,
-//   leads, opportunities, activities, and calendar events. Are you sure?"))
-//     try {
-//       await Promise.all([six entity list+delete passes]);
-//       r.invalidateQueries(); t("");
-//       alert("Data reset complete");
-//     } catch { alert("Failed to reset data"); }
-//
-// Live-verified twice on the reference (the confirm intercepted + accepted;
-// the input cleared, the button re-disabled, all six entity lists
-// refetched — at zero data the deletes are no-ops so the network log shows
-// ONLY the 6 list() GETs). Our clone shipped a direct reset + an invented
-// toast — the s24/s25 invented-toast family.
+// The reset flow pins (Budget Wise): the /api/reset route's contract —
+// the session guard, the bounded reader, the "RESET" confirm gate, and
+// the ATOMIC transactional wipe of the domain tables (budgets +
+// transactions; users and their auth state survive).
 
 function read(rel: string): string | null {
   const p = path.resolve(import.meta.dirname, "..", rel);
@@ -31,63 +18,46 @@ function stripComments(src: string): string {
     .replace(/\/\/[^\n]*/g, "");
 }
 
-const CONFIRM_MESSAGE =
-  "This will permanently delete all contacts, accounts, leads, opportunities, activities, and calendar events. Are you sure?";
+const RESET_ROUTE = "src/app/api/reset/route.ts";
 
-describe("session-26: the reset handler's native dialogs (S26-P2)", () => {
-  it("the handler gates on confirm() with the reference's exact message", () => {
-    const code = stripComments(read("src/app/(app)/settings/settings-page.tsx")!);
-    expect(code).toMatch(/confirm\(/);
-    expect(code).toContain(CONFIRM_MESSAGE);
+describe("the reset route contract", () => {
+  it("exists and is dynamic", () => {
+    const src = read(RESET_ROUTE)!;
+    expect(src).toMatch(/export const dynamic = "force-dynamic"/);
   });
 
-  it("the defensive alert fires when the text is not RESET", () => {
-    const code = stripComments(read("src/app/(app)/settings/settings-page.tsx")!);
-    expect(code).toContain('alert("Please type RESET to confirm")');
+  it("gates on the session", () => {
+    const code = stripComments(read(RESET_ROUTE)!);
+    expect(code).toMatch(/requireSession\(\)/);
+    expect(code).toMatch(/if \(isGuarded\(guard\)\) return guard\.response;/);
   });
 
-  it("the success path reports via the native alert, not a toast", () => {
-    const code = stripComments(read("src/app/(app)/settings/settings-page.tsx")!);
-    expect(code).toContain('alert("Data reset complete")');
-    // The reset path carries NO toast call (the s24/s25 invented-toast
-    // family retired). Scope: the reset onClick region only.
-    const i = code.indexOf("resetText !== \"RESET\"");
-    const region = code.slice(Math.max(0, i - 200), i + 900);
-    expect(region).not.toMatch(/toast\./);
+  it("parses through the bounded reader (never a bare req.json())", () => {
+    const code = stripComments(read(RESET_ROUTE)!);
+    expect(code).toMatch(/readBoundedJson\(req\)/);
+    expect(code).not.toMatch(/\breq\.json\(\)/);
+    expect(code).toMatch(/if \(read\.tooLarge\) return ERR\.BAD_REQUEST\("Request body too large"\);/);
   });
 
-  it("the failure path alerts", () => {
-    const code = stripComments(read("src/app/(app)/settings/settings-page.tsx")!);
-    expect(code).toContain('alert("Failed to reset data")');
+  it("gates on the exact RESET confirm string", () => {
+    const code = stripComments(read(RESET_ROUTE)!);
+    expect(code).toMatch(/body\.confirm !== "RESET"/);
+    expect(code).toMatch(/'Type "RESET" to confirm'/);
   });
 
-  it("the handler only resets when the confirm is accepted", () => {
-    const code = stripComments(read("src/app/(app)/settings/settings-page.tsx")!);
-    const i = code.indexOf(`confirm(\`${CONFIRM_MESSAGE}\`)`) >= 0
-      ? code.indexOf(`confirm(\`${CONFIRM_MESSAGE}\`)`)
-      : code.indexOf("confirm(");
-    const region = code.slice(i, i + 500);
-    // The reset call + the input clear live INSIDE the accepted branch.
-    expect(region).toMatch(/resetData\(\)/);
-    expect(region).toMatch(/setResetText\(""\)/);
+  it("wipes the domain tables ATOMICALLY (budgets + transactions; users survive)", () => {
+    const code = stripComments(read(RESET_ROUTE)!);
+    expect(code).toMatch(/db\.\$transaction\(\[/);
+    expect(code).toMatch(/db\.budget\.deleteMany\(\)/);
+    expect(code).toMatch(/db\.transaction\.deleteMany\(\)/);
+    expect(code).not.toMatch(/db\.user\.deleteMany\(\)/);
+    expect(code).not.toMatch(/db\.account\.deleteMany\(\)/);
+    expect(code).not.toMatch(/db\.contact\.deleteMany\(\)/);
   });
-});
 
-describe("session-26: the store's invalidation half (already at parity — now pinned)", () => {
-  it("resetData refetches every entity slice after the wipe", () => {
-    const code = stripComments(read("src/stores/crm-store.ts")!);
-    const i = code.indexOf("resetData: async");
-    const region = code.slice(i, i + 600);
-    for (const fn of [
-      "fetchAccounts()",
-      "fetchContacts()",
-      "fetchLeads()",
-      "fetchActivities()",
-      "fetchEvents()",
-      "fetchSettings()",
-      "fetchDashboard()",
-    ]) {
-      expect(region).toContain(fn);
-    }
+  it("answers the envelope on success and holds the failure path", () => {
+    const code = stripComments(read(RESET_ROUTE)!);
+    expect(code).toMatch(/return ok\(\{ reset: true \}\);/);
+    expect(code).toMatch(/return ERR\.INTERNAL\(\);/);
   });
 });

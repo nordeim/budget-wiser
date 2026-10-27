@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
 // the create dialogs. Every pin below is DOM/HTTP-verified against the
 // live reference (2026-10-01 audit):
 //   - the reference serves /manifest.json + <link rel=manifest>: name +
-//     short_name "NEO CRM", the same 405-char description, TWO icon
+//     short_name "Budget Wise", the same description, TWO icon
 //     entries (192x192 + 512x512, the SAME src — their platform
 //     screenshot; self-hosted expression: our /icon.png), start_url +
 //     scope at the origin, display "standalone", theme_color "#000000",
@@ -20,11 +20,11 @@ import { describe, expect, it } from "vitest";
 //     shipped #2563eb (an s18 mis-read of "harmless superset");
 //   - the reference ships mobile-web-app-capable=yes +
 //     apple-mobile-web-app-status-bar-style=black +
-//     apple-mobile-web-app-title="NEO CRM" (metas) and an
+//     apple-mobile-web-app-title="Budget Wise" (metas) and an
 //     apple-touch-icon link (sizes 180x180);
 //   - PER-ROUTE OG/Twitter on every reference inner page: og:title =
-//     "<Page> | NEO CRM", og:url = origin+route, og:description =
-//     "<Page> on NEO CRM. " + the 405-char paragraph; twitter:title/url/
+//     "<Page> | Budget Wise", og:url = origin+route, og:description =
+//     "<Page> on Budget Wise. " + the description paragraph; twitter:title/url/
 //     description likewise (verified on all 8 inner routes + root +
 //     login); the canonical link is per-route too;
 //   - the reference's New Contact Phone input is type=tel (its Lead
@@ -37,7 +37,7 @@ import { describe, expect, it } from "vitest";
 // so the red state fails check-by-check instead of erroring the file.
 
 const REFERENCE_DESCRIPTION =
-  "NEO CRM is a clean, intuitive customer relationship management platform designed to help teams manage accounts, contacts, and leads in one centralized dashboard. With powerful search, clear account tracking, activity monitoring, and built-in reporting, NEO CRM keeps your client data organized, accessible, and actionable—so you can focus on building stronger relationships and closing more opportunities.";
+  "Budget Wise is a clean, intuitive personal finance platform that keeps every dollar in view — track income and expenses, set category budgets, and watch your savings rate climb on a live dashboard. With effortless transaction logging, smart category insights, and month-over-month budget tracking, Budget Wise turns daily spending into a clear picture of your financial health — so you can spend confidently and save deliberately.";
 
 const repoFile = (rel: string) =>
   path.resolve(import.meta.dirname, "..", rel);
@@ -49,7 +49,6 @@ const readOr = (rel: string): string => {
 
 const layoutSrc = () => readOr("src/app/layout.tsx");
 const manifestSrc = () => readOr("src/app/manifest.json/route.ts");
-const dialogsSrc = () => readOr("src/components/shared/entity-dialogs.tsx");
 const wrapperSrc = (page: string) => readOr(`src/app/(app)/${page}/page.tsx`);
 
 describe("session-19: the web app manifest (S19-P1)", () => {
@@ -66,7 +65,7 @@ describe("session-19: the web app manifest (S19-P1)", () => {
     const src = manifestSrc();
     // Key order: name, short_name, description, icons, start_url,
     // display, theme_color, background_color, scope.
-    expect(src).toMatch(/name:\s*"NEO CRM",\s*short_name:\s*"NEO CRM",/);
+    expect(src).toMatch(/name:\s*"Budget Wise",\s*short_name:\s*"Budget Wise",/);
     expect(src).toContain("description: SITE_DESCRIPTION");
     expect(src).toContain('sizes: "192x192"');
     expect(src).toContain('sizes: "512x512"');
@@ -105,7 +104,7 @@ describe("session-19: theme-color + the apple/PWA meta family (S19-P2, S19-P3)",
     const { PWA_META } = await import("@/lib/site");
     expect(PWA_META["mobile-web-app-capable"]).toBe("yes");
     expect(PWA_META["apple-mobile-web-app-status-bar-style"]).toBe("black");
-    expect(PWA_META["apple-mobile-web-app-title"]).toBe("NEO CRM");
+    expect(PWA_META["apple-mobile-web-app-title"]).toBe("Budget Wise");
     const src = layoutSrc();
     expect(src).toContain('PWA_META, SITE_DESCRIPTION, siteUrl');
     expect(src).toContain("...PWA_META");
@@ -126,37 +125,37 @@ describe("session-19: theme-color + the apple/PWA meta family (S19-P2, S19-P3)",
 describe("session-19: the per-route metadata seam (S19-P4, S19-P5)", () => {
   it("builds the reference's prefixed og description", async () => {
     const { pageOgDescription, SITE_DESCRIPTION } = await import("@/lib/site");
-    expect(pageOgDescription("Accounts")).toBe(
-      `Accounts on NEO CRM. ${SITE_DESCRIPTION}`,
+    expect(pageOgDescription("Transactions")).toBe(
+      `Transactions on Budget Wise. ${SITE_DESCRIPTION}`,
     );
     expect(SITE_DESCRIPTION).toBe(REFERENCE_DESCRIPTION);
   });
 
   it("builds the full inner-page metadata set", async () => {
     const { pageMetadata } = await import("@/lib/site");
-    const m = pageMetadata({ page: "Accounts", route: "/accounts" });
-    expect(m.title).toBe("Accounts"); // rides the root "%s | NEO CRM" template
-    expect(m.alternates?.canonical).toBe("/accounts");
+    const m = pageMetadata({ page: "Transactions", route: "/transactions" });
+    expect(m.title).toBe("Transactions"); // rides the root "%s | Budget Wise" template
+    expect(m.alternates?.canonical).toBe("/transactions");
     const og = m.openGraph as Record<string, unknown>;
-    expect(og.title).toBe("Accounts | NEO CRM");
-    expect(og.description).toBe(`Accounts on NEO CRM. ${REFERENCE_DESCRIPTION}`);
-    expect(og.url).toBe("/accounts");
+    expect(og.title).toBe("Transactions | Budget Wise");
+    expect(og.description).toBe(`Transactions on Budget Wise. ${REFERENCE_DESCRIPTION}`);
+    expect(og.url).toBe("/transactions");
     const tw = m.twitter as Record<string, unknown>;
-    expect(tw.title).toBe("Accounts | NEO CRM");
+    expect(tw.title).toBe("Transactions | Budget Wise");
     expect(tw.card).toBe("summary_large_image");
     const other = m.other as Record<string, string>;
-    expect(other["twitter:url"]).toMatch(/\/accounts$/);
+    expect(other["twitter:url"]).toMatch(/\/transactions$/);
     expect(other["mobile-web-app-capable"]).toBe("yes");
-    expect(other["apple-mobile-web-app-title"]).toBe("NEO CRM");
+    expect(other["apple-mobile-web-app-title"]).toBe("Budget Wise");
   });
 
   it("builds the unprefixed root/login family with an ABSOLUTE title", async () => {
     const { pageMetadata } = await import("@/lib/site");
     const m = pageMetadata({ page: null, route: "/login" });
     const title = m.title as { absolute?: string };
-    expect(title.absolute).toBe("NEO CRM"); // the s13 anti-doubling pin
+    expect(title.absolute).toBe("Budget Wise"); // the anti-doubling pin
     const og = m.openGraph as Record<string, unknown>;
-    expect(og.title).toBe("NEO CRM");
+    expect(og.title).toBe("Budget Wise");
     expect(og.description).toBe(REFERENCE_DESCRIPTION);
     expect(og.url).toBe("/login");
     expect(m.alternates?.canonical).toBe("/login");
@@ -164,13 +163,8 @@ describe("session-19: the per-route metadata seam (S19-P4, S19-P5)", () => {
 
   it("wires every inner page wrapper through the factory", () => {
     const pages: Array<[string, string]> = [
-      ["accounts", "Accounts"],
-      ["contacts", "Contacts"],
-      ["leads", "Leads"],
-      ["calendar", "Calendar"],
-      ["activities", "Activities"],
-      ["reports", "Reports"],
-      ["settings", "Settings"],
+      ["transactions", "Transactions"],
+      ["budgets", "Budgets"],
       ["profile", "Profile"],
     ];
     for (const [dir, page] of pages) {
@@ -179,13 +173,13 @@ describe("session-19: the per-route metadata seam (S19-P4, S19-P5)", () => {
       );
     }
     // The auth pages ride the same factory (login keeps the ABSOLUTE
-    // "NEO CRM"; signup keeps its absolute suffixed title — the
+    // "Budget Wise"; signup keeps its absolute suffixed title — the
     // documented functional superset).
     expect(readOr("src/app/login/page.tsx")).toContain(
       'pageMetadata({ page: null, route: "/login" })',
     );
     expect(readOr("src/app/signup/page.tsx")).toContain(
-      'pageMetadata({ page: null, route: "/signup", title: "Sign up | NEO CRM" })',
+      'pageMetadata({ page: null, route: "/signup", title: "Sign up | Budget Wise" })',
     );
     // The dashboard inherits the root layout's metadata (og:url = the
     // origin root — the reference's unprefixed family): NO wrapper
@@ -197,31 +191,5 @@ describe("session-19: the per-route metadata seam (S19-P4, S19-P5)", () => {
 
   it("keeps the root canonical on the root layout", () => {
     expect(layoutSrc()).toMatch(/canonical:\s*"\//);
-  });
-});
-
-describe("session-19: dialog input micro-contracts (S19-P6, S19-P7, S19-P8)", () => {
-  it("types the Contact dialog's Phone as tel (the reference's Lead-vs-Contact split)", () => {
-    const src = dialogsSrc();
-    // Contact phone = tel (reference-verified)…
-    expect(src).toMatch(/id="ct-phone"[\s\S]{0,120}type="tel"/);
-    // …while the Lead dialog's Phone stays type=text on BOTH apps (the
-    // reference's own inconsistency, mirrored).
-    expect(src).toMatch(/id="ld-phone"[\s\S]{0,200}\/>/);
-    expect(src).not.toMatch(/id="ld-phone"[\s\S]{0,200}type="tel"/);
-  });
-
-  it("ships ZERO datalists (the reference ships none in any dialog)", () => {
-    const src = dialogsSrc();
-    expect(src).not.toContain("<datalist");
-    expect(src).not.toMatch(/\blist="industry-options"/);
-    expect(src).not.toMatch(/\blist="account-options"/);
-  });
-
-  it("accepts exactly the reference's avatar file types", () => {
-    expect(dialogsSrc()).toContain(
-      'accept="image/jpeg,image/png,image/jpg"',
-    );
-    expect(dialogsSrc()).not.toContain('accept="image/*"');
   });
 });

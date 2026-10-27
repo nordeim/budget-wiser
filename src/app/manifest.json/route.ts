@@ -18,8 +18,8 @@ export const dynamic = "force-static";
 export function GET(): Response {
   const origin = siteUrl();
   const manifest = {
-    name: "NEO CRM",
-    short_name: "NEO CRM",
+    name: "Budget Wise",
+    short_name: "Budget Wise",
     description: SITE_DESCRIPTION,
     icons: [
       {

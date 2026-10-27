@@ -376,22 +376,20 @@ describe("session-96: the form-family walk remediation (the v4 space-y genus on 
 // ---------------------------------------------------------------------------
 
 describe("session-145: the auth-transition targets (walk35)", () => {
-  it("the post-login redirect lands on the PUBLIC landing — BOTH submit sites (the s142 re-anchor; s147 re-anchored: the sign-in site routes through the from_url resolver whose DEFAULT is the plain \"/\")", () => {
+  it("the post-login redirect lands on the DASHBOARD - BOTH submit sites (the landing at / is public marketing; the sign-in site routes through the from_url resolver whose DEFAULT is /Dashboard)", () => {
     const src = loginCardSrc()
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/\/\/[^\n]*/g, "");
-    // the two sites: the signin success (S21-P2 — s147: the resolver's
-    // "/" default when no from_url rides the query) + the reset-completion
-    // return to the signin view — both land on the landing
-    const pushes = src.match(/router\.push\("\/"\)/g) ?? [];
+    // the two sites: the signin success (the resolver's "/Dashboard"
+    // default when no from_url rides the query) + the verification-success
+    // return - both land on the app dashboard
+    const pushes = src.match(/router\.push\("\/Dashboard"\)/g) ?? [];
     expect(pushes.length).toBe(1);
     // the from_url resolver's plain-login default: the sign-in site
-    // routes through resolveFromUrl(fromUrl ?? "/") — the "/" fallback
-    expect(src).toMatch(/fromUrl \?\? "\/"/);
-    // negatives: never the CRM dashboard (the pre-s142 target) and
-    // never a deep page
-    expect(src).not.toMatch(/router\.push\("\/[Dd]ashboard"\)/);
-    expect(src).not.toMatch(/router\.push\("\/(accounts|contacts|leads|reports|settings|profile)"/);
+    // routes through resolveFromUrl(fromUrl ?? "/Dashboard")
+    expect(src).toMatch(/fromUrl \?\? "\/Dashboard"/);
+    // negatives: never the retired CRM pages and never a deep page
+    expect(src).not.toMatch(/router\.push\("\/(accounts|contacts|leads|reports|settings)"/);
   });
 
   it("/login + /signup are pure renders — NO session read, NO authenticated redirect (the s23-P2 + N-67f retirements, walk35-verified on both apps)", () => {
@@ -435,17 +433,15 @@ describe("session-147: the from_url round-trip (walk37 — the reference's auth-
     expect(src).toMatch(/resolveFromUrl|safeFromUrl|fromUrlTarget/);
   });
 
-  it("the post-login redirect target pin re-anchored: the plain default STAYS / (the s145 pin) + the from_url override", () => {
+  it("the post-login redirect target pin: the plain default is /Dashboard + the from_url override", () => {
     const src = loginCardSrc()
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/\/\/[^\n]*/g, "");
-    // the sign-in site: push(target) where target = resolveFromUrl(...) —
-    // the "/" default inside the resolver; the reset-completion site
-    // keeps its bare "/"
+    // the sign-in site: push(target) where target = resolveFromUrl(...) -
+    // the "/Dashboard" default inside the resolver; the verification
+    // site keeps its explicit "/Dashboard"
     const pushes = src.match(/router\.push\(/g) ?? [];
     expect(pushes.length).toBeGreaterThanOrEqual(2);
     // negatives stand: never a hardcoded CRM page
-    expect(src).not.toMatch(/router\.push\("\/[Dd]ashboard"\)/);
-    expect(src).not.toMatch(/router\.push\("\/(accounts|contacts|leads|reports|settings|profile)"/);
-  });
-});
+    expect(src).not.toMatch(/router\.push\("\/(accounts|contacts|leads|reports|settings)"/);
+  });});

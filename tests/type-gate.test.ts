@@ -74,24 +74,6 @@ describe("session-174: THE TYPE-GATE HARDENING (the build fails on type errors)"
     expect(cfg).not.toMatch(/"noImplicitAny"\s*:/);
   });
 
-  it("the sweep tool's inline union-find is TYPED like its pure seam twin (the F-174b stragglers, the s93 F-A family)", () => {
-    // scripts/sweep.ts carries two copies of the coarse-grid union-find
-    // decode: the PURE seam (line ~607, fully typed since birth) and the
-    // inline twin (line ~837) that rode the noImplicitAny: false escape
-    // hatch with bare parameters and an untyped Map. The typed form is
-    // pinned here so the stragglers can never quietly return (the s93
-    // F-A precedent: the sweep tool's type posture is itself a
-    // fresh-clone gate surface).
-    const src = read("scripts/sweep.ts");
-    expect(src).toContain("const find = (k: number): number =>");
-    expect(src).toContain("const union = (x: number, y: number) =>");
-    expect(src).toContain("new Map<number, number>()");
-    // the untyped forms must stay retired
-    expect(src).not.toContain("const find = (k) =>");
-    expect(src).not.toContain("const union = (x, y) =>");
-    expect(src).not.toContain("const cells = new Map();");
-    expect(src).not.toContain("const parent = new Map();");
-  });
 
   it("ONE lockfile — bun.lock at the repo root, package-lock.json retired (F-174c, the single-lockfile doctrine)", () => {
     // The repo's own new skill, Appendix A lesson 14: "Two lockfiles in

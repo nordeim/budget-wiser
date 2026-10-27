@@ -1,392 +1,330 @@
 "use client";
 
+// The Profile page — the reference's own layout mirrored:
+//   header (H1 + "Manage your account and preferences")
+//   identity card (avatar + camera upload, username, email, role badge,
+//   "Member since {Month Year}")
+//   Preferences (Currency select, About Me textarea with 0/120 counter,
+//   Monthly Savings Goal, Save Preferences)
+//   Financial Overview (month/year income-expenses, budget used %,
+//   total transactions)
+//   {Year} Summary (Total Earned / Total Spent / Net Saved)
+
 import * as React from "react";
-import { Camera, Mail, Shield, User } from "lucide-react";
-import { PAGE_ROOT, PROFILE_LAYOUT } from "@/lib/page-layout";
+import {
+  ArrowDownLeft,
+  BadgeCheck,
+  Camera,
+  Mail,
+  Save,
+  Target,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input, Textarea } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCrmStore } from "@/stores/crm-store";
-import { toast } from "@/components/ui/toast";
-import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Avatar } from "@/components/ui/avatar";
+import { CURRENCIES, ABOUT_ME_MAX } from "@/lib/currency";
+import { money } from "@/lib/budget-math";
+import { useBudgetStore } from "@/stores/budget-store";
+import { PAGE_HEADER, PAGE_ROOT } from "@/lib/page-layout";
+import type { DashboardData } from "@/types";
 
-/**
- * Profile & Settings — mirrors the reference layout (DOM-verified):
- * a "Personal Information" form (blue-100 80/96px avatar circle with a user
- * glyph, camera-icon Upload Photo, editable Full Name, fixed Email + Role,
- * black Save Changes) beside a stack of four small cards — Account (centered
- * avatar + identity + badge), Account Type, Email Verified and Security,
- * each with a 48px tinted icon chip.
- */
-export default function ProfilePage() {
-  const { user, updateUser } = useCrmStore();
+export function ProfilePage() {
+  const profile = useBudgetStore((s) => s.profile);
+  const dashboard = useBudgetStore((s) => s.dashboard);
+  const fetchProfile = useBudgetStore((s) => s.fetchProfile);
+  const saveProfile = useBudgetStore((s) => s.saveProfile);
+  const user = useBudgetStore((s) => s.user);
 
-  return (
-    // Session-16 (S16-P2): the page owns its padding — the reference's
-    // Profile root is just `p-4 sm:p-8` (NO bg / min-h-screen, like
-    // Leads) with the `max-w-4xl mx-auto` column INSIDE. Session-13
-    // (S13-P2): the header is a PLAIN `mb-6 sm:mb-8` div — not the
-    // flex PageHeader row.
-    // Session-72 (L-72c9, bundle-decoded): the loading branch is
-    // HEADERLESS — the reference's else-arm is a plain
-    // `text-center py-12` "Loading..." inside the max-w-4xl column
-    // (the h1 renders only in the loaded branch).
-    <div className={PAGE_ROOT.bare}>
-    <div className={PROFILE_LAYOUT.root}>
-      {!user ? (
-        <div className="text-center py-12">Loading...</div>
-      ) : (
-        <>
-          <div className={PROFILE_LAYOUT.headerRow}>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Profile &amp; Settings</h1>
-            <p className="text-muted mt-1">Manage your account information</p>
-          </div>
-          {/* Keyed remount: the form initializes its local state from the
-              user snapshot at mount — no setState-in-effect needed. The
-              value-based key also re-initializes the form when the store
-              user updates after a save (the pre-reload refresh). */}
-          <ProfileForm key={`${user.id}-${user.name}`} user={user} updateUser={updateUser} />
-        </>
-      )}
-    </div>
-    </div>
-  );
-}
-
-/** 48px tinted circle chip (bg-100 tint + 600-level glyph). */
-function ProfileChip({
-  icon,
-  bg,
-  color,
-  className,
-}: {
-  icon: React.ReactNode;
-  bg: string;
-  color: string;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-full", className)}
-      style={{ backgroundColor: bg, color }}
-      aria-hidden="true"
-    >
-      {icon}
-    </span>
-  );
-}
-
-function ProfileForm({
-  user,
-  updateUser,
-}: {
-  user: { id: string; name: string; email: string; role: string; photoUrl?: string | null };
-  updateUser: (patch: { name: string; photoUrl?: string | null }) => Promise<{ ok: boolean }>;
-}) {
-  const [name, setName] = React.useState(user.name);
-  const [photoUrl, setPhotoUrl] = React.useState(user.photoUrl ?? "");
-  const [uploading, setUploading] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [currency, setCurrency] = React.useState<string>("USD");
+  const [aboutMe, setAboutMe] = React.useState("");
+  const [savingsGoal, setSavingsGoal] = React.useState("");
   const [saving, setSaving] = React.useState(false);
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [message, setMessage] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
-  // Session-30 (S30-P3): the reference's aCe upload handler — NO client
-  // type-validation on this surface (unlike the contact dialog's alert),
-  // TOASTS instead of alerts, and the uploaded file_url lands in the form
-  // state until Save.
-  async function uploadPhoto(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const body = (await res.json().catch(() => null)) as {
-        ok?: boolean;
-        data?: { file_url?: string };
-      } | null;
-      if (res.ok && body?.ok && body.data?.file_url) {
-        setPhotoUrl(body.data.file_url);
-        toast.success("Photo uploaded successfully");
-      } else {
-        toast.error("Failed to upload photo");
-      }
-    } catch {
-      toast.error("Failed to upload photo");
-    } finally {
-      setUploading(false);
-    }
+  React.useEffect(() => {
+    void fetchProfile();
+  }, [fetchProfile]);
+
+  // Hydrate the form once when the profile arrives — the sanctioned
+  // adjust-during-render pattern (compare against the last-seen profile
+  // id; the re-render triggered by the arriving profile lands the state
+  // before the form paints stale).
+  const [hydratedProfileId, setHydratedProfileId] = React.useState<string | null>(null);
+  if (profile && profile.id !== hydratedProfileId) {
+    setHydratedProfileId(profile.id);
+    setName(profile.name ?? "");
+    setCurrency(profile.currency ?? "USD");
+    setAboutMe(profile.aboutMe ?? "");
+    setSavingsGoal(profile.savingsGoal != null ? String(profile.savingsGoal) : "");
   }
 
-  async function save() {
-    // Session-62 (N-62b): the reference's save is UNCONDITIONAL — its
-    // bundle (index-DZ-xbrIm.js) disables the button only while saving
-    // (`disabled:i`) and its submit always PATCHes both fields. The
-    // name-only `dirty` gate that used to live here was a self-inflicted
-    // divergence: a photo-only upload left Save a silent no-op (the
-    // button looked clickable; the handler returned early; navigation
-    // lost the upload).
+  async function onSave(e: React.FormEvent) {
+    e.preventDefault();
+    if (saving) return;
     setSaving(true);
-    // Session-39 (S39-P3): the envelope — the sibling uploadPhoto has
-    // had this shape since s30; a bare await chain let a network throw
-    // propagate from `void save()` as an unhandled rejection with the
-    // Save button stranded busy. The finally un-busies every path.
-    // Session-72 (S72-P7): the PATCH flows through the store's
-    // updateUser action (the call() envelope + the s64 write-guard +
-    // the user-slice set) — the reference's t(await me()) contract:
-    // the Account card's name + photo land in the pre-reload window.
-    // The toasts are single-arg — the reference's exact vocabulary
-    // (bundle-decoded: Ix.error("Failed to update profile")).
-    try {
-      const res = await updateUser({ name, photoUrl: photoUrl || null });
-      if (res.ok) {
-        toast.success("Profile updated successfully");
-        // Session-30 (S30-P3): the reference reloads after 500ms so the
-        // topbar avatar (server-rendered session user) picks up the photo.
-        setTimeout(() => window.location.reload(), 500);
-      } else {
-        toast.error("Failed to update profile");
-      }
-    } catch {
-      toast.error("Failed to update profile");
-    } finally {
-      setSaving(false);
+    setMessage(null);
+    setError(null);
+    const res = await saveProfile({
+      name: name.trim(),
+      currency,
+      aboutMe: aboutMe.trim() || undefined,
+      savingsGoal: savingsGoal.trim() === "" ? null : Number(savingsGoal),
+    });
+    if (res.ok) {
+      setMessage("Preferences saved");
+    } else {
+      setError(res.error);
     }
+    setSaving(false);
   }
 
+  const now = new Date();
+  const memberSince = profile
+    ? profile.createdAt
+      ? new Date(profile.createdAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+      : `${now.toLocaleDateString("en-US", { month: "long" })} ${now.getFullYear()}`
+    : "…";
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
-      {/* Personal information — session-6: spans two of the three lg
-          columns (reference DOM). */}
-      <Card className="lg:col-span-2">
-        <CardHeader>
-          {/* Session-13 (S13-P2): the STOCK CardTitle (16px,
-              leading-none) — the reference's profile title is not a size
-              variant. */}
-          <CardTitle>Personal Information</CardTitle>
-        </CardHeader>
-        {/* Session-9 (S9-8): standard content + form + space-y-6 (no
-            max-w constraint — the reference's inputs stretch full width). */}
-        <CardContent>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void save();
-            }}
-          >
-          <div className="space-y-6">
-          <div className="space-y-2">
-            <Label>Profile Picture</Label>
-            {/* Session-91 (M-91c1): the avatar row carries controlMt — the
-                v4 inline-label collapse fix (see PROFILE_LAYOUT.controlMt). */}
-            <div className={cn("flex flex-col items-center gap-4 sm:flex-row", PROFILE_LAYOUT.controlMt)}>
-              {/* Reference: the stock Avatar primitive wrapping a bg-blue-100
-                  inner div with a stroke-2 user glyph (DOM-verified 80/96px,
-                  icon #2563EB). Session-30 (S30-P3): the reference renders
-                  the uploaded photo over the fallback (img object-cover). */}
-              <span
-                className="relative flex h-20 w-20 shrink-0 overflow-hidden rounded-full sm:h-24 sm:w-24"
-                aria-hidden="true"
-              >
-                {photoUrl ? (
-                  <img src={photoUrl} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  // Walk60 (D-187a2): the reference's fallback is the stock
-                  // two-level structure — a DIV fallback (the stock
-                  // AvatarFallback form the topbar already carries) with
-                  // the color ON THE SVG, not a hand-rolled span carrying
-                  // it on the wrapper.
-                  <div className="flex h-full w-full items-center justify-center bg-blue-100">
-                    <User className={PROFILE_LAYOUT.avatarIcon} strokeWidth={PROFILE_LAYOUT.avatarIconStroke} />
-                  </div>
-                )}
-              </span>
-              <div className="w-full flex-1">
-                <input
-                  ref={fileInputRef}
-                  id="photo-upload"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={uploadPhoto}
+    <div className={PAGE_ROOT.standard}>
+      <header className={PAGE_HEADER.root}>
+        <div>
+          <h1 className={PAGE_HEADER.title}>Profile</h1>
+          <p className={PAGE_HEADER.subtitle}>Manage your account and preferences</p>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Identity + Preferences */}
+        <div className="lg:col-span-7 space-y-6">
+          <section className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden" aria-label="Account">
+            {/* The reference's dark header with the avatar straddling
+                the dark/white boundary */}
+            <div className="bg-slate-900 h-24" />
+            <div className="px-6 pb-6 flex justify-center">
+              <div className="relative -mt-12">
+                <Avatar
+                  name={(profile?.name || user?.name || "U").slice(0, 1) || "U"}
+                  color="#818cf8"
+                  className="h-24 w-24 text-3xl ring-4 ring-white"
                 />
-                {/* Session-30 (S30-P3): the reference's aCe — the outline
-                    Upload Photo button fires the REAL round-trip (accept
-                    image/*, NO type alert on this surface, toasts).
-                    Session-72 (N-72c7, bundle-decoded): while uploading the
-                    label is the "Uploading..." TEXT ONLY — the Camera icon
-                    drops (the reference's own ternary form). */}
-                <Button
-                  variant="outline"
-                  className={PROFILE_LAYOUT.uploadBtn}
-                  type="button"
-                  disabled={uploading}
-                  onClick={() => fileInputRef.current?.click()}
+                <label
+                  className="absolute -bottom-1 -right-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white text-slate-500 shadow-md border border-slate-100 hover:text-slate-700"
+                  title="Upload photo"
                 >
-                  {/* Session-13 (S13-P2): the reference carries the margin
-                      ON THE SVG (w-4 h-4 mr-2), not on the wrapper. */}
-                  {uploading ? "Uploading..." : (
-                    <>
-                      <Camera className={PROFILE_LAYOUT.uploadIcon} /> Upload Photo
-                    </>
-                  )}
-                </Button>
-                <p className="mt-2 text-xs text-muted">JPG, PNG or GIF. Max 5MB.</p>
+                  <Camera className="h-4 w-4" />
+                  <input type="file" accept="image/*" className="sr-only" aria-label="Upload profile photo" />
+                </label>
               </div>
             </div>
-          </div>
+            <div className="px-6 pb-6 text-center">
+              <h2 className="text-xl font-bold text-slate-900">{profile?.name || user?.name || "…"}</h2>
+              <p className="mt-1 flex items-center justify-center gap-1.5 text-sm text-slate-500">
+                <Mail className="h-3.5 w-3.5" />
+                {profile?.email || user?.email || "…"}
+              </p>
+              <div className="mt-3 flex justify-center">
+                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
+                  <BadgeCheck className="h-3 w-3" />
+                  {(profile?.role || user?.role || "user").toLowerCase()}
+                </span>
+              </div>
+              <p className="mt-4 text-xs text-slate-500">Member since {memberSince}</p>
+            </div>
+          </section>
 
-          <div className="space-y-2">
-            <Label htmlFor="display_name">Full Name</Label>
-            <Input
-              id="display_name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={PROFILE_LAYOUT.namePlaceholder}
-              className={PROFILE_LAYOUT.controlMt}
-            />
-          </div>
+          <section className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100" aria-label="Preferences">
+            <h3 className="mb-6 text-lg font-bold text-slate-900">Preferences</h3>
+            <form onSubmit={onSave} className="space-y-5">
+              <div className="space-y-1.5">
+                <Label>Currency</Label>
+                <Select value={currency} onValueChange={setCurrency}>
+                  <SelectTrigger className="w-full" aria-label="Currency">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CURRENCIES.map((c) => (
+                      <SelectItem key={c.code} value={c.code}>
+                        {c.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <div className="space-y-2">
-            {/* Session-114 (D-114a2): the reference's BARE email/role ids —
-                its labels wire htmlFor="email"/"role" (the display_name
-                pair already matched byte-for-byte); our profile-* ids
-                retired for construction parity (no collision exists on
-                the route — the only other id="email" in src/ is the login
-                card, a different route). */}
-            <Label htmlFor="email">Email</Label>
-            {/* Session-13 (S13-P2): the reference's disabled email input
-                carries the bg-gray-50 wash (ours was bg-transparent —
-                indistinguishable from an editable input). */}
-            <Input
-              id="email"
-              type="email"
-              value={user.email}
-              disabled
-              className={cn(PROFILE_LAYOUT.emailDisabled, PROFILE_LAYOUT.controlMt)}
-            />
-            <p className="text-xs text-muted">Email cannot be changed</p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
-            {/* Session-13 (S13-P2): bg-gray-50 + capitalize — the raw
-                value "user" displays "User" like the reference. */}
-            <Input
-              id="role"
-              value={user.role}
-              disabled
-              className={cn(PROFILE_LAYOUT.roleDisabled, PROFILE_LAYOUT.controlMt)}
-            />
-          </div>
-
-          <div className="pt-4">
-            {/* Session-13 (S13-P2): the STOCK Button structure with the
-                reference's PAGE-LOCAL primary — its profile surfaces ride
-                bg-primary #171717 (its global --primary; its blue buttons
-                elsewhere are explicit bg-blue-600). Ours maps --primary
-                to blue, so the neutral literals carry the exact colors:
-                bg #171717, fg #fafafa, bare shadow. Session-80 (M-80c1):
-                the reference's hover is the ALPHA hover:bg-primary/90 —
-                LIVE-probed rgba(23,23,23,0.9) — so the computed-equal is
-                neutral-900 at 90%, not the solid neutral-800 s13 shipped;
-                the inert border-transparent (the stock default ships no
-                border arm) retired with it.
-                Session-72 (L-72c4): the three-dot "Saving..." form —
-                the reference's own label (bundle-decoded). */}
-            <Button
-              type="submit"
-              className={cn(
-                "bg-neutral-900 text-neutral-50 shadow hover:bg-neutral-900/90",
-                PROFILE_LAYOUT.saveBtn,
-              )}
-              disabled={saving}
-            >
-              {saving ? "Saving..." : "Save Changes"}
-            </Button>
-          </div>
-          </div>
-          </form>
-        </CardContent>
-      </Card>
-
-      {/* Right column — four small cards, each with a tinted icon chip.
-          Session-9 (S9-8): space-y stack; the Account card carries a
-          plain p-6 content with the centered name-wrap inside (no h-fit). */}
-      <div className={PROFILE_LAYOUT.columnWrap}>
-        <Card>
-          <CardContent className="p-6">
-            <div className={PROFILE_LAYOUT.nameWrap}>
-            {/* Session-72 (L-72c2, bundle-decoded): the Account card reads
-                the STORE user's photo + name — the reference's card rides
-                the session user (e.profile_picture), so the card stays
-                stale through the upload (the form avatar alone previews)
-                and updates only after the save's me() round-trip — our
-                updateUser set lands the same pre-reload update. */}
-            <span
-              className="relative mb-4 flex h-20 w-20 shrink-0 overflow-hidden rounded-full"
-              aria-hidden="true"
-            >
-              {user.photoUrl ? (
-                <img src={user.photoUrl} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                // Walk60 (D-187a2): the same two-level stock cure as the
-                // form avatar — the DIV fallback + the color on the svg
-                // (the reference's Account-card svg renders
-                // `lucide-user w-10 h-10 text-blue-600`).
-                <div className="flex h-full w-full items-center justify-center bg-blue-100">
-                  <User className="h-10 w-10 text-blue-600" strokeWidth={PROFILE_LAYOUT.avatarIconStroke} />
+              <div className="space-y-1.5">
+                <div className="flex items-baseline justify-between">
+                  <Label htmlFor="about-me">About Me</Label>
+                  <span className="text-xs text-slate-500" aria-live="polite">
+                    {aboutMe.length}/{ABOUT_ME_MAX}
+                  </span>
                 </div>
-              )}
-            </span>
-            <h3 className="text-lg font-semibold">{user.name}</h3>
-            <p className="text-sm text-muted">{user.email}</p>
-            {/* Session-13 (S13-P2): the STOCK shadcn Badge default
-                variant (shadow + hover + transition + focus ring) on the
-                contract string — the hand-rolled minimal span retired. */}
-            <div className={PROFILE_LAYOUT.badge}>{user.role}</div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <ProfileChip icon={<User className="h-6 w-6" />} bg="#dbeafe" color="#2563eb" />
-              <div className="min-w-0">
-                <p className="text-sm text-muted">Account Type</p>
-                <p className="truncate font-semibold capitalize text-foreground">{user.role}</p>
+                <Textarea
+                  id="about-me"
+                  maxLength={ABOUT_ME_MAX}
+                  rows={3}
+                  placeholder="A little about yourself and your financial goals…"
+                  value={aboutMe}
+                  onChange={(e) => setAboutMe(e.target.value)}
+                />
               </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <ProfileChip icon={<Mail className="h-6 w-6" />} bg="#dcfce7" color="#16a34a" />
-              <div className="min-w-0">
-                <p className="text-sm text-muted">Email Verified</p>
-                <p className="font-semibold text-foreground">Yes</p>
+              <div className="space-y-1.5">
+                <Label htmlFor="savings-goal">Monthly Savings Goal ($)</Label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-500">
+                    $
+                  </span>
+                  <Input
+                    id="savings-goal"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    inputMode="decimal"
+                    placeholder="0.00"
+                    className="pl-7"
+                    value={savingsGoal}
+                    onChange={(e) => setSavingsGoal(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <ProfileChip icon={<Shield className="h-6 w-6" />} bg="#f3e8ff" color="#9333ea" />
-              <div className="min-w-0">
-                <p className="text-sm text-muted">Security</p>
-                <p className="font-semibold text-foreground">Protected</p>
-              </div>
+              {error ? (
+                <p role="alert" className="text-sm text-red-600">
+                  {error}
+                </p>
+              ) : null}
+              {message ? (
+                <p role="status" className="text-sm text-emerald-700">
+                  {message}
+                </p>
+              ) : null}
+
+              <Button type="submit" disabled={saving || name.trim() === ""}>
+                <Save className="mr-1 h-4 w-4" />
+                {saving ? "Saving…" : "Save Preferences"}
+              </Button>
+            </form>
+          </section>
+        </div>
+
+        {/* Financial Overview — the reference's 3x2 pastel grid */}
+        <div className="lg:col-span-5 space-y-6">
+          <section className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100" aria-label="Financial Overview">
+            <h3 className="mb-6 text-lg font-bold text-slate-900">Financial Overview</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <StatTile
+                icon={TrendingUp}
+                tint="bg-emerald-50 text-emerald-600"
+                label="This Month Income"
+                value={dashboard ? money(dashboard.income) : "…"}
+              />
+              <StatTile
+                icon={TrendingDown}
+                tint="bg-red-50 text-rose-600"
+                label="This Month Expenses"
+                value={dashboard ? money(dashboard.expenses) : "…"}
+              />
+              <StatTile
+                icon={TrendingUp}
+                tint="bg-blue-50 text-blue-600"
+                label="Year Income"
+                value={dashboard ? money(dashboard.yearSummary.income) : "…"}
+              />
+              <StatTile
+                icon={TrendingDown}
+                tint="bg-purple-50 text-purple-600"
+                label="Year Expenses"
+                value={dashboard ? money(dashboard.yearSummary.expenses) : "…"}
+              />
+              <StatTile
+                icon={Target}
+                tint="bg-amber-50 text-amber-600"
+                label="Budget Used"
+                value={dashboard?.overallBudget ? `${Math.round(dashboard.overallBudget.percentUsed)}%` : "0%"}
+              />
+              <StatTile
+                icon={ArrowDownLeft}
+                tint="bg-slate-100 text-slate-600"
+                label="Total Transactions"
+                value={dashboard ? String(dashboard.totalTransactions) : "…"}
+              />
             </div>
-          </CardContent>
-        </Card>
+          </section>
+
+          <YearSummary dashboard={dashboard} />
+        </div>
       </div>
     </div>
   );
+}
+
+function YearSummary({ dashboard }: { dashboard: DashboardData | null }) {
+  const year = new Date().getFullYear();
+  const earned = dashboard?.yearSummary.income ?? 0;
+  const spent = dashboard?.yearSummary.expenses ?? 0;
+  const net = Math.round((earned - spent) * 100) / 100;
+  // The reference's WHITE wide card with a horizontal row of three
+  // large bold stats and small labels beneath.
+  return (
+    <section className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100" aria-label={`${year} Summary`}>
+      <h3 className="mb-6 text-lg font-bold text-slate-900">{year} Summary</h3>
+      <div className="grid grid-cols-3 gap-4 text-center">
+        <div>
+          <p className="text-2xl font-bold text-emerald-600">{compact(earned)}</p>
+          <p className="mt-1 text-xs text-slate-500">Total Earned</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold text-rose-600">{compact(spent)}</p>
+          <p className="mt-1 text-xs text-slate-500">Total Spent</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold text-slate-900">{compact(net)}</p>
+          <p className="mt-1 text-xs text-slate-500">Net Saved</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** The reference's pastel stat tile — icon chip, small label, bold value. */
+function StatTile({
+  icon: Icon,
+  tint,
+  label,
+  value,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  tint: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-xl p-4">
+      <span className={`inline-flex h-9 w-9 items-center justify-center rounded-lg ${tint}`}>
+        <Icon className="h-4 w-4" />
+      </span>
+      <p className="mt-2 text-xl font-bold text-slate-900">{value}</p>
+      <p className="mt-0.5 text-xs text-slate-500">{label}</p>
+    </div>
+  );
+}
+
+function compact(n: number): string {
+  // The reference's year-summary trio renders compact "$5000"-style
+  // values (no cents on the big numbers).
+  const rounded = Math.round(n);
+  return `$${rounded.toLocaleString("en-US")}`;
 }

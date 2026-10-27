@@ -20,16 +20,14 @@ export const dynamic = "force-static";
 
 const ROUTES: Array<{ path: string; priority: string }> = [
   { path: "/", priority: "1.0" },
-  { path: "/accounts", priority: "0.8" },
-  { path: "/contacts", priority: "0.8" },
-  { path: "/leads", priority: "0.8" },
-  { path: "/calendar", priority: "0.8" },
-  { path: "/activities", priority: "0.8" },
-  { path: "/reports", priority: "0.8" },
-  { path: "/settings", priority: "0.8" },
+  { path: "/dashboard", priority: "0.8" },
+  { path: "/transactions", priority: "0.8" },
+  { path: "/budgets", priority: "0.8" },
   { path: "/profile", priority: "0.8" },
   { path: "/about", priority: "0.8" },
   { path: "/contact", priority: "0.8" },
+  { path: "/login", priority: "0.5" },
+  { path: "/signup", priority: "0.5" },
 ];
 
 export function GET(): Response {

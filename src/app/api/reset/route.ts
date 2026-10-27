@@ -28,15 +28,8 @@ export async function POST(req: Request) {
   // envelope-held.
   try {
     await db.$transaction([
-      db.activity.deleteMany(),
-      db.event.deleteMany(),
-      db.lead.deleteMany(),
-      // Session-31: the reference's reset wipes opportunities too (its confirm
-      // message has said "opportunities" since the s26 decode).
-      db.opportunity.deleteMany(),
-      db.contact.deleteMany(),
-      db.account.deleteMany(),
-      db.savedReport.deleteMany(),
+      db.budget.deleteMany(),
+      db.transaction.deleteMany(),
     ]);
 
     return ok({ reset: true });
