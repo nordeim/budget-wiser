@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.8.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.9.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,12 @@
 **Last Updated:** 2026-10-28
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.9.0 (Tracked Changes)
+
+- `[DOC]` **The session-10 verification round (session 199): the SEVENTH consecutive zero-drift census.** The audit re-verified every parity surface on both apps (the shell, all four pages, the bottom bar byte-identical on every dimension, the clearance 764 ≤ 767 on both, both dialogs, every page title via full navigations, the 404's interpolated surface served in the reference's HTML head, the sitemap + robots, the login card, the donut geometry, the row anatomy, the data state) — zero drift since session 198. The dev-boot guard live-verified on the round's build→dev sequence (0 reload loops, ready in 271ms, health 200, the window marker surviving). The screenshot battery recaptured: 10/12 pixel-identical + the two dialog frames at 0.0011%/0.0064% pixel diff (the antialiasing jitter genus) — render-stability evidence across another generation. **The round's one note (informational, methodology): the reference SPA's title reads lag a `pushstate` navigation** — an in-browser title census on the reference must use full navigations (the served-HTML curl remains the authoritative form, as the s196 pinning used); the lag is a probe artifact, NOT drift. Zero code changes; the counts held at 410/66/14.
+- `[RES]` Re-audit of the live reference (2026-10-28, session 199): **ZERO structural drift since session 198** — the seventh consecutive shell census with no new restyle wave.
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **410 unit HELD** (an evidence-and-documentation round moves zero counts) · build · smoke 14/14 · e2e **66 HELD** (CI=1) · the VLM battery 2× "Structural Differences: None" (budgets mobile, profile mobile) + the two dashboard pairs' flags all the documented data-borne genus (DOM-disproven by the round's direct byte-census) · the screenshot battery recaptured from the dev server (12 images at the 1512×945 + 390×844 convention).
 
 #### Revision Block — v2.8.0 (Tracked Changes)
 
