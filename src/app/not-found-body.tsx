@@ -12,7 +12,7 @@ import { notFoundQuotedPath } from "@/lib/not-found-title";
  * be found in this application.` — the quoted path inside a
  * font-medium slate-700 span), which only a client component can read.
  * The server wrapper (not-found.tsx) owns the page title through
- * generateMetadata (session-196: the middleware's x-pathname stamp →
+ * generateMetadata (session-196: the proxy's x-pathname stamp →
  * the interpolated `<Humanized> | Budget Wise` form, served in the
  * HTML head exactly like the reference's own SPA server does).
  * Structure (VLM round-1 + DOM-verified): space-y-6 center with THREE

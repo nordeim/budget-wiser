@@ -199,7 +199,7 @@ describe("session-18: sitemap.xml + robots.txt (S18-P4)", () => {
 // non-empty path segment> | Budget Wise`, served directly in its HTML
 // head (curl: <title>Curl Probe Route | Budget Wise</title>). The
 // not-found now interpolates server-side through generateMetadata +
-// the middleware's x-pathname stamp (src/lib/not-found-title.ts carries
+// the proxy's x-pathname stamp (src/lib/not-found-title.ts carries
 // the probed transformation; tests/not-found-title.test.ts pins it).
 // The brand-purge purpose below is UNCHANGED — the retired spelling
 // stays out of every title form.

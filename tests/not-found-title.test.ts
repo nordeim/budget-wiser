@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -107,14 +107,26 @@ describe("the NotFoundBody wiring (the surface consumes the helpers)", () => {
     expect(wrapper).toContain('headerList.get("x-pathname")');
     expect(bodySrc()).not.toContain("document.title");
 
-    // The middleware stamps x-pathname for every routed request (the
+    // The proxy stamps x-pathname for every routed request (the
     // only way the unmatched path reaches the render — probed: no path
     // header exists otherwise).
-    const middleware = readFileSync(
-      path.resolve(import.meta.dirname, "..", "src/middleware.ts"),
+    //
+    // Session-201: the FILE CONVENTION moved middleware.ts → proxy.ts
+    // (Next.js 16.4 deprecates the middleware form — the dev log emitted
+    // the warning on every boot). The exported function must be named
+    // `proxy` (or default) per the installed 16.4.2's own resolution
+    // contract; the matcher config is unchanged. The absence guard keeps
+    // the deprecated file from sneaking back (a future "fix" that
+    // recreates src/middleware.ts would silently re-trip the deprecation
+    // and, on a future Next that drops the convention, lose the 404's
+    // interpolated title entirely).
+    const proxy = readFileSync(
+      path.resolve(import.meta.dirname, "..", "src/proxy.ts"),
       "utf8",
     );
-    expect(middleware).toContain('requestHeaders.set("x-pathname"');
-    expect(middleware).toContain("NextResponse.next({ request: { headers: requestHeaders } })");
+    expect(proxy).toContain("export function proxy");
+    expect(proxy).toContain('requestHeaders.set("x-pathname"');
+    expect(proxy).toContain("NextResponse.next({ request: { headers: requestHeaders } })");
+    expect(existsSync(path.resolve(import.meta.dirname, "..", "src/middleware.ts"))).toBe(false);
   });
 });

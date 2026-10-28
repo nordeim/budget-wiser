@@ -21,7 +21,7 @@ import { notFoundTitle } from "@/lib/not-found-title";
 // head (curl-verified: <title>Curl Probe Route | Budget Wise</title>).
 // Next's metadata API cannot read the unmatched path here (no params,
 // no path header — probed: only host/x-forwarded-* reach the render),
-// so src/middleware.ts stamps `x-pathname` onto the request headers
+// so src/proxy.ts stamps `x-pathname` onto the request headers
 // and generateMetadata interpolates it server-side. The ABSOLUTE
 // spelling keeps the root layout's "%s | Budget Wise" template from
 // doubling the suffix; a missing header falls back to the s191 plain

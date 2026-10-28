@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.10.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.11.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,12 @@
 **Last Updated:** 2026-10-28
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.11.0 (Tracked Changes)
+
+- `[AUTH]` **The session-12 verification round (session 201): the NINTH consecutive zero-drift census + TWO remediations.** The audit re-verified every parity surface on both apps (the shell, all four pages, the bottom bar byte-identical on every dimension incl. rect y=767 h=77, the clearance 764 ≤ 767 measured per the e2e contract on both, both dialogs, every page title via full navigations, the 404's interpolated surface, the sitemap format + robots, the login card, the donut geometry, the row anatomy) — zero drift since session 200, and the reference's demo data HELD at 3 transactions / −$2,481.00 (no owner churn this round; the s200 census baseline stands). The VLM battery answered 4/4 "Structural Differences: None" — the second consecutive fully-clean battery. The dev-boot guard live-verified on the round's build→dev sequences (health 200, no reload loop, 0 page re-fetches). **(F-1) The middleware→proxy file-convention rename:** Next.js 16.4 deprecates the `middleware` file convention (the dev log emitted the warning on every boot) — `src/middleware.ts` renamed to `src/proxy.ts` with the exported function renamed `middleware`→`proxy` per the installed 16.4.2's own resolution contract (`PROXY_FILENAME`, the named-export requirement); the matcher config byte-identical; the seam's single-header behavior unchanged (the 404's interpolated title curl-verified intact with the real 404 status, all alias titles intact); the unit pin grown by the export-convention assertion + the absence guard (a recreated `src/middleware.ts` → exactly 1 RED — mutation-proofed); the deprecation notice GONE from the boot log. **(F-2) The stale-count true-up:** the two s196-era `401` unit-count claims in the SKILL's §13 + Appendix B corrected to 410 — the count-lockstep lesson recorded: when a count changes, hunt BOTH the old number AND every older number still cited in the tree (`rg "401"` is noisy — the HTTP-401 envelope context). **The screenshot battery's two dialog frames flagged the backdrop-blur compositing genus** (this sandbox's headless blur rasterization of the Radix overlay; the dialog card interiors 0/93,000 px changed — content byte-identical; the same page's no-overlay frame byte-identical) — capture-environment, NOT drift; the two profile frames at the documented avatar-jitter genus (≤0.0002%). Counts HELD at 410/66/14 (the pin growth was assertion-level, not test-level).
+- `[RES]` Re-audit of the live reference (2026-10-28, session 201): **ZERO structural drift since session 200** — the ninth consecutive shell census with no new restyle wave.
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **410 unit HELD** (the pin growth is assertion-level inside an existing test) · build · smoke 14/14 · e2e **66 HELD** (CI=1) · the VLM battery 4× "Structural Differences: None" · the screenshot battery recaptured from the dev server (12 images at the 1512×945 + 390×844 convention; 8/12 byte-identical + the two profile frames at the avatar-jitter genus + the two dialog frames at the backdrop-blur compositing genus).
 
 #### Revision Block — v2.10.0 (Tracked Changes)
 
