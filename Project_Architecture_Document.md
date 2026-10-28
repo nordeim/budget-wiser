@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.11.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.12.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,12 @@
 **Last Updated:** 2026-10-28
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.12.0 (Tracked Changes)
+
+- `[AUTH]` **The session-13 verification round (session 202): the TENTH consecutive zero-drift census — a ZERO-FINDING round.** The audit re-verified every parity surface on both apps (the shell, all four pages, the bottom bar byte-identical on every dimension incl. rect y=767 h=77, the clearance 764 ≤ 767 measured per the e2e contract's lowest-box form at scroll-end on both, both dialogs, every page title via full navigations, the 404's interpolated surface `Curl Probe 202 Test | Budget Wise` with the real 404 status on ours, the sitemap format + robots + manifest, the login card's 4-button OAuth row, the donut geometry 341×280 + 200×200 + 331 legend, the row anatomy) — zero drift since session 201, and the reference's demo data HELD at 3 transactions / −$2,481.00 for the second consecutive round (no owner churn; the s200 census baseline stands). The VLM battery answered 2× "Structural Differences: None" (budgets + profile mobile) + the two dashboard pairs' flags all the documented DOM-disproven genera (the savings-badge conditional — the reference's negative balance + $0 income hides it while our seeded 88.5% shows it, the KPI card classes byte-identical; the platform-badge occlusion; the data-borne legend/icon differences). The dev-boot guard fired clean on the round's build→dev sequence (Ready in 278ms, health 200, db up, 0 reload loops, NO deprecation notices — the s201 proxy rename verified live again). **The screenshot battery at its strongest byte-identical count — 9/12** (the dashboard-desktop frame byte-identical on the FIRST capture; the s201 settle-wait lesson applied at capture time) + the profile-mobile frame at the documented avatar-jitter genus (104 px, bbox (84,255)–(235,377), ≤0.0002%) + the two dialog frames at the s201 backdrop-blur compositing genus with the card interiors proven unchanged by the exact-rect crop diff (the live-measured `[role=dialog]` bounds crop-diffed: 21/242,368 px on the Add Transaction card and 50/140,224 px confined to the top 8px edge on the Set Budget card — content byte-identical, the delta entirely the blurred backdrop). No code changes: a docs-and-evidence round.
+- `[RES]` Re-audit of the live reference (2026-10-28, session 202): **ZERO structural drift since session 201** — the tenth consecutive shell census with no new restyle wave.
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **410 unit HELD** · build · smoke 14/14 · e2e **66 HELD** (CI=1) · the VLM battery 2× "Structural Differences: None" + 2 pairs DOM-disproven genus-only · the screenshot battery recaptured from the dev server (12 images at the 1512×945 + 390×844 convention; 9/12 byte-identical — the strongest byte-identical count in the ladder).
 
 #### Revision Block — v2.11.0 (Tracked Changes)
 
