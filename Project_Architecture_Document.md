@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.9.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.10.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,12 @@
 **Last Updated:** 2026-10-28
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.10.0 (Tracked Changes)
+
+- `[DOC]` **The session-11 verification round (session 200): the EIGHTH consecutive zero-drift census + the VLM battery's cleanest result.** The audit re-verified every parity surface on both apps (the shell, all four pages, the bottom bar byte-identical on every dimension incl. rect y=767 h=77, the clearance 764 ≤ 767 measured per the e2e contract on both, both dialogs, every page title via full navigations, the 404's interpolated surface, the sitemap format + robots, the login card, the donut geometry 200×200 + 331 legend, the row anatomy) — zero drift since session 199. The dev-boot guard live-verified on the round's build→dev sequence (health 200, no reload loop). The VLM battery answered 4/4 "Structural Differences: None" (dashboard desktop + mobile, budgets mobile, profile mobile) — the first fully-clean battery in the project's history. The screenshot battery recaptured: **11/12 pixel-identical** + the profile-mobile frame at 0.0004% pixel diff (the avatar jitter genus) — the strongest render-stability signal yet. **The round's one note (informational, data-borne): the reference's demo data grew to 3 transactions / −$2,481.00** (Balance −$2,481.00 / Income $0.00 / Expenses $2,481.00 / 3 txns) — owner-data churn, the excluded genus, recorded as the fresh census baseline in the SKILL §1. Zero code changes; the counts held at 410/66/14.
+- `[RES]` Re-audit of the live reference (2026-10-28, session 200): **ZERO structural drift since session 199** — the eighth consecutive shell census with no new restyle wave.
+- `[SYN]` Verification: lint 0/0 · tsc 0 · **410 unit HELD** (an evidence-and-documentation round moves zero counts) · build · smoke 14/14 · e2e **66 HELD** (CI=1) · the VLM battery 4× "Structural Differences: None" · the screenshot battery recaptured from the dev server (12 images at the 1512×945 + 390×844 convention).
 
 #### Revision Block — v2.9.0 (Tracked Changes)
 

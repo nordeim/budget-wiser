@@ -233,3 +233,28 @@ Stage Summary:
 - THE METHODOLOGY FOOTNOTE DOCUMENTED: the reference SPA's pushstate title-read lag — a census-methodology artifact recorded so a future session doesn't mis-read it as drift
 - THE VERIFICATION: lint 0/0 · tsc 0 · 410/410 unit HELD · build · smoke 14/14 · e2e 66/66 · the screenshot battery 10/12 pixel-identical + 2 dialog frames at sub-0.01% pixel diff
 - THE DISCIPLINE HELD: the divergence investigated before classification, no gate weakening, no count movement (an evidence-and-documentation round), no secrets in the tree
+
+---
+Task ID: 200
+Agent: main (Z.ai)
+Task: The session-11 verification round — refresh the workspace (fresh clone; it had been reset), re-audit the codebase and the live reference (the eighth census), remediate documentation-only (a zero-drift round), recapture the screenshot battery, and ship to main via the SSH wrapper.
+
+Work Log:
+- The fresh-sandbox intake: git clone at cfd089f (the owner's docs/session_18.md transcript commit atop 49de043; the s199 ship) · bun install (513 packages) · .env recreated on the mandated contract (DATABASE_URL="file:../db/custom.db" + a fresh 64-char AUTH_SECRET) · db:push + db:seed (the demo month intact: 2 users / 4 transactions / 0 budgets) · the Playwright chromium-1248 install (the cache held only 1200)
+- The document review: AGENTS.md, CLAUDE.md, README.md, PAD v2.9.0, budget-wiser_SKILL.md v1.8.0, docs/session_17.md, docs/REMEDIATION-PLAN-SESSION-10.md, worklog.md, docs/session_18.md — validated against the tree; the repo delta since the s199 ship verified docs-only (one file: the owner's transcript)
+- The gate FIRST: lint 0/0 · typecheck 0 · 410/410 unit · build · 14/14 smoke · 66/66 e2e (CI=1) — the exact documented s199 ship state
+- The local audit per skills/web-application/SKILL.md §16/§20: the security sweep clean, the docs-count lockstep verified, skills/ excluded from all four scopes, the s197 seams re-verified in the tree; the mandated focus areas clean — the mobile navigation (the e2e battery green + the live byte-census) and Tailwind v4 (all pins verified, no bugs); the .env/db contract, the Vitest + Playwright suites, and the SEO surfaces (sitemap + robots + manifest) all verified live
+- THE LIVE REFERENCE RE-AUDIT (agent-browser, fresh login, 1512×945 + 390×844): the EIGHTH consecutive ZERO-DRIFT census — the shell (the body census answering exactly the documented [#root → DIV.min-h-screen, #base44-edit-badge, recharts span]), all four pages (containers 7xl/5xl/5xl/4xl), every page title cross-checked with FULL navigations (the s199 methodology note applied), the 404 surface (the interpolated title "Curl Probe 200 Test | Budget Wise"), the bottom bar byte-identical on every dimension (bar classes, the row wrapper, item classes, ink split, rect y=767 h=77), the clearance (764 ≤ 767 both, measured per the e2e contract's lowest-box form), both dialogs, the sitemap + robots, the login card, the donut geometry (200×200 + 331 legend), the row anatomy
+- THE DATA NOTE (informational, data-borne): the reference's demo data grew to 3 transactions / −$2,481.00 (Balance −$2,481.00 / Income $0.00 / Expenses $2,481.00 — a Bills & Utilities row first) — owner-data churn, the excluded genus; recorded in the SKILL §1 as the fresh census baseline
+- THE DUAL-APP DIFF: every surface verified matching (shell, bar + the aria-current superset, titles curl-verified, the 404's real status + interpolated title, dialogs, SEO surfaces, donut geometry, row anatomy, clearance identical)
+- THE VLM BATTERY: 4/4 "Structural Differences: None" (dashboard desktop, dashboard mobile, budgets mobile, profile mobile) — the first fully-clean battery in the project's history
+- THE GUARD'S LIVE PROOF: the round's build→dev sequence (the baseline gate's build → the dual-app dev boot) fired the s197 preflight clean — health 200, db up, no reload loop (the window-marker probe answering a single GET /login)
+- THE CAPTURES: the 12-image screenshot battery recaptured at the documented 1512×945 + 390×844 convention — 11/12 pixel-identical to the s199 set + the profile-mobile frame at 0.0004% pixel diff (the avatar jitter genus) — the strongest render-stability signal yet
+- The docs: docs/REMEDIATION-PLAN-SESSION-11.md (ticked + the addendum) · PAD v2.10.0 (the revision block) · budget-wiser_SKILL.md v1.9.0 (the provenance, the §1 eighth-census line + the fresh data-state baseline, Appendix C's s200 row) · docs/session_19.md + this entry
+- The full gate re-ran green post-remediation (an evidence-and-documentation round moves zero counts): lint 0/0 · tsc 0 · 410/410 unit HELD · build · 14/14 smoke · 66/66 e2e (CI=1)
+
+Stage Summary:
+- THE EIGHTH CONSECUTIVE ZERO-DRIFT CENSUS SHIPPED: every parity surface re-verified on both apps, VLM 4× "Structural Differences: None" (the cleanest battery yet), the mobile navigation confirmed working exactly as the reference's, Tailwind v4 clean, the dev-boot guard live-proven once more
+- THE FRESH DATA BASELINE RECORDED: the reference's demo data at 3 txns / −$2,481.00 — owner-data churn, the excluded genus, documented so the next census compares against it
+- THE VERIFICATION: lint 0/0 · tsc 0 · 410/410 unit HELD · build · smoke 14/14 · e2e 66/66 · the screenshot battery 11/12 pixel-identical + 1 frame at 0.0004%
+- THE DISCIPLINE HELD: the census executed per the documented methodology (full navigations for titles, the e2e contract's lowest-box clearance form), no gate weakening, no count movement (an evidence-and-documentation round), no secrets in the tree
