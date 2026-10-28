@@ -74,6 +74,50 @@ describe("the 404 title humanize (live-probed on the reference, 2026-10-28)", ()
   });
 });
 
+describe("the 404 title percent-decode (session-207 F-1, live-probed on the reference, 2026-10-29)", () => {
+  // The reference's platform DECODES the pathname BEFORE humanizing —
+  // every prior census probed 404s with unencoded paths, so the genus
+  // was invisible until the s207 round probed a %20 path for the first
+  // time. The probed matrix (all Verified against the live reference's
+  // SERVED HTML head):
+  //   /Curl%20Probe%20207%20Test → "Curl Probe 207 Test | Budget Wise"
+  //   /About%20Us               → "About Us | Budget Wise"
+  //   /foo%2Dbar                → "Foo Bar | Budget Wise" (decode precedes the hyphen split)
+  // The 404 BODY quotes the raw encoded path on BOTH apps (probed) —
+  // the decode is title-path-only, so notFoundQuotedPath() stays
+  // untouched (pinned in the sibling describe below).
+  // Malformed escapes: the reference's CDN bounces /bad%zz%20path with
+  // a bare 400 Bad Request; ours answers the designed 404 — the helper
+  // must NEVER throw (the raw-segment fallback).
+
+  it("decodes %20 escapes to spaces before humanizing", () => {
+    expect(notFoundTitle("/Curl%20Probe%20207%20Test")).toBe(
+      "Curl Probe 207 Test | Budget Wise",
+    );
+    expect(notFoundTitle("/About%20Us")).toBe("About Us | Budget Wise");
+  });
+
+  it("decodes %2D before the hyphen split (decode precedes humanize)", () => {
+    // The encoded hyphen answers the same title as a literal one —
+    // the reference live-answers "Foo Bar | Budget Wise" on /foo%2Dbar.
+    expect(notFoundTitle("/foo%2Dbar")).toBe("Foo Bar | Budget Wise");
+  });
+
+  it("keeps the last-segment rule on encoded paths", () => {
+    expect(notFoundTitle("/foo/Curl%20Probe%20207%20Test")).toBe(
+      "Curl Probe 207 Test | Budget Wise",
+    );
+  });
+
+  it("falls back to the raw segment on malformed escapes (never throw)", () => {
+    // decodeURIComponent("bad%zz%20path") throws URIError — the helper
+    // must answer the designed 404, not a 500 (the reference's CDN
+    // answers this input class with a bare 400; ours is the more
+    // graceful posture, kept).
+    expect(notFoundTitle("/bad%zz%20path")).toBe("Bad%zz%20path | Budget Wise");
+  });
+});
+
 describe("the 404 quoted path (the reference strips ONLY the leading slash)", () => {
   it("strips the leading slash, keeping internal + trailing slashes", () => {
     expect(notFoundQuotedPath("/fake/deep/route")).toBe("fake/deep/route");

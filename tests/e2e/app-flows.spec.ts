@@ -270,6 +270,26 @@ test.describe("the 404 surface (the reference's interpolated title + quoted path
       .toBe("Some Fake Route | Budget Wise");
   });
 
+  test("the title DECODES percent-escapes before humanizing (session-207 F-1)", async ({ page }) => {
+    // The reference's platform decodes the pathname before
+    // interpolating — live-probed 2026-10-29 on its served HTML head:
+    // /Curl%20Probe%20207%20Test → "Curl Probe 207 Test | Budget Wise".
+    // The genus was invisible to every prior census (all prior probes
+    // used unencoded paths) and to every gate — the e2e regression for
+    // the s207 decode fix. The body still quotes the raw encoded path
+    // (the same genus the reference keeps).
+    await page.goto("/Curl%20Probe%20207%20Test");
+    await expect
+      .poll(() => page.title(), { timeout: 10_000 })
+      .toBe("Curl Probe 207 Test | Budget Wise");
+    await expect(page.getByText("Page Not Found")).toBeVisible();
+    await expect(
+      page.getByText(
+        'The page "Curl%20Probe%20207%20Test" could not be found in this application.',
+      ),
+    ).toBeVisible();
+  });
+
   test("the message quotes the path without the leading slash", async ({ page }) => {
     await page.goto("/fake/deep/route");
     await expect(page.getByText("Page Not Found")).toBeVisible();
