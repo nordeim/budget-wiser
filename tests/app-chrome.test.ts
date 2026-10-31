@@ -12,6 +12,7 @@ import {
   PAGE_HEADER,
   PAGE_ROOT,
   PANEL,
+  RECENT_ROW,
   SHELL_LAYOUT,
   SITE_NAV,
   SUMMARY_CARD,
@@ -341,5 +342,47 @@ describe("the dashboard copy contracts (the reference's user-facing words)", () 
     );
     // the drifted spelling is gone
     expect(dashboardSrc()).not.toContain("Personalized spending analysis");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Session-218 (the session-29 round, F-1): the amount-direction arrows. The
+// reference renders a small lucide arrow immediately before each
+// transaction amount — ArrowDownLeft at w-4 h-4 text-rose-500 on expense
+// rows, ArrowUpRight at w-4 h-4 text-emerald-500 on income rows — on BOTH
+// row surfaces (the dashboard recent list + the /Transactions list). The
+// genus is LONG-STANDING (visible in the repo's own day-one benchmark
+// capture, docs/budget-wiser-dashboard.png) but was invisible to the
+// row-anatomy census form, which probes the row + its three children — the
+// arrow is a great-grandchild inside the actions div, the same census-depth
+// blind-spot class as the s207 percent-encoding genus. Found by the
+// session-218 VLM battery (the transactions-desktop pair — the battery's
+// first flag to survive the direct DOM cross-check), verified by the live
+// probe on both reference surfaces + the reference's JS bundle render
+// sites (both extracted with these exact classes) + the benchmark image.
+// ---------------------------------------------------------------------------
+describe("the amount-direction arrows (the reference's genus, session-218 F-1)", () => {
+  const txSrc = () => read("src/app/(app)/transactions/transactions-page.tsx");
+  const dashSrc = () => read("src/app/(app)/dashboard/dashboard-page.tsx");
+
+  it("the row records carry the reference's arrow classes", () => {
+    // Expense: the rose down-left arrow; income: the emerald up-right
+    // arrow (the reference's bundle-verified pairing — its demo data
+    // carries no income row, so the income form is pinned from the JS
+    // bundle render sites, extracted verbatim this round).
+    expect(TXN_LIST.arrowExpense).toContain("w-4 h-4 text-rose-500");
+    expect(TXN_LIST.arrowIncome).toContain("w-4 h-4 text-emerald-500");
+    expect(RECENT_ROW.arrowExpense).toContain("w-4 h-4 text-rose-500");
+    expect(RECENT_ROW.arrowIncome).toContain("w-4 h-4 text-emerald-500");
+  });
+
+  it("both row surfaces render the arrows before the amount span", () => {
+    const tx = stripComments(txSrc());
+    expect(tx).toContain("<ArrowDownLeft className={TXN_LIST.arrowExpense} />");
+    expect(tx).toContain("<ArrowUpRight className={TXN_LIST.arrowIncome} />");
+
+    const dash = stripComments(dashSrc());
+    expect(dash).toContain("<ArrowDownLeft className={RECENT_ROW.arrowExpense} />");
+    expect(dash).toContain("<ArrowUpRight className={RECENT_ROW.arrowIncome} />");
   });
 });

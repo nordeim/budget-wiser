@@ -11,6 +11,7 @@
 
 import * as React from "react";
 import {
+  ArrowDownLeft,
   ArrowUpRight,
   Lightbulb,
   Plus,
@@ -230,6 +231,15 @@ function DashboardBody({ data }: { data: DashboardData }) {
                         <p className={RECENT_ROW.sub}>{formatDate(t.date)}</p>
                       </div>
                       <div className="flex items-center gap-2">
+                        {/* Session-218 (F-1): the reference's amount-direction
+                            arrow before every recent-row amount — the same
+                            genus as the /Transactions rows (live-probed on
+                            the reference's Recent Transactions list). */}
+                        {income ? (
+                          <ArrowUpRight className={RECENT_ROW.arrowIncome} />
+                        ) : (
+                          <ArrowDownLeft className={RECENT_ROW.arrowExpense} />
+                        )}
                         <span
                           className={`${RECENT_ROW.amount} ${
                             income ? "text-emerald-600" : "text-rose-600"

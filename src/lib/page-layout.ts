@@ -357,6 +357,12 @@ export const TXN_LIST = {
     "inline-flex items-center rounded-md border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground text-xs",
   sub: "text-sm text-slate-500",
   amount: "font-semibold text-lg",
+  // Session-218 (F-1): the reference's amount-direction arrows — a small
+  // lucide arrow rides immediately before every amount (live-probed on
+  // both reference surfaces; the income pairing extracted from its JS
+  // bundle render sites — its demo data carries no income row).
+  arrowExpense: "w-4 h-4 text-rose-500",
+  arrowIncome: "w-4 h-4 text-emerald-500",
   delete:
     "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 w-9 text-slate-400 hover:text-rose-600",
 } as const;
@@ -398,6 +404,11 @@ export const RECENT_ROW = {
   title: "font-medium text-slate-900 truncate",
   sub: "text-sm text-slate-500",
   amount: "font-semibold",
+  // Session-218 (F-1): the same amount-direction arrow pair as TXN_LIST
+  // (the reference renders the genus on both row surfaces — live-probed
+  // on its Recent Transactions list this round).
+  arrowExpense: "w-4 h-4 text-rose-500",
+  arrowIncome: "w-4 h-4 text-emerald-500",
 } as const;
 
 /** Session-194: the per-budget cards — the overflow-hidden card with

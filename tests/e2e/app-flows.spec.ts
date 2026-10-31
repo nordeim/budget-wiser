@@ -80,6 +80,32 @@ test.describe("the transactions page", () => {
     await expect(page.getByText("Transport").first()).toBeHidden();
   });
 
+  // Session-218 (F-1): the reference's amount-direction arrows — every
+  // transaction row carries a small lucide arrow immediately before its
+  // amount (ArrowDownLeft w-4 h-4 text-rose-500 on expenses, ArrowUpRight
+  // w-4 h-4 text-emerald-500 on incomes) on BOTH row surfaces. The seeded
+  // demo month (1 Salary income + 3 expenses) exercises both forms; the
+  // dashboard's recent slice takes all types, so it carries the pair too
+  // (the reference's own recent list shows only expenses — its demo data
+  // has no income).
+  test("the seeded rows carry the amount-direction arrows (session-218 F-1)", async ({ page }) => {
+    await page.goto("/Transactions");
+    const down = page.locator("svg.lucide-arrow-down-left");
+    const up = page.locator("svg.lucide-arrow-up-right");
+    await expect(down).toHaveCount(3);
+    await expect(up).toHaveCount(1);
+    await expect(down.first()).toHaveClass(/w-4 h-4 text-rose-500/);
+    await expect(up.first()).toHaveClass(/w-4 h-4 text-emerald-500/);
+
+    await page.goto("/Dashboard");
+    // Scoped to the recent-rows section: the Balance card's savings badge
+    // carries its OWN pre-existing ArrowUpRight (the reference's badge genus),
+    // so a page-wide count would double-count it.
+    const recent = page.locator('section[aria-label="Recent Transactions"]');
+    await expect(recent.locator("svg.lucide-arrow-down-left")).toHaveCount(3);
+    await expect(recent.locator("svg.lucide-arrow-up-right")).toHaveCount(1);
+  });
+
   test("the Add Transaction round trip (expense)", async ({ page }) => {
     await page.goto("/Transactions");
     await page.getByRole("button", { name: "Add Transaction" }).click();

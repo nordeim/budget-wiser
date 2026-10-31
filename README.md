@@ -61,8 +61,8 @@ The seeded demo month mirrors the reference app: one $5,000 Salary income, three
 | Charts | Recharts | 3.10 | Donut + weekly bars |
 | Database | SQLite via Prisma | 6.19 | `db/custom.db` at the repo root |
 | Validation | Zod | 4.6 | Every API boundary |
-| Unit tests | Vitest | 5.0 | 414 checks |
-| E2E tests | Playwright | 1.64 | 67 checks against the standalone build |
+| Unit tests | Vitest | 5.0 | 416 checks |
+| E2E tests | Playwright | 1.64 | 68 checks against the standalone build |
 | Runtime | Bun | ≥ 1.3 | Package manager + script runner |
 
 ```mermaid
@@ -134,8 +134,8 @@ The relative `DATABASE_URL` is resolved by `src/lib/db-path.ts` — the CLI, `ne
 ## Testing
 
 ```bash
-bun run test           # Vitest unit layer (414 checks) — pure seams, no browser
-bun run test:e2e       # Playwright e2e (67 checks) — requires `bun run build` first
+bun run test           # Vitest unit layer (416 checks) — pure seams, no browser
+bun run test:e2e       # Playwright e2e (68 checks) — requires `bun run build` first
 bun run lint           # ESLint, zero warnings allowed
 bun run typecheck      # tsc --noEmit
 bun run gate           # lint + typecheck + test + build + smoke + e2e (the full chain)

@@ -9,7 +9,7 @@
 //   amounts, the ghost icon delete).
 
 import * as React from "react";
-import { Plus, Search, Trash2 } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Plus, Search, Trash2 } from "lucide-react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -167,6 +167,15 @@ export function TransactionsPage() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
+                      {/* Session-218 (F-1): the reference's amount-direction
+                          arrow — a small lucide icon immediately before the
+                          amount (down-left on expenses, up-right on incomes;
+                          live-probed + bundle-verified). */}
+                      {income ? (
+                        <ArrowUpRight className={TXN_LIST.arrowIncome} />
+                      ) : (
+                        <ArrowDownLeft className={TXN_LIST.arrowExpense} />
+                      )}
                       <span
                         className={`${TXN_LIST.amount} ${
                           income ? "text-emerald-600" : "text-rose-600"
