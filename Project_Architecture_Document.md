@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.29.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.30.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,10 @@
 **Last Updated:** 2026-10-31
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.30.0 (Tracked Changes)
+
+- `[AUTH]` **The session-31 verification round (session 220): the TWENTY-EIGHTH census — a zero-code-finding round; the thirteenth census after the s207 percent-encoding fix, the third after the s218 arrow remediation, and the SECOND to carry the deeper row-anatomy probe as standing methodology.** The workspace had been RESET (the ELEVENTH reset in the sequence): the fresh-clone bootstrap exercised live (git clone at `3411a05`, the owner's `docs/session_58.md` transcript commit atop the s219 ship `c5e6a4d` — the repo delta since the ship verified docs-only, one file; then `bun install` 513 packages → the six-knob `.env` from `.env.example` + a fresh `AUTH_SECRET` → `mkdir -p db` + `db:push` + `db:seed` → the recurring fresh-workspace Chromium revision step: the full 120 MiB headless-shell 1248 download). The five root documents + the s219 set were re-read and validated against the tree, and the baseline gate ran FIRST: lint 0/0 · typecheck 0 · **416/416 unit** · build · **14/14 smoke** · **68/68 e2e (CI=1)** — green on the first full pass, the mobile-navigation battery 12/12 standalone. **The s207 fix VERIFIED LIVE on both apps for the THIRTEENTH consecutive census** (the fresh `%20` probe `/Curl%20Probe%220%20Test` → the decoded title on both, ours curl-verified with the real 404 status; the `%2D` decode-precedes-hyphen order; `/Hyphen-Probe-220` on both; the 404 body raw-encoded on both); the malformed-escape face HELD at 520 (ELEVENTH consecutive round, the documented probe form). The deeper row-anatomy probe (second carry) verified the s218 arrow remediation at genus depth on both surfaces, both apps, plus the income form our seeded Salary row exercises. Every other parity surface byte-identical (the shell, the four pages, the mobile bar rect 767/77 + ink split, the clearance 764 ≤ 767, both dialogs, the SEO surfaces, the login card, the donut 341×280/200×200/331); the reference data state held at the s200 baseline (TWENTIETH round). The battery: 8/12 byte-identical + four delta frames each at its documented genus — three answering the EXACT s219-recorded md5s (`7705f2ca`, `296c8736`, `3d5173c8`) plus the add-transaction-dialog blur-column form (`e5dd4c69`, 16px confined to the x=590 column — the s212/s213 genus's capture-state-dependent extent), ALL DETERMINISTIC across the round's two boots; zero frames refreshed. The VLM battery: 2× "None" + zero flags surviving the DOM cross-check. No code changes, no gate movement, no count movement (416/68/14).
 
 #### Revision Block — v2.29.0 (Tracked Changes)
 
