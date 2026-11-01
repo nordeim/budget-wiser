@@ -386,3 +386,50 @@ describe("the amount-direction arrows (the reference's genus, session-218 F-1)",
     expect(dash).toContain("<ArrowUpRight className={RECENT_ROW.arrowIncome} />");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Session-230 (the session-41 round, F-1): the dashboard donut panel's
+// EMPTY state. The reference's live form (probed 2026-11-01, the first
+// round BOTH apps answered their empty months simultaneously — the
+// October→November rollover emptied the reference's owner-data month AND
+// our October-seeded dev db at once): the content div ITSELF carries
+// `p-6 pt-0 flex items-center justify-center h-64` with the copy
+// "No expenses recorded yet" directly inside — the same
+// replace-the-content-wrapper pattern its Budget Progress empty uses
+// (ours already mirrors that one byte-exactly). Ours had drifted twice:
+// the copy ("No spending this month") and the anatomy (an inner
+// `flex h-48 items-center justify-center` wrapper inside the plain
+// p-6 pt-0 content). The fix moves the empty branch into the dashboard
+// page (the Budget Progress pattern) and makes the chart component
+// data-only — the page owns the empty form, the reference's own
+// architecture.
+// ---------------------------------------------------------------------------
+describe("the donut panel's empty state (the reference's genus, session-230 F-1)", () => {
+  const dashSrc = () => stripComments(read("src/app/(app)/dashboard/dashboard-page.tsx"));
+  const chartSrc = () => stripComments(read("src/components/charts/budget-charts.tsx"));
+
+  it("the empty branch carries the reference's copy and container", () => {
+    // The reference's exact container (live-probed): the content div
+    // itself — p-6 pt-0 flex items-center justify-center h-64 — with
+    // the p directly inside (NOT an inner wrapper).
+    expect(dashSrc()).toContain(
+      '<div className="p-6 pt-0 flex items-center justify-center h-64">',
+    );
+    expect(dashSrc()).toContain(">No expenses recorded yet</p>");
+    // the drifted copy is gone from the tree
+    expect(dashSrc()).not.toContain("No spending this month");
+    expect(chartSrc()).not.toContain("No spending this month");
+  });
+
+  it("the donut mounts only in the with-data branch (the page owns the empty form)", () => {
+    // The Budget Progress pattern: the empty branch first, the
+    // PANEL.content wrapper + SpendingDonut in the with-data branch.
+    const src = dashSrc();
+    const emptyIdx = src.indexOf("No expenses recorded yet");
+    const donutIdx = src.indexOf("<SpendingDonut data={data.spendingByCategory} />");
+    expect(emptyIdx).toBeGreaterThan(-1);
+    expect(donutIdx).toBeGreaterThan(emptyIdx);
+    // the chart component renders no empty branch of its own anymore
+    expect(chartSrc()).not.toContain("total <= 0");
+  });
+});

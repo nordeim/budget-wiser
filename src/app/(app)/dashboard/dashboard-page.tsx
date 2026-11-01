@@ -148,9 +148,21 @@ function DashboardBody({ data }: { data: DashboardData }) {
               <div className={PANEL.header}>
                 <div className={PANEL.title}>Spending by Category</div>
               </div>
-              <div className={PANEL.content}>
-                <SpendingDonut data={data.spendingByCategory} />
-              </div>
+              {data.spendingByCategory.length === 0 ? (
+                /* The reference's empty form (session-230, live-probed
+                 * 2026-11-01 on both apps' simultaneous empty months):
+                 * the content div ITSELF becomes the centered h-64
+                 * panel with the copy directly inside — the same
+                 * replace-the-wrapper pattern as the Budget Progress
+                 * empty below. The chart component is data-only. */
+                <div className="p-6 pt-0 flex items-center justify-center h-64">
+                  <p className={PANEL.empty}>No expenses recorded yet</p>
+                </div>
+              ) : (
+                <div className={PANEL.content}>
+                  <SpendingDonut data={data.spendingByCategory} />
+                </div>
+              )}
             </section>
 
             <section className={PANEL.root} aria-label="Budget Progress">

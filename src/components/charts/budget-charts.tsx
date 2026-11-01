@@ -33,20 +33,17 @@ export function SpendingDonut({
 }: {
   data: Array<{ category: string; amount: number }>;
 }) {
+  // Session-230: the component is DATA-ONLY — the empty month's form
+  // (the centered h-64 "No expenses recorded yet" panel) is owned by
+  // the dashboard page, the reference's own architecture (its Budget
+  // Progress empty uses the identical replace-the-wrapper pattern,
+  // which ours mirrors byte-exactly). The page guarantees non-empty
+  // data on every mount.
   const rows = data.map((d) => ({
     name: categoryMeta(d.category).label,
     value: d.amount,
     fill: categoryMeta(d.category).color,
   }));
-  const total = rows.reduce((acc, r) => acc + r.value, 0);
-
-  if (total <= 0) {
-    return (
-      <div className="flex h-48 items-center justify-center">
-        <p className="text-slate-400">No spending this month</p>
-      </div>
-    );
-  }
 
   // Session-194: the reference's restyled donut (live-probed): the
   // ResponsiveContainer sits DIRECTLY in the card's p-6 pt-0 content at
