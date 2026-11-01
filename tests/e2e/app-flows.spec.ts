@@ -51,6 +51,24 @@ test.describe("the dashboard", () => {
   });
 });
 
+// The seeded demo month rides the CURRENT month (prisma/seed.ts — a
+// re-seed any time keeps the dashboard non-empty), so the row-date
+// assertions derive the expected string the same way the seed dates the
+// Electricity-bill row (the 26th of the current month) and the row
+// renders it (the reference's "Weekday, Mon DD, YYYY" form —
+// formatFullDate in transactions-page.tsx). A hardcoded
+// "Monday, Oct 26, 2026" REDs the suite at every month boundary —
+// caught live 2026-11-01, the Oct→Nov rollover firing between the
+// baseline and post-doc gate runs of the s229 round.
+const seededRowDate = new RegExp(
+  new Date(new Date().getFullYear(), new Date().getMonth(), 26).toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }),
+);
+
 test.describe("the transactions page", () => {
   test("renders the summary cards and the seeded rows", async ({ page }) => {
     await page.goto("/Transactions");
@@ -59,7 +77,7 @@ test.describe("the transactions page", () => {
     await expect(page.locator("[aria-label='Total Income']").getByText("$5,000.00")).toBeVisible();
     await expect(page.locator("[aria-label='Total Expenses']").getByText("$575.45")).toBeVisible();
     // Full weekday dates (the reference's own form).
-    await expect(page.getByText(/Monday, Oct 26, 2026/)).toBeVisible();
+    await expect(page.getByText(seededRowDate)).toBeVisible();
   });
 
   test("the search box filters rows", async ({ page }) => {
@@ -67,7 +85,7 @@ test.describe("the transactions page", () => {
     const search = page.getByLabel("Search transactions");
     await search.fill("transport");
     await expect(page.getByText("Transport").first()).toBeVisible();
-    await expect(page.getByText(/Monday, Oct 26, 2026/)).toBeHidden();
+    await expect(page.getByText(seededRowDate)).toBeHidden();
     await search.fill("zzz-no-match");
     await expect(page.getByText("No transactions match your filters")).toBeVisible();
   });
