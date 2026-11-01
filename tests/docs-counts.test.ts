@@ -27,7 +27,9 @@ import { fileURLToPath } from "node:url";
 // The canonical counts — the live gate's answers.
 // Session-230: 420 → 422 (the F-1 donut empty-state pins — two new
 // assertions in the app-chrome spec file).
-const UNIT = 422;
+// Session-239: 422 → 425 (the F-239a demo member-since pin — three new
+// assertions in the demo-fixture spec file).
+const UNIT = 425;
 const E2E = 68;
 const SMOKE = 14;
 

@@ -12,6 +12,11 @@
 
 import { PrismaClient } from "@prisma/client";
 import { runtimeDatabaseUrl } from "../src/lib/db-path";
+// The demo account's FIXED creation date — the F-239a pin (session 239):
+// the reference owner account renders "Member since October 2026" (a fixed
+// value), so the seeded demo account must answer that month on every fresh
+// clone — not the seed date. See src/lib/demo-fixture.ts for the rationale.
+import { DEMO_MEMBER_SINCE } from "../src/lib/demo-fixture";
 // The PURE crypto seam — one scrypt implementation shared by auth + seed.
 import { hashPassword } from "../src/lib/password";
 
@@ -53,6 +58,9 @@ async function main() {
       verificationCodeHash: null,
       verificationExpiresAt: null,
       verificationAttempts: 0,
+      // F-239a: re-date a drifted standing db back to the pinned fixture
+      // month (a post-reset re-seed once left "November 2026" here).
+      createdAt: DEMO_MEMBER_SINCE,
     },
     create: {
       email: "sepnetflix2023@outlook.com",
@@ -60,6 +68,7 @@ async function main() {
       passwordHash: demoHash,
       role: "user",
       currency: "USD",
+      createdAt: DEMO_MEMBER_SINCE,
     },
   });
   await db.user.upsert({
@@ -70,6 +79,7 @@ async function main() {
       verificationCodeHash: null,
       verificationExpiresAt: null,
       verificationAttempts: 0,
+      createdAt: DEMO_MEMBER_SINCE,
     },
     create: {
       email: "demo@budgetwise.local",
@@ -77,6 +87,7 @@ async function main() {
       passwordHash: demoHash,
       role: "user",
       currency: "USD",
+      createdAt: DEMO_MEMBER_SINCE,
     },
   });
 

@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.48.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.49.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,91 @@
 **Last Updated:** 2026-11-01
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.49.0 (Tracked Changes)
+
+- `[AUTH]` **The session-50 round (session 239): the FORTY-SEVENTH census —
+  the round that found and cured the DEMO MEMBER-SINCE PIN (F-239a, Medium —
+  the first code finding since the s230 donut round, and the round's ONLY
+  one); the thirty-second census after the s207 percent-decode fix, the
+  twenty-second after the s218 arrow remediation, and the twenty-first
+  carrying the deeper row-anatomy probe as standing methodology.** The
+  workspace was RESET (the twelfth reset): the fresh-clone bootstrap
+  exercised end-to-end (bun install → the six-knob `.env` from
+  `.env.example` with `DATABASE_URL="file:../db/custom.db"` → db:push +
+  db:seed → the Playwright Chromium 1248 re-download → the baseline gate
+  green on the first full pass: lint 0/0 · tsc 0 · 422/422 unit · build ·
+  14/14 smoke · 68/68 e2e CI=1, the mobile-nav battery 12/12 standalone).
+  THE FINDING (F-239a, Medium — fresh-clone parity): the seed's user
+  `create` blocks left `createdAt` to Prisma's now() default, so the demo
+  account's age DRIFTED WITH THE SEED DATE — the reference owner account
+  renders a FIXED "Member since October 2026" (live-read again this
+  round), the standing db had always dated from October (masking the
+  defect for eleven consecutive no-reset rounds), and this round's
+  post-reset re-seed re-dated the demo user to November 2026 — REDding the
+  profile battery frames against HEAD with the delta pixel-localized to
+  exactly the member-since P (bbox (373,450,558,460) desktop /
+  (103,450,287,460) mobile — the avatar-jitter genus rule's "NEW bbox"
+  test firing on a DATA line, the first battery member-since event).
+  Invisible to every gate (the e2e asserts only visibility; no unit pin
+  existed — the s196 "invisible to every gate" class). Remediated with
+  TDD: the RED pin demonstrated live (the new demo-fixture spec failing on
+  the missing module), the GREEN fix pinning the demo account's
+  creation date to the reference's account-creation month at the DATA
+  layer — `src/lib/demo-fixture.ts` exporting `DEMO_MEMBER_SINCE` (a
+  fixed `2026-10-15T00:00:00.000Z`, mid-month by design so no UTC offset
+  shifts the rendered month) + `prisma/seed.ts` pinning `createdAt` in
+  BOTH user upserts (create AND update — an in-place re-seed re-dates a
+  drifted standing db back to the fixture), real signups keeping their
+  real createdAt; the pin verified LIVE (the profile page re-reading
+  "Member since October 2026" byte-matching the reference) and the
+  profile battery frames re-answering HEAD's exact bytes post-fix
+  (desktop `ed954b46`, mobile `b0413d45`). THE UNIT COUNT MOVED 422 →
+  425 (the F-239a pins — three new demo-fixture assertions) with the
+  canonical constant + every live-tense doc surface updated in the SAME
+  change set (the s222 lockstep guard green at **425**/68/14). The census
+  itself: ZERO structural drift on every other probed surface — the s207
+  fix verified live for the thirty-second census (the fresh probe
+  `/Curl%20Probe%20239%20Test` decoding to "Curl Probe 239 Test | Budget
+  Wise" on both apps, ours curl-verified with the real 404 status; the %2D
+  decode-precedes-hyphen order at `/foo%2Dbar-probe-239`; /Hyphen-Probe-239
+  on both; the 404 body raw-encoded on both, read at the probe page
+  directly from the first pass), the 520 malformed-escape face a
+  thirtieth round, the deeper row-anatomy probe a twenty-first census
+  clean at the list's full nesting depth (the N-89c6 aria-hidden superset
+  + the trash2 dual-alias + `[&_svg]:size-4` idiom re-read — computed
+  16×16 identical on both), both dialogs' listboxes byte-identical with
+  the Income tab flipping on the real Enter keydown on the FRESH dialog,
+  the four-page titles via full navigations, the mobile bar byte-identical
+  with the clearance IDENTICAL (764 ≤ 767, gap 3 on both), the SEO genera
+  (4-cap-loc reference sitemap vs the 9-loc superset · robots identical ·
+  manifest 302 vs 200), the logged-out redirect, and the reference data
+  state UNCHANGED for the thirty-ninth round (3 txns, all Oct 27,
+  −$2,481.00). The s230 F-1 fix re-verified LIVE on a fresh throwaway
+  signup (throwaway239 through the in-app OTP funnel — the six per-digit
+  inputs filled with REAL KEYSTROKES after the descriptor-fill form
+  answered a one-position auto-advance shift, the robust form now the
+  canon) with the dashboard API confirming the exact empty aggregate
+  (balance 0 · income 0 · expenses 0 · transactionCount 0 — the API
+  probe's `txnCount` field-name debt FIXED in the persisted script this
+  round) and the with-data form intact ($4,424.55 · 88.5% saved). The
+  battery: 9/12 byte-identical to HEAD on both boots + the three delta
+  frames each at RECORDED genus realizations — dashboard-desktop answering
+  the documented settle-state `327d785a` DETERMINISTICALLY on both boots
+  (the first settle-form round since s233, all 49,260 delta px
+  sub-threshold, the donut antialias band — the five-absent-round streak
+  ending as the timing-dependent classification predicts) and both
+  profile frames at the avatar-jitter genus alternates within their
+  recorded pairs (desktop `3d5173c8` ↔ `ed954b46`, mobile `8c6e81e7` ↔
+  `b0413d45` — the post-fix recaptures answering HEAD's bytes directly);
+  the boot-2 proof 12/12 stable (zero visible deltas, zero new bboxes);
+  the VLM battery 2/4 None with ZERO surviving flags (the dashboard
+  pair's three flags the documented data-borne genera; the
+  transactions-mobile pair's two flags the coarse row-badge spatial claim
+  disproven by the byte-identical row anatomy + the platform-badge
+  occlusion of the reference's bar frame disproven by the direct 4-anchor
+  census). Ship state: lint 0/0 · typecheck 0 · **425/425 unit** ·
+  build · 14/14 smoke · 68/68 e2e CI=1.
 
 #### Revision Block — v2.48.0 (Tracked Changes)
 
@@ -631,7 +716,7 @@ Roles: `user` (default) and `admin` (reserved; no admin surface yet). All domain
 |---|---|---|---|
 | Lint | ESLint (0 warnings) | — | No suppressions; the set-state-in-effect family stays clean |
 | Types | tsc + the build | — | Strict mode; the build enforces it |
-| Unit | Vitest | 422 | Domain math, vocabularies, Zod contracts, infra seams (incl. the dev-boot race guard), chrome contracts, the docs-count lockstep (session 222) |
+| Unit | Vitest | 425 | Domain math, vocabularies, Zod contracts, infra seams (incl. the dev-boot race guard), chrome contracts, the docs-count lockstep (session 222) |
 | E2E | Playwright | 68 | Real flows against the standalone build: auth walls, every CRUD round trip, the bottom-tab-bar battery (+ the scroll-end clearance), the a11y two-gate, the 404/title surfaces |
 | Smoke | bash ladder | 14 | The artifact boots, serves, walls, rate-limits, refuses secretless boots, ships clean |
 
