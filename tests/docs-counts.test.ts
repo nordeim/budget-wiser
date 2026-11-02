@@ -29,7 +29,10 @@ import { fileURLToPath } from "node:url";
 // assertions in the app-chrome spec file).
 // Session-239: 422 → 425 (the F-239a demo member-since pin — three new
 // assertions in the demo-fixture spec file).
-const UNIT = 425;
+// Session-246 (census #54, F-246a): 425 → 427 (the Set Budget dialog's
+// description-line pin — two new assertions in the budget-dialog-copy
+// spec file).
+const UNIT = 427;
 const E2E = 68;
 const SMOKE = 14;
 

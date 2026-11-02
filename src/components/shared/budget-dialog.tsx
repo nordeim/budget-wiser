@@ -4,6 +4,11 @@
 // select + Monthly Limit $ input + disabled-until-valid submit) and the
 // Delete-Budget alertdialog confirmation ("Are you sure you want to
 // delete this budget? This action cannot be undone." — Cancel/Delete).
+// F-246a (census #54): the header carries the reference's description
+// line — "Set a monthly spending limit for <Month Year>" — a
+// p.text-sm.text-slate-500 under the title (live-extracted
+// 2026-11-02; the reference's line rolls with the calendar, its
+// October read was "…for October 2026").
 
 import * as React from "react";
 import { Trash2 } from "lucide-react";
@@ -11,6 +16,7 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -25,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EXPENSE_CATEGORIES, categoryMeta } from "@/lib/categories";
+import { monthLabel } from "@/lib/budget-math";
 import { useBudgetStore } from "@/stores/budget-store";
 
 export function SetBudgetDialog({
@@ -39,6 +46,10 @@ export function SetBudgetDialog({
   const [limit, setLimit] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [submitting, setSubmitting] = React.useState(false);
+  // The description's month tense — the CURRENT month, the dialog's own
+  // default (the schema's absent month/year contract) and the reference's
+  // always-current-month line.
+  const currentMonth = monthLabel(new Date().getFullYear(), new Date().getMonth() + 1);
 
   const reset = () => {
     setCategory("");
@@ -75,6 +86,12 @@ export function SetBudgetDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="tracking-tight text-xl font-semibold">Set Budget</DialogTitle>
+          {/* F-246a: the reference's own description line — its P is
+              class="text-sm text-slate-500" (#64748b), NOT the primitive's
+              default muted-ink (#737373), so the className pins the ink. */}
+          <DialogDescription className="text-sm text-slate-500">
+            Set a monthly spending limit for {currentMonth}
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-6 pt-4">
