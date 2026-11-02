@@ -9,38 +9,54 @@ function read(rel: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// F-246a (census #54, session-57): the reference's Set Budget dialog carries
-// a DESCRIPTION line under its title — `Set a monthly spending limit for
-// November 2026` — a p.text-sm.text-slate-500 inside the DialogHeader
-// (live-extracted 2026-11-02: header = flex flex-col space-y-1.5
-// text-center sm:text-left; H2 "Set Budget"; the P directly beneath). Our
-// dialog shipped headerless-of-description since the s194 re-mirror — the
-// schema comment quoted the reference's own line ("Set a monthly spending
-// limit for October 2026") but the component never rendered it. Sixteen
-// census rounds of "all fields" probes (title/trigger/placeholder/submit)
-// never listed the description, so the gap was invisible to the field-list
-// methodology. This pin keeps the mirrored line — the month tense rides
-// monthLabel() (en-US long month), the reference's own always-current-month
-// form (its October read was "…for October 2026", its November read
-// "…for November 2026").
+// F-246a (census #54, session-57): the reference's Set Budget dialog carried
+// a DESCRIPTION line — `Set a monthly spending limit for November 2026` —
+// a p.text-sm.text-slate-500 inside the DialogHeader (live-extracted
+// 2026-11-02). Our dialog shipped headerless-of-description since the
+// s194 re-mirror; the F-246a fix mirrored the header placement.
+//
+// F-246b (census #59, session-62): the reference REDESIGNED the placement —
+// live-extracted 2026-11-03: the DialogHeader now carries ONLY the H2
+// ("Set Budget"), and the description P moved to the TOP OF THE FORM BODY
+// as its first child, ahead of the Category field. The reference's P is a
+// PLAIN p (class="text-sm text-slate-500", NO Radix id wiring — the
+// platform owner's edit left the dialog's aria-describedby dangling at a
+// vanished radix id; a defect this clone does not mirror — our dialog
+// simply emits no aria-describedby, the clean Radix form for a
+// description-less dialog). The visible result: the line is always
+// LEFT-aligned (the form body carries no text-center) and spaced by the
+// form's own space-y-6 pt-4 rhythm, not the header's space-y-1.5.
+// This pin keeps the line in the reference's current position.
 // ---------------------------------------------------------------------------
 
-describe("the Set Budget dialog's description line (F-246a — the reference's own form)", () => {
+describe("the Set Budget dialog's description line (F-246b — the reference's redesigned form)", () => {
   const src = read("src/components/shared/budget-dialog.tsx");
 
-  it("the DialogHeader renders the description under the title with the reference's slate-500 ink", () => {
+  it("the form body leads with the description as a plain p — the reference's redesigned placement", () => {
     // The description line itself — the reference's exact wording, with the
     // month interpolated (NOT a static string: the reference's line rolls
     // with the calendar).
     expect(src).toContain("Set a monthly spending limit for");
-    // The reference's P is class="text-sm text-slate-500" — the DialogDescription
-    // primitive's default muted-ink (#737373) is the WRONG ink (slate-500 is
-    // #64748b), so the className pins it explicitly.
-    expect(src).toMatch(/DialogDescription[^>]*className="text-sm text-slate-500"/);
-    // It must sit inside the DialogHeader, directly after the title.
+    // The reference's P is a PLAIN p with class="text-sm text-slate-500"
+    // (#64748b) — NOT the Radix DialogDescription primitive (whose default
+    // muted-ink #737373 is the wrong ink AND whose id wiring the reference
+    // no longer carries). The className pins the ink on the plain p.
+    expect(src).toMatch(/<p className="text-sm text-slate-500">/);
+    // No DialogDescription ELEMENT and no import of the primitive remain
+    // (comments may name it; the JSX must not).
+    expect(src).not.toMatch(/<DialogDescription/);
+    expect(src).not.toMatch(/import[\s\S]*?DialogDescription/);
+    // It must sit as the form's FIRST child, ahead of the Category field.
+    const form = src.split('<form onSubmit={onSubmit} className="space-y-6 pt-4">')[1]?.split("</form>")[0] ?? "";
+    const firstField = form.split("<div")[0] ?? "";
+    expect(firstField).toContain("Set a monthly spending limit for");
+  });
+
+  it("the DialogHeader carries ONLY the title (the reference's header is description-less since the redesign)", () => {
     const header = src.split("<DialogHeader>")[1]?.split("</DialogHeader>")[0] ?? "";
     expect(header).toContain("<DialogTitle");
-    expect(header).toContain("Set a monthly spending limit for");
+    expect(header).not.toContain("Set a monthly spending limit for");
+    expect(header).not.toContain("<p");
   });
 
   it("the month tense rides monthLabel() (the en-US long-month form, the same helper the dashboard header uses)", () => {

@@ -32,7 +32,10 @@ import { fileURLToPath } from "node:url";
 // Session-246 (census #54, F-246a): 425 → 427 (the Set Budget dialog's
 // description-line pin — two new assertions in the budget-dialog-copy
 // spec file).
-const UNIT = 427;
+// Session-251 (census #59, F-246b): 427 → 428 (the description's
+// redesigned form-body placement pin — the spec file's placement test
+// split into the form-lead + header-title-only pair, net +1).
+const UNIT = 428;
 const E2E = 68;
 const SMOKE = 14;
 

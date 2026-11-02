@@ -4,11 +4,17 @@
 // select + Monthly Limit $ input + disabled-until-valid submit) and the
 // Delete-Budget alertdialog confirmation ("Are you sure you want to
 // delete this budget? This action cannot be undone." — Cancel/Delete).
-// F-246a (census #54): the header carries the reference's description
-// line — "Set a monthly spending limit for <Month Year>" — a
-// p.text-sm.text-slate-500 under the title (live-extracted
-// 2026-11-02; the reference's line rolls with the calendar, its
-// October read was "…for October 2026").
+// F-246a (census #54): the reference's description line — "Set a monthly
+// spending limit for <Month Year>" — a p.text-sm.text-slate-500
+// (live-extracted 2026-11-02; the reference's line rolls with the
+// calendar, its October read was "…for October 2026").
+// F-246b (census #59): the reference REDESIGNED the placement
+// (live-extracted 2026-11-03): the header now carries ONLY the title and
+// the P leads the form body — a plain, non-Radix-wired p (the reference's
+// edit left its dialog aria-describedby dangling at a vanished radix id;
+// a defect not mirrored — with no DialogDescription this dialog simply
+// emits no aria-describedby, the clean Radix form). The form's own
+// space-y-6 pt-4 rhythm spaces the line; it is always left-aligned.
 
 import * as React from "react";
 import { Trash2 } from "lucide-react";
@@ -16,7 +22,6 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -86,15 +91,18 @@ export function SetBudgetDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="tracking-tight text-xl font-semibold">Set Budget</DialogTitle>
-          {/* F-246a: the reference's own description line — its P is
-              class="text-sm text-slate-500" (#64748b), NOT the primitive's
-              default muted-ink (#737373), so the className pins the ink. */}
-          <DialogDescription className="text-sm text-slate-500">
-            Set a monthly spending limit for {currentMonth}
-          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-6 pt-4">
+          {/* F-246b: the reference's redesigned placement — the description
+              leads the FORM BODY as its first child (2026-11-03 live read:
+              form space-y-6 pt-4 → p → Category → Monthly Limit → submit),
+              a PLAIN p (the reference's carries no Radix id wiring), its ink
+              class="text-sm text-slate-500" (#64748b) — not the primitive's
+              default muted-ink (#737373). */}
+          <p className="text-sm text-slate-500">
+            Set a monthly spending limit for {currentMonth}
+          </p>
           <div className="space-y-2">
             <Label htmlFor="budget-category">Category</Label>
             <Select value={category} onValueChange={setCategory} required>
