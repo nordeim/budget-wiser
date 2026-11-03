@@ -1,11 +1,15 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.61.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.62.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
 **Companion Document:** [README.md](README.md) (user-facing) · [AGENTS.md](AGENTS.md) (agent-facing) · [CLAUDE.md](CLAUDE.md) (workflow)
-**Last Updated:** 2026-11-02
+**Last Updated:** 2026-11-03
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.62.0 (Tracked Changes)
+
+- `[AUTH]` **The session-63 verification round (session 252): the SIXTIETH census — a ZERO-FINDINGS round (the forty-fifth census after the s207 percent-decode fix, the thirty-fifth after the s218 arrow remediation, and the thirty-fourth carrying the deeper row-anatomy probe; the first round after the census-59 F-246b remediation ship, one round of zero-drift since) — a RESET round (the recycled sandbox; a fresh `git clone` at `6f53efe`, the owner's session_121 transcript commit) whose bootstrap rebuilt the standing environment from zero and carried the baseline gate green end-to-end (428/428 unit · 14/14 smoke · 68/68 e2e CI=1 — the exact census-59 ship state; the mobile-nav battery 12/12 standalone), whose battery answered 12/12 byte-identical to HEAD on boot-1, and whose boot-2 recapture CROSSED THE UTC MIDNIGHT (2026-11-02 → 2026-11-03) — the add-transaction-dialog's date-default digit flipping 11/02 → 11/03 on BOTH apps together (the reference re-probed post-midnight rendering 2026-11-03 — the current-day default contract itself verified as a parity surface), the delta confined exactly to the date-digit cell (bbox (605,552,613,562), 56 px), its manifest frame refreshed to the current-clock canonical form (f5a00f64 → ec921b6d, the caret-ON + 11/03 form).** The F-246b remediation verified holding LIVE on both apps a second round (the Set Budget dialog's form-lead description placement, the clean no-aria-describedby form); every other probed surface zero structural drift; the F-239a pin through BOTH seed paths (the fresh-clone CREATE + the in-place UPDATE); the s230 F-1 OTP funnel first-pass green a thirteenth consecutive round (throwaway252, the code 009969 read from the Demo-code line, the six digits by real keystrokes); the reference data state unchanged a fifty-second round; the VLM battery 1/4 clean (budgets-desktop, the third consecutive round) with zero surviving flags. **New census dimensions recorded: the UTC-midnight clock-rollover genus** (the date-default dialog frames flip their day digit at every UTC midnight on both apps — classify the date-cell delta as clock-borne, never drift; the manifest frame for a date-borne surface encodes the capture-day's form and warrants a refresh when the day flips; the month-level surfaces unaffected) + **the chart-settle rule re-confirmed on boot-2** (the sectors assertion must precede EVERY chart-bearing capture on EVERY boot — this round's first boot-2 dashboard capture answered a 346,381-px mid-animation form) + **the caret-ON restart technique** (clicking the target input restarts the blink cycle; a 0.35–0.4s capture lands the ON phase deterministically — the 2.1s blind delay alone can answer the OFF phase). The counts unchanged at 428/68/14 (the zero-findings round).
 
 #### Revision Block — v2.61.0 (Tracked Changes)
 
