@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.63.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.64.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,10 @@
 **Last Updated:** 2026-11-03
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.64.0 (Tracked Changes)
+
+- `[AUTH]` **The session-65 verification round (session 254): the SIXTY-SECOND census — a ZERO-FINDINGS round (the forty-seventh census after the s207 percent-decode fix, the thirty-seventh after the s218 arrow remediation, and the thirty-sixth carrying the deeper row-anatomy probe; the third round after the census-59 F-246b remediation ship, three rounds of zero-drift since) — a WARM-WORKSPACE round (the standing tree from the census-61 ship; `git pull` fast-forwarding to `b753dc9`, the owner's session_125 transcript commit) whose standing environment (the six-knob `.env`, `db/`, node_modules, the Playwright browser cache) carried the baseline gate green on the FIRST pass (428/428 unit · 14/14 smoke · 68/68 e2e CI=1 — the exact census-61 ship state; the mobile-nav battery 12/12 standalone), whose battery answered 12/12 byte-identical to HEAD on boot-1 AND 12/12 stable on boot-2 — the second consecutive cleanest-battery round form, NO clock crossing (the round completing on the manifest frame's capture day).** The F-246b remediation verified holding LIVE on both apps a FOURTH round (the Set Budget dialog's form-lead description placement, the clean no-aria-describedby form); every other probed surface zero structural drift; the F-239a pin through the UPDATE seed path (the CREATE-path pins standing from the census-61 fresh clone); the s230 F-1 OTP funnel first-pass green a fifteenth consecutive round (throwaway254, the code 265089 read from the Demo-code line, the six digits by real keystrokes); the reference data state unchanged a fifty-fourth round; the week band at rest an eleventh round; the VLM battery zero surviving flags (the dashboard pair's flags all data-borne; transactions-desktop + budgets-desktop carrying only the platform-badge genus; NO nav-item claim this round — the prior rounds' occlusion claim not recurring). **New census dimensions recorded: the post-click hover-clear rule** (after a click-triggered navigation, move the mouse to a neutral margin before every capture — the resting cursor tints hover-styled rows exactly (7,5,3) off white, reading as a 49,260-px max-7 whole-row band; the computed-style probe `matches(':hover')` confirms in one read) + **the hover-tint diff signature** (whole-region ~96% coverage at max 7 = the hover genus; glyph-shaped coverage = text rasterization; large high-variance bands = chart settle) + **the reference-frame legibility variance lesson** (a VLM claim that fails to recur is not evidence the genus changed — the DOM byte-census remains the gate). The counts unchanged at 428/68/14 (the zero-findings round).
 
 #### Revision Block — v2.63.0 (Tracked Changes)
 
