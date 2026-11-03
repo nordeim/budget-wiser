@@ -1,4 +1,4 @@
-# Budget Wise — Master Project Architecture Document (PAD) v2.62.0
+# Budget Wise — Master Project Architecture Document (PAD) v2.63.0
 
 **Classification:** Internal Engineering Reference
 **Status:** DEFINITIVE, PRODUCTION-LOCKED BLUEPRINT
@@ -6,6 +6,10 @@
 **Last Updated:** 2026-11-03
 **Audience:** Senior Engineers, Tech Leads, DevOps, and Onboarding Engineers
 **Rule:** Every architectural decision in this document traces to a specific rationale. Nothing is here "because it's popular."
+
+#### Revision Block — v2.63.0 (Tracked Changes)
+
+- `[AUTH]` **The session-64 verification round (session 253): the SIXTY-FIRST census — a ZERO-FINDINGS round (the forty-sixth census after the s207 percent-decode fix, the thirty-sixth after the s218 arrow remediation, and the thirty-fifth carrying the deeper row-anatomy probe; the second round after the census-59 F-246b remediation ship, two rounds of zero-drift since) — a RESET round (the recycled sandbox; a fresh `git clone` at `303f297`, the owner's session_123 transcript commit) whose bootstrap rebuilt the standing environment from zero (the 1248 Playwright browser cache the one environment gap, restored live) and carried the baseline gate green end-to-end (428/428 unit · 14/14 smoke · 68/68 e2e CI=1 — the exact census-60 ship state; the mobile-nav battery 12/12 standalone), whose battery answered 12/12 byte-identical to HEAD on boot-1 AND 12/12 stable on boot-2 — the cleanest two-boot result since the clock-rollover round, NO clock crossing (the round completing on the manifest frame's capture day).** The F-246b remediation verified holding LIVE on both apps a THIRD round (the Set Budget dialog's form-lead description placement, the clean no-aria-describedby form); every other probed surface zero structural drift; the F-239a pin through BOTH seed paths (the fresh-clone CREATE + the in-place UPDATE); the s230 F-1 OTP funnel first-pass green a fourteenth consecutive round (throwaway253, the code 383856 read from the Demo-code line, the six digits by real keystrokes); the reference data state unchanged a fifty-third round; the week band at rest a tenth round; the VLM battery 2/4 clean (budgets-desktop the fourth consecutive round + transactions-desktop) with zero surviving flags — the transactions-mobile occlusion claim disproven by the bar-ink pixel sampling (the reference's Budgets/Profile items OCCLUDED by the platform edit badge's solid-black overlay, the bar DOM byte-identical underneath). **New census dimensions recorded: the chart-settle rule extended to boot-1** (the sectors assertion alone is NOT the settle — the sectors exist DURING the sweep; a ~3s post-assertion settle wait precedes EVERY chart-bearing capture on EVERY boot — this round's first boot-1 capture answered a 51,412-px mid-sweep form with the assertion green) + **the dialog-mount settle rule** (a ≥ 1.4s mount wait before the caret technique; a wide low-delta band alongside the caret stripe means re-open the dialog, don't chase the band) + **the bar-ink pixel-sampling technique** (the VLM occlusion-genus cross-check: the platform badge answers as solid-black medians with 3-8× the dark-pixel counts on the occluded items — the DOM byte-census remains the gate, the ink sampling the genus evidence). The counts unchanged at 428/68/14 (the zero-findings round).
 
 #### Revision Block — v2.62.0 (Tracked Changes)
 
