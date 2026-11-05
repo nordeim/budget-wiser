@@ -346,6 +346,32 @@ describe("the dashboard copy contracts (the reference's user-facing words)", () 
 });
 
 // ---------------------------------------------------------------------------
+// Session-265 (the session-76 round, F-265a): the dashboard Recent
+// Transactions card's empty-description fallback arm. The reference's own
+// bundle renders the card title as `r.description || r.category` — the RAW
+// category fallback — while its /Transactions title carries the LABEL
+// fallback (`w.description || C1[w.category] || w.category`, the label map
+// then raw). The two surfaces genuinely differ on the reference. The arm
+// became observable 2026-10-28 when the owner cleared the two bills rows'
+// descriptions (F-264a's true mechanism — the entity-API read: description
+// "" on both rows): the reference's card then read "bills" (raw) while its
+// /Transactions titles read "Bills & Utilities" (label). Session-194's
+// `description || meta.label` on the card was a coincidence-fit — the
+// pre-plant reference data carried descriptions equal to the raw category
+// values, so the fallback arm never fired. Bundle-extracted verbatim from
+// assets/index-CkXf21Ch.js + live DOM-probed on both surfaces this round.
+// ---------------------------------------------------------------------------
+describe("the recent-card title fallback (the reference's raw-category arm, F-265a)", () => {
+  const dashSrc = () => stripComments(read("src/app/(app)/dashboard/dashboard-page.tsx"));
+
+  it("the card title falls back to the RAW category, not the label", () => {
+    expect(dashSrc()).toContain("{t.description || t.category}");
+    // the coincidence-fit label fallback is gone from the card surface
+    expect(dashSrc()).not.toContain("{t.description || meta.label}");
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Session-218 (the session-29 round, F-1): the amount-direction arrows. The
 // reference renders a small lucide arrow immediately before each
 // transaction amount — ArrowDownLeft at w-4 h-4 text-rose-500 on expense

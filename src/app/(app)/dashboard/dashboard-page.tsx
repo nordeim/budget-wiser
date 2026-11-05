@@ -236,10 +236,19 @@ function DashboardBody({ data }: { data: DashboardData }) {
                         <meta.icon className="w-5 h-5" />
                       </div>
                       <div className={RECENT_ROW.body}>
-                        {/* Session-194: description-first title (the
-                            reference's recent rows read the description
-                            when present). */}
-                        <p className={RECENT_ROW.title}>{t.description || meta.label}</p>
+                        {/* Session-265 (F-265a): description-first title
+                            with the RAW-category fallback — the
+                            reference's own bundle form
+                            (`r.description || r.category`, extracted from
+                            assets/index-CkXf21Ch.js). Its /Transactions
+                            title carries the LABEL fallback instead —
+                            the two surfaces genuinely differ on the
+                            reference. Session-194's meta.label arm was a
+                            coincidence-fit: the pre-plant reference data
+                            carried descriptions equal to the raw category
+                            values, so the fallback arm never fired until
+                            the owner's 2026-10-28 description-clear. */}
+                        <p className={RECENT_ROW.title}>{t.description || t.category}</p>
                         <p className={RECENT_ROW.sub}>{formatDate(t.date)}</p>
                       </div>
                       <div className="flex items-center gap-2">
