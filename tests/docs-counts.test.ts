@@ -35,7 +35,11 @@ import { fileURLToPath } from "node:url";
 // Session-251 (census #59, F-246b): 427 → 428 (the description's
 // redesigned form-body placement pin — the spec file's placement test
 // split into the form-lead + header-title-only pair, net +1).
-const UNIT = 428;
+// Session-265 (census #73, F-265a): 428 → 429 (the recent-card title's
+// raw-category fallback pin in the app-chrome spec file — the count move
+// the census-73 round left un-carried through this lockstep; caught and
+// completed at session 266, F-266a).
+const UNIT = 429;
 const E2E = 68;
 const SMOKE = 14;
 
