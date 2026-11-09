@@ -128,3 +128,7 @@ scripts/walk266/
 
 # session-267 walk artifacts
 scripts/walk267/
+
+# session-268 walk artifacts
+scripts/f239a-check.ts
+scripts/f239a-update-path.ts
